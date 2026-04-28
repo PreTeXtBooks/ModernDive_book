@@ -1,10 +1,10 @@
 name: Deploy PreTeXt Book
 
 on:
-  # Trigger on pushes to main branch
+  # Trigger on pushes to v2 branch
   push:
     branches:
-      - main
+      - v2
   # Allow manual trigger from Actions tab
   workflow_dispatch:
 
