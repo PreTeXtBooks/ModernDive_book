@@ -2,14 +2,19 @@
 <frontmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="meta-front">
   <bibinfo>
     <author>
-      <personname>NAME</personname>
+      <personname>Chester Ismay</personname>
       <website>
+        <url href="https://chester.rbind.io/"/>
       </website>
     </author>
     <author>
-      <personname>NAME</personname>
+      <personname>Albert Y. Kim</personname>
       <website>
+        <url href="https://rudeboybert.rbind.io/"/>
       </website>
+    </author>
+    <author>
+      <personname>Arturo Valdivia</personname>
     </author>
     <date>
       <today/>
@@ -22,7 +27,11 @@
 
   <abstract>
     <p>
-      ABSTRACT
+      An open-source and fully reproducible electronic textbook for teaching statistical
+      inference using the <c>tidyverse</c> suite of R packages. This book is intended for
+      students who are learning R, exploratory data analysis, and the basics of statistical
+      inference and modeling. The book assumes no prior experience with coding, statistics,
+      or data science.
     </p>
   </abstract>
 </frontmatter>
