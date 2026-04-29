@@ -26,6 +26,15 @@
     <!-- Introduction chapter -->
     <xi:include href="./ch_intro.ptx" />
 
+    <!-- Chapter 2: Data Visualization -->
+    <xi:include href="./ch_visualization.ptx" />
+
+    <!-- Chapter 3: Data Wrangling -->
+    <xi:include href="./ch_wrangling.ptx" />
+
+    <!-- Chapter 4: Data Importing and Tidy Data -->
+    <xi:include href="./ch_tidy.ptx" />
+
     <!-- Chapter 5: Simple Linear Regression -->
     <xi:include href="./ch_regression.ptx" />
 
@@ -34,6 +43,15 @@
 
     <!-- Chapter 7: Sampling -->
     <xi:include href="./ch_sampling.ptx" />
+
+    <!-- Chapter 8: Confidence Intervals -->
+    <xi:include href="./ch_confidence_intervals.ptx" />
+
+    <!-- Chapter 9: Hypothesis Testing -->
+    <xi:include href="./ch_hypothesis_testing.ptx" />
+
+    <!-- Chapter 10: Inference for Regression -->
+    <xi:include href="./ch_inference_for_regression.ptx" />
 
     <!-- Additional chapters will be added here as the book develops -->
 
