@@ -38,6 +38,9 @@
     <!-- Chapter 7: Sampling -->
     <xi:include href="./ch_sampling.ptx" />
 
+    <!-- Chapter 11: Tell Your Story with Data -->
+    <xi:include href="./ch_tell_your_story.ptx" />
+
     <!-- Additional chapters will be added here as the book develops -->
 
     <!-- This chapter contains a wide variety of elements to  -->
