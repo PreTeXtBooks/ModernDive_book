@@ -29,6 +29,9 @@
     <!-- Chapter 2: Data Visualization -->
     <xi:include href="./ch_visualization.ptx" />
 
+    <!-- Chapter 3: Data Wrangling (first half: pipe, filter, summarize, group_by, mutate) -->
+    <xi:include href="./ch_wrangling.ptx" />
+
     <!-- This chapter contains a wide variety of elements to  -->
     <!-- illustrate what pretext can do, plus links to more help.  -->
     <!-- We recommend keeping this handy, and commenting it out    -->
