@@ -26,6 +26,15 @@
     <!-- Introduction chapter -->
     <xi:include href="./ch_intro.ptx" />
 
+    <!-- Chapter 5: Simple Linear Regression -->
+    <xi:include href="./ch_regression.ptx" />
+
+    <!-- Chapter 6: Multiple Regression -->
+    <xi:include href="./ch_multiple_regression.ptx" />
+
+    <!-- Chapter 7: Sampling -->
+    <xi:include href="./ch_sampling.ptx" />
+
     <!-- Additional chapters will be added here as the book develops -->
 
     <!-- This chapter contains a wide variety of elements to  -->

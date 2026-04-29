@@ -1,0 +1,1488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="regression" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Simple Linear Regression</title>
+
+  <p>
+    We have introduced data visualization in <xref ref="viz"/>, data wrangling in <xref ref="wrangling"/>, and data importing and <q>tidy</q> data in <xref ref="tidy"/>. In this chapter, we work with <term>regression</term>, a method that helps us study the relationship between an <em>outcome variable</em> or <em>response</em> and one or more <em>explanatory variables</em> or <em>regressors</em>.
+    The method starts by proposing a <em>statistical model</em>. Data is then collected and used to estimate the coefficients or parameters for the model, and these results are typically used for two purposes:
+  </p>
+  <ol>
+    <li>
+      <p>
+        For <term>explanation</term> when we want to describe how changes in one or more of the regressors are associated with changes in the response, quantify those changes, establish which of the regressors truly have an association with the response, or determine whether the model used to describe the relationship between the response and the explanatory variables seems appropriate.
+      </p>
+    </li>
+    <li>
+      <p>
+        For <term>prediction</term> when we want to determine, based on the observed values of the regressors, what will the value of the response be? We are not concerned about how all the regressors relate and interact with one another or with the response, we simply want as good predictions as possible.
+      </p>
+    </li>
+  </ol>
+
+  <p>
+    As an illustration, assume that we want to study the relationship between blood pressure and potential risk factors such as daily salt intake, age, and physical activity levels.
+    The response is blood pressure, and the regressors are the risk factors.
+    If we use linear regression for explanation, we may want to determine whether reducing daily salt intake has a real effect on lowering blood pressure, or by how much blood pressure decreases if an individual reduces their salt intake by half.
+    This information may help target individuals of a specific age group with advice on dietary changes to manage blood pressure.
+    On the other hand, if we use linear regression for prediction, we would like to determine, as accurately as possible, the blood pressure of a given individual based on the data collected about their salt intake, age, and physical activity levels. In this chapter, we will use linear regression for explanation.
+  </p>
+
+  <p>
+    The most basic and commonly-used type of regression is <term>linear regression</term><idx><h>regression</h><h>linear</h></idx>.
+    Linear regression involves a <em>numerical</em> response and one or more regressors that can be <em>numerical</em> or <em>categorical</em>. It is called linear regression because the <term>statistical model</term> that describes the relationship between the expected response and the regressors is assumed to be linear. In particular, when the model has a single regressor, the linear regression is the equation of a line.
+    Linear regression is the foundation for almost any other type of regression or related method.
+  </p>
+
+  <p>
+    In <xref ref="regression"/>, we introduce linear regression with only one regressor. In <xref ref="model1"/>, the explanatory variable is numerical. This scenario is known as <em>simple linear regression</em>. In <xref ref="model2"/>, the explanatory variable is categorical.
+  </p>
+
+  <p>
+    In <xref ref="multiple-regression"/> on multiple regression, we extend these ideas and work with models with two explanatory variables. In that chapter, we work with two numerical explanatory variables as well as one numerical and one categorical explanatory variable and study the model with and without interactions.
+  </p>
+
+  <p>
+    In <xref ref="inference-for-regression"/> on inference for regression, we revisit the regression models and analyze the results using <em>statistical inference</em>, a method discussed in later chapters on sampling, bootstrapping and confidence intervals, and hypothesis testing and <m>p</m>-values, respectively. The focus there is also on using linear regression for prediction instead of explanation.
+  </p>
+
+  <p>
+    We begin with regression with a single explanatory variable<idx><h>regression</h><h>basic</h></idx>. We also introduce the <em>correlation coefficient</em>, discuss <q>correlation versus causation,</q> and determine whether the model <em>fits</em> the data observed.
+  </p>
+
+  <subsection xml:id="reg-packages">
+    <title>Needed packages</title>
+    <p>
+      We now load all the packages needed for this chapter (this assumes you've already installed them). In this chapter, we introduce some new packages:
+    </p>
+    <ol>
+      <li>
+        <p>
+          The <c>tidyverse</c> <q>umbrella</q> package. Recall from our earlier discussion that loading the <c>tidyverse</c> package by running <c>library(tidyverse)</c> loads the following commonly used data science packages all at once:
+          <ul>
+            <li><p><c>ggplot2</c> for data visualization</p></li>
+            <li><p><c>dplyr</c> for data wrangling</p></li>
+            <li><p><c>tidyr</c> for converting data to <q>tidy</q> format</p></li>
+            <li><p><c>readr</c> for importing spreadsheet data into R</p></li>
+            <li><p>As well as the more advanced <c>purrr</c>, <c>tibble</c>, <c>stringr</c>, and <c>forcats</c> packages</p></li>
+          </ul>
+        </p>
+      </li>
+      <li>
+        <p>
+          The <c>moderndive</c><idx><h>R packages</h><h>moderndive</h></idx> package of datasets and functions for tidyverse-friendly introductory linear regression as well as a data frame summary function.
+        </p>
+      </li>
+    </ol>
+    <p>
+      If needed, read the earlier section on packages for information on how to install and load R packages.
+    </p>
+    <program language="r">
+      <input>
+library(tidyverse)
+library(moderndive)
+      </input>
+    </program>
+  </subsection>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="model1">
+    <title>One numerical explanatory variable</title>
+
+    <p>
+      Before we introduce the model needed for simple linear regression, we present an example.
+      Why do some countries exhibit high fertility rates while others have significantly lower ones? Are there correlations between fertility rates and life expectancy across different continents and nations? Could underlying socioeconomic factors be influencing these trends?
+    </p>
+
+    <p>
+      These are all questions that are of interest to demographers and policy makers, as understanding fertility rates is important for planning and development. By analyzing the dataset of UN member states, which includes variables such as country codes (ISO), fertility rates, and life expectancy for 2022, researchers can uncover patterns and make predictions about fertility rates based on life expectancy.
+    </p>
+
+    <p>
+      In this section, we aim to explain differences in fertility rates as a function of one numerical variable: life expectancy. Could it be that countries with higher life expectancy also have lower fertility rates? Could it be instead that countries with higher life expectancy tend to have higher fertility rates? Or could it be that there is no relationship between life expectancy and fertility rates? We answer these questions by modeling the relationship between fertility rates and life expectancy using <term>simple linear regression</term><idx><h>regression</h><h>simple linear</h></idx> where we have:
+    </p>
+    <ol>
+      <li><p>A numerical outcome variable <m>y</m> (the country's fertility rate) and</p></li>
+      <li><p>A single numerical explanatory variable <m>x</m> (the country's life expectancy).</p></li>
+    </ol>
+
+
+    <subsection xml:id="model1EDA">
+      <title>Exploratory data analysis</title>
+
+      <p>
+        The data on the current UN member states (as of 2024) can be found in the <c>un_member_states_2024</c> data frame included in the <c>moderndive</c> package. However, to keep things simple we include only those rows that don't have missing data with <c>na.omit()</c> and <c>select()</c> only the subset of the variables we'll consider in this chapter, and save this data in a new data frame called <c>UN_data_ch5</c>:
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 &lt;- un_member_states_2024 |&gt;
+  select(iso, 
+         life_exp = life_expectancy_2022, 
+         fert_rate = fertility_rate_2022, 
+         obes_rate = obesity_rate_2016)|&gt;
+  na.omit()
+        </input>
+      </program>
+
+      <p>
+        A crucial step before doing any kind of analysis or modeling is performing an <term>exploratory data analysis</term><idx><h>data analysis</h><h>exploratory</h></idx>, or EDA for short. EDA gives you a sense of the distributions of the individual variables in your data, whether any potential relationships exist between variables, whether there are outliers and/or missing values, and (most importantly) how to build your model. Here are three common steps in an EDA:
+      </p>
+      <ol>
+        <li><p>Most crucially, looking at the raw data values.</p></li>
+        <li><p>Computing summary statistics, such as means, medians, and maximums.</p></li>
+        <li><p>Creating data visualizations.</p></li>
+      </ol>
+
+      <p>
+        We perform the first common step in an exploratory data analysis: looking at the raw data values. Because this step seems so trivial, unfortunately many data analysts ignore it. However, getting an early sense of what your raw data looks like can often prevent many larger issues down the road.
+      </p>
+
+      <p>
+        You can do this by using RStudio's spreadsheet viewer or by using the <c>glimpse()</c> function:
+      </p>
+
+      <program language="r">
+        <input>
+glimpse(UN_data_ch5)
+        </input>
+      </program>
+
+      <p>
+        Observe that the output indicates the number of rows/observations in <c>UN_data_ch5</c> after filtering out the missing values, where each row corresponds to one observed country/member state. It is important to note that the <term>observational unit</term><idx><h>observational unit</h></idx> is an individual country. Recall that the observational unit is the <q>type of thing</q> that is being measured by our variables.
+      </p>
+
+      <p>
+        A full description of all the variables included in <c>un_member_states_2024</c> can be found by reading the associated help file (run <c>?un_member_states_2024</c> in the console). Let's describe only the variables we selected in <c>UN_data_ch5</c>:
+      </p>
+      <ol>
+        <li><p><c>iso</c>: An identification variable used to distinguish between the countries in the filtered dataset.</p></li>
+        <li><p><c>fert_rate</c>: A numerical variable representing the country's fertility rate in 2022 corresponding to the expected number of children born per woman in child-bearing years. This is the outcome variable <m>y</m> of interest.</p></li>
+        <li><p><c>life_exp</c>: A numerical variable representing the country's average life expectancy in 2022 in years. This is the primary explanatory variable <m>x</m> of interest.</p></li>
+        <li><p><c>obes_rate</c>: A numerical variable representing the country's obesity rate in 2016. This will be another explanatory variable <m>x</m> that we use in the <em>Learning check</em> at the end of this subsection.</p></li>
+      </ol>
+
+      <p>
+        An alternative way to look at the raw data values is by choosing a random sample of the rows in <c>UN_data_ch5</c> by piping it into the <c>slice_sample()</c><idx><h>R packages</h><h>dplyr</h><h>slice_sample()</h></idx> function from the <c>dplyr</c> package. Here we set the <c>n</c> argument to be 5, indicating that we want a random sample of 5 rows. Note that due to the random nature of the sampling, you will likely end up with a different subset of 5 rows.
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 |&gt;
+  slice_sample(n = 5)
+        </input>
+      </program>
+
+      <p>
+        We have looked at the raw values in our <c>UN_data_ch5</c> data frame and got a preliminary sense of the data. We can now compute summary statistics. We start by computing the mean and median of our numerical outcome variable <c>fert_rate</c> and our numerical explanatory variable <c>life_exp</c>. We do this by using the <c>summarize()</c> function from <c>dplyr</c> along with the <c>mean()</c> and <c>median()</c> summary functions.
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 |&gt;
+  summarize(mean_life_exp = mean(life_exp), 
+            mean_fert_rate = mean(fert_rate),
+            median_life_exp = median(life_exp), 
+            median_fert_rate = median(fert_rate))
+        </input>
+      </program>
+
+      <p>
+        However, what if we want other summary statistics as well, such as the standard deviation (a measure of spread), the minimum and maximum values, and various percentiles?
+      </p>
+
+      <p>
+        Typing all these summary statistic functions in <c>summarize()</c> would be long and tedious. Instead, we use the convenient <c>tidy_summary()</c><idx><h>R packages</h><h>moderndive</h><h>tidy_summary()</h></idx> function in the <c>moderndive</c> package. This function takes in a data frame, summarizes it, and returns commonly used summary statistics in tidy format. We take our <c>UN_data_ch5</c> data frame, <c>select()</c> only the outcome and explanatory variables <c>fert_rate</c> and <c>life_exp</c>, and pipe them into the <c>tidy_summary</c> function:
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 |&gt; 
+  select(fert_rate, life_exp) |&gt; 
+  tidy_summary()
+        </input>
+      </program>
+
+      <p>
+        We can also do this more directly by providing which <c>columns</c> we'd like a summary of inside the <c>tidy_summary()</c> function:
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 |&gt; 
+  tidy_summary(columns = c(fert_rate, life_exp))
+        </input>
+      </program>
+
+      <p>
+        Both return the same results for the numerical variables <c>fert_rate</c> and <c>life_exp</c>:
+      </p>
+      <ul>
+        <li><p><c>column</c>: the name of the column being summarized</p></li>
+        <li><p><c>n</c>: the number of non-missing values</p></li>
+        <li><p><c>group</c>: <c>NA</c> (missing) for numerical columns, but will break down a categorical variable into its levels</p></li>
+        <li><p><c>type</c>: which type of column is it (<c>numeric</c>, <c>character</c>, <c>factor</c>, or <c>logical</c>)</p></li>
+        <li><p><c>min</c>: the <em>minimum</em> value</p></li>
+        <li><p><c>Q1</c>: the 1st quartile: the value at which 25% of observations are smaller than it (the <em>25th percentile</em>)</p></li>
+        <li><p><c>mean</c>: the average value for measuring central tendency</p></li>
+        <li><p><c>median</c>: the 2nd quartile: the value at which 50% of observations are smaller than it (the <em>50th percentile</em>)</p></li>
+        <li><p><c>Q3</c>: the 3rd quartile: the value at which 75% of observations are smaller than it (the <em>75th percentile</em>)</p></li>
+        <li><p><c>max</c>: the <em>maximum</em> value</p></li>
+        <li><p><c>sd</c>: the standard deviation value for measuring spread</p></li>
+      </ul>
+
+      <p>
+        Looking at this output, we can see how the values of both variables distribute.
+        The <c>tidy_summary()</c> function only returns what are known as <term>univariate</term><idx><h>univariate</h></idx> summary statistics: functions that take a single variable and return some numerical summary of that variable. However, there also exist <term>bivariate</term><idx><h>bivariate</h></idx> summary statistics: functions that take in two variables and return some summary of those two variables.
+      </p>
+
+      <p>
+        In particular, when the two variables are numerical, we can compute the <term>correlation coefficient</term><idx><h>correlation (coefficient)</h></idx>. Generally speaking, <em>coefficients</em> are quantitative expressions of a specific phenomenon. A <em>correlation coefficient</em> measures the <em>strength of the linear relationship between two numerical variables</em>. Its value goes from -1 and 1 where:
+      </p>
+      <ul>
+        <li>
+          <p>
+            -1 indicates a perfect <em>negative relationship</em>:
+            As one variable increases, the value of the other variable tends to go down, following a straight line.
+          </p>
+        </li>
+        <li>
+          <p>
+            0 indicates no relationship:
+            The values of both variables go up/down independently of each other.
+          </p>
+        </li>
+        <li>
+          <p>
+            +1 indicates a perfect <em>positive relationship</em>:
+            As the value of one variable goes up, the value of the other variable tends to go up as well in a linear fashion.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        For example, a correlation coefficient of -0.75 indicates a negative linear relationship between <m>x</m> and <m>y</m>, but it is not as strong as the negative linear relationship when the correlation coefficient is -0.9 or -1.
+      </p>
+
+      <p>
+        The correlation coefficient can be computed using the <c>get_correlation()</c><idx><h>R packages</h><h>moderndive</h><h>get_correlation()</h></idx> function in the <c>moderndive</c> package. In this case, the inputs to the function are the two numerical variables for which we want to calculate the correlation coefficient.
+      </p>
+
+      <p>
+        We put the name of the outcome variable on the left-hand side of the <c>~</c> <q>tilde</q> sign, while putting the name of the explanatory variable on the right-hand side. This is known as R's <term>formula notation</term><idx><h>R</h><h>formula notation</h></idx>. We will use this same <q>formula</q> syntax with regression later in this chapter.
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 |&gt; 
+  get_correlation(formula = fert_rate ~ life_exp)
+        </input>
+      </program>
+
+      <p>
+        An alternative way to compute correlation is to use the <c>cor()</c> summary function within a <c>summarize()</c>:
+      </p>
+
+      <program language="r">
+        <input>
+UN_data_ch5 |&gt; 
+  summarize(correlation = cor(fert_rate, life_exp))
+        </input>
+      </program>
+
+      <p>
+        In our case, the correlation coefficient indicates that the relationship between fertility rate and life expectancy is <q>moderately negative.</q> There is a certain amount of subjectivity in interpreting correlation coefficients, especially those that are not close to the extreme values of -1, 0, and 1. To develop your intuition about correlation coefficients, play the <q>Guess the Correlation</q> 1980's style video game mentioned in <xref ref="additional-resources-basic-regression"/>.
+      </p>
+
+      <p>
+        We now perform the last step in EDA: creating data visualizations. Since both the <c>fert_rate</c> and <c>life_exp</c> variables are numerical, a scatterplot is an appropriate graph to visualize this data. We do this using <c>geom_point()</c> and display the result in <xref ref="fig-numxplot1"/>. Furthermore, we set the <c>alpha</c> value to <c>0.1</c> to check for any overplotting.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(UN_data_ch5, 
+       aes(x = life_exp, y = fert_rate)) +
+  geom_point(alpha = 0.1) +
+  labs(x = "Life Expectancy", y = "Fertility Rate")
+        </input>
+      </program>
+
+      <figure xml:id="fig-numxplot1">
+        <caption>Scatterplot of relationship of life expectancy and fertility rate.</caption>
+        <image source="images/fig-numxplot1.png" width="80%">
+          <description>Scatterplot showing fertility rate on the y-axis and life expectancy on the x-axis for UN member states.</description>
+        </image>
+      </figure>
+
+      <p>
+        We do not see much for overplotting due to little to no overlap in the points. Most life expectancy entries appear to fall between 70 and 80 years, while most fertility rate entries fall between 1.5 and 3.5 births. Furthermore, while opinions may vary, it is our opinion that the relationship between fertility rate and life expectancy is <q>moderately negative.</q>
+      </p>
+
+      <p>
+        We build on the scatterplot in <xref ref="fig-numxplot1"/> by adding a <q>best-fitting</q> line: of all possible lines we can draw on this scatterplot, it is the line that <q>best</q> fits through the cloud of points. We do this by adding a new <c>geom_smooth(method = "lm", se = FALSE)</c> layer to the <c>ggplot()</c> code that created the scatterplot in <xref ref="fig-numxplot1"/>. The <c>method = "lm"</c> argument sets the line to be a <q><em>l</em>inear <em>m</em>odel.</q> The <c>se = FALSE</c><idx><h>R packages</h><h>ggplot2</h><h>geom_smooth()</h></idx> argument suppresses <em>standard error</em> uncertainty bars.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(UN_data_ch5, aes(x = life_exp, y = fert_rate)) +
+  geom_point(alpha = 0.1) +
+  labs(x = "Life Expectancy", 
+    y = "Fertility Rate",
+    title = "Relationship of life expectancy and fertility rate") +
+  geom_smooth(method = "lm", se = FALSE)
+        </input>
+      </program>
+
+      <figure xml:id="fig-numxplot3">
+        <caption>Scatterplot of life expectancy and fertility rate with regression line.</caption>
+        <image source="images/fig-numxplot3.png" width="80%">
+          <description>Scatterplot showing fertility rate on the y-axis and life expectancy on the x-axis with a best-fit regression line.</description>
+        </image>
+      </figure>
+
+      <p>
+        The line in the resulting <xref ref="fig-numxplot3"/> is called a <q>regression line.</q> The regression line<idx><h>regression</h><h>line</h></idx> is a visual summary of the relationship between two numerical variables, in our case the outcome variable <c>fert_rate</c> and the explanatory variable <c>life_exp</c>. The negative slope of the blue line is consistent with our earlier observed correlation coefficient suggesting that there is a negative relationship between these two variables: as a country's population has higher life expectancy it tends to have a lower fertility rate. We'll see later, however, that while the correlation coefficient and the slope of a regression line always have the same sign (positive or negative), they typically do not have the same value.
+      </p>
+
+      <p>
+        Furthermore, a regression line is <q>best-fitting</q> in that it minimizes some mathematical criteria. We present these mathematical criteria in <xref ref="leastsquares"/>, but we suggest you read this subsection only after first reading the rest of this section on regression with one numerical explanatory variable.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-1">
+          <statement>
+            <p>
+              Conduct a new exploratory data analysis with the same outcome variable <m>y</m> being <c>fert_rate</c> but with <c>obes_rate</c> as the new explanatory variable <m>x</m>. Remember, this involves three things:
+            </p>
+            <ol marker="a">
+              <li><p>Looking at the raw data values.</p></li>
+              <li><p>Computing summary statistics.</p></li>
+              <li><p>Creating data visualizations.</p></li>
+            </ol>
+            <p>What can you say about the relationship between obesity rate and fertility rate based on this exploration?</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+# 1) Look at raw values
+glimpse(UN_data_ch5)
+
+# 2) Summary statistics
+UN_data_ch5 |&gt;
+  select(fert_rate, obes_rate) |&gt;
+  tidy_summary()
+
+# 3) Visualizations
+ggplot(UN_data_ch5, aes(x = obes_rate, y = fert_rate)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Obesity rate (2016)", y = "Fertility rate (2022)")
+
+# Optional: correlation
+UN_data_ch5 |&gt;
+  get_correlation(fert_rate ~ obes_rate)
+              </input>
+            </program>
+            <p>
+              EDA = raw data + summaries + plot. The scatterplot with the regression line and the correlation quantify direction/strength. This data shows a <em>negative</em> association between obesity rate and fertility rate (points slope down; negative correlation): as obesity rate increases, fertility rate tends to decrease.
+            </p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-2">
+          <statement>
+            <p>What is the main purpose of performing an exploratory data analysis (EDA) before fitting a regression model?</p>
+            <ol marker="A">
+              <li><p>To predict future values.</p></li>
+              <li><p>To understand the relationship between variables and detect potential issues.</p></li>
+              <li><p>To create more variables.</p></li>
+              <li><p>To generate random samples.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>B.</term> EDA helps you <em>understand relationships, spot outliers/missingness, and check assumptions</em> before modeling, not to predict or fabricate variables.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-3">
+          <statement>
+            <p>Which of the following is correct about the correlation coefficient?</p>
+            <ol marker="A">
+              <li><p>It ranges from -2 to 2.</p></li>
+              <li><p>It only measures the strength of non-linear relationships.</p></li>
+              <li><p>It ranges from -1 to 1 and measures the strength of linear relationships.</p></li>
+              <li><p>It is always zero.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>C.</term> Pearson's correlation is bounded in <m>[-1, 1]</m> and measures <em>linear</em> association strength/direction.</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="model1table">
+      <title>Simple linear regression</title>
+
+      <p>
+        You may recall from secondary/high school algebra that the equation of a line is <m>y = a + b\cdot x</m>. (Note that the <m>\cdot</m> symbol is equivalent to the <m>\times</m> <q>multiply by</q> mathematical symbol. We'll use the <m>\cdot</m> symbol in the rest of this book as it is more succinct.) It is defined by two coefficients <m>a</m> and <m>b</m>. The intercept coefficient <m>a</m> is the value of <m>y</m> when <m>x = 0</m>. The slope coefficient <m>b</m> for <m>x</m> is the increase in <m>y</m> for every increase of one in <m>x</m>. This is also called the <q>rise over run.</q>
+      </p>
+
+      <p>
+        However, when defining a regression line like the one in <xref ref="fig-numxplot3"/>, we use slightly different notation: the equation of the regression line is <m>\widehat{y} = b_0 + b_1 \cdot x</m><idx><h>regression</h><h>equation of a line</h></idx>. The intercept coefficient is <m>b_0</m>, so <m>b_0</m> is the value of <m>\widehat{y}</m> when <m>x = 0</m>. The slope coefficient for <m>x</m> is <m>b_1</m>, i.e., the increase in <m>\widehat{y}</m> for every increase of one in <m>x</m>. Why do we put a <q>hat</q> on top of the <m>y</m>? It's a form of notation commonly used in regression to indicate that we have a <term>fitted value</term><idx><h>regression</h><h>fitted value</h></idx>, or the value of <m>y</m> on the regression line for a given <m>x</m> value as discussed further in <xref ref="model1points"/>.
+      </p>
+
+      <p>
+        We know that the regression line in <xref ref="fig-numxplot3"/> has a negative slope <m>b_1</m> corresponding to our explanatory <m>x</m> variable <c>life_exp</c>. Why? Because as countries tend to have higher <c>life_exp</c> values, they tend to have lower <c>fert_rate</c> values. However, what is the numerical value of the slope <m>b_1</m>? What about the intercept <m>b_0</m>? We do not compute these two values by hand, but rather we use a computer!
+      </p>
+
+      <p>
+        We can obtain the values of the intercept <m>b_0</m> and the slope for <c>life_exp</c> <m>b_1</m> by outputting the <em>linear regression coefficients</em>. This is done in two steps:
+      </p>
+      <ol>
+        <li><p>We first <q>fit</q> the linear regression model using the <c>lm()</c> function and save it in <c>demographics_model</c>.</p></li>
+        <li><p>We get the regression coefficients by applying <c>coef()</c> to <c>demographics_model</c>.</p></li>
+      </ol>
+
+      <program language="r">
+        <input>
+# Fit regression model:
+demographics_model &lt;- lm(fert_rate ~ life_exp, data = UN_data_ch5)
+# Get regression coefficients
+coef(demographics_model)
+        </input>
+      </program>
+
+      <p>
+        We first focus on interpreting the regression coefficients, and later revisit the code that produced it. The coefficients are the intercept <m>b_0</m> and the slope <m>b_1</m> for <c>life_exp</c>. Thus the equation of the regression line in <xref ref="fig-numxplot3"/> follows:
+      </p>
+
+      <md>
+        <mrow>\widehat{y} \amp= b_0 + b_1 \cdot x</mrow>
+        <mrow>\widehat{\text{fertility\_rate}} \amp= b_0 + b_{\text{life\_expectancy}} \cdot \text{life\_expectancy}</mrow>
+      </md>
+
+      <p>
+        The intercept <m>b_0</m> is the average fertility rate <m>\widehat{y} = \widehat{\text{fertility\_rate}}</m> for those countries that had a <c>life_exp</c> of 0. Or in graphical terms, where the line intersects the <m>y</m> axis for <m>x = 0</m>. Note, however, that while the <term>intercept</term><idx><h>regression</h><h>equation of a line</h><h>intercept</h></idx> of the regression line has a mathematical interpretation, it has no <em>practical</em> interpretation here, since observing a <c>life_exp</c> of 0 is impossible. Furthermore, looking at the scatterplot with the regression line in <xref ref="fig-numxplot3"/>, no countries had a life expectancy anywhere near 0.
+      </p>
+
+      <p>
+        Of greater interest is the <term>slope</term><idx><h>regression</h><h>equation of a line</h><h>slope</h></idx> <m>b_{\text{life\_expectancy}}</m> for <c>life_exp</c>. This summarizes the relationship between the fertility rate and life expectancy variables. Note that the sign is negative, suggesting a negative relationship between these two variables. This means countries with higher life expectancies tend to have lower fertility rates. Recall that the correlation coefficient is negative. They both have the same negative sign, but have a different value. Recall also that the correlation's interpretation is the <q>strength of linear association.</q> The <term>slope's interpretation</term><idx><h>regression</h><h>interpretation of the slope</h></idx> is a little different:
+      </p>
+
+      <blockquote>
+        <p>
+          For every increase of 1 unit in <c>life_exp</c>, there is an <em>associated</em> decrease of, <em>on average</em>, some number of units of <c>fert_rate</c>.
+        </p>
+      </blockquote>
+
+      <p>
+        We only state that there is an <em>associated</em> increase and not necessarily a <em>causal</em> increase. Perhaps it may not be that higher life expectancies directly cause lower fertility rates. Instead, wealthier countries could tend to have stronger educational backgrounds, improved health, a higher standard of living, and have lower fertility rates, while at the same time these wealthy countries also tend to have higher life expectancies. Just because two variables are strongly associated, it does not necessarily mean that one causes the other. This is summed up in the often-quoted phrase, <q>correlation is not necessarily causation.</q> We discuss this idea further in <xref ref="correlation-is-not-causation"/>.
+      </p>
+
+      <p>
+        Furthermore, we say that this associated decrease is <em>on average</em> because you might have two countries whose <c>life_exp</c> values differ by 1 unit, but their difference in fertility rates may not be exactly the slope value. What the slope is saying is that across all possible countries, the <em>average</em> difference in fertility rate between two countries whose life expectancies differ by one is the slope value.
+      </p>
+
+      <p>
+        Now that we have learned how to compute the equation for the regression line in <xref ref="fig-numxplot3"/> using the model coefficient values and how to interpret the resulting intercept and slope, we revisit the code that generated these coefficients:
+      </p>
+
+      <program language="r">
+        <input>
+# Fit regression model:
+demographics_model &lt;- lm(fert_rate ~ life_exp, data = UN_data_ch5)
+# Get regression coefficients:
+coef(demographics_model)
+        </input>
+      </program>
+
+      <p>
+        First, we <q>fit</q> the linear regression model to the <c>data</c> using the <c>lm()</c><idx><h>lm()</h></idx> function and save this as <c>demographics_model</c>. When we say <q>fit,</q> we mean <q>find the best fitting line to this data.</q> <c>lm()</c> stands for <q>linear model</q> and is used as <c>lm(y ~ x, data = df_name)</c> where:
+      </p>
+      <ul>
+        <li><p><c>y</c> is the outcome variable, followed by a tilde <c>~</c>. In our case, <c>y</c> is set to <c>fert_rate</c>.</p></li>
+        <li><p><c>x</c> is the explanatory variable. In our case, <c>x</c> is set to <c>life_exp</c>.</p></li>
+        <li><p>The combination of <c>y ~ x</c> is called a <em>model formula</em>. (Note the order of <c>y</c> and <c>x</c>.) In our case, the model formula is <c>fert_rate ~ life_exp</c>. We saw such model formulas earlier with the <c>get_correlation()</c> function in <xref ref="model1EDA"/>.</p></li>
+        <li><p><c>df_name</c> is the name of the data frame that contains the variables <c>y</c> and <c>x</c>. In our case, <c>data</c> is the <c>UN_data_ch5</c> data frame.</p></li>
+      </ul>
+
+      <p>
+        Second, we take the saved model in <c>demographics_model</c> and apply the <c>coef()</c> function to it to obtain the regression coefficients. This gives us the components of the regression equation line: the intercept <m>b_0</m> and the slope <m>b_1</m>.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-4">
+          <statement>
+            <p>Fit a simple linear regression using <c>lm(fert_rate ~ obes_rate, data = UN_data_ch5)</c> where <c>obes_rate</c> is the new explanatory variable <m>x</m>. Learn about the <q>best-fitting</q> line from the regression coefficients by applying the <c>coef()</c> function. How do the regression results match up with your earlier exploratory data analysis?</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+m_obesity &lt;- lm(fert_rate ~ obes_rate, data = UN_data_ch5)
+coef(m_obesity)
+# or a tidy table:
+get_regression_table(m_obesity)
+              </input>
+            </program>
+            <p>The slope sign should match your EDA: typically <em>negative</em>, meaning higher obesity rate is associated with lower fertility. The magnitude tells <em>how much</em> fertility changes per 1-point increase in obesity (on average). If your plot/correlation looked negative, a negative fitted slope confirms that.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-5">
+          <statement>
+            <p>What does the intercept term <m>b_0</m> represent in simple linear regression?</p>
+            <ol marker="A">
+              <li><p>The change in the outcome for a one-unit change in the explanatory variable.</p></li>
+              <li><p>The predicted value of the outcome when the explanatory variable is zero.</p></li>
+              <li><p>The standard error of the regression.</p></li>
+              <li><p>The correlation between the outcome and explanatory variables.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>B.</term> <m>b_0</m> is the <em>predicted response when <m>x = 0</m></em>. It may be outside the data's range (so often not substantively meaningful), but that's the definition.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-6">
+          <statement>
+            <p>What best describes the <q>slope</q> of a simple linear regression line?</p>
+            <ol marker="A">
+              <li><p>The increase in the explanatory variable for a one-unit increase in the outcome.</p></li>
+              <li><p>The average of the explanatory variable.</p></li>
+              <li><p>The change in the outcome for a one-unit increase in the explanatory variable.</p></li>
+              <li><p>The minimum value of the outcome variable.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>C.</term> The slope is the <em>change in the outcome</em> for a <em>one-unit increase in the explanatory</em> variable, on average.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-7">
+          <statement>
+            <p>What does a negative slope in a simple linear regression indicate?</p>
+            <ol marker="A">
+              <li><p>The outcome variable decreases as the explanatory variable increases.</p></li>
+              <li><p>The explanatory variable remains constant as the outcome variable increases.</p></li>
+              <li><p>The correlation coefficient is zero.</p></li>
+              <li><p>The outcome variable increases as the explanatory variable increases.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>A.</term> As <m>x</m> increases, the <em>predicted</em> <m>y</m> <em>decreases</em> (downward trend).</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="model1points">
+      <title>Observed/fitted values and residuals</title>
+
+      <p>
+        We just saw how to get the value of the intercept and the slope of a regression line from the output of the <c>coef()</c> function. Now instead say we want information on individual observations. For example, we focus on the 21st of the countries in the <c>UN_data_ch5</c> data frame. This corresponds to the UN member state of Bosnia and Herzegovina (BIH).
+      </p>
+
+      <p>
+        What is the value <m>\widehat{y}</m> on the regression line corresponding to this country's <c>life_exp</c> value? In <xref ref="fig-numxplot4"/> we mark three values corresponding to these results for Bosnia and Herzegovina and give their statistical names:
+      </p>
+      <ul>
+        <li><p>Circle: The <em>observed value</em> <m>y</m> is this country's actual fertility rate.</p></li>
+        <li><p>Square: The <em>fitted value</em> <m>\widehat{y}</m> is the value on the regression line for that <m>x = \texttt{life\_exp}</m> value, computed with the intercept and slope in the regression table.</p></li>
+        <li>
+          <p>
+            Arrow: The length of this arrow is the <term>residual</term><idx><h>regression</h><h>residual</h></idx> and is computed by subtracting the fitted value <m>\widehat{y}</m> from the observed value <m>y</m>. The residual can be thought of as a model's error or <q>lack of fit</q> for a particular observation.
+          </p>
+        </li>
+      </ul>
+
+      <figure xml:id="fig-numxplot4">
+        <caption>Example of observed value, fitted value, and residual.</caption>
+        <image source="images/fig-numxplot4.png" width="80%">
+          <description>Scatterplot with a highlighted point for Bosnia and Herzegovina showing the observed value (circle), fitted value (square), and residual (arrow).</description>
+        </image>
+      </figure>
+
+      <p>
+        Now say we want to compute both the fitted value <m>\widehat{y} = b_0 + b_1 \cdot x</m> and the residual <m>y - \widehat{y}</m> for <em>all</em> UN member states with complete data as of 2024. Recall that each country corresponds to one of the rows in the <c>UN_data_ch5</c> data frame and also one of the points in the regression plot in <xref ref="fig-numxplot4"/>.
+      </p>
+
+      <p>
+        We could repeat the previous calculations we performed by hand for all countries, but that would be tedious and time consuming. Instead, we use a computer with the <c>get_regression_points()</c> function. We apply the <c>get_regression_points()</c> function to <c>demographics_model</c>, which is where we saved our <c>lm()</c> model in the previous section.
+      </p>
+
+      <program language="r">
+        <input>
+regression_points &lt;- get_regression_points(demographics_model)
+regression_points
+        </input>
+      </program>
+
+      <p>
+        This function is an example of what is known in computer programming as a <term>wrapper function</term><idx><h>functions</h><h>wrapper</h></idx>. It takes other pre-existing functions and <q>wraps</q> them into a single function that hides its inner workings. This concept is illustrated in <xref ref="fig-moderndive-figure-wrapper"/>.
+      </p>
+
+      <figure xml:id="fig-moderndive-figure-wrapper">
+        <caption>The concept of a wrapper function.</caption>
+        <image source="images/wrapper_function.png" width="50%">
+          <description>Diagram illustrating the concept of a wrapper function with inputs and outputs visible but internals hidden.</description>
+        </image>
+      </figure>
+
+      <p>
+        So all you need to worry about is what the inputs look like and what the outputs look like; you leave all the other details <q>under the hood of the car.</q> In our regression modeling example, the <c>get_regression_points()</c> function takes a saved <c>lm()</c> linear regression model as input and returns a data frame of the regression predictions as output. If you are interested in learning more about the <c>get_regression_points()</c> function's inner workings, check out <xref ref="underthehood"/>.
+      </p>
+
+      <p>
+        We inspect the individual columns and match them with the elements of <xref ref="fig-numxplot4"/>:
+      </p>
+      <ul>
+        <li><p>The <c>fert_rate</c> column represents the observed outcome variable <m>y</m>. This is the y-position of the black points.</p></li>
+        <li><p>The <c>life_exp</c> column represents the values of the explanatory variable <m>x</m>. This is the x-position of the black points.</p></li>
+        <li><p>The <c>fert_rate_hat</c> column represents the fitted values <m>\widehat{y}</m>. This is the corresponding value on the regression line for the <m>x</m> values.</p></li>
+        <li><p>The <c>residual</c> column represents the residuals <m>y - \widehat{y}</m>. This is the vertical distances between the black points and the regression line.</p></li>
+      </ul>
+
+      <p>
+        Just as we did for the 21st country in the <c>UN_data_ch5</c> dataset, we repeat the calculations for the 24th country. This corresponds to the country of Brunei (BRN):
+      </p>
+      <ul>
+        <li><p><c>fert_rate</c> is the observed <c>fert_rate</c> <m>y</m> for this country.</p></li>
+        <li><p><c>life_exp</c> is the value of the explanatory variable <c>life_exp</c> <m>x</m> for Brunei.</p></li>
+        <li><p><c>fert_rate_hat</c> is the fitted value <m>\widehat{y}</m> on the regression line for this country.</p></li>
+        <li><p><c>residual</c> is the value of the residual for this country. In other words, the model's fitted value was off by the residual value in fertility rate units for Brunei.</p></li>
+      </ul>
+
+      <p>
+        If you like, you can skip ahead to <xref ref="leastsquares"/> to learn about the processes behind what makes <q>best-fitting</q> regression lines. As a primer, a <q>best-fitting</q> line refers to the line that minimizes the <em>sum of squared residuals</em> out of all possible lines we can draw through the points. In <xref ref="model2"/>, we'll discuss another common scenario of having a categorical explanatory variable and a numerical outcome variable.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-8">
+          <statement>
+            <p>What is a <q>wrapper function</q> in the context of statistical modeling in R?</p>
+            <ol marker="A">
+              <li><p>A function that directly fits a regression model without using any other functions.</p></li>
+              <li><p>A function that combines other functions to simplify complex operations and provide a user-friendly interface.</p></li>
+              <li><p>A function that removes missing values from a dataset before analysis.</p></li>
+              <li><p>A function that only handles categorical data in regression models.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>B.</term> Wrapper functions <em>combine other functions</em> into a simpler interface (e.g., <c>get_regression_points()</c> wraps <c>broom::augment()</c> and some cleaning).</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-9">
+          <statement>
+            <p>Generate a data frame of the residuals of the <em>Learning check</em> model where you used <c>obes_rate</c> as the explanatory <m>x</m> variable.</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+m_obesity &lt;- lm(fert_rate ~ obes_rate, data = UN_data_ch5)
+resids_df &lt;- get_regression_points(m_obesity)
+resids_df |&gt; select(obes_rate, fert_rate, fert_rate_hat, residual) |&gt; head()
+              </input>
+            </program>
+            <p><c>get_regression_points()</c> returns observed <m>y</m>, fitted <m>\hat{y}</m>, and residuals <m>y - \hat{y}</m> in a tidy frame, perfect for diagnostics and sorting.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-10">
+          <statement>
+            <p>Which of the following statements is true about the regression line in a simple linear regression model?</p>
+            <ol marker="A">
+              <li><p>The regression line represents the average of the outcome variable.</p></li>
+              <li><p>The regression line minimizes the sum of squared differences between the observed and predicted values.</p></li>
+              <li><p>The regression line always has a slope of zero.</p></li>
+              <li><p>The regression line is only useful when there is no correlation between variables.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>B.</term> OLS chooses the line that <em>minimizes the sum of squared residuals</em> (squared differences between observed and fitted).</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="model2">
+    <title>One categorical explanatory variable</title>
+
+    <p>
+      It is an unfortunate truth that life expectancy is not the same across all countries in the world. International development agencies are interested in studying these differences in life expectancy in the hopes of identifying where governments should allocate resources to address this problem. In this section, we explore differences in life expectancy in two ways:
+    </p>
+    <ol>
+      <li><p>Differences between continents: Are there significant differences in average life expectancy between the six populated continents of the world: Africa, North America, South America, Asia, Europe, and Oceania?</p></li>
+      <li><p>Differences within continents: How does life expectancy vary within the world's five continents? For example, is the spread of life expectancy among the countries of Africa larger than the spread of life expectancy among the countries of Asia?</p></li>
+    </ol>
+
+    <p>
+      To answer such questions, we use the <c>un_member_states_2024</c> data frame we saw earlier in this chapter. It is included in the <c>moderndive</c><idx><h>R packages</h><h>moderndive</h></idx> package and has international development statistics such as life expectancy, GDP per capita, and population for 193 countries for years near 2024. We use this data for basic regression again, but now using an explanatory variable <m>x</m> that is categorical, as opposed to the numerical explanatory variable model we used in the previous <xref ref="model1"/>:
+    </p>
+    <ol>
+      <li><p>A numerical outcome variable <m>y</m> (a country's life expectancy) and</p></li>
+      <li><p>A single categorical explanatory variable <m>x</m> (the continent that the country is a part of).</p></li>
+    </ol>
+
+    <p>
+      When the explanatory variable <m>x</m> is categorical, the concept of a <q>best-fitting</q> regression line is a little different than the one we saw previously in <xref ref="model1"/> where the explanatory variable <m>x</m> was numerical. We study these differences shortly in <xref ref="model2table"/>, but first we conduct an exploratory data analysis.
+    </p>
+
+
+    <subsection xml:id="model2EDA">
+      <title>Exploratory data analysis</title>
+
+      <p>
+        The data on the 193 countries can be found in the <c>un_member_states_2024</c> data frame included in the <c>moderndive</c> package. However, to keep things simple, we <c>select()</c> only the subset of the variables we'll consider in this chapter and focus only on rows where we have no missing values with <c>na.omit()</c>. We'll save this data in a new data frame called <c>gapminder2022</c>:
+      </p>
+
+      <program language="r">
+        <input>
+gapminder2022 &lt;- un_member_states_2024 |&gt;
+  select(country, life_exp = life_expectancy_2022, continent, gdp_per_capita) |&gt; 
+  na.omit()
+        </input>
+      </program>
+
+      <p>
+        We perform the first common step in an exploratory data analysis: looking at the raw data values. You can do this by using RStudio's spreadsheet viewer or by using the <c>glimpse()</c> command:
+      </p>
+
+      <program language="r">
+        <input>
+glimpse(gapminder2022)
+        </input>
+      </program>
+
+      <p>
+        Observe that the output indicates the number of rows/observations in <c>gapminder2022</c>, where each row corresponds to one country. In other words, the <term>observational unit</term> is an individual country. Furthermore, observe that the variable <c>continent</c> is of type <c>&lt;fct&gt;</c>, which stands for <em>factor</em>, which is R's way of encoding categorical variables.
+      </p>
+
+      <p>
+        A full description of all the variables included in <c>un_member_states_2024</c> can be found by reading the associated help file (run <c>?un_member_states_2024</c> in the console). However, we fully describe only the 4 variables we selected in <c>gapminder2022</c>:
+      </p>
+      <ol>
+        <li><p><c>country</c>: An identification variable of type character/text used to distinguish the countries in the dataset.</p></li>
+        <li><p><c>life_exp</c>: A numerical variable of that country's life expectancy at birth. This is the outcome variable <m>y</m> of interest.</p></li>
+        <li><p><c>continent</c>: A categorical variable with five levels. Here <q>levels</q> correspond to the possible categories: Africa, Asia, Americas, Europe, and Oceania. This is the explanatory variable <m>x</m> of interest.</p></li>
+        <li><p><c>gdp_per_capita</c>: A numerical variable of that country's GDP per capita in US inflation-adjusted dollars that we'll use as another outcome variable <m>y</m> in the <em>Learning check</em> at the end of this subsection.</p></li>
+      </ol>
+
+      <p>
+        We next look at a random sample of three out of the countries in <c>gapminder2022</c>. Random sampling will likely produce a different subset of 3 rows for you than what's shown.
+      </p>
+
+      <program language="r">
+        <input>
+gapminder2022 |&gt; sample_n(size = 3)
+        </input>
+      </program>
+
+      <p>
+        Now that we have looked at the raw values in our <c>gapminder2022</c> data frame and got a sense of the data, we compute summary statistics. We again apply <c>tidy_summary()</c> from the <c>moderndive</c> package. We take our <c>gapminder2022</c> data frame, <c>select()</c> only the outcome and explanatory variables <c>life_exp</c> and <c>continent</c>, and pipe them into <c>tidy_summary()</c>:
+      </p>
+
+      <program language="r">
+        <input>
+gapminder2022 |&gt; select(life_exp, continent) |&gt; tidy_summary()
+        </input>
+      </program>
+
+      <p>
+        The <c>tidy_summary()</c> output now reports summaries for categorical variables and for the numerical variables we reviewed before. Let's focus just on discussing the results for the categorical <c>factor</c> variable <c>continent</c>:
+      </p>
+      <ul>
+        <li><p><c>n</c>: The number of non-missing entries for each group</p></li>
+        <li><p><c>group</c>: Breaks down a categorical variable into its unique levels. For this variable, it corresponds to Africa, Asia, North and South America, Europe, and Oceania.</p></li>
+        <li><p><c>type</c>: The data type of the variable. Here, it is a <c>factor</c>.</p></li>
+        <li><p><c>min</c> to <c>sd</c>: These are missing since calculating the five-number summary, the mean, and standard deviation for categorical variables doesn't make sense.</p></li>
+      </ul>
+
+      <p>
+        Turning our attention to the summary statistics of the numerical variable <c>life_exp</c>, we observe that the global median life expectancy in 2022 was around 73 years. Thus, half of the world's countries had a life expectancy of less than this value. The mean life expectancy is lower, however. Why is the mean life expectancy lower than the median?
+      </p>
+
+      <p>
+        We can answer this question by performing the last of the three common steps in an exploratory data analysis: creating data visualizations. We visualize the distribution of our outcome variable <m>y</m> = <c>life_exp</c>:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(gapminder2022, aes(x = life_exp)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  labs(x = "Life expectancy", 
+       y = "Number of countries",
+       title = "Histogram of distribution of worldwide life expectancies")
+        </input>
+      </program>
+
+      <figure xml:id="fig-lifeexp2022hist">
+        <caption>Histogram of life expectancy in 2022.</caption>
+        <image source="images/fig-lifeexp2022hist.png" width="80%">
+          <description>Histogram showing the distribution of life expectancy across countries in 2022, with most values falling between 65 and 80 years.</description>
+        </image>
+      </figure>
+
+      <p>
+        We see that this data is <em>left-skewed</em>, also known as <em>negatively</em><idx><h>skew</h></idx> skewed: there are a few countries with low life expectancy that are bringing down the mean life expectancy. However, the median is less sensitive to the effects of such outliers; hence, the median is greater than the mean in this case.
+      </p>
+
+      <p>
+        Remember, however, that we want to compare life expectancies both between continents and within continents. In other words, our visualizations need to incorporate some notion of the variable <c>continent</c>. We can do this easily with a faceted histogram. Recall that facets allow us to split a visualization by the different values of another variable. We display the resulting visualization by adding a <c>facet_wrap(~ continent, nrow = 2)</c><idx><h>R packages</h><h>ggplot2</h><h>facet_wrap()</h></idx> layer.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(gapminder2022, aes(x = life_exp)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  labs(x = "Life expectancy", 
+       y = "Number of countries",
+       title = "Histogram of distribution of worldwide life expectancies") +
+  facet_wrap(~ continent, nrow = 2)
+        </input>
+      </program>
+
+      <figure xml:id="fig-catxplot0b">
+        <caption>Life expectancy in 2022 by continent (faceted).</caption>
+        <image source="images/fig-catxplot0b.png" width="90%">
+          <description>Faceted histogram showing life expectancy distributions for each continent in 2022.</description>
+        </image>
+      </figure>
+
+      <p>
+        Observe that unfortunately the distribution of African life expectancies is much lower than the other continents. In Europe, life expectancies tend to be higher and furthermore do not vary as much. On the other hand, both Asia and Africa have the most variation in life expectancies.
+      </p>
+
+      <p>
+        Recall that an alternative method to visualize the distribution of a numerical variable split by a categorical variable is by using a side-by-side boxplot. We map the categorical variable <c>continent</c> to the <m>x</m>-axis and the different life expectancies within each continent on the <m>y</m>-axis:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(gapminder2022, aes(x = continent, y = life_exp)) +
+  geom_boxplot() +
+  labs(x = "Continent", y = "Life expectancy",
+       title = "Life expectancy by continent")
+        </input>
+      </program>
+
+      <figure xml:id="fig-catxplot1">
+        <caption>Life expectancy in 2022 by continent (boxplot).</caption>
+        <image source="images/fig-catxplot1.png" width="80%">
+          <description>Side-by-side boxplots showing life expectancy for each continent in 2022.</description>
+        </image>
+      </figure>
+
+      <p>
+        Some people prefer comparing the distributions of a numerical variable between different levels of a categorical variable using a boxplot instead of a faceted histogram. This is because we can make quick comparisons between the categorical variable's levels with imaginary horizontal lines. For example, observe in <xref ref="fig-catxplot1"/> that we can quickly convince ourselves that Europe has the highest median life expectancies. Furthermore, as we observed in the faceted histogram in <xref ref="fig-catxplot0b"/>, Africa and Asia have the largest variation in life expectancy as evidenced by their large interquartile ranges (the size of the boxes).
+      </p>
+
+      <p>
+        It's important to remember, however, that the solid lines in the middle of the boxes correspond to the medians (the middle value) rather than the mean (the average). We compute the median and mean life expectancy for each continent with a little more data wrangling:
+      </p>
+
+      <program language="r">
+        <input>
+life_exp_by_continent &lt;- gapminder2022 |&gt;
+  group_by(continent) |&gt;
+  summarize(median = median(life_exp), mean = mean(life_exp))
+life_exp_by_continent
+        </input>
+      </program>
+
+      <p>
+        Observe the order of the median life expectancy: Africa is lowest, Europe the highest, and the others have similar medians between Africa and Europe. This ordering corresponds to the ordering of the solid black lines inside the boxes in our side-by-side boxplot in <xref ref="fig-catxplot1"/>.
+      </p>
+
+      <p>
+        Using Africa's mean life expectancy as a <em>baseline for comparison</em>, we start making comparisons to the mean life expectancies of the other four continents, which we'll revisit later on in this section.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-11">
+          <statement>
+            <p>Conduct a new exploratory data analysis with the same explanatory variable <m>x</m> being <c>continent</c> but with <c>gdp_per_capita</c> as the new outcome variable <m>y</m>. What can you say about the differences in GDP per capita between continents based on this exploration?</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+# Raw look
+glimpse(gapminder2022)
+
+# Summaries
+gapminder2022 |&gt;
+  select(gdp_per_capita, continent) |&gt;
+  tidy_summary()
+
+# Visualization
+ggplot(gapminder2022, aes(x = continent, y = gdp_per_capita)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Continent", y = "GDP per capita (USD)")
+              </input>
+            </program>
+            <p>Boxplots/facets reveal <em>distribution and differences</em>. Notice a <em>higher median</em> in <em>Europe</em> and <em>lower</em> in <em>Africa</em>, with Europe showing widest spread.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-12">
+          <statement>
+            <p>When using a categorical explanatory variable in regression, what does the baseline group represent?</p>
+            <ol marker="A">
+              <li><p>The group with the highest mean</p></li>
+              <li><p>The group chosen for comparison with all other groups</p></li>
+              <li><p>The group with the most data points</p></li>
+              <li><p>The group with the lowest standard deviation</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>B.</term> The baseline is the <em>reference category</em> against which others are <em>compared</em> (it's not necessarily largest/smallest by any statistic unless you set it).</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="model2table">
+      <title>Linear regression</title>
+
+      <p>
+        In <xref ref="model1table"/> we introduced simple linear regression, which involves modeling the relationship between a numerical outcome variable <m>y</m> and a numerical explanatory variable <m>x</m>. In our life expectancy example, we now instead have a categorical explanatory variable <c>continent</c>. Our model will not yield a <q>best-fitting</q> regression line like in <xref ref="fig-numxplot3"/>, but rather <term>offsets</term><idx><h>offset</h></idx> relative to a baseline for comparison.
+      </p>
+
+      <p>
+        As we did in <xref ref="model1table"/> when studying the relationship between fertility rates and life expectancy, we output the regression coefficients for this model. Recall that this is done in two steps:
+      </p>
+      <ol>
+        <li><p>We <q>fit</q> the linear regression model using <c>lm(y ~ x, data)</c> and save it in <c>life_exp_model</c>.</p></li>
+        <li><p>We get the regression coefficients by applying the <c>coef()</c> function to <c>life_exp_model</c>.</p></li>
+      </ol>
+
+      <program language="r">
+        <input>
+life_exp_model &lt;- lm(life_exp ~ continent, data = gapminder2022)
+coef(life_exp_model)
+        </input>
+      </program>
+
+      <p>
+        We once again focus on the values in these coefficient values. Why are there now 6 entries? We break them down one by one:
+      </p>
+      <ol>
+        <li><p><c>intercept</c> corresponds to the mean life expectancy of countries in Africa.</p></li>
+        <li><p><c>continentAsia</c> corresponds to countries in Asia and the value is the difference in mean life expectancy relative to Africa. In other words, the mean life expectancy of countries in Asia is the sum of the intercept and this offset value.</p></li>
+        <li><p><c>continentEurope</c> corresponds to countries in Europe and the value is the difference in mean life expectancy relative to Africa.</p></li>
+        <li><p><c>continentNorth America</c> corresponds to countries in North America and the value is the difference in mean life expectancy relative to Africa.</p></li>
+        <li><p><c>continentOceania</c> corresponds to countries in Oceania and the value is the difference in mean life expectancy relative to Africa.</p></li>
+        <li><p><c>continentSouth America</c> corresponds to countries in South America and the value is the difference in mean life expectancy relative to Africa.</p></li>
+      </ol>
+
+      <p>
+        To summarize, the 6 values for the regression coefficients correspond to the <q>baseline for comparison</q> continent Africa (the intercept) as well as five <q>offsets</q> from this baseline for the remaining 5 continents: Asia, Europe, North America, Oceania, and South America.
+      </p>
+
+      <p>
+        You might be asking at this point why was Africa chosen as the <q>baseline for comparison</q> group. This is the case for no other reason than it comes first alphabetically of the six continents; by default R arranges factors/categorical variables in alphanumeric order. You can change this baseline group to be another continent if you manipulate the variable <c>continent</c>'s factor <q>levels</q> using the <c>forcats</c> package. See <url href="https://r4ds.had.co.nz/factors.html">Chapter 15</url> of <em>R for Data Science</em> for examples.
+      </p>
+
+      <p>
+        We now write the equation for our fitted values <m>\widehat{y} = \widehat{\text{life exp}}</m>.
+      </p>
+
+      <md>
+        <mrow>\widehat{y} = \widehat{\text{life exp}} \amp= b_0 + b_{\text{Asia}}\cdot\mathbb{1}_{\text{Asia}}(x) + b_{\text{Europe}}\cdot\mathbb{1}_{\text{Europe}}(x)</mrow>
+        <mrow>\amp \quad + b_{\text{North America}}\cdot\mathbb{1}_{\text{North America}}(x) + b_{\text{Oceania}}\cdot\mathbb{1}_{\text{Oceania}}(x)</mrow>
+        <mrow>\amp \quad + b_{\text{South America}}\cdot\mathbb{1}_{\text{South America}}(x)</mrow>
+      </md>
+
+      <p>
+        First, <m>\mathbb{1}_{A}(x)</m> is what's known in mathematics as an <q>indicator function.</q> It returns only one of two possible values, 0 and 1, where
+      </p>
+
+      <me>
+        \mathbb{1}_{A}(x) = \begin{cases} 1 \amp \text{if } x \text{ is in } A \\ 0 \amp \text{otherwise} \end{cases}
+      </me>
+
+      <p>
+        In a statistical modeling context, this is also known as a <term>dummy variable</term><idx><h>dummy variable</h></idx>. In our case, we consider the first such indicator variable <m>\mathbb{1}_{\text{Asia}}(x)</m>. This indicator function returns 1 if a country is in Asia, 0 otherwise:
+      </p>
+
+      <me>
+        \mathbb{1}_{\text{Asia}}(x) = \begin{cases} 1 \amp \text{if country } x \text{ is in Asia} \\ 0 \amp \text{otherwise} \end{cases}
+      </me>
+
+      <p>
+        Second, <m>b_0</m> corresponds to the intercept as before; in this case, it is the mean life expectancy of all countries in Africa. Third, the <m>b_{\text{Asia}}</m>, <m>b_{\text{Europe}}</m>, <m>b_{\text{North America}}</m>, <m>b_{\text{Oceania}}</m>, and <m>b_{\text{South America}}</m> represent the 5 <q>offsets relative to the baseline for comparison</q> in the regression coefficients.
+      </p>
+
+      <p>
+        We put this all together and compute the fitted value <m>\widehat{y} = \widehat{\text{life exp}}</m> for a country in Africa. Since the country is in Africa, all five indicator functions <m>\mathbb{1}_{\text{Asia}}(x)</m>, <m>\mathbb{1}_{\text{Europe}}(x)</m>, <m>\mathbb{1}_{\text{North America}}(x)</m>, <m>\mathbb{1}_{\text{Oceania}}(x)</m>, and <m>\mathbb{1}_{\text{South America}}(x)</m> will equal 0, and thus:
+      </p>
+
+      <md>
+        <mrow>\widehat{\text{life exp}} \amp= b_0 + b_{\text{Asia}}\cdot 0 + b_{\text{Europe}}\cdot 0 + b_{\text{North America}}\cdot 0 + b_{\text{Oceania}}\cdot 0 + b_{\text{South America}}\cdot 0</mrow>
+        <mrow>\amp= b_0</mrow>
+      </md>
+
+      <p>
+        In other words, all that is left is the intercept <m>b_0</m>, corresponding to the average life expectancy of African countries. Next, say we are considering a country in Asia. In this case, only the indicator function <m>\mathbb{1}_{\text{Asia}}(x)</m> for Asia will equal 1, while all the others will equal 0, and thus:
+      </p>
+
+      <md>
+        <mrow>\widehat{\text{life exp}} \amp= b_0 + b_{\text{Asia}}\cdot 1 + b_{\text{Europe}}\cdot 0 + b_{\text{North America}}\cdot 0 + b_{\text{Oceania}}\cdot 0 + b_{\text{South America}}\cdot 0</mrow>
+        <mrow>\amp= b_0 + b_{\text{Asia}}</mrow>
+      </md>
+
+      <p>
+        which is the mean life expectancy for countries in Asia. Note the <q>offset from the baseline for comparison</q> is <m>+b_{\text{Asia}}</m> years.
+      </p>
+
+      <p>
+        We do one more. Say we are considering a country in South America. In this case, only the indicator function <m>\mathbb{1}_{\text{South America}}(x)</m> for South America will equal 1, while all the others will equal 0, and thus:
+      </p>
+
+      <md>
+        <mrow>\widehat{\text{life exp}} \amp= b_0 + b_{\text{Asia}}\cdot 0 + b_{\text{Europe}}\cdot 0 + b_{\text{North America}}\cdot 0 + b_{\text{Oceania}}\cdot 0 + b_{\text{South America}}\cdot 1</mrow>
+        <mrow>\amp= b_0 + b_{\text{South America}}</mrow>
+      </md>
+
+      <p>
+        which is the mean life expectancy for South American countries. The <q>offset from the baseline for comparison</q> here is <m>+b_{\text{South America}}</m> years.
+      </p>
+
+      <p>
+        We generalize this idea a bit. If we fit a linear regression model using a categorical explanatory variable <m>x</m> that has <m>k</m> possible categories, the regression table will return an intercept and <m>k - 1</m> <q>offsets.</q> In our case, since there are <m>k = 6</m> continents, the regression model returns an intercept corresponding to the baseline for comparison group of Africa and <m>k - 1 = 5</m> offsets corresponding to Asia, Europe, North America, Oceania, and South America.
+      </p>
+
+      <p>
+        Understanding a regression table output when you are using a categorical explanatory variable is a topic those new to regression often struggle with. The only real remedy for these struggles is practice, practice, practice. However, once you equip yourselves with an understanding of how to create regression models using categorical explanatory variables, you'll be able to incorporate many new variables into your models, given the large amount of the world's data that is categorical.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-13">
+          <statement>
+            <p>Fit a linear regression using <c>lm(gdp_per_capita ~ continent, data = gapminder2022)</c> where <c>gdp_per_capita</c> is the new outcome variable. Get information about the <q>best-fitting</q> line from the regression coefficients. How do the regression results match up with the results from your previous exploratory data analysis?</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+m_gdp &lt;- lm(gdp_per_capita ~ continent, data = gapminder2022)
+get_regression_table(m_gdp)
+              </input>
+            </program>
+            <p>The <em>intercept</em> is the baseline continent's mean GDP per capita. Each <em>continent coefficient</em> is an <em>offset from the baseline mean</em>. Signs/magnitudes should mirror your boxplot: positive for richer-than-baseline continents, negative for poorer-than-baseline.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-14">
+          <statement>
+            <p>How many <q>offsets</q> or differences from the baseline will a regression model output for a categorical variable with 4 levels?</p>
+            <ol marker="A">
+              <li><p>1</p></li>
+              <li><p>2</p></li>
+              <li><p>3</p></li>
+              <li><p>4</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>C. (3)</term> With <m>k</m> categories, you get <m>k-1</m> offsets plus 1 intercept for the baseline.</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="model2points">
+      <title>Observed/fitted values and residuals</title>
+
+      <p>
+        Recall in <xref ref="model1points"/>, we defined the following three concepts:
+      </p>
+      <ol>
+        <li><p>Observed values <m>y</m>, or the observed value of the outcome variable<idx><h>regression</h><h>observed values</h></idx></p></li>
+        <li><p>Fitted values <m>\widehat{y}</m>, or the value on the regression line for a given <m>x</m> value</p></li>
+        <li><p>Residuals <m>y - \widehat{y}</m>, or the error between the observed value and the fitted value</p></li>
+      </ol>
+
+      <p>
+        We obtained these values and other values using the <c>get_regression_points()</c> function from the <c>moderndive</c> package. This time, however, we add an argument setting <c>ID = "country"</c>, which uses the variable <c>country</c> in <c>gapminder2022</c> as an <em>identification variable</em> in the output. This will help contextualize our analysis by matching values to countries.
+      </p>
+
+      <program language="r">
+        <input>
+get_regression_points(life_exp_model, ID = "country")
+        </input>
+      </program>
+
+      <p>
+        Observe in the output that <c>life_exp_hat</c> contains the fitted values <m>\widehat{y} = \widehat{\text{life exp}}</m>. If you look closely, there are only 5 possible values for <c>life_exp_hat</c>. These correspond to the five mean life expectancies for the 5 continents.
+      </p>
+
+      <p>
+        The <c>residual</c> column is simply <m>y - \widehat{y}</m> = <c>life_exp - life_exp_hat</c>. These values can be interpreted as the deviation of a country's life expectancy from its continent's average life expectancy. For example, observe the first row corresponding to Afghanistan. The residual refers to Afghanistan's life expectancy being below the mean life expectancy of all Asian countries. This is partly explained by the years of war that country has suffered.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-15">
+          <statement>
+            <p>Which interpretation is correct for a positive coefficient in a regression model with a categorical explanatory variable?</p>
+            <ol marker="A">
+              <li><p>It indicates the baseline group.</p></li>
+              <li><p>It represents the mean value of the baseline group.</p></li>
+              <li><p>The corresponding group has a higher response mean than the baseline's.</p></li>
+              <li><p>The corresponding group has a lower response mean than the baseline's.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>C.</term> A positive coefficient means that group's <em>mean response is higher than the baseline's</em> (by that coefficient amount).</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-16">
+          <statement>
+            <p>Which of the following statements about residuals in regression is true?</p>
+            <ol marker="A">
+              <li><p>Residuals are the differences between the fitted and observed response values.</p></li>
+              <li><p>Residuals are always positive.</p></li>
+              <li><p>Residuals are not important for model evaluation.</p></li>
+              <li><p>Residuals are the predicted values in the model.</p></li>
+            </ol>
+          </statement>
+          <answer>
+            <p><term>A.</term> A residual is <m>y - \hat{y}</m>. It can be <em>positive or negative</em> and is crucial for model fit checks.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-17">
+          <statement>
+            <p>Using either the sorting functionality of RStudio's spreadsheet viewer or using the data wrangling tools you learned in the wrangling chapter, identify the five countries with the five smallest (most negative) residuals? What do these negative residuals say about their life expectancy relative to their continents' life expectancy?</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+life_exp_model &lt;- lm(life_exp ~ continent, data = gapminder2022)
+rp &lt;- get_regression_points(life_exp_model, ID = "country")
+
+rp |&gt;
+  arrange(residual) |&gt;
+  slice(1:5) |&gt;
+  select(country, continent, life_exp, life_exp_hat, residual)
+              </input>
+            </program>
+            <p><em>Negative</em> residuals are <em>below</em> their continent's mean. Their life expectancy is lower than their continent's average by the residual magnitude in years.</p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc5-18">
+          <statement>
+            <p>Repeat this process, but identify the five countries with the five largest (most positive) residuals. What do these positive residuals say about their life expectancy relative to their continents' life expectancy?</p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+rp |&gt;
+  arrange(desc(residual)) |&gt;
+  top_n(n = 5) |&gt;
+  select(country, continent, life_exp, life_exp_hat, residual)
+              </input>
+            </program>
+            <p><em>Positive</em> residuals are <em>above</em> their continent's mean (higher life expectancy than their continent average by residual years).</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="reg-related-topics">
+    <title>Related topics</title>
+
+    <subsection xml:id="correlation-is-not-causation">
+      <title>Correlation is not necessarily causation</title>
+
+      <p>
+        Throughout this chapter we have been cautious when interpreting regression slope coefficients. We always discussed the <q>associated</q> effect of an explanatory variable <m>x</m> on an outcome variable <m>y</m>. For example, our statement from <xref ref="model1table"/> that <q>for every increase of 1 unit in <c>life_exp</c>, there is an <em>associated</em> decrease of on average some number of units of <c>fert_rate</c>.</q> We include the term <q>associated</q> to be extra careful not to suggest we are making a <em>causal</em> statement. So while <c>life_exp</c> is negatively correlated with <c>fert_rate</c>, we can't necessarily make any statements about life expectancy's direct causal effect on fertility rates without more information.
+      </p>
+
+      <p>
+        Here is another example depicted in <xref ref="fig-moderndive-figure-causal-graph-2"/>: a not-so-great medical doctor goes through medical records and finds that patients who slept with their shoes on tended to wake up more with headaches. So this doctor declares, <q>Sleeping with shoes on causes headaches!</q>
+      </p>
+
+      <figure xml:id="fig-moderndive-figure-causal-graph-2">
+        <caption>Does sleeping with shoes on cause headaches?</caption>
+        <image source="images/shoes_headache.png" width="60%">
+          <description>Image illustrating the spurious correlation between sleeping with shoes on and waking up with a headache.</description>
+        </image>
+      </figure>
+
+      <p>
+        However, there is a good chance that if someone is sleeping with their shoes on, it is potentially because they are intoxicated from alcohol. Furthermore, higher levels of drinking leads to more hangovers, and hence more headaches. The amount of alcohol consumption here is what's known as a <term>confounding/lurking variable</term><idx><h>confounding variable</h></idx>. It <q>lurks</q> behind the scenes, confounding the causal relationship (if any) of <q>sleeping with shoes on</q> with <q>waking up with a headache.</q> We can summarize this in <xref ref="fig-moderndive-figure-causal-graph"/> with a <em>causal graph</em> where Y is a <em>response</em> variable and X is a <term>treatment variable</term><idx><h>variables</h><h>treatment</h></idx> whose causal effect we are interested in.
+      </p>
+
+      <figure xml:id="fig-moderndive-figure-causal-graph">
+        <caption>Causal graph.</caption>
+        <image source="images/flowchart.009-cropped.png" width="30%">
+          <description>Causal graph showing X (treatment), Y (response), and Z (confounding variable) with arrows indicating relationships.</description>
+        </image>
+      </figure>
+
+      <p>
+        To study the relationship between Y and X, we could use a regression model where the outcome variable is set to Y and the explanatory variable is set to be X, as you've been doing throughout this chapter. However, <xref ref="fig-moderndive-figure-causal-graph"/> also includes a third variable with arrows pointing at both X and Y:
+      </p>
+      <ul>
+        <li>
+          <p>
+            Z is a <term>confounding variable</term><idx><h>variables</h><h>confounding</h></idx> that affects both X and Y, thereby <q>confounding</q> their relationship. Here the confounding variable is alcohol.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        Alcohol will cause people to be both more likely to sleep with their shoes on as well as be more likely to wake up with a headache. Thus any regression model of the relationship between X and Y should also use Z as an explanatory variable. In other words, our doctor needs to take into account who had been drinking the night before. In the next chapter, we'll start covering multiple regression models that allow us to incorporate more than one variable in our regression models.
+      </p>
+
+      <p>
+        Establishing causation is a tricky problem and frequently takes either carefully designed experiments or methods to control for the effects of confounding variables. Both these approaches attempt, as best they can, either to take all possible confounding variables into account or negate their impact. This allows researchers to focus only on the relationship of interest: the relationship between the outcome variable Y and the treatment variable X.
+      </p>
+
+      <p>
+        As you read news stories, be careful not to fall into the trap of thinking that correlation necessarily implies causation. Check out the <url href="http://www.tylervigen.com/spurious-correlations">Spurious Correlations</url> website for some comical examples of variables that are correlated, but are not causally related.
+      </p>
+
+      <p>
+        Coming back to our UN member states data, a confounding variable could be the level of economic development of a country. This could affect both life expectancy and fertility rates. A proxy for looking at the level of economic development could be the Human Development Index (HDI). It measures a country's average achievements in three basic aspects of human development: health (life expectancy), education (mean and expected years of schooling), and standard of living (gross national income per capita). This is stored in the <c>hdi_2022</c> column of <c>un_member_states_2024</c>. We explore its relationship with life expectancy and fertility rates:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = un_member_states_2024, 
+       aes(x = hdi_2022, y = life_expectancy_2022)) +
+  geom_point() +
+  labs(x = "Human Development Index (HDI)", y = "Life Expectancy")
+        </input>
+      </program>
+
+      <program language="r">
+        <input>
+ggplot(data = un_member_states_2024, 
+       aes(x = hdi_2022, y = fertility_rate_2022)) +
+  geom_point() +
+  labs(x = "Human Development Index (HDI)", y = "Fertility Rate")
+        </input>
+      </program>
+
+      <program language="r">
+        <input>
+un_member_states_2024 |&gt; 
+  get_correlation(life_expectancy_2022 ~ hdi_2022, na.rm = TRUE)
+        </input>
+      </program>
+
+      <program language="r">
+        <input>
+un_member_states_2024 |&gt; 
+  get_correlation(fertility_rate_2022 ~ hdi_2022, na.rm = TRUE)
+        </input>
+      </program>
+
+      <p>
+        Looking at both of the scatterplots above, we see a strong positive linear relationship between the Human Development Index (HDI) and life expectancy, as well as a strong negative correlation between the Human Development Index (HDI) and fertility rates. The correlation coefficients between the Human Development Index (HDI) and life expectancy, as well as the Human Development Index (HDI) and fertility rates, are also given. These findings as well as some additional understanding of socioeconomic factors suggest that the Human Development Index (HDI) is a confounding variable in the relationship between life expectancy and fertility rates.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="leastsquares">
+      <title>Best-fitting line</title>
+
+      <p>
+        Regression lines are also known as <q>best-fitting</q> lines. But what do we mean by <q>best</q>? We unpack the criteria that is used in regression to determine <q>best.</q> Recall <xref ref="fig-numxplot4"/>, where for Bosnia and Herzegovina we marked the <em>observed value</em> <m>y</m> with a circle, the <em>fitted value</em> <m>\widehat{y}</m> with a square, and the <em>residual</em> <m>y - \widehat{y}</m> with an arrow. We re-display <xref ref="fig-numxplot4"/> alongside three more arbitrarily chosen countries (Chad, India, and the Solomon Islands), each with their own residuals marked:
+      </p>
+
+      <figure xml:id="fig-best-fitting-line">
+        <caption>Example of observed value, fitted value, and residual for four countries.</caption>
+        <image source="images/fig-best-fitting-line.png" width="90%">
+          <description>Four scatterplots progressively adding residuals for Bosnia and Herzegovina, Chad, India, and the Solomon Islands.</description>
+        </image>
+      </figure>
+
+      <p>
+        The four plots refer to:
+      </p>
+      <ol>
+        <li><p>The country of Bosnia and Herzegovina with its life expectancy and fertility rate. The residual is marked with an arrow in the top-left plot.</p></li>
+        <li><p>The addition of Chad. The residual is marked with a new arrow in the top-right plot.</p></li>
+        <li><p>The addition of India. The residual is marked with a new arrow in the bottom-left plot.</p></li>
+        <li><p>The addition of the Solomon Islands. The residual is marked with a new arrow in the bottom-right plot.</p></li>
+      </ol>
+
+      <p>
+        Now say we repeated this process of computing residuals for all countries with complete information, then we squared all the residuals, and then we summed them. We call this quantity the <term>sum of squared residuals</term><idx><h>sum of squared residuals</h></idx>; it is a measure of the <em>lack of fit</em> of a model. Larger values of the sum of squared residuals indicate a bigger lack of fit. This corresponds to a worse-fitting model.
+      </p>
+
+      <p>
+        If the regression line fits all the points perfectly, then the sum of squared residuals is 0. This is because if the regression line fits all the points perfectly, then the fitted value <m>\widehat{y}</m> equals the observed value <m>y</m> in all cases, and hence the residual <m>y - \widehat{y} = 0</m> in all cases, and the sum of even a large number of 0's is still 0.
+      </p>
+
+      <p>
+        Furthermore, of all possible lines we can draw through the cloud of points, the regression line minimizes this value. In other words, the regression and its corresponding fitted values <m>\widehat{y}</m> minimizes the sum of the squared residuals:
+      </p>
+
+      <me>
+        \sum_{i=1}^{n}(y_i - \widehat{y}_i)^2
+      </me>
+
+      <p>
+        We use our data-wrangling tools to compute the sum of squared residuals exactly:
+      </p>
+
+      <program language="r">
+        <input>
+# Fit regression model and regression points
+demographics_model &lt;- lm(fert_rate ~ life_exp, data = UN_data_ch5)
+regression_points &lt;- get_regression_points(demographics_model)
+
+# Compute sum of squared residuals
+regression_points |&gt;
+  mutate(squared_residuals = residual^2) |&gt;
+  summarize(sum_of_squared_residuals = sum(squared_residuals))
+        </input>
+      </program>
+
+      <p>
+        Any other straight line drawn in the figure would yield a sum of squared residuals greater than this value. This is a mathematically guaranteed fact that you can prove using calculus and linear algebra. That's why alternative names for the linear regression line are the <em>best-fitting line</em> and the <em>least-squares line</em>.
+      </p>
+
+      <p>
+        Why do we square the residuals (i.e., the arrow lengths)? So that both positive and negative deviations of the same amount are treated equally. (That being said, while taking the absolute value of the residuals would also treat both positive and negative deviations of the same amount equally, squaring the residuals is used for reasons related to calculus: taking derivatives and minimizing functions. To learn more we suggest you consult a textbook on mathematical statistics.)
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc5-19">
+          <statement>
+            <p>
+              Note in <xref ref="fig-three-lines"/> there are 3 points marked with dots and:
+            </p>
+            <ul>
+              <li><p>The <q>best</q> fitting solid regression line in blue</p></li>
+              <li><p>An arbitrarily chosen dotted red line</p></li>
+              <li><p>Another arbitrarily chosen dashed green line</p></li>
+            </ul>
+
+            <figure xml:id="fig-three-lines">
+              <caption>Regression line and two others.</caption>
+              <image source="images/fig-three-lines.png" width="60%">
+                <description>Scatterplot with three points and three lines: the best-fit regression line (blue solid), an arbitrary red dotted line, and a green dashed line.</description>
+              </image>
+            </figure>
+
+            <p>
+              Compute the sum of squared residuals by hand for each line. Show that the regression line in blue has the smallest value of these three lines.
+            </p>
+          </statement>
+          <answer>
+            <p>The regression line in blue:</p>
+            <me>
+              \sum_{i=1}^{n}(y_i - \widehat{y}_i)^2 = (2.0-1.5)^2+(1.0-2.0)^2+(3.0-2.5)^2 = 1.5
+            </me>
+            <p>The arbitrarily chosen dotted red line (horizontal at <m>y = 2.5</m>):</p>
+            <me>
+              \sum_{i=1}^{n}(y_i - \widehat{y}_i)^2 = (2.0-2.5)^2+(1.0-2.5)^2+(3.0-2.5)^2 = 2.75
+            </me>
+            <p>The arbitrarily chosen dashed green line (<m>y = 2 - x</m>):</p>
+            <me>
+              \sum_{i=1}^{n}(y_i - \widehat{y}_i)^2 = (2.0-2.0)^2+(1.0-1.5)^2+(3.0-1.0)^2 = 4.25
+            </me>
+            <p>As calculated, <m>1.5 \lt 2.75 \lt 4.25</m>. Therefore, we show that the regression line in blue has the smallest value of the residual sum of squares.</p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="underthehood">
+      <title>get_regression_x() functions</title>
+
+      <p>
+        Recall in this chapter we introduced a wrapper function from the <c>moderndive</c> package:
+      </p>
+      <ul>
+        <li><p><c>get_regression_points()</c> that returns point-by-point information from a regression model in <xref ref="model1points"/>.</p></li>
+      </ul>
+
+      <p>
+        What is going on behind the scenes with the <c>get_regression_points()</c> function? We mentioned in <xref ref="model1table"/> that this was an example of a <em>wrapper function</em>. Such functions take other pre-existing functions and <q>wrap</q> them into single functions that hide the user from their inner workings. This way all the user needs to worry about is what the inputs look like and what the outputs look like. In this subsection, we'll <q>get under the hood</q> of these functions and see how the <q>engine</q> of these wrapper functions works.
+      </p>
+
+      <p>
+        The <c>get_regression_points()</c> function is a wrapper function, returning information about the individual points involved in a regression model like the fitted values, observed values, and the residuals. <c>get_regression_points()</c><idx><h>R packages</h><h>moderndive</h><h>get_regression_points()</h></idx> uses the <c>augment()</c><idx><h>R packages</h><h>broom</h><h>augment()</h></idx> function in the <url href="https://broom.tidyverse.org/"><c>broom</c> package</url> to produce its data. Additionally, it uses <c>clean_names()</c><idx><h>R packages</h><h>janitor</h><h>clean_names()</h></idx> from the <url href="https://github.com/sfirke/janitor"><c>janitor</c> package</url> to clean up the variable names.
+      </p>
+
+      <program language="r">
+        <input>
+library(broom)
+library(janitor)
+demographics_model |&gt;
+  augment() |&gt;
+  mutate_if(is.numeric, round, digits = 3) |&gt;
+  clean_names() |&gt;
+  select(-c("std_resid", "hat", "sigma", "cooksd", "std_resid"))
+        </input>
+      </program>
+
+      <p>
+        In this case, it outputs only the variables of interest to students learning regression: the outcome variable <m>y</m> (<c>fert_rate</c>), all explanatory/predictor variables (<c>life_exp</c>), all resulting <c>fitted</c> values <m>\hat{y}</m> used by applying the equation of the regression line to <c>life_exp</c>, and the <c>resid</c>ual <m>y - \hat{y}</m>.
+      </p>
+
+      <p>
+        If you are even more curious about how these and other wrapper functions work, take a look at the source code for these functions on <url href="https://github.com/moderndive/moderndive/blob/master/R/regression_functions.R">GitHub</url>.
+      </p>
+    </subsection>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="reg-conclusion">
+    <title>Conclusion</title>
+
+    <subsection xml:id="additional-resources-basic-regression">
+      <title>Additional resources</title>
+
+      <p>
+        As we suggested in <xref ref="model1EDA"/>, interpreting coefficients that are not close to the extreme values of -1, 0, and 1 can be somewhat subjective. To help develop your sense of correlation coefficients, we suggest you play the 80s-style video game called, <q>Guess the Correlation,</q> at <url href="http://guessthecorrelation.com/">http://guessthecorrelation.com/</url> previewed in <xref ref="fig-guess-the-correlation"/>.
+      </p>
+
+      <figure xml:id="fig-guess-the-correlation">
+        <caption>Preview of <q>Guess the Correlation</q> game.</caption>
+        <image source="images/guess_the_correlation.png" width="70%">
+          <description>Screenshot preview of the Guess the Correlation game showing a scatterplot.</description>
+        </image>
+      </figure>
+    </subsection>
+
+    <subsection xml:id="reg-whats-to-come">
+      <title>What's to come?</title>
+
+      <p>
+        In this chapter, you've studied the term <em>simple linear regression</em>, where you fit models that only have one explanatory variable. In <xref ref="multiple-regression"/>, we'll study <em>multiple regression</em>, where our regression models can now have more than one explanatory variable moving a little bit more advanced than the basic form of simple linear regression! In particular, we'll consider two scenarios: regression models with one numerical and one categorical explanatory variable and regression models with two numerical explanatory variables. This will allow you to construct more sophisticated and more powerful models, all in the hopes of better explaining your outcome variable <m>y</m>.
+      </p>
+    </subsection>
+
+  </section>
+
+</chapter>
