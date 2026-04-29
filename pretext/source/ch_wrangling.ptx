@@ -1105,4 +1105,810 @@ flights &lt;- flights |&gt;
     </exercise>
   </section>
 
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-arrange">
+    <title><c>arrange</c> and sort rows</title>
+
+    <p>
+      One of the most commonly performed data-wrangling tasks is to sort a data
+      frame's rows in the alphanumeric order of one of the variables. The
+      <idx><h>R packages</h><h>dplyr</h><h>arrange()</h></idx>
+      <c>arrange()</c> function allows us to sort/reorder a data frame's rows
+      according to the values of the specified variable.
+    </p>
+    <p>
+      Suppose we are interested in determining the most frequent destination airports
+      for all domestic flights departing from New York City in 2023:
+    </p>
+
+    <program language="r">
+      <input>
+freq_dest &lt;- flights |&gt;
+  group_by(dest) |&gt;
+  summarize(num_flights = n())
+freq_dest
+      </input>
+    </program>
+
+    <p>
+      Observe that by default the rows of the resulting <c>freq_dest</c> data frame
+      are sorted in alphabetical order of <c>dest</c>ination. Say instead we would
+      like to see the same data, but sorted from the most to the least number of
+      flights (<c>num_flights</c>) instead:
+    </p>
+
+    <program language="r">
+      <input>
+freq_dest |&gt;
+  arrange(num_flights)
+      </input>
+    </program>
+
+    <p>
+      This is, however, the opposite of what we want. The rows are sorted with the
+      least frequent destination airports displayed first. This is because
+      <c>arrange()</c> always returns rows sorted in ascending order by default. To
+      switch the ordering to be in <q>descending</q> order instead, we use the
+      <idx><h>R packages</h><h>dplyr</h><h>desc()</h></idx>
+      <c>desc()</c> function as so:
+    </p>
+
+    <program language="r">
+      <input>
+freq_dest |&gt;
+  arrange(desc(num_flights))
+      </input>
+    </program>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-joins">
+    <title><c>join</c> data frames</title>
+
+    <p>
+      Another common data transformation task is <q>joining</q> or <q>merging</q>
+      two different datasets. For example, in the <c>flights</c> data frame, the
+      variable <c>carrier</c> lists the carrier code for the different flights. While
+      the corresponding airline names for <c>"UA"</c> and <c>"AA"</c> might be
+      somewhat easy to guess (United and American Airlines), what airlines have codes
+      <c>"VX"</c>, <c>"HA"</c>, and <c>"B6"</c>? This information is provided in a
+      separate data frame <c>airlines</c>.
+    </p>
+
+    <program language="r">
+      <input>
+View(airlines)
+      </input>
+    </program>
+
+    <p>
+      We see that in <c>airlines</c>, <c>carrier</c> is the carrier code, while
+      <c>name</c> is the full name of the airline company. Using this table, we can
+      see that <c>"G4"</c>, <c>"HA"</c>, and <c>"B6"</c> correspond to Allegiant Air,
+      Hawaiian Airlines, and JetBlue, respectively. However, wouldn't it be nice to
+      have all this information in a single data frame instead of two separate data
+      frames? We can do this by <q>joining</q> the <c>flights</c> and <c>airlines</c>
+      data frames.
+    </p>
+    <p>
+      The values in the variable <c>carrier</c> in the <c>flights</c> data frame
+      match the values in the variable <c>carrier</c> in the <c>airlines</c> data
+      frame. In this case, we can use the variable <c>carrier</c> as a
+      <idx><h>joining data</h><h>key variable</h></idx> <em>key variable</em> to
+      match the rows of the two data frames. Key variables are almost always
+      <em>identification variables</em> that uniquely identify the observational
+      units. This ensures that rows in both data frames are appropriately matched
+      during the join. Hadley and Garrett created the diagram in
+      <xref ref="fig-reldiagram"/> to show how the different data frames in the
+      <c>nycflights23</c> package are linked by various key variables:
+    </p>
+
+    <figure xml:id="fig-reldiagram">
+      <caption>Data relationships in nycflights from <em>R for Data Science</em>.</caption>
+      <image source="images/r4ds/relational-nycflights.png" width="65%">
+        <description>Entity-relationship diagram showing the connections between the
+        flights, airlines, airports, planes, and weather data frames in the
+        nycflights23 package, linked by shared key variables such as carrier, faa,
+        tailnum, and combinations of year, month, day, hour, and origin.</description>
+      </image>
+    </figure>
+
+
+    <subsection xml:id="sec-join-same-key">
+      <title>Matching key variable names</title>
+
+      <p>
+        In both the <c>flights</c> and <c>airlines</c> data frames, the key variable
+        we want to join/merge/match the rows by has the same name: <c>carrier</c>.
+        Let's use the
+        <idx><h>R packages</h><h>dplyr</h><h>inner_join()</h></idx>
+        <c>inner_join()</c> function to join the two data frames, where the rows will
+        be matched by the variable <c>carrier</c>, and then compare the resulting
+        data frames:
+      </p>
+
+      <program language="r">
+        <input>
+flights_joined &lt;- flights |&gt;
+  inner_join(airlines, by = "carrier")
+View(flights)
+View(flights_joined)
+        </input>
+      </program>
+
+      <p>
+        Observe that the <c>flights</c> and <c>flights_joined</c> data frames are
+        identical except that <c>flights_joined</c> has an additional variable
+        <c>name</c>. The values of <c>name</c> correspond to the airline companies'
+        names as indicated in the <c>airlines</c> data frame.
+      </p>
+      <p>
+        A visual representation of the <c>inner_join()</c> is shown in
+        <xref ref="fig-ijdiagram"/>. There are other types of joins available (such
+        as <c>left_join()</c>, <c>right_join()</c>, <c>outer_join()</c>, and
+        <c>anti_join()</c>), but the <c>inner_join()</c> will solve nearly all of the
+        problems you'll encounter in this book.
+      </p>
+
+      <figure xml:id="fig-ijdiagram">
+        <caption>Diagram of inner join from <em>R for Data Science</em>.</caption>
+        <image source="images/r4ds/join-inner.png" width="80%">
+          <description>Diagram of an inner join between two tables x and y, showing
+          that only rows whose key variable values appear in both tables are retained
+          in the result, with all columns from both tables present.</description>
+        </image>
+      </figure>
+    </subsection>
+
+
+    <subsection xml:id="sec-diff-key">
+      <title>Different key variable names</title>
+
+      <p>
+        Say instead you are interested in the destinations of all domestic flights
+        departing NYC in 2023, and you ask yourself questions like: <q>What cities
+        are these airports in?</q>, or <q>Is <c>"ORD"</c> Orlando?</q>, or <q>Where
+        is <c>"FLL"</c>?</q>.
+      </p>
+      <p>
+        The <c>airports</c> data frame contains the airport codes for each airport:
+      </p>
+
+      <program language="r">
+        <input>
+View(airports)
+        </input>
+      </program>
+
+      <p>
+        However, if you look at both the <c>airports</c> and <c>flights</c> data
+        frames, you'll find that the airport codes are in variables that have
+        different names. In <c>airports</c>, the airport code is in <c>faa</c>,
+        whereas in <c>flights</c> the airport codes are in <c>origin</c> and
+        <c>dest</c>. This fact is further highlighted in the visual representation of
+        the relationships between these data frames in <xref ref="fig-reldiagram"/>.
+      </p>
+      <p>
+        In order to join these two data frames by airport code, our
+        <c>inner_join()</c> operation will use the
+        <c>by = c("dest" = "faa")</c> argument with modified code syntax allowing us
+        to join two data frames where the key variable has a different name:
+      </p>
+
+      <program language="r">
+        <input>
+flights_with_airport_names &lt;- flights |&gt;
+  inner_join(airports, by = c("dest" = "faa"))
+View(flights_with_airport_names)
+        </input>
+      </program>
+
+      <p>
+        Let's construct the chain of pipe operators <c>|&gt;</c> that computes the
+        number of flights from NYC to each destination, but also includes information
+        about each destination airport:
+      </p>
+
+      <program language="r">
+        <input>
+named_dests &lt;- flights |&gt;
+  group_by(dest) |&gt;
+  summarize(num_flights = n()) |&gt;
+  arrange(desc(num_flights)) |&gt;
+  inner_join(airports, by = c("dest" = "faa")) |&gt;
+  rename(airport_name = name)
+named_dests
+        </input>
+      </program>
+
+      <p>
+        In case you didn't know, <c>"ORD"</c> is the airport code of Chicago O'Hare
+        airport and <c>"FLL"</c> is the main airport in Fort Lauderdale, Florida,
+        which can be seen in the <c>airport_name</c> variable.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-join-multiple-keys">
+      <title>Multiple key variables</title>
+
+      <p>
+        Say instead we want to join two data frames by <em>multiple key
+        variables</em>. For example, in <xref ref="fig-reldiagram"/>, we see that in
+        order to join the <c>flights</c> and <c>weather</c> data frames, we need more
+        than one key variable: <c>year</c>, <c>month</c>, <c>day</c>, <c>hour</c>,
+        and <c>origin</c>. This is because the combination of these 5 variables act
+        to uniquely identify each observational unit in the <c>weather</c> data
+        frame: hourly weather recordings at each of the 3 NYC airports.
+      </p>
+      <p>
+        We achieve this by specifying a <em>vector</em>
+        <idx><h>vectors</h></idx> of key variables to join by using the <c>c()</c>
+        function. Recall from <xref ref="sec-programming-concepts"/> that <c>c()</c>
+        is short for <q>combine</q> or <q>concatenate.</q>
+      </p>
+
+      <program language="r">
+        <input>
+flights_weather_joined &lt;- flights |&gt;
+  inner_join(weather, by = c("year", "month", "day", "hour", "origin"))
+View(flights_weather_joined)
+        </input>
+      </program>
+
+      <exercise xml:id="lc3-13">
+        <title>Learning Check 3.13</title>
+        <statement>
+          <p>
+            Looking at <xref ref="fig-reldiagram"/>, when joining <c>flights</c> and
+            <c>weather</c> (or, in other words, matching the hourly weather values
+            with each flight), why do we need to join by all of <c>year</c>,
+            <c>month</c>, <c>day</c>, <c>hour</c>, and <c>origin</c>, and not just
+            <c>hour</c>?
+          </p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc3-14">
+        <title>Learning Check 3.14</title>
+        <statement>
+          <p>
+            What surprises you about the top 10 destinations from NYC in 2023?
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-normal-forms">
+      <title>Normal forms</title>
+
+      <p>
+        The data frames included in the <c>nycflights23</c> package are in a form
+        that minimizes redundancy of data. For example, the <c>flights</c> data frame
+        only saves the <c>carrier</c> code of the airline company; it does not include
+        the actual name of the airline. For example, you'll see that the first row of
+        <c>flights</c> has <c>carrier</c> equal to <c>UA</c>, but it does not include
+        the airline name <q>United Air Lines Inc.</q>
+      </p>
+      <p>
+        The names of the airline companies are included in the <c>name</c> variable
+        of the <c>airlines</c> data frame. In order to have the airline company name
+        included in <c>flights</c>, we could join these two data frames as follows:
+      </p>
+
+      <program language="r">
+        <input>
+joined_flights &lt;- flights |&gt;
+  inner_join(airlines, by = "carrier")
+View(joined_flights)
+        </input>
+      </program>
+
+      <p>
+        We are capable of performing this join because each of the data frames has
+        <em>keys</em> in common to relate one to another: the <c>carrier</c> variable
+        in both the <c>flights</c> and <c>airlines</c> data frames. The <em>key</em>
+        variable(s) that we base our joins on are often <em>identification
+        variables</em> as we mentioned previously.
+      </p>
+      <p>
+        This is an important property of what's known as
+        <idx><h>normal forms</h></idx> <em>normal forms</em> of data. The process of
+        decomposing data frames into less redundant tables without losing information
+        is called <em>normalization</em>. More information is available on
+        <url href="https://en.wikipedia.org/wiki/Database_normalization">Wikipedia</url>.
+      </p>
+      <p>
+        Both <c>dplyr</c> and <url href="https://en.wikipedia.org/wiki/SQL">SQL</url>
+        we mentioned in the introduction of this chapter use such <em>normal
+        forms</em>. Given that they share such commonalities, once you learn either
+        of these two tools, you can learn the other very easily.
+      </p>
+
+      <exercise xml:id="lc3-15">
+        <title>Learning Check 3.15</title>
+        <statement>
+          <p>
+            What are some advantages of data in normal forms? What are some
+            disadvantages?
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-other-verbs">
+    <title>Other verbs</title>
+
+    <p>
+      Here are some other useful data-wrangling verbs:
+    </p>
+    <p>
+      <ul>
+        <li><p><c>select()</c> only a subset of variables/columns.</p></li>
+        <li><p><c>relocate()</c> variables/columns to a new position.</p></li>
+        <li><p><c>rename()</c> variables/columns to have new names.</p></li>
+        <li><p>Return only the <c>top_n()</c> values of a variable.</p></li>
+      </ul>
+    </p>
+
+
+    <subsection xml:id="sec-select">
+      <title><c>select</c> variables</title>
+
+      <figure xml:id="fig-selectfig">
+        <caption>Diagram of <c>select()</c> columns.</caption>
+        <image source="images/cheatsheets/select.png" width="70%">
+          <description>Diagram showing how the select() function keeps only the
+          specified columns from a data frame, returning a new data frame with only
+          those variables.</description>
+        </image>
+      </figure>
+
+      <p>
+        The <c>flights</c> data frame in the <c>nycflights23</c> package contains
+        many different variables. You can identify the names of these variables by
+        running the <c>glimpse()</c> function from the <c>dplyr</c> package:
+      </p>
+
+      <program language="r">
+        <input>
+glimpse(flights)
+        </input>
+      </program>
+
+      <p>
+        However, say you only need two of these variables, say <c>carrier</c> and
+        <c>flight</c>. You can
+        <idx><h>R packages</h><h>dplyr</h><h>select()</h></idx>
+        <c>select()</c> these two variables:
+      </p>
+
+      <program language="r">
+        <input>
+flights |&gt;
+  select(carrier, flight)
+        </input>
+      </program>
+
+      <p>
+        This function makes it easier to explore large datasets since it allows us to
+        limit the scope to only those variables we care most about. For example, if
+        we <c>select()</c> only a smaller number of variables as shown in
+        <xref ref="fig-selectfig"/>, it will make viewing the dataset in RStudio's
+        spreadsheet viewer more digestible.
+      </p>
+      <p>
+        Let's say instead you want to drop, or de-select, certain variables. For
+        example, consider the variable <c>year</c> in the <c>flights</c> data frame.
+        This variable isn't quite a <q>variable</q> because it is always <c>2023</c>
+        and hence doesn't change. Say you want to remove this variable from the data
+        frame. We can deselect <c>year</c> by using the <c>-</c> sign:
+      </p>
+
+      <program language="r">
+        <input>
+flights_no_year &lt;- flights |&gt; select(-year)
+        </input>
+      </program>
+
+      <p>
+        Another way of selecting columns/variables is by specifying a range of
+        columns:
+      </p>
+
+      <program language="r">
+        <input>
+flight_arr_times &lt;- flights |&gt; select(month:day, arr_time:sched_arr_time)
+flight_arr_times
+        </input>
+      </program>
+
+      <p>
+        This will <c>select()</c> all columns between <c>month</c> and <c>day</c>,
+        as well as between <c>arr_time</c> and <c>sched_arr_time</c>, and drop the
+        rest.
+      </p>
+      <p>
+        The helper functions <c>starts_with()</c>, <c>ends_with()</c>, and
+        <c>contains()</c> can be used to select variables/columns that match those
+        conditions. As examples:
+      </p>
+
+      <program language="r">
+        <input>
+flights |&gt; select(starts_with("a"))
+flights |&gt; select(ends_with("delay"))
+flights |&gt; select(contains("time"))
+        </input>
+      </program>
+
+      <p>
+        Lastly, the <c>select()</c> function can also be used to reorder columns when
+        used with the <c>everything()</c> helper function. For example, suppose we
+        want the <c>hour</c>, <c>minute</c>, and <c>time_hour</c> variables to appear
+        immediately after the <c>year</c>, <c>month</c>, and <c>day</c> variables,
+        while not discarding the rest of the variables. In the following code,
+        <c>everything()</c> will pick up all remaining variables:
+      </p>
+
+      <program language="r">
+        <input>
+flights_reorder &lt;- flights |&gt;
+  select(year, month, day, hour, minute, time_hour, everything())
+glimpse(flights_reorder)
+        </input>
+      </program>
+    </subsection>
+
+
+    <subsection xml:id="sec-relocate">
+      <title><c>relocate</c> variables</title>
+
+      <p>
+        Another (usually shorter) way to reorder variables is by using the
+        <idx><h>R packages</h><h>dplyr</h><h>relocate()</h></idx>
+        <c>relocate()</c> function. This function allows you to move variables to a
+        new position in the data frame. For example, if we want to move the
+        <c>hour</c>, <c>minute</c>, and <c>time_hour</c> variables to appear
+        immediately after the <c>year</c>, <c>month</c>, and <c>day</c> variables, we
+        can use the following code:
+      </p>
+
+      <program language="r">
+        <input>
+flights_relocate &lt;- flights |&gt;
+  relocate(hour, minute, time_hour, .after = day)
+glimpse(flights_relocate)
+        </input>
+      </program>
+    </subsection>
+
+
+    <subsection xml:id="sec-rename">
+      <title><c>rename</c> variables</title>
+
+      <p>
+        One more useful function is
+        <idx><h>R packages</h><h>dplyr</h><h>rename()</h></idx>
+        <c>rename()</c>, which as you may have guessed changes the name of variables.
+        Suppose we want to only focus on <c>dep_time</c> and <c>arr_time</c> and
+        change <c>dep_time</c> and <c>arr_time</c> to be <c>departure_time</c> and
+        <c>arrival_time</c> instead in the <c>flights_time_new</c> data frame:
+      </p>
+
+      <program language="r">
+        <input>
+flights_time_new &lt;- flights |&gt;
+  select(dep_time, arr_time) |&gt;
+  rename(departure_time = dep_time, arrival_time = arr_time)
+glimpse(flights_time_new)
+        </input>
+      </program>
+
+      <p>
+        Note that in this case we used a single <c>=</c> sign within the
+        <c>rename()</c>. For example, <c>departure_time = dep_time</c> renames the
+        <c>dep_time</c> variable to have the new name <c>departure_time</c>. This is
+        because we are not testing for equality like we would using <c>==</c>.
+        Instead we want to assign a new variable <c>departure_time</c> to have the
+        same values as <c>dep_time</c> and then delete the variable <c>dep_time</c>.
+        Note that new <c>dplyr</c> users often forget that the new variable name
+        comes before the equal sign.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-top-n">
+      <title><c>top_n</c> values of a variable</title>
+
+      <p>
+        We can also return the top <m>n</m> values of a variable using the
+        <idx><h>R packages</h><h>dplyr</h><h>top_n()</h></idx>
+        <c>top_n()</c> function. For example, we can return a data frame of the top
+        10 destination airports using the example from
+        <xref ref="sec-diff-key"/>. Observe that we set the number of values to
+        return to <c>n = 10</c> and <c>wt = num_flights</c> to indicate that we want
+        the rows corresponding to the top 10 values of <c>num_flights</c>. See the
+        help file for <c>top_n()</c> by running <c>?top_n</c> for more information.
+      </p>
+
+      <program language="r">
+        <input>
+named_dests |&gt; top_n(n = 10, wt = num_flights)
+        </input>
+      </program>
+
+      <p>
+        Let's further <c>arrange()</c> these results in descending order of
+        <c>num_flights</c>:
+      </p>
+
+      <program language="r">
+        <input>
+named_dests |&gt;
+  top_n(n = 10, wt = num_flights) |&gt;
+  arrange(desc(num_flights))
+        </input>
+      </program>
+
+      <exercise xml:id="lc3-16">
+        <title>Learning Check 3.16</title>
+        <statement>
+          <p>
+            What are some ways to select all three of the <c>dest</c>,
+            <c>air_time</c>, and <c>distance</c> variables from <c>flights</c>? Give
+            the code showing how to do this in at least three different ways.
+          </p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc3-17">
+        <title>Learning Check 3.17</title>
+        <statement>
+          <p>
+            How could one use <c>starts_with()</c>, <c>ends_with()</c>, and
+            <c>contains()</c> to select columns from the <c>flights</c> data frame?
+            Provide three different examples in total: one for <c>starts_with()</c>,
+            one for <c>ends_with()</c>, and one for <c>contains()</c>.
+          </p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc3-18">
+        <title>Learning Check 3.18</title>
+        <statement>
+          <p>
+            Why might we want to use the <c>select()</c> function on a data frame?
+          </p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc3-19">
+        <title>Learning Check 3.19</title>
+        <statement>
+          <p>
+            Create a new data frame that shows the top 5 airports with the largest
+            arrival delays from NYC in 2023.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-wrangling-conclusion">
+    <title>Conclusion</title>
+
+    <subsection xml:id="sec-wrangle-summary-table">
+      <title>Summary table</title>
+
+      <p>
+        Let's recap our data-wrangling verbs in
+        <xref ref="tab-wrangle-summary"/>. Using these verbs and the pipe
+        <c>|&gt;</c> operator from <xref ref="sec-piping"/>, you'll be able to write
+        easily legible code to perform almost all the data wrangling and data
+        transformation necessary for the rest of this book.
+      </p>
+
+      <table xml:id="tab-wrangle-summary">
+        <title>Summary of data-wrangling verbs</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>Verb</cell>
+            <cell>Data wrangling operation</cell>
+          </row>
+          <row>
+            <cell><c>filter()</c></cell>
+            <cell>Pick out a subset of rows</cell>
+          </row>
+          <row>
+            <cell><c>summarize()</c></cell>
+            <cell>Summarize many values to one using a summary statistic function
+            like <c>mean()</c>, <c>median()</c>, etc.</cell>
+          </row>
+          <row>
+            <cell><c>group_by()</c></cell>
+            <cell>Add grouping structure to rows in data frame. Note this does not
+            change values in the data frame; the data frame is still the same, but
+            the structure of how rows are grouped is changed.</cell>
+          </row>
+          <row>
+            <cell><c>mutate()</c></cell>
+            <cell>Create new variables/columns or overwrite existing ones</cell>
+          </row>
+          <row>
+            <cell><c>arrange()</c></cell>
+            <cell>Sort rows based on one or more variables</cell>
+          </row>
+          <row>
+            <cell><c>inner_join()</c></cell>
+            <cell>Join/merge two data frames, keeping only rows that appear in
+            both</cell>
+          </row>
+          <row>
+            <cell><c>select()</c></cell>
+            <cell>Pick out only certain columns/variables</cell>
+          </row>
+          <row>
+            <cell><c>relocate()</c></cell>
+            <cell>Move variables/columns to a different position in the data
+            frame</cell>
+          </row>
+          <row>
+            <cell><c>rename()</c></cell>
+            <cell>Rename variables/columns</cell>
+          </row>
+          <row>
+            <cell><c>top_n()</c></cell>
+            <cell>Filter rows to only return the top <m>n</m> in number or
+            proportion</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <exercise xml:id="lc3-20">
+        <title>Learning Check 3.20</title>
+        <statement>
+          <p>
+            Let's now put your newly acquired data-wrangling skills to the test!
+          </p>
+          <p>
+            An airline industry measure of a passenger airline's capacity is the
+            <url href="https://en.wikipedia.org/wiki/Available_seat_miles">available
+            seat miles</url>, which is equal to the number of seats available
+            multiplied by the number of miles or kilometers flown summed over all
+            flights.
+          </p>
+          <p>
+            For example, consider a scenario where an airplane has 4 seats and it
+            travels 200 miles; the available seat miles are
+            <m>4 \times 200 = 800</m>.
+          </p>
+
+          <figure xml:id="fig-available-seat-miles">
+            <caption>Example of available seat miles for one flight.</caption>
+            <image source="images/flowcharts/flowchart/flowchart.012.png" width="60%">
+              <description>Diagram illustrating the available-seat-miles concept:
+              an airplane with 4 seats flying 200 miles yields 800 available seat
+              miles.</description>
+            </image>
+          </figure>
+
+          <p>
+            Extending this idea, let's say an airline had 2 flights using a plane
+            with 10 seats that flew 500 miles and 3 flights using a plane with 20
+            seats that flew 1000 miles, the available seat miles would be
+            <m>2 \times 10 \times 500 + 3 \times 20 \times 1000 = 70{,}000</m> seat
+            miles.
+          </p>
+          <p>
+            Using the datasets included in the <c>nycflights23</c> package, compute
+            the available seat miles for each airline sorted in descending order.
+            After completing all the necessary data-wrangling steps, the resulting
+            data frame should have one row for each airline and 2 columns (airline
+            name and available seat miles). Here are some hints:
+          </p>
+          <p>
+            <ol>
+              <li><p><alert>Crucial:</alert> Unless you are very confident in what
+              you are doing, it is worthwhile not starting to code right away.
+              Rather, first sketch out on paper all the necessary data wrangling
+              steps not using exact code, but rather high-level <em>pseudocode</em>
+              that is informal yet detailed enough to articulate what you are doing.
+              This way you won't confuse <em>what</em> you are trying to do (the
+              algorithm) with <em>how</em> you are going to do it (writing
+              <c>dplyr</c> code).</p></li>
+              <li><p>Take a close look at all the datasets using the <c>View()</c>
+              function: <c>flights</c>, <c>weather</c>, <c>planes</c>,
+              <c>airports</c>, and <c>airlines</c> to identify which variables are
+              necessary to compute available seat miles.</p></li>
+              <li><p><xref ref="fig-reldiagram"/> showing how the various datasets
+              can be joined will also be useful.</p></li>
+              <li><p>Consider the data-wrangling verbs in
+              <xref ref="tab-wrangle-summary"/> as your toolbox!</p></li>
+            </ol>
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-wrangling-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        If you want to further unlock the power of the <c>dplyr</c> package for
+        data wrangling, we suggest that you check out RStudio's <q>Data
+        Transformation with dplyr</q> cheatsheet. This cheatsheet summarizes much
+        more than what we've discussed in this chapter, in particular more
+        intermediate level and advanced data-wrangling functions, while providing
+        quick and easy-to-read visual descriptions. In fact, many of the diagrams
+        illustrating data wrangling operations in this chapter, such as
+        <xref ref="fig-filter-diagram"/> on <c>filter()</c>, originate from this
+        cheatsheet.
+      </p>
+      <p>
+        In the current version of RStudio in 2025, you can access this cheatsheet
+        by going to the RStudio Menu Bar &#x2192; Help &#x2192; Cheatsheets &#x2192;
+        <q>Data Transformation with dplyr.</q> You can see a preview of the first
+        page below.
+      </p>
+
+      <figure xml:id="fig-dplyr-cheatsheet">
+        <caption>Data Transformation with dplyr cheatsheet (first page).</caption>
+        <image source="images/cheatsheets/dplyr_cheatsheet-1.png" width="100%">
+          <description>First page of the Data Transformation with dplyr cheatsheet,
+          showing a visual summary of dplyr verbs for data manipulation including
+          filter, select, mutate, summarize, arrange, and join operations.</description>
+        </image>
+      </figure>
+
+      <p>
+        On top of the data-wrangling verbs and examples we presented in this chapter,
+        if you'd like to see more examples of using the <c>dplyr</c> package for data
+        wrangling, check out
+        <url href="http://r4ds.had.co.nz/transform.html">Chapter 5</url> of
+        <em>R for Data Science</em>.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-wrangling-whats-to-come">
+      <title>What's to come?</title>
+
+      <p>
+        So far in this book, we've explored, visualized, and wrangled data saved in
+        data frames. These data frames were saved in a spreadsheet-like format: in a
+        rectangular shape with a certain number of rows corresponding to observations
+        and a certain number of columns corresponding to variables describing these
+        observations.
+      </p>
+      <p>
+        We'll see in the upcoming <xref ref="ch-tidy"/> that there are actually two
+        ways to represent data in spreadsheet-type rectangular format: (1) <q>wide</q>
+        format and (2) <q>tall/narrow</q> format. The tall/narrow format is also known
+        as <em>tidy</em> format in R user circles. While the distinction between
+        <q>tidy</q> and non-<q>tidy</q> formatted data is subtle, it has immense
+        implications for our data science work. This is because almost all the
+        packages used in this book, including the <c>ggplot2</c> package for data
+        visualization and the <c>dplyr</c> package for data wrangling, all assume
+        that all data frames are in <q>tidy</q> format.
+      </p>
+      <p>
+        Furthermore, up until now we've only explored, visualized, and wrangled data
+        saved within R packages. But what if you want to analyze data that you have
+        saved in a Microsoft Excel, a Google Sheets, or a
+        <q>Comma-Separated Values</q> (CSV) file? In <xref ref="sec-csv"/>, we'll
+        show you how to import this data into R using the <c>readr</c> package.
+      </p>
+    </subsection>
+  </section>
+
 </chapter>
