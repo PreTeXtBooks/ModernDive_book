@@ -26,6 +26,9 @@
     <!-- Introduction chapter -->
     <xi:include href="./ch_intro.ptx" />
 
+    <!-- Chapter 4: Data Importing and Tidy Data -->
+    <xi:include href="./ch_tidy.ptx" />
+
     <!-- Chapter 5: Simple Linear Regression -->
     <xi:include href="./ch_regression.ptx" />
 
