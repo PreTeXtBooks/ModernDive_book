@@ -26,6 +26,9 @@
     <!-- Introduction chapter -->
     <xi:include href="./ch_intro.ptx" />
 
+    <!-- Chapter 5: Simple Linear Regression -->
+    <xi:include href="./ch_regression.ptx" />
+
     <!-- Additional chapters will be added here as the book develops -->
 
     <!-- This chapter contains a wide variety of elements to  -->
