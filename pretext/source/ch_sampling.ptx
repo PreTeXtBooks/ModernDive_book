@@ -547,7 +547,7 @@ ggplot(virtual_prop_red_50, aes(x = prop_red)) +
 
 
 # Segment 3: sample size = 100 ------------------------------
-# 2.a) Compute sample proportions for 1000 samples, each sample of size 100
+# 3.a) Compute sample proportions for 1000 samples, each sample of size 100
 virtual_prop_red_100 &lt;- bowl |&gt;
   rep_slice_sample(n = 100, reps = 1000) |&gt;
   summarize(prop_red = mean(color == "red"))
@@ -1108,9 +1108,9 @@ sqrt(p * (1 - p) / 100)
         <program language="r">
           <input>
 virtual_prop_red_25 |&gt;
-  summarize(SE_Xbar_50 = sd(prop_red))
+  summarize(SE_Xbar_25 = sd(prop_red))
 virtual_prop_red_50 |&gt;
-  summarize(SE_Xbar_100 = sd(prop_red))
+  summarize(SE_Xbar_50 = sd(prop_red))
           </input>
         </program>
 
