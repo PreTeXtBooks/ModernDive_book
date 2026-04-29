@@ -26,7 +26,8 @@
     <!-- Chapter 1: Getting Started with Data in R -->
     <xi:include href="./ch_getting_started.ptx" />
 
-    <!-- Additional chapters will be added here as the book develops -->
+    <!-- Chapter 2: Data Visualization -->
+    <xi:include href="./ch_visualization.ptx" />
 
     <!-- This chapter contains a wide variety of elements to  -->
     <!-- illustrate what pretext can do, plus links to more help.  -->
