@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix xml:id="appendixD" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Learning Check Solutions</title>
+
+  <p>
+    If you detect any errors or have suggestions regarding these solutions, please file
+    an issue at the
+    <url href="https://github.com/moderndive/ModernDive_book/issues">ModernDive GitHub
+    repository</url> or, ideally, create a Pull Request on GitHub on the same repository
+    making the suggested changes yourself for us to review. Thanks!
+  </p>
+
+  <p>
+    In this PreTeXt edition, learning check answers are embedded directly within each
+    chapter as <em>Answer</em> elements inside the corresponding <c>&lt;exercise&gt;</c>
+    blocks. Navigate to any exercise block in the relevant chapter to find the solution.
+    The chapters and their learning check ranges are:
+  </p>
+
+  <table xml:id="tab-lc-index">
+    <title>Learning check locations by chapter</title>
+    <tabular halign="left">
+      <row header="yes" bottom="medium">
+        <cell>Chapter</cell>
+        <cell>Learning checks</cell>
+        <cell>Location</cell>
+      </row>
+      <row>
+        <cell>Chapter 1 (Getting Started)</cell>
+        <cell>LC1.1–LC1.7</cell>
+        <cell><xref ref="getting-started"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 2 (Data Visualization)</cell>
+        <cell>LC2.1–LC2.29</cell>
+        <cell><xref ref="viz"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 3 (Data Wrangling)</cell>
+        <cell>LC3.1–LC3.22</cell>
+        <cell><xref ref="wrangling"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 4 (Tidy Data)</cell>
+        <cell>LC4.1–LC4.5</cell>
+        <cell><xref ref="tidy"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 5 (Regression)</cell>
+        <cell>LC5.1–LC5.15</cell>
+        <cell><xref ref="regression"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 6 (Multiple Regression)</cell>
+        <cell>LC6.1–LC6.14</cell>
+        <cell><xref ref="multiple-regression"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 7 (Sampling)</cell>
+        <cell>LC7.1–LC7.21</cell>
+        <cell><xref ref="sampling"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 8 (Bootstrapping)</cell>
+        <cell>LC8.1–LC8.5</cell>
+        <cell><xref ref="confidence-intervals"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 9 (Hypothesis Testing)</cell>
+        <cell>LC9.1–LC9.7</cell>
+        <cell><xref ref="hypothesis-testing"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 10 (Inference for Regression)</cell>
+        <cell>LC10.1–LC10.6</cell>
+        <cell><xref ref="inference-for-regression"/></cell>
+      </row>
+      <row>
+        <cell>Chapter 11 (Tell Your Story with Data)</cell>
+        <cell>LC11.1–LC11.5</cell>
+        <cell><xref ref="thinking-with-data"/></cell>
+      </row>
+      <row bottom="medium">
+        <cell>Appendix A (Statistical Background)</cell>
+        <cell>LCA.1–LCA.2</cell>
+        <cell><xref ref="appendixA"/></cell>
+      </row>
+    </tabular>
+  </table>
+
+</appendix>

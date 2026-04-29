@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix xml:id="appendixB" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Inference Examples</title>
+
+  <p>
+    This appendix is designed to provide you with examples of the five basic hypothesis
+    tests and their corresponding confidence intervals. Traditional theory-based methods
+    as well as computational-based methods are presented.
+  </p>
+
+  <p>
+    <em>Note: This appendix is still under construction. If you would like to contribute,
+    please check us out on GitHub at
+    <url href="https://github.com/moderndive/moderndive_book">https://github.com/moderndive/moderndive_book</url>.</em>
+  </p>
+
+  <subsection xml:id="appendixB-packages">
+    <title>Needed packages</title>
+    <program language="r">
+      <input>
+library(tidyverse)
+library(infer)
+library(janitor)
+      </input>
+    </program>
+  </subsection>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixB-infer-map">
+    <title>Inference mind map</title>
+
+    <p>
+      To help you better navigate and choose the appropriate analysis, we've created a
+      mind map on <url href="http://coggle.it">coggle.it</url> available
+      <url href="https://coggle.it/diagram/Vxlydu1akQFeqo6-">here</url> and below.
+    </p>
+
+    <figure xml:id="fig-infer-map">
+      <caption>Mind map for inference.</caption>
+      <image source="images/coggle.png" width="100%">
+        <description>A mind map summarizing which statistical test to use (one mean, one proportion, two proportions, two means, paired means) based on the variable types and research question.</description>
+      </image>
+    </figure>
+
+  </section><!-- end Inference mind map -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixB-one-mean">
+    <title>One mean</title>
+
+    <subsection xml:id="appendixB-one-mean-problem">
+      <title>Problem statement</title>
+      <p>
+        The National Survey of Family Growth conducted by the Centers for Disease Control
+        gathers information on family life, marriage and divorce, pregnancy, infertility,
+        use of contraception, and men's and women's health. One of the variables collected
+        on this survey is the age at first marriage. 5,534 randomly sampled US women
+        between 2006 and 2010 completed the survey. The women sampled here had been
+        married at least once. Do we have evidence that the mean age of first marriage for
+        all US women from 2006 to 2010 is greater than 23 years?
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-mean-hypotheses">
+      <title>Competing hypotheses</title>
+      <p><em>In words:</em></p>
+      <ul>
+        <li><p>Null hypothesis: The mean age of first marriage for all US women from 2006 to 2010 is equal to 23 years.</p></li>
+        <li><p>Alternative hypothesis: The mean age of first marriage for all US women from 2006 to 2010 is greater than 23 years.</p></li>
+      </ul>
+      <p><em>In symbols (with annotations):</em></p>
+      <ul>
+        <li><p><m>H_0: \mu = \mu_0</m>, where <m>\mu</m> represents the mean age of first marriage for all US women from 2006 to 2010 and <m>\mu_0</m> is 23.</p></li>
+        <li><p><m>H_A: \mu &gt; 23</m></p></li>
+      </ul>
+      <p>
+        It's important to set the significance level before starting the testing using
+        the data. Let's set the significance level at 5% here.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-mean-eda">
+      <title>Exploring the sample data</title>
+      <program language="r">
+        <input>
+age_at_marriage &lt;- read_csv("https://moderndive.com/data/ageAtMar.csv")
+        </input>
+      </program>
+      <program language="r">
+        <input>
+age_summ &lt;- age_at_marriage |>
+  summarize(
+    sample_size = n(),
+    mean = mean(age),
+    sd = sd(age),
+    minimum = min(age),
+    lower_quartile = quantile(age, 0.25),
+    median = median(age),
+    upper_quartile = quantile(age, 0.75),
+    max = max(age)
+  )
+age_summ
+        </input>
+      </program>
+      <program language="r">
+        <input>
+ggplot(data = age_at_marriage, mapping = aes(x = age)) +
+  geom_histogram(binwidth = 3, color = "white")
+        </input>
+      </program>
+      <p>
+        The observed statistic of interest here is the sample mean:
+      </p>
+      <program language="r">
+        <input>
+x_bar &lt;- age_at_marriage |>
+  specify(response = age) |>
+  calculate(stat = "mean")
+x_bar
+        </input>
+      </program>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-mean-simulation">
+      <title>Simulation-based methods</title>
+      <p>
+        We can use bootstrapping to simulate the population from which the sample came
+        and generate samples to account for sampling variability.
+      </p>
+      <program language="r">
+        <input>
+set.seed(2018)
+null_distn_one_mean &lt;- age_at_marriage |>
+  specify(response = age) |>
+  hypothesize(null = "point", mu = 23) |>
+  generate(reps = 10000) |>
+  calculate(stat = "mean")
+        </input>
+      </program>
+      <program language="r">
+        <input>
+null_distn_one_mean |>
+  visualize() +
+  shade_p_value(obs_stat = x_bar, direction = "greater")
+        </input>
+      </program>
+      <program language="r">
+        <input>
+pvalue &lt;- null_distn_one_mean |>
+  get_pvalue(obs_stat = x_bar, direction = "greater")
+pvalue
+        </input>
+      </program>
+      <p>
+        The <m>p</m>-value is small and we reject the null hypothesis at the 5% level.
+      </p>
+      <p>
+        We can also create a confidence interval for the unknown population parameter
+        <m>\mu</m> using bootstrapping:
+      </p>
+      <program language="r">
+        <input>
+boot_distn_one_mean &lt;- age_at_marriage |>
+  specify(response = age) |>
+  generate(reps = 10000) |>
+  calculate(stat = "mean")
+
+ci &lt;- boot_distn_one_mean |>
+  get_ci()
+ci
+        </input>
+      </program>
+      <program language="r">
+        <input>
+boot_distn_one_mean |>
+  visualize() +
+  shade_ci(endpoints = ci)
+        </input>
+      </program>
+      <p>
+        We see that 23 is not contained in this confidence interval. This matches with
+        our hypothesis test results of rejecting the null hypothesis.
+      </p>
+      <p>
+        <em>Interpretation</em>: We are 95% confident the true mean age of first marriage
+        for all US women from 2006 to 2010 falls within this interval.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-mean-theory">
+      <title>Theory-based methods</title>
+      <p>
+        Remember that in order to use the shortcut (formula-based, theoretical) approach,
+        we need to check that some conditions are met.
+      </p>
+      <ol>
+        <li><p><em>Independent observations</em>: The cases are selected independently through random sampling so this condition is met.</p></li>
+        <li><p><em>Approximately normal</em>: The distribution of the response variable should be normal or the sample size should be at least 30. The histogram shows some skew but the sample size is 5,534 which greatly exceeds 30. Both conditions are met.</p></li>
+      </ol>
+      <p>
+        If conditions are met and assuming <m>H_0</m> is true, we can standardize
+        <m>\bar{X}</m> into a <m>T</m> statistic:
+      </p>
+      <me>
+        T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}} \sim t(df = n - 1)
+      </me>
+      <program language="r">
+        <input>
+t_test_results &lt;- age_at_marriage |>
+  t_test(
+    formula = age ~ NULL,
+    alternative = "greater",
+    mu = 23
+  )
+t_test_results
+        </input>
+      </program>
+      <p>
+        We therefore have sufficient evidence to reject the null hypothesis. Based on
+        this sample, we have evidence that the mean age of first marriage for all US
+        women from 2006 to 2010 is greater than 23 years.
+      </p>
+      <program language="r">
+        <input>
+t.test(
+  x = age_at_marriage$age,
+  alternative = "two.sided",
+  mu = 23
+)$conf
+        </input>
+      </program>
+    </subsection>
+
+  </section><!-- end One mean -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixB-one-proportion">
+    <title>One proportion</title>
+
+    <subsection xml:id="appendixB-one-prop-problem">
+      <title>Problem statement</title>
+      <p>
+        The CEO of a large electric utility claims that 80 percent of his 1,000,000
+        customers are satisfied with the service they receive. To test this claim, the
+        local newspaper surveyed 100 customers, using simple random sampling. 73 were
+        satisfied and the remaining were unsatisfied. Based on these findings from the
+        sample, can we reject the CEO's hypothesis that 80% of the customers are
+        satisfied?
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-prop-hypotheses">
+      <title>Competing hypotheses</title>
+      <ul>
+        <li><p>Null hypothesis: The proportion of all customers satisfied with service they receive is equal to 0.80.</p></li>
+        <li><p>Alternative hypothesis: The proportion of all customers satisfied with service they receive is different from 0.80.</p></li>
+      </ul>
+      <ul>
+        <li><p><m>H_0: \pi = p_0</m>, where <m>\pi</m> represents the proportion of satisfied customers and <m>p_0 = 0.8</m>.</p></li>
+        <li><p><m>H_A: \pi \ne 0.8</m></p></li>
+      </ul>
+      <p>Significance level: <m>\alpha = 0.05</m>.</p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-prop-eda">
+      <title>Exploring the sample data</title>
+      <program language="r">
+        <input>
+elec &lt;- c(rep("satisfied", 73), rep("unsatisfied", 27)) |>
+  enframe() |>
+  rename(satisfy = value)
+
+ggplot(data = elec, aes(x = satisfy)) +
+  geom_bar()
+
+p_hat &lt;- elec |>
+  specify(response = satisfy, success = "satisfied") |>
+  calculate(stat = "prop")
+p_hat
+        </input>
+      </program>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-prop-simulation">
+      <title>Simulation-based methods</title>
+      <program language="r">
+        <input>
+set.seed(2018)
+null_distn_one_prop &lt;- elec |>
+  specify(response = satisfy, success = "satisfied") |>
+  hypothesize(null = "point", p = 0.8) |>
+  generate(reps = 10000) |>
+  calculate(stat = "prop")
+        </input>
+      </program>
+      <program language="r">
+        <input>
+null_distn_one_prop |>
+  visualize() +
+  shade_p_value(obs_stat = p_hat, direction = "both")
+
+pvalue &lt;- null_distn_one_prop |>
+  get_pvalue(obs_stat = p_hat, direction = "both")
+pvalue
+        </input>
+      </program>
+      <p>
+        The <m>p</m>-value is greater than 0.05 and we fail to reject the null
+        hypothesis.
+      </p>
+      <program language="r">
+        <input>
+boot_distn_one_prop &lt;- elec |>
+  specify(response = satisfy, success = "satisfied") |>
+  generate(reps = 10000) |>
+  calculate(stat = "prop")
+
+ci &lt;- boot_distn_one_prop |>
+  get_ci()
+ci
+
+boot_distn_one_prop |>
+  visualize() +
+  shade_ci(endpoints = ci)
+        </input>
+      </program>
+      <p>
+        We see that 0.80 is contained in this confidence interval as a plausible value
+        of <m>\pi</m>. This matches with our hypothesis test results of failing to reject
+        the null hypothesis.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-prop-theory">
+      <title>Theory-based methods</title>
+      <p>
+        Conditions: (1) Independent observations — met via random sampling. (2)
+        Approximately normal — the number of expected successes (73) and failures (27)
+        are both at least 10.
+      </p>
+      <p>
+        If conditions are met and <m>H_0</m> is true, we can standardize <m>\hat{P}</m>
+        into a <m>Z</m> statistic:
+      </p>
+      <me>
+        Z = \frac{\hat{P} - p_0}{\sqrt{\dfrac{p_0(1-p_0)}{n}}} \sim N(0,1)
+      </me>
+      <program language="r">
+        <input>
+p_hat_val &lt;- 0.73
+p0 &lt;- 0.8
+n &lt;- 100
+z_obs &lt;- (p_hat_val - p0) / sqrt((p0 * (1 - p0)) / n)
+z_obs
+
+2 * pnorm(z_obs)
+        </input>
+      </program>
+      <program language="r">
+        <input>
+prop.test(
+  x = table(elec$satisfy),
+  n = length(elec$satisfy),
+  alternative = "two.sided",
+  p = 0.8,
+  correct = FALSE
+)
+        </input>
+      </program>
+      <p>
+        We do not have sufficient evidence to reject the null hypothesis. Based on this
+        sample, we do not have evidence that the proportion of all satisfied customers
+        differs from 0.80.
+      </p>
+    </subsection>
+
+  </section><!-- end One proportion -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixB-two-proportions">
+    <title>Two proportions</title>
+
+    <subsection xml:id="appendixB-two-props-problem">
+      <title>Problem statement</title>
+      <p>
+        A 2010 survey asked 827 randomly sampled registered voters in California <q>Do
+        you support? Or do you oppose? Drilling for oil and natural gas off the Coast of
+        California? Or do you not know enough to say?</q> Conduct a hypothesis test to
+        determine if the data provide strong evidence that the proportion of college
+        graduates who do not have an opinion on this issue is different than that of
+        non-college graduates.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-props-hypotheses">
+      <title>Competing hypotheses</title>
+      <ul>
+        <li><p>Null hypothesis: There is no association between having an opinion on drilling and having a college degree for all registered California voters in 2010.</p></li>
+        <li><p>Alternative hypothesis: There is an association between having an opinion on drilling and having a college degree for all registered California voters in 2010.</p></li>
+      </ul>
+      <ul>
+        <li><p><m>H_0: \pi_{\text{college}} = \pi_{\text{no\_college}}</m></p></li>
+        <li><p><m>H_A: \pi_{\text{college}} - \pi_{\text{no\_college}} \ne 0</m></p></li>
+      </ul>
+      <p>Significance level: <m>\alpha = 0.05</m>.</p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-props-eda">
+      <title>Exploring the sample data</title>
+      <program language="r">
+        <input>
+offshore &lt;- read_csv("https://moderndive.com/data/offshore.csv")
+
+counts &lt;- offshore |> tabyl(college_grad, response)
+counts
+        </input>
+      </program>
+      <program language="r">
+        <input>
+offshore &lt;- offshore |>
+  mutate(response = fct_rev(response))
+
+ggplot(offshore, aes(x = college_grad, fill = response)) +
+  geom_bar(position = "fill") +
+  labs(x = "College grad?", y = "Proportion with no opinion on drilling") +
+  coord_flip()
+        </input>
+      </program>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-props-simulation">
+      <title>Simulation-based methods</title>
+      <program language="r">
+        <input>
+d_hat &lt;- offshore |>
+  specify(response ~ college_grad, success = "no opinion") |>
+  calculate(stat = "diff in props", order = c("yes", "no"))
+d_hat
+        </input>
+      </program>
+      <program language="r">
+        <input>
+set.seed(2018)
+null_distn_two_props &lt;- offshore |>
+  specify(response ~ college_grad, success = "no opinion") |>
+  hypothesize(null = "independence") |>
+  generate(reps = 10000) |>
+  calculate(stat = "diff in props", order = c("yes", "no"))
+        </input>
+      </program>
+      <program language="r">
+        <input>
+null_distn_two_props |>
+  visualize() +
+  shade_p_value(obs_stat = d_hat, direction = "both")
+
+pvalue &lt;- null_distn_two_props |>
+  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+pvalue
+        </input>
+      </program>
+      <p>
+        The <m>p</m>-value is small and we reject the null hypothesis at the 5% level.
+      </p>
+      <program language="r">
+        <input>
+boot_distn_two_props &lt;- offshore |>
+  specify(response ~ college_grad, success = "no opinion") |>
+  generate(reps = 10000) |>
+  calculate(stat = "diff in props", order = c("yes", "no"))
+
+ci &lt;- boot_distn_two_props |>
+  get_ci()
+ci
+
+boot_distn_two_props |>
+  visualize() +
+  shade_ci(endpoints = ci)
+        </input>
+      </program>
+      <p>
+        We see that 0 is not contained in this confidence interval. This matches with our
+        hypothesis test results of rejecting the null hypothesis.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-props-theory">
+      <title>Theory-based methods</title>
+      <p>
+        If conditions are met and <m>H_0</m> is true, we can standardize
+        <m>\hat{P}_{\text{college}} - \hat{P}_{\text{no\_college}}</m> using the pooled
+        standard error:
+      </p>
+      <me>
+        Z = \frac{(\hat{P}_{\text{college}} - \hat{P}_{\text{no\_college}}) - 0}
+        {\sqrt{\dfrac{\hat{P}(1-\hat{P})}{n_1} + \dfrac{\hat{P}(1-\hat{P})}{n_2}}}
+        \sim N(0,1)
+      </me>
+      <p>
+        where <m>\hat{P} = \dfrac{\text{total successes}}{\text{total cases}}</m>.
+      </p>
+      <program language="r">
+        <input>
+z_hat &lt;- offshore |>
+  specify(response ~ college_grad, success = "no opinion") |>
+  calculate(stat = "z", order = c("yes", "no"))
+z_hat
+
+2 * pnorm(-3.16, lower.tail = TRUE)
+        </input>
+      </program>
+      <p>
+        We have sufficient evidence to reject the null hypothesis. We do have evidence to
+        suggest that there is a dependency between college graduation and position on
+        offshore drilling for Californians.
+      </p>
+    </subsection>
+
+  </section><!-- end Two proportions -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixB-two-means-independent">
+    <title>Two means (independent samples)</title>
+
+    <subsection xml:id="appendixB-two-means-ind-problem">
+      <title>Problem statement</title>
+      <p>
+        Average income varies from one region of the country to another, and it often
+        reflects both lifestyles and regional living expenses. Suppose a new graduate is
+        considering a job in two locations, Cleveland, OH and Sacramento, CA, and he wants
+        to see whether the average income in one of these cities is higher than the other.
+        He would like to conduct a hypothesis test based on two randomly selected samples
+        from the 2000 Census.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-means-ind-hypotheses">
+      <title>Competing hypotheses</title>
+      <ul>
+        <li><p>Null hypothesis: The mean income is the <em>same</em> for both cities.</p></li>
+        <li><p>Alternative hypothesis: The mean income is different for the two cities.</p></li>
+      </ul>
+      <ul>
+        <li><p><m>H_0: \mu_{\text{sac}} = \mu_{\text{cle}}</m></p></li>
+        <li><p><m>H_A: \mu_{\text{sac}} - \mu_{\text{cle}} \ne 0</m></p></li>
+      </ul>
+      <p>Significance level: <m>\alpha = 0.05</m>.</p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-means-ind-eda">
+      <title>Exploring the sample data</title>
+      <program language="r">
+        <input>
+cle_sac &lt;- read.delim("https://moderndive.com/data/cleSac.txt") |>
+  rename(
+    metro_area = Metropolitan_area_Detailed,
+    income = Total_personal_income
+  ) |>
+  na.omit()
+        </input>
+      </program>
+      <program language="r">
+        <input>
+inc_summ &lt;- cle_sac |>
+  group_by(metro_area) |>
+  summarize(
+    sample_size = n(),
+    mean = mean(income),
+    sd = sd(income),
+    minimum = min(income),
+    lower_quartile = quantile(income, 0.25),
+    median = median(income),
+    upper_quartile = quantile(income, 0.75),
+    max = max(income)
+  )
+inc_summ
+
+ggplot(cle_sac, aes(x = metro_area, y = income)) +
+  geom_boxplot() +
+  stat_summary(fun = "mean", geom = "point", color = "red")
+        </input>
+      </program>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-means-ind-simulation">
+      <title>Simulation-based methods</title>
+      <program language="r">
+        <input>
+d_hat &lt;- cle_sac |>
+  specify(income ~ metro_area) |>
+  calculate(
+    stat = "diff in means",
+    order = c("Sacramento_ CA", "Cleveland_ OH")
+  )
+d_hat
+        </input>
+      </program>
+      <program language="r">
+        <input>
+set.seed(2018)
+null_distn_two_means &lt;- cle_sac |>
+  specify(income ~ metro_area) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 10000) |>
+  calculate(
+    stat = "diff in means",
+    order = c("Sacramento_ CA", "Cleveland_ OH")
+  )
+
+null_distn_two_means |>
+  visualize() +
+  shade_p_value(obs_stat = d_hat, direction = "both")
+
+pvalue &lt;- null_distn_two_means |>
+  get_pvalue(obs_stat = d_hat, direction = "both")
+pvalue
+        </input>
+      </program>
+      <p>
+        The <m>p</m>-value is greater than 0.05 and we fail to reject the null
+        hypothesis.
+      </p>
+      <program language="r">
+        <input>
+boot_distn_two_means &lt;- cle_sac |>
+  specify(income ~ metro_area) |>
+  generate(reps = 10000) |>
+  calculate(
+    stat = "diff in means",
+    order = c("Sacramento_ CA", "Cleveland_ OH")
+  )
+
+ci &lt;- boot_distn_two_means |>
+  get_ci()
+ci
+
+boot_distn_two_means |>
+  visualize() +
+  shade_ci(endpoints = ci)
+        </input>
+      </program>
+      <p>
+        We see that 0 is contained in this confidence interval. This matches with our
+        hypothesis test results of failing to reject the null hypothesis.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-means-ind-theory">
+      <title>Theory-based methods</title>
+      <p>
+        If conditions are met and <m>H_0</m> is true, we can standardize the difference
+        in sample means:
+      </p>
+      <me>
+        T = \frac{(\bar{X}_1 - \bar{X}_2) - 0}{\sqrt{\dfrac{S_1^2}{n_1} +
+        \dfrac{S_2^2}{n_2}}} \sim t(df = \min(n_1 - 1, n_2 - 1))
+      </me>
+      <program language="r">
+        <input>
+cle_sac |>
+  specify(income ~ metro_area) |>
+  calculate(
+    stat = "t",
+    order = c("Cleveland_ OH", "Sacramento_ CA")
+  )
+
+2 * pt(-1.501, df = min(212 - 1, 175 - 1), lower.tail = TRUE)
+        </input>
+      </program>
+      <p>
+        We do not have sufficient evidence to reject the null hypothesis. We do not have
+        evidence to suggest that the true mean income differs between Cleveland, OH and
+        Sacramento, CA based on this data.
+      </p>
+    </subsection>
+
+  </section><!-- end Two means (independent) -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixB-two-means-paired">
+    <title>Two means (paired samples)</title>
+
+    <subsection xml:id="appendixB-paired-problem">
+      <title>Problem statement</title>
+      <p>
+        Trace metals in drinking water affect the flavor and an unusually high
+        concentration can pose a health hazard. Ten pairs of data were taken measuring
+        zinc concentration in bottom water and surface water at 10 randomly selected
+        locations on a stretch of river. Do the data suggest that the true average
+        concentration in the surface water is smaller than that of bottom water?
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-paired-hypotheses">
+      <title>Competing hypotheses</title>
+      <ul>
+        <li><p>Null hypothesis: The mean concentration in the bottom water is the same as that of the surface water at different paired locations.</p></li>
+        <li><p>Alternative hypothesis: The mean concentration in the surface water is smaller than that of the bottom water at different paired locations.</p></li>
+      </ul>
+      <ul>
+        <li><p><m>H_0: \mu_{\text{diff}} = 0</m>, where <m>\mu_{\text{diff}}</m> represents the mean difference in concentration for surface water minus bottom water.</p></li>
+        <li><p><m>H_A: \mu_{\text{diff}} &lt; 0</m></p></li>
+      </ul>
+      <p>Significance level: <m>\alpha = 0.05</m>.</p>
+    </subsection>
+
+    <subsection xml:id="appendixB-paired-eda">
+      <title>Exploring the sample data</title>
+      <program language="r">
+        <input>
+zinc_tidy &lt;- read_csv("https://moderndive.com/data/zinc_tidy.csv")
+        </input>
+      </program>
+      <program language="r">
+        <input>
+zinc_diff &lt;- zinc_tidy |>
+  group_by(loc_id) |>
+  summarize(pair_diff = diff(concentration)) |>
+  ungroup()
+
+d_hat &lt;- zinc_diff |>
+  specify(response = pair_diff) |>
+  calculate(stat = "mean")
+d_hat
+
+ggplot(zinc_diff, aes(x = pair_diff)) +
+  geom_histogram(binwidth = 0.04, color = "white")
+        </input>
+      </program>
+    </subsection>
+
+    <subsection xml:id="appendixB-paired-simulation">
+      <title>Simulation-based methods</title>
+      <program language="r">
+        <input>
+set.seed(2018)
+null_distn_paired_means &lt;- zinc_diff |>
+  specify(response = pair_diff) |>
+  hypothesize(null = "point", mu = 0) |>
+  generate(reps = 10000) |>
+  calculate(stat = "mean")
+
+null_distn_paired_means |>
+  visualize() +
+  shade_p_value(obs_stat = d_hat, direction = "less")
+
+pvalue &lt;- null_distn_paired_means |>
+  get_pvalue(obs_stat = d_hat, direction = "less")
+pvalue
+        </input>
+      </program>
+      <p>
+        The <m>p</m>-value is essentially 0 and we reject the null hypothesis at the 5%
+        level.
+      </p>
+      <program language="r">
+        <input>
+boot_distn_paired_means &lt;- zinc_diff |>
+  specify(response = pair_diff) |>
+  generate(reps = 10000) |>
+  calculate(stat = "mean")
+
+ci &lt;- boot_distn_paired_means |>
+  get_ci()
+ci
+
+boot_distn_paired_means |>
+  visualize() +
+  shade_ci(endpoints = ci)
+        </input>
+      </program>
+      <p>
+        We see that 0 is not contained in this confidence interval. This matches with our
+        hypothesis test results of rejecting the null hypothesis. Since the entire
+        confidence interval falls below zero, we have evidence that surface zinc
+        concentration levels are lower, on average, than bottom level zinc
+        concentrations.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-paired-theory">
+      <title>Theory-based methods</title>
+      <p>
+        The paired <m>t</m>-test treats the differences as a single sample:
+      </p>
+      <me>
+        T = \frac{\bar{X}_{\text{diff}} - 0}{S_{\text{diff}} / \sqrt{n}}
+        \sim t(df = n - 1)
+      </me>
+      <program language="r">
+        <input>
+t_test_results &lt;- zinc_diff |>
+  t_test(
+    formula = pair_diff ~ NULL,
+    alternative = "less",
+    mu = 0
+  )
+t_test_results
+
+pt(-4.8638, df = nrow(zinc_diff) - 1, lower.tail = TRUE)
+        </input>
+      </program>
+      <p>
+        We have sufficient evidence to reject the null hypothesis. Based on this sample,
+        we have evidence that the mean concentration in the bottom water is greater than
+        that of the surface water at different paired locations.
+      </p>
+    </subsection>
+
+  </section><!-- end Two means (paired) -->
+
+</appendix>
