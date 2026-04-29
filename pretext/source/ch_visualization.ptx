@@ -785,7 +785,7 @@ ggplot(data = early_january_2023_weather,
           <li><p>The <c>data</c> to be the <c>early_january_2023_weather</c> data frame
           by setting <c>data = early_january_2023_weather</c>.</p></li>
           <li><p>The <c>aes</c>thetic <c>mapping</c> by setting
-          <c>mapping = aes(x = time_hour, y = temp)</c>. Specifically, the variable
+          <c>mapping = aes(x = time_hour, y = wind_speed)</c>. Specifically, the variable
           <c>time_hour</c> maps to the <c>x</c> position aesthetic, while the variable
           <c>wind_speed</c> maps to the <c>y</c> position aesthetic.</p></li>
         </ol>
