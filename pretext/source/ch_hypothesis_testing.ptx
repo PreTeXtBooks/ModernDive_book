@@ -1151,4 +1151,1794 @@ spotify_52_shuffled |&gt;
     </p>
   </section>
 
+
+  <!-- ============================================================ -->
+  <section xml:id="ht-infer">
+    <title>Conducting hypothesis tests</title>
+
+    <p>
+      In <xref ref="bootstrap-process"/>, we showed you how to construct confidence intervals.
+      We first illustrated how to do this using <c>dplyr</c> data wrangling verbs and the
+      <c>rep_sample_n()</c> function from <xref ref="sampling-simulation"/> which we used as a
+      virtual shovel. In particular, we constructed confidence intervals by resampling with
+      replacement by setting the <c>replace = TRUE</c> argument to the <c>rep_sample_n()</c>
+      function.
+    </p>
+
+    <p>
+      We then showed you how to perform the same task using the <c>infer</c> package workflow.
+      While both workflows resulted in the same bootstrap distribution from which we can
+      construct confidence intervals, the <c>infer</c> package workflow emphasizes each of the
+      steps in the overall process. It does so using function names that are intuitively named
+      with verbs:
+    </p>
+
+    <ol>
+      <li><p><c>specify()</c> the variables of interest in your data frame.</p></li>
+      <li><p><c>generate()</c> replicates of bootstrap resamples with replacement.</p></li>
+      <li><p><c>calculate()</c> the summary statistic of interest.</p></li>
+      <li><p><c>visualize()</c> the resulting bootstrap distribution and confidence interval.</p></li>
+    </ol>
+
+    <p>
+      In this section, we will now show you how to seamlessly modify the previously seen
+      <c>infer</c> code for constructing confidence intervals to conduct hypothesis tests. You
+      will notice that the basic outline of the workflow is almost identical, except for an
+      additional <c>hypothesize()</c> step between the <c>specify()</c> and
+      <c>generate()</c> steps.
+    </p>
+
+    <p>
+      Furthermore, we will use a pre-specified significance level <m>\alpha = 0.1</m> for this
+      hypothesis test. Please read the discussion about <m>\alpha</m> in
+      <xref ref="one-sample-hyp"/> or later on in <xref ref="ht-interpretation"/>.
+    </p>
+
+    <subsection xml:id="infer-workflow-ht">
+      <title><c>infer</c> package workflow</title>
+
+      <subsubsection xml:id="ht-specify">
+        <title>1. <c>specify</c> variables</title>
+
+        <p>
+          Recall that we use the <c>specify()</c> verb to specify the response variable and,
+          if needed, any explanatory variables for our study. In this case, since we are
+          interested in any potential effects of genre on popularity rates, we set
+          <c>popular_or_not</c> as the response variable and <c>track_genre</c> as the
+          explanatory variable. We do so using <c>formula = response ~ explanatory</c> where
+          <c>response</c> is the name of the response variable in the data frame and
+          <c>explanatory</c> is the name of the explanatory variable. So in our case it is
+          <c>popular_or_not ~ track_genre</c>.
+        </p>
+
+        <p>
+          Furthermore, since we are interested in the proportion of songs <c>"popular"</c>,
+          and not the proportion of songs <c>not</c> popular, we set the argument
+          <c>success</c> to <c>"popular"</c>.
+        </p>
+
+        <program language="r">
+          <input>
+spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular")
+          </input>
+        </program>
+
+        <p>
+          Again, notice how the <c>spotify_metal_deephouse</c> data itself does not change,
+          but the <c>Response: popular_or_not (factor)</c> and
+          <c>Explanatory: track_genre (factor)</c> <em>meta-data</em> do. This is similar to
+          how the <c>group_by()</c> verb from <c>dplyr</c> does not change the data, but only
+          adds "grouping" meta-data, as we saw in <xref ref="groupby"/>. We also now focus on
+          only the two columns of interest in the data for our problem at hand with
+          <c>popular_or_not</c> and <c>track_genre</c>.
+        </p>
+      </subsubsection>
+
+      <subsubsection xml:id="ht-hypothesize">
+        <title>2. <c>hypothesize</c> the null</title>
+
+        <p>
+          In order to conduct hypothesis tests using the <c>infer</c> workflow, we need a new
+          step not present for confidence intervals: <c>hypothesize()</c>. Recall from
+          <xref ref="understanding-ht"/> that our hypothesis test was
+        </p>
+
+        <md>
+          <mrow>H_0 \amp: p_{m} - p_{d} = 0</mrow>
+          <mrow>\text{vs. } H_A \amp: p_{m} - p_{d} \gt 0</mrow>
+        </md>
+
+        <p>
+          In other words, the null hypothesis <m>H_0</m> corresponding to our "hypothesized
+          universe" stated that there was no difference in genre popularity rates. We set this
+          null hypothesis <m>H_0</m> in our <c>infer</c> workflow using the <c>null</c>
+          argument of the <c>hypothesize()</c> function to either:
+          <ul>
+            <li><p><c>"point"</c> for hypotheses involving a single sample or</p></li>
+            <li><p><c>"independence"</c> for hypotheses involving two samples.</p></li>
+          </ul>
+        </p>
+
+        <p>
+          In our case, since we have two samples (the metal songs and the deep house songs), we
+          set <c>null = "independence"</c>.
+        </p>
+
+        <program language="r">
+          <input>
+spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  hypothesize(null = "independence")
+          </input>
+        </program>
+
+        <p>
+          Again, the data has not changed yet. This will occur at the upcoming
+          <c>generate()</c> step; we are merely setting meta-data for now.
+        </p>
+
+        <p>
+          Where do the terms <c>"point"</c> and <c>"independence"</c> come from? These are two
+          technical statistical terms. The term "point" relates from the fact that for a single
+          group of observations, you will test the value of a single point. Going back to the
+          almonds example from <xref ref="confidence-intervals"/>, say we wanted to test if
+          the mean weight of all chocolate-covered almonds was equal to 3.5 grams or not. We
+          would be testing the value of a "point" <m>\mu</m>, the mean weight in grams of
+          <em>all</em> chocolate-covered almonds, as follows:
+        </p>
+
+        <md>
+          <mrow>H_0 \amp: \mu = 3.5</mrow>
+          <mrow>\text{vs } H_A \amp: \mu \neq 3.5</mrow>
+        </md>
+
+        <p>
+          The term "independence" relates to the fact that for two groups of observations, you
+          are testing whether or not the response variable is <em>independent</em> of the
+          explanatory variable that assigns the groups. In our case, we are testing whether the
+          <c>popular_or_not</c> response variable is "independent" of the explanatory variable
+          <c>track_genre</c>.
+        </p>
+      </subsubsection>
+
+      <subsubsection xml:id="ht-generate">
+        <title>3. <c>generate</c> replicates</title>
+
+        <p>
+          After we <c>hypothesize()</c> the null hypothesis, we <c>generate()</c> replicates
+          of "shuffled" datasets assuming the null hypothesis is true. We do this by repeating
+          the shuffling exercise you performed in <xref ref="ht-activity"/> several times on
+          the full dataset of 2000 rows. Let's use the computer to repeat this 1000 times by
+          setting <c>reps = 1000</c> in the <c>generate()</c> function. However, unlike for
+          confidence intervals where we generated replicates using <c>type = "bootstrap"</c>
+          resampling with replacement, we will now perform shuffles/permutations by setting
+          <c>type = "permute"</c>. Recall that shuffles/permutations are a kind of resampling,
+          but unlike the bootstrap method, they involve resampling <em>without</em>
+          replacement.
+        </p>
+
+        <program language="r">
+          <input>
+spotify_generate &lt;- spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute")
+nrow(spotify_generate)
+          </input>
+        </program>
+
+        <p>
+          The resulting data frame has 2,000,000 rows. This is because we performed
+          shuffles/permutations for each of the 2000 rows 1000 times and
+          <m>2{,}000{,}000 = 1000 \cdot 2000</m>. If you explore the
+          <c>spotify_generate</c> data frame with <c>View()</c>, you will notice that the
+          variable <c>replicate</c> indicates which resample each row belongs to.
+        </p>
+      </subsubsection>
+
+      <subsubsection xml:id="ht-calculate">
+        <title>4. <c>calculate</c> summary statistics</title>
+
+        <p>
+          Now that we have generated 1000 replicates of "shuffles" assuming the null hypothesis
+          is true, let's <c>calculate()</c> the appropriate summary statistic for each of our
+          1000 shuffles. From <xref ref="understanding-ht"/>, point estimates related to
+          hypothesis testing have a specific name: <em>test statistics</em>. Since the unknown
+          population parameter of interest is the difference in population proportions
+          <m>p_{m} - p_{d}</m>, the test statistic here is the difference in sample
+          proportions <m>\widehat{p}_{m} - \widehat{p}_{d}</m>.
+        </p>
+
+        <p>
+          For each of our 1000 shuffles, we can calculate this test statistic by setting
+          <c>stat = "diff in props"</c>. Furthermore, since we are interested in
+          <m>\widehat{p}_{m} - \widehat{p}_{d}</m> we set
+          <c>order = c("metal", "deep-house")</c>. Let's save the result in a data frame
+          called <c>null_distribution</c>:
+        </p>
+
+        <program language="r">
+          <input>
+null_distribution &lt;- spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+null_distribution
+          </input>
+        </program>
+
+        <p>
+          Observe that we have 1000 values of <c>stat</c>, each representing one instance of
+          <m>\widehat{p}_{m} - \widehat{p}_{d}</m> in a hypothesized world of no difference
+          in genre popularity. Observe as well that we chose the name of this data frame
+          carefully: <c>null_distribution</c>. Recall once again from
+          <xref ref="understanding-ht"/> that sampling distributions when the null hypothesis
+          <m>H_0</m> is assumed to be true have a special name: the <em>null distribution</em>.
+        </p>
+
+        <p>
+          What was the <em>observed</em> difference in popularity rates? In other words, what
+          was the <em>observed test statistic</em> <m>\widehat{p}_{m} - \widehat{p}_{d}</m>?
+          We can compute this value using the previous <c>infer</c> code but with the
+          <c>hypothesize()</c> and <c>generate()</c> steps removed. Let's save this in
+          <c>obs_diff_prop</c>:
+        </p>
+
+        <program language="r">
+          <input>
+obs_diff_prop &lt;- spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+obs_diff_prop
+          </input>
+        </program>
+
+        <p>
+          Note that there is also a wrapper function in <c>infer</c> called <c>observe()</c>
+          that can be used to calculate the observed test statistic. However, we chose to use
+          the <c>specify()</c>, <c>calculate()</c>, and <c>hypothesize()</c> functions to help
+          you continue to use the common verbs and build practice with them.
+        </p>
+
+        <program language="r">
+          <input>
+spotify_metal_deephouse |&gt;
+  observe(formula = popular_or_not ~ track_genre,
+          success = "popular",
+          stat = "diff in props",
+          order = c("metal", "deep-house"))
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="ht-visualize">
+        <title>5. <c>visualize</c> the p-value</title>
+
+        <p>
+          The final step is to measure how surprised we are by the observed difference in a
+          hypothesized universe of no difference in genre popularity. If the observed difference
+          is highly unlikely, then we would be inclined to reject the validity of our
+          hypothesized universe.
+        </p>
+
+        <p>
+          We start by visualizing the <em>null distribution</em> of our 1000 values of
+          <m>\widehat{p}_{m} - \widehat{p}_{d}</m> using <c>visualize()</c>. Recall that
+          these are values of the difference in popularity rates assuming <m>H_0</m> is true.
+          This corresponds to being in our hypothesized universe of no difference in genre
+          popularity.
+        </p>
+
+        <program language="r">
+          <input>
+visualize(null_distribution, bins = 25)
+          </input>
+        </program>
+
+        <figure xml:id="null-distribution-infer">
+          <caption>Null distribution of the difference in sample proportions.</caption>
+          <image source="images/09-hypothesis-testing/null-distribution-infer-1.png" width="80%">
+            <description>A histogram of the null distribution of differences in popularity proportions between metal and deep-house songs. The distribution is approximately bell-shaped and centered at zero.</description>
+          </image>
+        </figure>
+
+        <p>
+          Let's now add what happened in real life to
+          <xref ref="null-distribution-infer"/>, the observed difference in popularity rates.
+          Instead of merely adding a vertical line using <c>geom_vline()</c>, let's use the
+          <c>shade_p_value()</c> function with <c>obs_stat</c> set to the observed test
+          statistic value we saved in <c>obs_diff_prop</c>.
+        </p>
+
+        <p>
+          Furthermore, we will set the <c>direction = "right"</c> reflecting our alternative
+          hypothesis <m>H_A: p_{m} - p_{d} \gt 0</m>. Recall our alternative hypothesis
+          <m>H_A</m> is that <m>p_{m} - p_{d} \gt 0</m>, stating that there is a difference
+          in popularity rates in favor of metal songs. "More extreme" here corresponds to
+          differences that are "bigger" or "more positive" or "more to the right." Hence we set
+          the <c>direction</c> argument of <c>shade_p_value()</c> to be <c>"right"</c>.
+        </p>
+
+        <p>
+          On the other hand, had our alternative hypothesis <m>H_A</m> been the other possible
+          one-sided alternative <m>p_{m} - p_{d} \lt 0</m>, suggesting popularity in favor of
+          deep house songs, we would have set <c>direction = "left"</c>. Had our alternative
+          hypothesis <m>H_A</m> been two-sided <m>p_{m} - p_{d} \neq 0</m>, suggesting
+          discrimination in either direction, we would have set <c>direction = "both"</c>.
+        </p>
+
+        <program language="r">
+          <input>
+visualize(null_distribution, bins = 25) +
+  shade_p_value(obs_stat = obs_diff_prop, direction = "right")
+          </input>
+        </program>
+
+        <figure xml:id="null-distribution-infer-2">
+          <caption>Shaded histogram to show <m>p</m>-value.</caption>
+          <image source="images/09-hypothesis-testing/null-distribution-infer-2-1.png" width="80%">
+            <description>A histogram of the null distribution with the observed test statistic marked by a vertical line and the right tail shaded in pink to represent the p-value for the hypothesis test.</description>
+          </image>
+        </figure>
+
+        <p>
+          In the resulting <xref ref="null-distribution-infer-2"/>, the solid dark line marks
+          the observed difference in popularity rates. The shaded region corresponds to the
+          <em><m>p</m>-value</em>. Recall the definition of the <m>p</m>-value from
+          <xref ref="understanding-ht"/>:
+        </p>
+
+        <blockquote>
+          <p>
+            A <m>p</m>-value is the probability of obtaining a test statistic just as or more
+            extreme than the observed test statistic <em>assuming the null hypothesis
+            <m>H_0</m> is true</em>.
+          </p>
+        </blockquote>
+
+        <p>
+          So judging by the shaded region in <xref ref="null-distribution-infer-2"/>, it seems
+          we would somewhat rarely observe the observed differences in popularity rates or more
+          in a hypothesized universe of no difference in genre popularity. In other words, the
+          <m>p</m>-value is somewhat small. Hence, we would be inclined to reject this
+          hypothesized universe, or using statistical language we would "reject <m>H_0</m>."
+        </p>
+
+        <p>
+          What fraction of the null distribution is shaded? In other words, what is the exact
+          value of the <m>p</m>-value? We can compute it using the <c>get_p_value()</c>
+          function with the same arguments as the previous <c>shade_p_value()</c> code:
+        </p>
+
+        <program language="r">
+          <input>
+null_distribution |&gt;
+  get_p_value(obs_stat = obs_diff_prop, direction = "right")
+          </input>
+        </program>
+
+        <p>
+          Keeping the definition of a <m>p</m>-value in mind, the probability of observing a
+          difference in popularity rates as large as the one observed due to sampling variation
+          alone in the null distribution is small. Since this <m>p</m>-value is smaller than
+          our pre-specified significance level <m>\alpha = 0.1</m>, we reject the null
+          hypothesis <m>H_0: p_{m} - p_{d} = 0</m>. In other words, this <m>p</m>-value is
+          sufficiently small to reject our hypothesized universe of no difference in genre
+          popularity. We instead have enough evidence to change our mind in favor of difference
+          in genre popularity being a likely culprit here. Observe that whether we reject the
+          null hypothesis <m>H_0</m> or not depends in large part on our choice of significance
+          level <m>\alpha</m>. We will discuss this more in <xref ref="choosing-alpha"/>.
+        </p>
+      </subsubsection>
+    </subsection>
+
+    <subsection xml:id="comparing-infer-workflows">
+      <title>Comparison with confidence intervals</title>
+
+      <p>
+        One of the great things about the <c>infer</c> package is that we can jump seamlessly
+        between conducting hypothesis tests and constructing confidence intervals with minimal
+        changes! Recall the code from the previous section that creates the null distribution,
+        which in turn is needed to compute the <m>p</m>-value:
+      </p>
+
+      <program language="r">
+        <input>
+null_distribution &lt;- spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+        </input>
+      </program>
+
+      <p>
+        To create the corresponding bootstrap distribution needed to construct a 90% confidence
+        interval for <m>p_{m} - p_{d}</m>, we only need to make two changes. First, we remove
+        the <c>hypothesize()</c> step since we are no longer assuming a null hypothesis
+        <m>H_0</m> is true. We can do this by deleting or commenting out the
+        <c>hypothesize()</c> line of code. Second, we switch the <c>type</c> of resampling in
+        the <c>generate()</c> step to be <c>"bootstrap"</c> instead of <c>"permute"</c>.
+      </p>
+
+      <program language="r">
+        <input>
+bootstrap_distribution &lt;- spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  # Change 1 - Remove hypothesize():
+  # hypothesize(null = "independence") |&gt;
+  # Change 2 - Switch type from "permute" to "bootstrap":
+  generate(reps = 1000, type = "bootstrap") |&gt;
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+        </input>
+      </program>
+
+      <p>
+        Using this <c>bootstrap_distribution</c>, let's first compute the percentile-based
+        confidence intervals, as we did in <xref ref="bootstrap-process"/>:
+      </p>
+
+      <program language="r">
+        <input>
+percentile_ci &lt;- bootstrap_distribution |&gt;
+  get_confidence_interval(level = 0.90, type = "percentile")
+percentile_ci
+        </input>
+      </program>
+
+      <p>
+        Using our shorthand interpretation for 90% confidence intervals, we are 90%
+        "confident" that the true difference in population proportions <m>p_{m} - p_{d}</m>
+        is between the lower and upper confidence interval bounds. Let's visualize
+        <c>bootstrap_distribution</c> and this percentile-based 90% confidence interval for
+        <m>p_{m} - p_{d}</m>.
+      </p>
+
+      <program language="r">
+        <input>
+visualize(bootstrap_distribution) +
+  shade_confidence_interval(endpoints = percentile_ci)
+        </input>
+      </program>
+
+      <figure xml:id="bootstrap-distribution-two-prop-percentile">
+        <caption>Percentile-based 90% confidence interval for the difference in popularity proportions.</caption>
+        <image source="images/09-hypothesis-testing/bootstrap-distribution-two-prop-percentile-1.png" width="80%">
+          <description>A histogram of the bootstrap distribution for the difference in sample popularity proportions between metal and deep-house music, with the 90% confidence interval shaded.</description>
+        </image>
+      </figure>
+
+      <p>
+        Notice a key value that is not included in the 90% confidence interval for
+        <m>p_{m} - p_{d}</m>: the value 0 (but just barely!). In other words, a difference of
+        0 is not included in our net, suggesting that <m>p_{m}</m> and <m>p_{d}</m> are truly
+        different! Furthermore, observe how the entirety of the 90% confidence interval for
+        <m>p_{m} - p_{d}</m> lies above 0, suggesting that this difference is in favor of
+        metal.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc9-1">
+          <statement>
+            <p>
+              Why does the following code produce an error? In other words, what about the
+              response and predictor variables make this not a possible computation with the
+              <c>infer</c> package?
+            </p>
+            <program language="r">
+              <input>
+library(moderndive)
+library(infer)
+null_distribution_mean &lt;- spotify_metal_deephouse |&gt;
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  calculate(stat = "diff in means", order = c("metal", "deep-house"))
+              </input>
+            </program>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-2">
+          <statement>
+            <p>
+              Why are we relatively confident that the distributions of the sample proportions
+              will be good approximations of the population distributions of popularity
+              proportions for the two genres?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-3">
+          <statement>
+            <p>
+              Using the definition of <em>p-value</em>, write in words what the
+              <m>p</m>-value represents for the hypothesis test comparing the popularity rates
+              for metal and deep house.
+            </p>
+          </statement>
+        </exercise>
+      </exercises>
+    </subsection>
+
+    <subsection xml:id="only-one-test">
+      <title>There is only one test</title>
+
+      <p>
+        Let's recap the steps necessary to conduct a hypothesis test using the terminology,
+        notation, and definitions related to sampling you saw in <xref ref="understanding-ht"/>
+        and the <c>infer</c> workflow from <xref ref="infer-workflow-ht"/>:
+      </p>
+
+      <ol>
+        <li><p><c>specify()</c> the variables of interest in your data frame.</p></li>
+        <li><p><c>hypothesize()</c> the null hypothesis <m>H_0</m>. In other words, set a
+        "model for the universe" assuming <m>H_0</m> is true.</p></li>
+        <li><p><c>generate()</c> shuffles assuming <m>H_0</m> is true. In other words,
+        <em>simulate</em> data assuming <m>H_0</m> is true.</p></li>
+        <li><p><c>calculate()</c> the <em>test statistic</em> of interest, both for the
+        observed data and your <em>simulated</em> data.</p></li>
+        <li><p><c>visualize()</c> the resulting <em>null distribution</em> and compute the
+        <em><m>p</m>-value</em> by comparing the null distribution to the observed test
+        statistic.</p></li>
+      </ol>
+
+      <p>
+        While this is a lot to digest, especially the first time you encounter hypothesis
+        testing, the nice thing is that once you understand this general framework, then you
+        can understand <em>any</em> hypothesis test. In a famous blog post, computer scientist
+        Allen Downey called this the "There is only one test" framework, for which he created
+        the flowchart displayed in <xref ref="htdowney"/>.
+      </p>
+
+      <figure xml:id="htdowney">
+        <caption>Allen Downey's hypothesis testing framework.</caption>
+        <image source="images/copyright/there_is_only_one_test.png" width="100%">
+          <description>A flowchart illustrating Allen Downey's "There is only one test" framework, showing the steps: data, test statistic, simulated data, and p-value.</description>
+        </image>
+      </figure>
+
+      <p>
+        Notice its similarity with the "hypothesis testing with <c>infer</c>" diagram. That is
+        because the <c>infer</c> package was explicitly designed to match the "There is only
+        one test" framework. So if you can understand the framework, you can easily generalize
+        these ideas for all hypothesis-testing scenarios. Whether for population proportions
+        <m>p</m>, population means <m>\mu</m>, differences in population proportions
+        <m>p_1 - p_2</m>, differences in population means <m>\mu_1 - \mu_2</m>, and as you
+        will see in <xref ref="inference-for-regression"/> on inference for regression,
+        population regression slopes <m>\beta_1</m> as well. In fact, it applies more
+        generally even than just these examples to more complicated hypothesis tests and test
+        statistics as well.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc9-4">
+          <statement>
+            <p>
+              Describe in a paragraph how we used Allen Downey's diagram to conclude if a
+              statistical difference existed between the popularity rate of metal and deep house
+              for the Spotify example.
+            </p>
+          </statement>
+        </exercise>
+      </exercises>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="ht-interpretation">
+    <title>Interpreting hypothesis tests</title>
+
+    <p>
+      Interpreting the results of hypothesis tests is one of the more challenging aspects of
+      this method for statistical inference. In this section, we will focus on ways to help
+      with deciphering the process and address some common misconceptions.
+    </p>
+
+    <subsection xml:id="trial">
+      <title>Two possible outcomes</title>
+
+      <p>
+        In <xref ref="understanding-ht"/>, we mentioned that given a pre-specified significance
+        level <m>\alpha</m> there are two possible outcomes of a hypothesis test:
+        <ul>
+          <li>
+            <p>If the <m>p</m>-value is less than <m>\alpha</m>, then we <em>reject</em> the
+            null hypothesis <m>H_0</m> in favor of <m>H_A</m>.</p>
+          </li>
+          <li>
+            <p>If the <m>p</m>-value is greater than or equal to <m>\alpha</m>, we <em>fail
+            to reject</em> the null hypothesis <m>H_0</m>.</p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Unfortunately, the latter result is often misinterpreted as "accepting the null
+        hypothesis <m>H_0</m>." While at first glance it may seem that the statements "failing
+        to reject <m>H_0</m>" and "accepting <m>H_0</m>" are equivalent, there actually is a
+        subtle difference. Saying that we "accept the null hypothesis <m>H_0</m>" is equivalent
+        to stating that "we think the null hypothesis <m>H_0</m> is true." However, saying that
+        we "fail to reject the null hypothesis <m>H_0</m>" is saying something else: "While
+        <m>H_0</m> might still be false, we do not have enough evidence to say so." In other
+        words, there is an absence of enough proof. However, the absence of proof is not proof
+        of absence.
+      </p>
+
+      <p>
+        To further shed light on this distinction, let's use the United States criminal justice
+        system as an analogy. A criminal trial in the United States is a similar situation to
+        hypothesis tests whereby a choice between two contradictory claims must be made about a
+        defendant who is on trial:
+      </p>
+
+      <ol>
+        <li><p>The defendant is truly either "innocent" or "guilty."</p></li>
+        <li><p>The defendant is presumed "innocent until proven guilty."</p></li>
+        <li><p>The defendant is found guilty only if there is <em>strong evidence</em> that
+        the defendant is guilty. The phrase "beyond a reasonable doubt" is often used as a
+        guideline for determining a cutoff for when enough evidence exists to find the defendant
+        guilty.</p></li>
+        <li><p>The defendant is found to be either "not guilty" or "guilty" in the ultimate
+        verdict.</p></li>
+      </ol>
+
+      <p>
+        In other words, <em>not guilty</em> verdicts are not suggesting the defendant is
+        <em>innocent</em>, but instead that "while the defendant may still actually be guilty,
+        there was not enough evidence to prove this fact." Now let's make the connection with
+        hypothesis tests:
+      </p>
+
+      <ol>
+        <li><p>Either the null hypothesis <m>H_0</m> or the alternative hypothesis <m>H_A</m>
+        is true.</p></li>
+        <li><p>Hypothesis tests are conducted assuming the null hypothesis <m>H_0</m> is
+        true.</p></li>
+        <li><p>We reject the null hypothesis <m>H_0</m> in favor of <m>H_A</m> only if the
+        evidence found in the sample suggests that <m>H_A</m> is true. The significance level
+        <m>\alpha</m> is used as a guideline to set the threshold on just how strong of
+        evidence we require.</p></li>
+        <li><p>We ultimately decide to either "fail to reject <m>H_0</m>" or "reject
+        <m>H_0</m>."</p></li>
+      </ol>
+
+      <p>
+        So while gut instinct may suggest "failing to reject <m>H_0</m>" and "accepting
+        <m>H_0</m>" are equivalent statements, they are not. "Accepting <m>H_0</m>" is
+        equivalent to finding a defendant innocent. However, courts do not find defendants
+        "innocent," but rather they find them "not guilty." Putting things differently, defense
+        attorneys do not need to prove that their clients are innocent, rather they only need to
+        prove that clients are not "guilty beyond a reasonable doubt."
+      </p>
+
+      <p>
+        So going back to our songs activity in <xref ref="ht-infer"/>, recall that our
+        hypothesis test was <m>H_0: p_{m} - p_{d} = 0</m> versus
+        <m>H_A: p_{m} - p_{d} \gt 0</m> and that we used a pre-specified significance level
+        of <m>\alpha = 0.1</m>. Since the <m>p</m>-value was smaller than
+        <m>\alpha = 0.1</m>, we rejected <m>H_0</m>. In other words, we found needed levels
+        of evidence in this particular sample to say that <m>H_0</m> is false at the
+        <m>\alpha = 0.1</m> significance level. We also state this conclusion using
+        non-statistical language: we found enough evidence in this data to suggest that there
+        was a difference in the popularity of our two genres of music.
+      </p>
+    </subsection>
+
+    <subsection xml:id="types-of-errors">
+      <title>Types of errors</title>
+
+      <p>
+        Unfortunately, there is some chance a jury or a judge can make an incorrect decision in
+        a criminal trial by reaching the wrong verdict. For example, finding a truly innocent
+        defendant "guilty." Or on the other hand, finding a truly guilty defendant "not guilty."
+        This can often stem from the fact that prosecutors do not have access to all the
+        relevant evidence, but instead are limited to whatever evidence the police can find.
+      </p>
+
+      <p>
+        The same holds for hypothesis tests. We can make incorrect decisions about a population
+        parameter because we only have a sample of data from the population and thus sampling
+        variation can lead us to incorrect conclusions.
+      </p>
+
+      <p>
+        There are two possible erroneous conclusions in a criminal trial: either (1) a truly
+        innocent person is found guilty or (2) a truly guilty person is found not guilty.
+        Similarly, there are two possible errors in a hypothesis test: either (1) rejecting
+        <m>H_0</m> when in fact <m>H_0</m> is true, called a
+        <term>Type I error</term><idx><h>hypothesis testing</h><h>Type I error</h></idx> or
+        (2) failing to reject <m>H_0</m> when in fact <m>H_0</m> is false, called a
+        <term>Type II error</term><idx><h>hypothesis testing</h><h>Type II error</h></idx>.
+        Another term used for "Type I error" is "false positive," while another term for
+        "Type II error" is "false negative."
+      </p>
+
+      <p>
+        This risk of error is the price researchers pay for basing inference on a sample
+        instead of performing a census on the entire population. But as we have seen in our
+        numerous examples and activities so far, censuses are often very expensive and other
+        times impossible, and thus researchers have no choice but to use a sample. Thus in any
+        hypothesis test based on a sample, we have no choice but to tolerate some chance that a
+        Type I error will be made and some chance that a Type II error will occur.
+      </p>
+
+      <p>
+        To help understand Type I and Type II errors, we apply these terms to our criminal
+        justice analogy in <xref ref="tab-trial-errors"/>. Thus, a Type I error corresponds to
+        incorrectly putting a truly innocent person in jail, whereas a Type II error corresponds
+        to letting a truly guilty person go free.
+      </p>
+
+      <table xml:id="tab-trial-errors">
+        <title>Type I and Type II errors in US criminal trials</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Verdict</cell>
+            <cell>Truly not guilty</cell>
+            <cell>Truly guilty</cell>
+          </row>
+          <row>
+            <cell>Not guilty verdict</cell>
+            <cell>Correct</cell>
+            <cell>Type II error</cell>
+          </row>
+          <row>
+            <cell>Guilty verdict</cell>
+            <cell>Type I error</cell>
+            <cell>Correct</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Let's show the corresponding table in <xref ref="tab-hypo-errors"/> for hypothesis
+        tests.
+      </p>
+
+      <table xml:id="tab-hypo-errors">
+        <title>Type I and Type II errors in hypothesis tests</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Decision</cell>
+            <cell><m>H_0</m> true</cell>
+            <cell><m>H_A</m> true</cell>
+          </row>
+          <row>
+            <cell>Fail to reject <m>H_0</m></cell>
+            <cell>Correct</cell>
+            <cell>Type II error</cell>
+          </row>
+          <row>
+            <cell>Reject <m>H_0</m></cell>
+            <cell>Type I error</cell>
+            <cell>Correct</cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+    <subsection xml:id="choosing-alpha">
+      <title>How do we choose <m>\alpha</m>?</title>
+
+      <p>
+        If we are using a sample to make inferences about a population, we are operating under
+        uncertainty and run the risk of making statistical errors. These are not errors in
+        calculations or in the procedure used, but errors in the sense that the sample used may
+        lead us to construct a confidence interval that does not contain the true value of the
+        population parameter, for example. In the case of hypothesis testing, there are two
+        well-defined errors: a Type I and a Type II error:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            A <term>Type I Error</term><idx><h>hypothesis testing</h><h>Type I Error</h></idx>
+            is rejecting the null hypothesis when it is true. The probability of a Type I Error
+            occurring is <m>\alpha</m>, the <em>significance level</em>, which we defined in
+            <xref ref="one-sample-hyp"/> and in <xref ref="understanding-ht"/>.
+          </p>
+        </li>
+        <li>
+          <p>
+            A <term>Type II Error</term>
+            <idx><h>hypothesis testing</h><h>Type II Error</h></idx> is failing to reject the
+            null hypothesis when it is false. The probability of a Type II Error is denoted by
+            <m>\beta</m>. The value of <m>1-\beta</m> is known as the <em>power</em> of the
+            test.
+          </p>
+        </li>
+      </ul>
+
+      <p>
+        Ideally, we would like to minimize the errors, and we would like <m>\alpha = 0</m> and
+        <m>\beta = 0</m>. However, this is not possible as there will always be the possibility
+        of committing one of these errors when making a decision based on sample data.
+        Furthermore, these two error probabilities are inversely related. As the probability of
+        a Type I error goes down, the probability of a Type II error goes up.
+      </p>
+
+      <p>
+        When constructing a hypothesis test, we have control of the probability of committing a
+        Type I Error because we can decide what is the significance level <m>\alpha</m> we want
+        to use. Once <m>\alpha</m> has been pre-specified, we try to minimize <m>\beta</m>, the
+        fraction of incorrect non-rejections of the null hypothesis.
+      </p>
+
+      <p>
+        So for example if we used <m>\alpha = 0.01</m>, we would be using a hypothesis testing
+        procedure that in the long run would incorrectly reject the null hypothesis <m>H_0</m>
+        one percent of the time. This is analogous to setting the confidence level of a
+        confidence interval.
+      </p>
+
+      <p>
+        So what value should you use for <m>\alpha</m>? While different fields of study have
+        adopted different conventions, although <m>\alpha = 0.05</m> is perhaps the most
+        popular threshold, there is nothing special about this or any other number. Please
+        review <xref ref="one-sample-hyp"/> and our discussion about <m>\alpha</m> and our
+        tolerance for uncertainty. In addition, observe that choosing a relatively small value
+        of <m>\alpha</m> reduces our chances of rejecting the null hypothesis, and also of
+        committing a Type I Error; but increases the probability of committing a Type II Error.
+      </p>
+
+      <p>
+        On the other hand, choosing a relatively large value of <m>\alpha</m> increases the
+        chances of failing to reject the null hypothesis, and also of committing a Type I Error;
+        but reduces the probability of committing a Type II Error. Depending on the problem at
+        hand, we may be willing to have a larger significance level in certain scenarios and a
+        smaller significance level in others.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc9-5">
+          <statement>
+            <p>
+              What is wrong about saying, "The defendant is innocent." based on the US system
+              of criminal trials?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-6">
+          <statement>
+            <p>What is the purpose of hypothesis testing?</p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-7">
+          <statement>
+            <p>
+              What are some flaws with hypothesis testing? How could we alleviate them?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-8">
+          <statement>
+            <p>
+              Consider two <m>\alpha</m> significance levels of 0.1 and 0.01. Of the two,
+              which would lead to a higher chance of committing a Type I Error?
+            </p>
+          </statement>
+        </exercise>
+      </exercises>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="ht-case-study">
+    <title>Case study: are action or romance movies rated higher?</title>
+
+    <p>
+      Let's apply our knowledge of hypothesis testing to answer the question: "Are action or
+      romance movies rated higher on IMDb?" <url href="https://www.imdb.com/">IMDb</url> is a
+      database on the internet providing information on movie and television show casts, plot
+      summaries, trivia, and ratings. We will investigate if, on average, action or romance
+      movies get higher ratings on IMDb.
+    </p>
+
+    <subsection xml:id="imdb-data">
+      <title>IMDb ratings data</title>
+
+      <p>
+        The <c>movies</c> dataset in the <c>ggplot2movies</c> package contains information on
+        movies that have been rated by users of IMDb.com.
+      </p>
+
+      <program language="r">
+        <input>
+movies
+        </input>
+      </program>
+
+      <p>
+        We will focus on a random sample of 200 movies that are classified as either "action"
+        or "romance" movies but not both. We disregard movies that are classified as both so
+        that we can assign all 200 movies into either category. Furthermore, since the original
+        <c>movies</c> dataset was a little messy, we provide a pre-wrangled version of our data
+        in the <c>movies_sample</c> data frame included in the <c>moderndive</c> package.
+      </p>
+
+      <program language="r">
+        <input>
+movies_sample
+        </input>
+      </program>
+
+      <p>
+        The variables include the <c>title</c> and <c>year</c> the movie was filmed.
+        Furthermore, we have a numerical variable <c>rating</c>, which is the IMDb rating out
+        of 10 stars, and a binary categorical variable <c>genre</c> indicating if the movie was
+        an <c>Action</c> or <c>Romance</c> movie. We are interested in whether <c>Action</c>
+        or <c>Romance</c> movies got a higher <c>rating</c> on average.
+      </p>
+
+      <p>
+        Let's perform an exploratory data analysis of this data. Recall from
+        <xref ref="geomboxplot"/> that a boxplot is a visualization we can use to show the
+        relationship between a numerical and a categorical variable. Another option you saw in
+        <xref ref="facets"/> would be to use a faceted histogram. However, in the interest of
+        brevity, let's only present the boxplot in <xref ref="action-romance-boxplot"/>.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = movies_sample, aes(x = genre, y = rating)) +
+  geom_boxplot() +
+  labs(y = "IMDb rating")
+        </input>
+      </program>
+
+      <figure xml:id="action-romance-boxplot">
+        <caption>Boxplot of IMDb rating vs. genre.</caption>
+        <image source="images/09-hypothesis-testing/action-romance-boxplot-1.png" width="80%">
+          <description>A boxplot comparing IMDb ratings of action and romance movies. The romance movies box is positioned higher than the action movies box, suggesting romance movies have a higher median rating.</description>
+        </image>
+      </figure>
+
+      <p>
+        Eyeballing <xref ref="action-romance-boxplot"/>, romance movies have a higher median
+        rating. Do we have reason to believe, however, that there is a <em>significant</em>
+        difference between the mean <c>rating</c> for action movies compared to romance movies?
+        It is hard to say just based on this plot. The boxplot does show that the median sample
+        rating is higher for romance movies. However, there is a large amount of overlap
+        between the boxes. Recall that the median is not necessarily the same as the mean
+        either, depending on whether the distribution is skewed.
+      </p>
+
+      <p>
+        Let's calculate some summary statistics split by the binary categorical variable
+        <c>genre</c>: the number of movies, the mean rating, and the standard deviation split
+        by <c>genre</c>. We will do this using <c>dplyr</c> data wrangling verbs. Notice in
+        particular how we count the number of each type of movie using the <c>n()</c> summary
+        function.
+      </p>
+
+      <program language="r">
+        <input>
+movies_sample |&gt;
+  group_by(genre) |&gt;
+  summarize(n = n(), mean_rating = mean(rating), std_dev = sd(rating))
+        </input>
+      </program>
+
+      <p>
+        Observe that romance movies have a higher mean rating than action movies. The difference
+        in these average ratings is greater than 0. So there appears to be an edge in favor of
+        romance movies. The question is, however, are these results indicative of a true
+        difference for <em>all</em> romance and action movies? Or could we attribute this
+        difference to chance <em>sampling variation</em>?
+      </p>
+    </subsection>
+
+    <subsection xml:id="movies-sampling-scenario">
+      <title>Sampling scenario</title>
+
+      <p>
+        Let's now revisit this study in terms of terminology and notation related to sampling we
+        studied in <xref ref="terminology-and-notation"/>. The <em>study population</em> is all
+        movies in the IMDb database that are either action or romance (but not both). The
+        <em>sample</em> from this population is the 200 movies included in the
+        <c>movies_sample</c> dataset.
+      </p>
+
+      <p>
+        Since this sample was randomly taken from the population <c>movies</c>, it is
+        representative of all romance and action movies on IMDb. Thus, any analysis and results
+        based on <c>movies_sample</c> can generalize to the entire population. What are the
+        relevant <em>population parameter</em> and <em>point estimates</em>? We introduce the
+        fourth sampling scenario:
+      </p>
+
+      <table xml:id="tab-summarytable-ch9">
+        <title>Scenarios of sampling for inference (extended)</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Scenario</cell>
+            <cell>Population parameter</cell>
+            <cell>Notation</cell>
+            <cell>Point estimate</cell>
+            <cell>Notation</cell>
+          </row>
+          <row>
+            <cell>1</cell>
+            <cell>Population proportion</cell>
+            <cell><m>p</m></cell>
+            <cell>Sample proportion</cell>
+            <cell><m>\widehat{p}</m></cell>
+          </row>
+          <row>
+            <cell>2</cell>
+            <cell>Population mean</cell>
+            <cell><m>\mu</m></cell>
+            <cell>Sample mean</cell>
+            <cell><m>\overline{x}</m></cell>
+          </row>
+          <row>
+            <cell>3</cell>
+            <cell>Difference in population proportions</cell>
+            <cell><m>p_1 - p_2</m></cell>
+            <cell>Difference in sample proportions</cell>
+            <cell><m>\widehat{p}_1 - \widehat{p}_2</m></cell>
+          </row>
+          <row>
+            <cell>4</cell>
+            <cell>Difference in population means</cell>
+            <cell><m>\mu_1 - \mu_2</m></cell>
+            <cell>Difference in sample means</cell>
+            <cell><m>\overline{x}_1 - \overline{x}_2</m></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        So, whereas the sampling bowl exercise in <xref ref="sampling-activity"/> concerned
+        <em>proportions</em>, the almonds exercise in <xref ref="revisit-almond-bootstrap"/>
+        concerned <em>means</em>, the case study on whether yawning is contagious in
+        <xref ref="case-study-two-prop-ci"/> and the music genre activity in
+        <xref ref="ht-activity"/> concerned <em>differences in proportions</em>, we are now
+        concerned with <em>differences in means</em>.
+      </p>
+
+      <p>
+        In other words, the population parameter of interest is the difference in population
+        mean ratings <m>\mu_a - \mu_r</m>, where <m>\mu_a</m> is the mean rating of all action
+        movies on IMDb and similarly <m>\mu_r</m> is the mean rating of all romance movies.
+        Additionally the point estimate/sample statistic of interest is the difference in sample
+        means <m>\overline{x}_a - \overline{x}_r</m>. So there appears to be a slight
+        difference in favor of romance movies. The question is, however, could this difference
+        be merely due to chance and sampling variation? Or are these results indicative of a
+        true difference in mean ratings for <em>all</em> romance and action movies on IMDb? To
+        answer this question, we will use hypothesis testing.
+      </p>
+    </subsection>
+
+    <subsection xml:id="movies-hypothesis-test">
+      <title>Conducting the hypothesis test</title>
+
+      <p>We will be testing:</p>
+
+      <md>
+        <mrow>H_0 \amp: \mu_a - \mu_r = 0</mrow>
+        <mrow>\text{vs } H_A \amp: \mu_a - \mu_r \neq 0</mrow>
+      </md>
+
+      <p>
+        In other words, the null hypothesis <m>H_0</m> suggests that both romance and action
+        movies have the same mean rating. This is the "hypothesized universe" we will
+        <em>assume</em> is true. On the other hand, the alternative hypothesis <m>H_A</m>
+        suggests that there is a difference. Unlike the one-sided alternative we used in the
+        popularity exercise <m>H_A: p_m - p_d \gt 0</m>, we are now considering a two-sided
+        alternative of <m>H_A: \mu_a - \mu_r \neq 0</m>.
+      </p>
+
+      <p>
+        Furthermore, we will pre-specify a low significance level of <m>\alpha = 0.001</m>. By
+        setting this value low, all things being equal, there is a lower chance that the
+        <m>p</m>-value will be less than <m>\alpha</m>. Thus, there is a lower chance that we
+        will reject the null hypothesis <m>H_0</m> in favor of the alternative hypothesis
+        <m>H_A</m>. In other words, we will reject the hypothesis that there is no difference
+        in mean ratings for all action and romance movies, only if we have quite strong
+        evidence. This is known as a "conservative" hypothesis testing procedure.
+      </p>
+
+      <subsubsection xml:id="movies-specify">
+        <title>1. <c>specify</c> variables</title>
+
+        <p>
+          Let's now perform all the steps of the <c>infer</c> workflow. We first
+          <c>specify()</c> the variables of interest in the <c>movies_sample</c> data frame
+          using the formula <c>rating ~ genre</c>. This tells <c>infer</c> that the numerical
+          variable <c>rating</c> is the outcome variable, while the binary variable
+          <c>genre</c> is the explanatory variable. Note that unlike previously when we were
+          interested in proportions, since we are now interested in the mean of a numerical
+          variable, we do not need to set the <c>success</c> argument.
+        </p>
+
+        <program language="r">
+          <input>
+movies_sample |&gt;
+  specify(formula = rating ~ genre)
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="movies-hypothesize">
+        <title>2. <c>hypothesize</c> the null</title>
+
+        <p>
+          We set the null hypothesis <m>H_0: \mu_a - \mu_r = 0</m> by using the
+          <c>hypothesize()</c> function. Since we have two samples, action and romance movies,
+          we set <c>null</c> to be <c>"independence"</c> as we described in
+          <xref ref="ht-infer"/>.
+        </p>
+
+        <program language="r">
+          <input>
+movies_sample |&gt;
+  specify(formula = rating ~ genre) |&gt;
+  hypothesize(null = "independence")
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="movies-generate">
+        <title>3. <c>generate</c> replicates</title>
+
+        <p>
+          After we have set the null hypothesis, we generate "shuffled" replicates assuming the
+          null hypothesis is true by repeating the shuffling/permutation exercise you performed
+          in <xref ref="ht-activity"/>. We will repeat this resampling without replacement of
+          <c>type = "permute"</c> a total of 1000 times. Feel free to run the code to check out
+          what the <c>generate()</c> step produces.
+        </p>
+
+        <program language="r">
+          <input>
+movies_sample |&gt;
+  specify(formula = rating ~ genre) |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  View()
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="movies-calculate">
+        <title>4. <c>calculate</c> summary statistics</title>
+
+        <p>
+          Now that we have 1000 replicated "shuffles" assuming the null hypothesis <m>H_0</m>
+          that both <c>Action</c> and <c>Romance</c> movies on average have the same ratings
+          on IMDb, let's <c>calculate()</c> the appropriate summary statistic for these 1000
+          replicated shuffles. Since the unknown population parameter of interest is the
+          difference in population means <m>\mu_{a} - \mu_{r}</m>, the test statistic of
+          interest here is the difference in sample means <m>\overline{x}_{a} -
+          \overline{x}_{r}</m>.
+        </p>
+
+        <p>
+          For each of our 1000 shuffles, we can calculate this test statistic by setting
+          <c>stat = "diff in means"</c>. Furthermore, since we are interested in
+          <m>\overline{x}_{a} - \overline{x}_{r}</m>, we set
+          <c>order = c("Action", "Romance")</c>. Let's save the results in a data frame called
+          <c>null_distribution_movies</c>:
+        </p>
+
+        <program language="r">
+          <input>
+null_distribution_movies &lt;- movies_sample |&gt;
+  specify(formula = rating ~ genre) |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  calculate(stat = "diff in means", order = c("Action", "Romance"))
+null_distribution_movies
+          </input>
+        </program>
+
+        <p>
+          Observe that we have 1000 values of <c>stat</c>, each representing one instance of
+          <m>\overline{x}_{a} - \overline{x}_{r}</m>. The 1000 values form the <em>null
+          distribution</em>. We can also compute the observed test statistic
+          <m>\overline{x}_{a} - \overline{x}_{r}</m> using the code that constructed the null
+          distribution but with the <c>hypothesize()</c> and <c>generate()</c> steps removed.
+          We save this in <c>obs_diff_means</c>:
+        </p>
+
+        <program language="r">
+          <input>
+obs_diff_means &lt;- movies_sample |&gt;
+  specify(formula = rating ~ genre) |&gt;
+  calculate(stat = "diff in means", order = c("Action", "Romance"))
+obs_diff_means
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="movies-visualize">
+        <title>5. <c>visualize</c> the p-value</title>
+
+        <p>
+          Lastly, in order to compute the <m>p</m>-value, we have to assess how "extreme" the
+          observed difference in means is. We do this by comparing the observed value to our
+          null distribution. We visualize both the null distribution and the <m>p</m>-value in
+          <xref ref="null-distribution-movies-2"/>. Unlike our example in
+          <xref ref="infer-workflow-ht"/> involving music popularity, since we have a two-sided
+          <m>H_A: \mu_a - \mu_r \neq 0</m>, we have to allow for both possibilities for
+          <em>more extreme</em>, so we set <c>direction = "both"</c>.
+        </p>
+
+        <program language="r">
+          <input>
+visualize(null_distribution_movies, bins = 10) +
+  shade_p_value(obs_stat = obs_diff_means, direction = "both")
+          </input>
+        </program>
+
+        <figure xml:id="null-distribution-movies-2">
+          <caption>Null distribution, observed test statistic, and <m>p</m>-value.</caption>
+          <image source="images/09-hypothesis-testing/null-distribution-movies-2-1.png" width="80%">
+            <description>A histogram of the null distribution for the difference in mean IMDb ratings between action and romance movies, with the observed test statistic marked and both tails shaded to represent the two-sided p-value.</description>
+          </image>
+        </figure>
+
+        <p>
+          Let's go over the elements of this plot. First, the histogram is the <em>null
+          distribution</em>. Second, the solid line is the <em>observed test statistic</em>,
+          or the difference in sample means we observed in real life. Third, the two shaded
+          areas of the histogram form the <em><m>p</m>-value</em>, or the probability of
+          obtaining a test statistic just as or more extreme than the observed test statistic
+          <em>assuming the null hypothesis <m>H_0</m> is true</em>.
+        </p>
+
+        <p>
+          What proportion of the null distribution is shaded? In other words, what is the
+          numerical value of the <m>p</m>-value? We use the <c>get_p_value()</c> function to
+          compute this value:
+        </p>
+
+        <program language="r">
+          <input>
+null_distribution_movies |&gt;
+  get_p_value(obs_stat = obs_diff_means, direction = "both")
+          </input>
+        </program>
+
+        <p>
+          This <m>p</m>-value is very small. In other words, there is a very small chance that
+          we would observe the difference in means we found in a hypothesized universe where
+          there was truly no difference in ratings.
+        </p>
+
+        <p>
+          But this <m>p</m>-value is larger than our (even smaller) pre-specified <m>\alpha</m>
+          significance level of 0.001. Thus, we are inclined to fail to reject the null
+          hypothesis <m>H_0: \mu_a - \mu_r = 0</m>. In non-statistical language, the
+          conclusion is: we do not have the evidence needed in this sample of data to suggest
+          that we should reject the hypothesis that there is no difference in mean IMDb ratings
+          between romance and action movies. We, thus, cannot say that a difference exists in
+          romance and action movie ratings, on average, for all IMDb movies.
+        </p>
+      </subsubsection>
+
+      <exercises>
+        <exercise xml:id="lc9-9">
+          <statement>
+            <p>
+              Conduct the same analysis comparing action movies versus romantic movies using the
+              median rating instead of the mean rating. What was different and what was the
+              same?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-10">
+          <statement>
+            <p>
+              What conclusions can you make from viewing the faceted histogram looking at
+              <c>rating</c> versus <c>genre</c> that you could not see when looking at the
+              boxplot?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-11">
+          <statement>
+            <p>
+              Describe in a paragraph how we used Allen Downey's diagram to conclude if a
+              statistical difference existed between mean movie ratings for action and romance
+              movies.
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-12">
+          <statement>
+            <p>
+              Why are we relatively confident that the distributions of the sample ratings will
+              be good approximations of the population distributions of ratings for the two
+              genres?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-13">
+          <statement>
+            <p>
+              Using the definition of <m>p</m>-value, write in words what the <m>p</m>-value
+              represents for the hypothesis test comparing the mean rating of romance to action
+              movies.
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-14">
+          <statement>
+            <p>
+              What is the value of the <m>p</m>-value for the two-sided hypothesis test
+              comparing the mean rating of romance to action movies?
+            </p>
+          </statement>
+        </exercise>
+
+        <exercise xml:id="lc9-15">
+          <statement>
+            <p>
+              Test your data-wrangling knowledge and EDA skills:
+              <ul>
+                <li><p>Use <c>dplyr</c> and <c>tidyr</c> to create the necessary data frame
+                focused on only action and romance movies (but not both) from the
+                <c>movies</c> data frame in the <c>ggplot2movies</c> package.</p></li>
+                <li><p>Make a boxplot and a faceted histogram of this population data comparing
+                ratings of action and romance movies from IMDb.</p></li>
+                <li><p>Discuss how these plots compare to the similar plots produced for the
+                <c>movies_sample</c> data.</p></li>
+              </ul>
+            </p>
+          </statement>
+        </exercise>
+      </exercises>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="nhst-conclusion">
+    <title>Summary and Final Remarks</title>
+
+    <subsection xml:id="theory-hypo">
+      <title>Theory-based approach for two-sample hypothesis tests</title>
+
+      <p>
+        As we did previously when we discussed the theory-based approach for confidence
+        intervals or hypothesis tests for the one-sample problem, we discuss now some of the
+        theory needed to perform two-sample hypothesis tests. We present an example of a
+        traditional theory-based method to conduct hypothesis tests. This method relies on the
+        Central Limit Theorem and properties of random variables, expected value, variance, and
+        standard deviation. It is also a direct extension of the one-sample problem discussed in
+        <xref ref="tying-CI-hypo"/>.
+      </p>
+
+      <p>
+        Theory-based methods have been used for decades when researchers did not have access to
+        computers that could run thousands of calculations quickly and efficiently. Now computing
+        power is more accessible and simulation-based methods are becoming more popular, but
+        researchers in many fields continue to use theory-based methods.
+      </p>
+
+      <p>
+        The theory-based method we focus on is known as the
+        <term>Welch's two-sample <m>t</m>-test</term>
+        <idx><h>Welch's two-sample t-test</h></idx> for testing differences in sample means.
+        The test statistic we use is the <term>two-sample <m>t</m>-statistic</term>, a
+        standardized version of the difference in sample means
+        <m>\overline{x}_1 - \overline{x}_2</m>. The data we use is once again the
+        <c>movies_sample</c> data of action and romance movies from
+        <xref ref="ht-case-study"/>.
+      </p>
+
+      <subsubsection xml:id="welch-t-statistic">
+        <title>Welch's two-sample t-statistic</title>
+
+        <p>
+          In <xref ref="sampling-other-scenarios"/> we introduced the sampling distribution for
+          the difference of two sample means. If we let <m>\overline{X}_a</m> be the random
+          variable for the sample mean of action films' rating and <m>\overline{X}_r</m> the
+          one for romance film's rating, the distribution of the difference of these random
+          variables is
+        </p>
+
+        <me>
+          \overline{X}_a - \overline{X}_r \sim \text{Normal}\!\left(\mu_a - \mu_r,\;
+          \sqrt{\frac{\sigma_a^2}{n_a} + \frac{\sigma_r^2}{n_r}} \right)
+        </me>
+
+        <p>
+          where <m>\mu_a</m> and <m>\mu_r</m> are the population mean ratings, <m>\sigma_a</m>
+          and <m>\sigma_r</m> the population standard deviations, and <m>n_a</m> and
+          <m>n_r</m> the sample sizes for action and romance genres, respectively.
+        </p>
+
+        <p>
+          When using the samples, as we did for one-sample problems, we standardize the
+          difference in sample means, <m>\overline{x}_a - \overline{x}_r</m>, by subtracting
+          its mean (the differences in population means) and dividing by its standard error.
+          This constructs a test statistic known as the
+          <term>Welch's two-sample <m>t</m>-test statistic</term>
+          <idx><h>Welch's two-sample t-test statistic</h></idx>:
+        </p>
+
+        <me>
+          t = \dfrac{(\bar{x}_a - \bar{x}_r) - (\mu_a - \mu_r)}{\text{SE}(\bar{x}_a - \bar{x}_r)}
+          = \dfrac{(\bar{x}_a - \bar{x}_r) - (\mu_a - \mu_r)}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
+        </me>
+
+        <p>
+          Observe that the formula for <m>\text{SE}(\bar{x}_a - \bar{x}_r)</m> has the sample
+          sizes <m>n_a</m> and <m>n_r</m> in them. So as the sample sizes increase, the
+          standard error goes down. We have seen this characteristic for one-sample problems in
+          <xref ref="sampling-variation"/> and <xref ref="random-variable-sample-mean"/> when
+          describing the sample distribution of the sample mean or the sample proportion and in
+          <xref ref="theory-based-CI"/> when discussing the sample size effect on confidence
+          intervals.
+        </p>
+
+        <p>
+          Let's state the null and alternative hypotheses for this test:
+        </p>
+
+        <md>
+          <mrow>H_0: \amp\mu_a - \mu_r = 0</mrow>
+          <mrow>H_A: \amp\mu_a - \mu_r \ne 0</mrow>
+        </md>
+
+        <p>
+          The claim under the null hypothesis is that the difference between the population
+          means is zero. This is equivalent to claiming that the means are the same,
+          <m>\mu_a = \mu_r</m>, which is the typical test, as we try to determine whether or
+          not the population means are different. Yet, the structure of the test allows for
+          testing other differences as well, if needed.
+        </p>
+
+        <p>
+          The Welch's two-sample <m>t</m>-test becomes:
+        </p>
+
+        <me>
+          t = \dfrac{(\bar{x}_a - \bar{x}_r) - 0}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
+          = \dfrac{\bar{x}_a - \bar{x}_r}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
+        </me>
+
+        <p>
+          Using results based on the Central Limit Theorem, linear combinations of independent
+          random variables, and properties of the expected value, variance, and standard
+          deviation, it can be shown that the Welch's test statistic follows a
+          <m>t</m> distribution.
+        </p>
+
+        <p>
+          In <xref ref="t-distribution-CI"/> we have discussed the properties of the
+          <m>t</m> distribution. Recall that the <m>t</m> distribution is similar to the
+          standard normal; its density curve is also bell-shaped, and it is symmetric around
+          zero, but the tails of the <m>t</m> distribution are a little thicker (or heavier)
+          than those of the standard normal. This is important for hypothesis testing, since the
+          <m>p</m>-value is calculated from the areas on those tails. Also recall that as the
+          degrees of freedom increase, the <m>t</m>-distribution more and more approximates the
+          standard normal curve.
+        </p>
+
+        <p>
+          In terms of the Welch's two-sample <m>t</m>-test, it has been shown that the test
+          statistic follows a <m>t</m> distribution with degrees of freedom that can be
+          approximated by
+        </p>
+
+        <me>
+          \widehat{df} = \left( \dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r} \right)^2 \Bigg/
+          \left( \dfrac{\left( \dfrac{s_a^2}{n_a} \right)^2}{n_a - 1} +
+          \dfrac{\left( \dfrac{s_r^2}{n_r} \right)^2}{n_r - 1} \right)
+        </me>
+
+        <p>
+          This formula is just too long to enter manually every time that is needed. (A suitable
+          approximation for the degrees of freedom using <m>n_a + n_r - 2</m> is often used
+          instead for reasonably large sample sizes.) But, fortunately, R and other statistical
+          software have already done the formula inputting for us by introducing relevant
+          functions. While it is important to get good approximations to the degrees of freedom
+          in order to get the appropriate <m>p</m>-values, learning this formula goes beyond the
+          reach of those new to statistical inference, and it does little to build the intuition
+          of the <m>t</m>-test. Therefore, we will trust the results that R or other statistical
+          packages provide for us.
+        </p>
+
+        <p>
+          Let's compute the <m>t</m>-test statistic. Recall the summary statistics we computed
+          during our exploratory data analysis in <xref ref="imdb-data"/>.
+        </p>
+
+        <program language="r">
+          <input>
+movies_sample |&gt;
+  group_by(genre) |&gt;
+  summarize(n = n(), mean_rating = mean(rating), std_dev = sd(rating))
+          </input>
+        </program>
+
+        <p>
+          Using these values, the observed two-sample <m>t</m>-test statistic is
+        </p>
+
+        <me>
+          \dfrac{\bar{x}_a - \bar{x}_r}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
+          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -3.32
+        </me>
+
+        <p>
+          How can we compute the <m>p</m>-value using this theory-based test statistic? We
+          could do it by calculating the degrees of freedom and using the function
+          <c>pt()</c> as we did earlier. Instead, we use the function <c>t_test()</c> from the
+          package <c>infer</c> with the appropriate <c>formula</c> and <c>order</c>, as we did
+          for the simulation-based approach.
+        </p>
+
+        <p>The results are shown next:</p>
+
+        <program language="r">
+          <input>
+movies_sample |&gt;
+  t_test(formula = rating ~ genre,
+         order = c("Action", "Romance"),
+         alternative = "two-sided")
+          </input>
+        </program>
+
+        <p>
+          Based on the small <m>p</m>-value we reject the null hypothesis; the average rating
+          for the <c>Romance</c> movies is not the same as the average rating for the
+          <c>Action</c> movies. This result is similar to the one calculated using the
+          simulation-based approach.
+        </p>
+
+        <p>
+          To be able to use the Welch's <m>t</m>-test, there are some conditions that are
+          necessary so that the underlying mathematical theory holds:
+        </p>
+
+        <ol>
+          <li>
+            <p>The populations should be close to normal or the samples should be large. Many
+            textbooks suggest the sample sizes to be greater than 30, but there is no clear
+            mathematical foundation for this rule of thumb. In general, as long as the
+            distribution of the samples appear to be close to symmetric, the Welch's
+            <m>t</m>-test may provide useful results.</p>
+          </li>
+          <li><p>The samples should be random samples.</p></li>
+          <li>
+            <p>The sample of one population should be independent from the sample of the other
+            population.</p>
+          </li>
+        </ol>
+
+        <p>
+          Let's see if these conditions hold for our <c>movies_sample</c> data:
+        </p>
+
+        <ol>
+          <li>
+            <p>This is met since the action and romance movie samples do not seem to be highly
+            skewed and therefore are somewhat symmetric.</p>
+          </li>
+          <li>
+            <p>This is met since we sampled the action and romance movies at random and in an
+            unbiased fashion from the database of all IMDb movies.</p>
+          </li>
+          <li>
+            <p>Unfortunately, we do not know how IMDb computes the ratings. For example, if
+            the same person can rate multiple movies, then those observations may be related.
+            This does not appear to be a major problem in this context though.</p>
+          </li>
+        </ol>
+
+        <p>
+          Assuming all three conditions are not clearly broken, we can be reasonably certain
+          that the theory-based <m>t</m>-test results are valid.
+        </p>
+      </subsubsection>
+    </subsection>
+
+    <subsection xml:id="when-inference-not-needed">
+      <title>When inference is not needed</title>
+
+      <p>
+        We have now walked through several different examples of how to use the <c>infer</c>
+        package to perform statistical inference: constructing confidence intervals and
+        conducting hypothesis tests. For each of these examples, we made it a point to always
+        perform an exploratory data analysis (EDA) first; specifically, by looking at the raw
+        data values, by using data visualization with <c>ggplot2</c>, and by data wrangling
+        with <c>dplyr</c> beforehand. We <em>highly</em> encourage you to always do the same.
+        As a beginner to statistics, EDA helps you develop intuition as to what statistical
+        methods like confidence intervals and hypothesis tests can tell us. Even as a seasoned
+        practitioner of statistics, EDA helps guide your statistical investigations. In
+        particular, is statistical inference even needed?
+      </p>
+
+      <p>
+        Let's consider an example. Say we are interested in the following question: Of
+        <em>all</em> flights leaving a New York City airport, are Hawaiian Airlines flights in
+        the air for longer than Alaska Airlines flights? Furthermore, let's assume that 2023
+        flights are a representative sample of all such flights. Then we can use the
+        <c>flights</c> data frame in the <c>nycflights23</c> package we introduced in
+        <xref ref="nycflights"/> to answer our question. Let's filter this data frame to only
+        include Hawaiian and Alaska Airlines using their <c>carrier</c> codes <c>HA</c> and
+        <c>AS</c>:
+      </p>
+
+      <program language="r">
+        <input>
+flights_sample &lt;- flights |&gt;
+  filter(carrier %in% c("HA", "AS"))
+        </input>
+      </program>
+
+      <p>
+        There are two possible statistical inference methods we could use to answer such
+        questions. First, we could construct a 95% confidence interval for the difference in
+        population means <m>\mu_{HA} - \mu_{AS}</m>, where <m>\mu_{HA}</m> is the mean air
+        time of all Hawaiian Airlines flights and <m>\mu_{AS}</m> is the mean air time of all
+        Alaska Airlines flights. We could then check if the entirety of the interval is greater
+        than 0, suggesting that <m>\mu_{HA} - \mu_{AS} \gt 0</m>, or, in other words
+        suggesting that <m>\mu_{HA} \gt \mu_{AS}</m>. Second, we could perform a hypothesis
+        test of the null hypothesis <m>H_0: \mu_{HA} - \mu_{AS} = 0</m> versus the alternative
+        hypothesis <m>H_A: \mu_{HA} - \mu_{AS} \gt 0</m>.
+      </p>
+
+      <p>
+        However, let's first construct an exploratory visualization as we suggested earlier.
+        Since <c>air_time</c> is numerical and <c>carrier</c> is categorical, a boxplot can
+        display the relationship between these two variables, which we display in
+        <xref ref="ha-as-flights-boxplot"/>.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights_sample, mapping = aes(x = carrier, y = air_time)) +
+  geom_boxplot() +
+  labs(x = "Carrier", y = "Air Time")
+        </input>
+      </program>
+
+      <figure xml:id="ha-as-flights-boxplot">
+        <caption>Air time for Hawaiian and Alaska Airlines flights departing NYC in 2023.</caption>
+        <image source="images/09-hypothesis-testing/ha-as-flights-boxplot-1.png" width="80%">
+          <description>A boxplot comparing air times of Hawaiian Airlines (HA) and Alaska Airlines (AS) flights from NYC in 2023. The Hawaiian Airlines box is clearly much higher and does not overlap with the Alaska Airlines box at all.</description>
+        </image>
+      </figure>
+
+      <p>
+        This is what we like to call "no PhD in Statistics needed" moments. You do not have to
+        be an expert in statistics to know that Alaska Airlines and Hawaiian Airlines have
+        <em>notably</em> different air times. The two boxplots do not even overlap! Constructing
+        a confidence interval or conducting a hypothesis test would frankly not provide much
+        more insight than <xref ref="ha-as-flights-boxplot"/>.
+      </p>
+
+      <p>
+        Let's investigate why we observe such a clear-cut difference between these two airlines
+        using data wrangling. Let's first group the rows of <c>flights_sample</c> not only by
+        <c>carrier</c> but also by destination <c>dest</c>. Subsequently, we will compute two
+        summary statistics: the number of observations using <c>n()</c> and the mean airtime:
+      </p>
+
+      <program language="r">
+        <input>
+flights_sample |&gt;
+  group_by(carrier, dest) |&gt;
+  summarize(n = n(), mean_time = mean(air_time, na.rm = TRUE), .groups = "keep")
+        </input>
+      </program>
+
+      <p>
+        It turns out that from New York City in 2023 Alaska flew to seven different airports on
+        the West Coast region of the US while Hawaiian only flew to <c>HNL</c> (Honolulu) from
+        NYC. Given the clear difference in distance from New York City to the West Coast versus
+        New York City to Honolulu, it is not surprising that we observe such different
+        (statistically significantly different, in fact) air times in flights.
+      </p>
+
+      <p>
+        This is a clear example of not needing to do anything more than a simple exploratory
+        data analysis using data visualization and descriptive statistics to get an appropriate
+        conclusion. This is why we highly recommend you perform an EDA of any sample data
+        before running statistical inference methods like confidence intervals and hypothesis
+        tests.
+      </p>
+    </subsection>
+
+    <subsection xml:id="p-value-problems">
+      <title>Problems with p-values</title>
+
+      <p>
+        On top of the many common misunderstandings about hypothesis testing and <m>p</m>-values
+        we listed in <xref ref="ht-interpretation"/>, another unfortunate consequence of the
+        expanded use of <m>p</m>-values and hypothesis testing is a phenomenon known as
+        "<term>p-hacking</term><idx><h>p-hacking</h></idx>." p-hacking is the act of
+        "cherry-picking" only results that are "statistically significant" while dismissing
+        those that are not, even if at the expense of the scientific ideas. There are lots of
+        articles written recently about misunderstandings and the problems with <m>p</m>-values.
+        We encourage you to check some of them out:
+      </p>
+
+      <ol>
+        <li><p><url href="https://en.wikipedia.org/wiki/Misuse_of_p-values">Misuse of
+        <m>p</m>-values</url></p></li>
+        <li><p><url href="https://www.vox.com/science-and-health/2017/7/31/16021654/p-values-statistical-significance-redefine-0005">What
+        a nerdy debate about <m>p</m>-values shows about science – and how to fix
+        it</url></p></li>
+        <li><p><url href="https://www.nature.com/articles/nature.2016.19503">Statisticians
+        issue warning over misuse of <m>P</m> values</url></p></li>
+        <li><p><url href="https://fivethirtyeight.com/features/you-cant-trust-what-you-read-about-nutrition/">You
+        Cannot Trust What You Read About Nutrition</url></p></li>
+        <li><p><url href="http://www.fharrell.com/post/pval-litany/">A Litany of Problems
+        with p-values</url></p></li>
+      </ol>
+
+      <p>
+        Such issues were getting so problematic that the American Statistical Association (ASA)
+        put out a statement in 2016 titled, <url href="https://www.amstat.org/asa/files/pdfs/P-ValueStatement.pdf">"The
+        ASA Statement on Statistical Significance and <m>P</m>-Values,"</url> with six
+        principles underlying the proper use and interpretation of <m>p</m>-values. The ASA
+        released this guidance on <m>p</m>-values to improve the conduct and interpretation of
+        quantitative science and to inform the growing emphasis on reproducibility of science
+        research.
+      </p>
+
+      <p>
+        We as authors much prefer the use of confidence intervals for statistical inference,
+        since in our opinion they are much less prone to large misinterpretation. However, many
+        fields still exclusively use <m>p</m>-values for statistical inference and this is one
+        reason for including them in this text. We encourage you to learn more about
+        "p-hacking" as well and its implication for science.
+      </p>
+    </subsection>
+
+    <subsection xml:id="nhst-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        If you want more examples of the <c>infer</c> workflow for conducting hypothesis tests,
+        we suggest you check out the <c>infer</c> package homepage, in particular, a series of
+        example analyses available at
+        <url href="https://infer.netlify.app/articles/">https://infer.netlify.app/articles/</url>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="nhst-whats-to-come">
+      <title>What's to come</title>
+
+      <p>
+        We conclude with the <c>infer</c> pipeline for hypothesis testing shown in
+        <xref ref="infer-workflow-ht-diagram"/>.
+      </p>
+
+      <figure xml:id="infer-workflow-ht-diagram">
+        <caption><c>infer</c> package workflow for hypothesis testing.</caption>
+        <image source="images/flowcharts/infer/ht_diagram_trimmed.png" width="100%">
+          <description>A flowchart showing the infer package workflow for hypothesis testing: specify, hypothesize, generate, calculate, and visualize steps.</description>
+        </image>
+      </figure>
+
+      <p>
+        Now that we have armed ourselves with an understanding of confidence intervals from
+        <xref ref="confidence-intervals"/> and hypothesis tests from this chapter, we will now
+        study inference for regression in the upcoming
+        <xref ref="inference-for-regression"/>.
+      </p>
+    </subsection>
+  </section>
+
 </chapter>
