@@ -38,6 +38,9 @@
     <!-- Chapter 7: Sampling -->
     <xi:include href="./ch_sampling.ptx" />
 
+    <!-- Chapter 10: Inference for Regression (first half) -->
+    <xi:include href="./ch_inference_for_regression.ptx" />
+
     <!-- Chapter 11: Tell Your Story with Data -->
     <xi:include href="./ch_tell_your_story.ptx" />
 
