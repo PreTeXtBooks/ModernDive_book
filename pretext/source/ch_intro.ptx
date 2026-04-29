@@ -5,5 +5,12 @@
   <p>
     This book is a PreTeXt version. This is the skeleton to be filled in.
   </p>
-  
+
+  <section xml:id="packages">
+    <title>What are R packages?</title>
+    <p>
+      This section will cover R packages: what they are, how to install them, and how to load them.
+    </p>
+  </section>
+
 </chapter>
