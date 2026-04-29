@@ -61,11 +61,11 @@ UN_data_ch6 &lt;- un_member_states_2024 |&gt;
   select(country,
          life_expectancy_2022,
          fertility_rate_2022,
-         income_group_2024)|&gt;
-  na.omit()|&gt;
+         income_group_2024) |&gt;
+  na.omit() |&gt;
   rename(life_exp = life_expectancy_2022,
          fert_rate = fertility_rate_2022,
-         income = income_group_2024)|&gt;
+         income = income_group_2024) |&gt;
   mutate(income = factor(income,
                          levels = c("Low income", "Lower middle income",
                                     "Upper middle income", "High income")))
