@@ -1588,7 +1588,7 @@ ggplot(data = fruits_counted, mapping = aes(x = fruit, y = number)) +
         package and visualize the distribution of the categorical variable
         <c>carrier</c>. In other words, let's visualize the number of domestic flights
         out of New York City each airline company flew in 2023. Recall from
-        <xref ref="sec-exploredataframes"/> when you first explored the <c>flights</c>
+        <xref ref="subsec-exploredataframes"/> when you first explored the <c>flights</c>
         data frame, you saw that each row corresponds to a flight. In other words, the
         <c>flights</c> data frame is more like the <c>fruits</c> data frame than the
         <c>fruits_counted</c> data frame because the flights have not been pre-counted by

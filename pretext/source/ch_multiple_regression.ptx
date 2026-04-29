@@ -13,7 +13,7 @@
   <subsection xml:id="mult-reg-packages">
     <title>Needed packages</title>
     <p>
-      If needed, read <xref ref="packages"/> for information on how to install and load R packages.
+      If needed, read <xref ref="sec-packages"/> for information on how to install and load R packages.
     </p>
     <program language="r">
       <input>
@@ -566,7 +566,7 @@ head(pts_no_int)
       <title>Exploratory data analysis</title>
 
       <p>
-        We load the <c>Credit</c> data frame<idx><h>R packages</h><h>ISLR2</h><h>Credit data frame</h></idx> and to ensure the type of behavior we have become accustomed to in using the <c>tidyverse</c>, we also convert this data frame to be a <c>tibble</c> using <c>as_tibble()</c>. We construct a new data frame <c>credit_ch6</c> with only the variables needed. We do this by using the <c>select()</c> verb as we did in <xref ref="select"/> and, in addition, we save the selecting variables with different names: <c>Balance</c> becomes <c>debt</c>, <c>Limit</c> becomes <c>credit_limit</c>, and <c>Income</c> becomes <c>income</c>:
+        We load the <c>Credit</c> data frame<idx><h>R packages</h><h>ISLR2</h><h>Credit data frame</h></idx> and to ensure the type of behavior we have become accustomed to in using the <c>tidyverse</c>, we also convert this data frame to be a <c>tibble</c> using <c>as_tibble()</c>. We construct a new data frame <c>credit_ch6</c> with only the variables needed. We do this by using the <c>select()</c> verb as we did in <xref ref="sec-select"/> and, in addition, we save the selecting variables with different names: <c>Balance</c> becomes <c>debt</c>, <c>Limit</c> becomes <c>credit_limit</c>, and <c>Income</c> becomes <c>income</c>:
       </p>
 
       <program language="r">

@@ -1891,7 +1891,7 @@ named_dests |&gt;
         observations.
       </p>
       <p>
-        We'll see in the upcoming <xref ref="ch-tidy"/> that there are actually two
+        We'll see in the upcoming <xref ref="tidy"/> that there are actually two
         ways to represent data in spreadsheet-type rectangular format: (1) <q>wide</q>
         format and (2) <q>tall/narrow</q> format. The tall/narrow format is also known
         as <em>tidy</em> format in R user circles. While the distinction between
@@ -1905,7 +1905,7 @@ named_dests |&gt;
         Furthermore, up until now we've only explored, visualized, and wrangled data
         saved within R packages. But what if you want to analyze data that you have
         saved in a Microsoft Excel, a Google Sheets, or a
-        <q>Comma-Separated Values</q> (CSV) file? In <xref ref="sec-csv"/>, we'll
+        <q>Comma-Separated Values</q> (CSV) file? In <xref ref="tidy"/>, we'll
         show you how to import this data into R using the <c>readr</c> package.
       </p>
     </subsection>
