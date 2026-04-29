@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="tidy" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Data Importing and Tidy Data</title>
+
+  <p>
+    This chapter will cover data importing and the concept of tidy data.
+  </p>
+
+</chapter>
