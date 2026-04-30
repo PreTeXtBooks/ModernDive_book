@@ -97,7 +97,7 @@ library(infer)
 
     <p>
       Recall that loading the <c>tidyverse</c> package loads many packages that we have encountered
-      earlier. For details refer to <xref ref="tidyverse-package"/>. The packages
+      earlier. For details refer to <xref ref="packages"/>. The packages
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used in
       this chapter.
     </p>
@@ -1549,7 +1549,7 @@ almonds_sample_100 |&gt;
       <p>
         The <c>infer</c> package<idx><h>R packages</h><h>infer</h></idx> is an R package for
         statistical inference. It makes efficient use of the <c>|&gt;</c> pipe operator we
-        introduced in <xref ref="piping"/> to spell out the sequence of steps necessary to perform
+        introduced in <xref ref="wrangling"/> to spell out the sequence of steps necessary to perform
         statistical inference in a <q>tidy</q> and transparent fashion. Just as the <c>dplyr</c>
         package provides functions with verb-like names to perform data wrangling, the <c>infer</c>
         package provides functions with intuitive verb-like names to perform statistical inference,
@@ -1636,7 +1636,7 @@ almonds_sample_100 |&gt;
           Notice how the data itself does not change, but the <c>Response: weight (numeric)</c>
           <em>meta-data</em> does. This is similar to how the <c>group_by()</c> verb from
           <c>dplyr</c> doesn't change the data, but only adds <q>grouping</q> meta-data, as we saw
-          in <xref ref="groupby"/>.
+          in <xref ref="wrangling"/>.
         </p>
         <p>
           We can also specify which variables are the focus of the study by introducing a
@@ -2115,6 +2115,30 @@ visualize(bootstrap_means) +
         </exercise>
       </exercises>
     </subsection>
+  </section>
+
+  <!-- Stub sections for second half of chapter 8 (to be fully converted) -->
+  <section xml:id="bootstrap-remarks">
+    <title>Additional Bootstrap Remarks</title>
+    <p>
+      This section will cover additional remarks about the bootstrap, including rate of
+      convergence and reasons to prefer the bootstrap in certain settings.
+    </p>
+  </section>
+
+  <section xml:id="case-study-two-prop-ci">
+    <title>Case Study: Is Yawning Contagious?</title>
+    <p>
+      This section will present the Mythbusters yawning experiment as a case study for
+      two-sample confidence intervals for a difference in proportions.
+    </p>
+  </section>
+
+  <section xml:id="summary-CI">
+    <title>Summary and Final Remarks</title>
+    <p>
+      This section will summarize confidence interval methods and present extensions.
+    </p>
   </section>
 
 </chapter>

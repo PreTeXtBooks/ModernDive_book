@@ -84,7 +84,7 @@ library(ggplot2movies)
 
     <p>
       Recall that loading the <c>tidyverse</c> package loads many packages that we have
-      encountered earlier. For details refer to <xref ref="tidyverse-package"/>. The packages
+      encountered earlier. For details refer to <xref ref="packages"/>. The packages
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used
       in this chapter.
     </p>
@@ -258,7 +258,7 @@ almonds_sample_100 |>
           follows a <m>t</m> distribution with <m>n-1</m> degrees of freedom. Of course, we do
           not know what <m>\mu</m> is. But since we assume that the null hypothesis is true, we
           can use this value to obtain the test statistic as shown in this code next.
-          Table <xref ref="tab-hypo-test-1"/> presents these values.
+          The output presents these values.
         </p>
 
         <program language="r">
@@ -684,7 +684,7 @@ bootstrap_means |&gt;
         <c>rock</c>). You will have the opportunity to explore relationships with the other
         genres and popularity in the Learning Checks. Let's explore this data by focusing on
         just <c>metal</c> and <c>deep-house</c> by looking at 12 randomly selected rows and our
-        columns of interest in <xref ref="tab-twelve-spotify"/>. Note that we also group our
+        columns of interest in the output below. Note that we also group our
         selection so that each of the four possible groupings of <c>track_genre</c> and
         <c>popular_or_not</c> are selected.
       </p>
@@ -715,7 +715,7 @@ spotify_metal_deephouse |&gt;
       <p>
         Let's perform an exploratory data analysis of the relationship between the two
         categorical variables <c>track_genre</c> and <c>popular_or_not</c>. Recall that we saw
-        in <xref ref="two-categ-barplot"/> that one way we can visualize such a relationship is
+        in <xref ref="viz"/> that one way we can visualize such a relationship is
         by using a stacked barplot.
       </p>
 
@@ -790,7 +790,7 @@ spotify_metal_deephouse |&gt;
         available in the <c>spotify_52_original</c> data frame in the <c>moderndive</c> package.
         We also remove the <c>track_id</c> column for simplicity. It is an identification
         variable that is not relevant for our analysis. A sample of this is shown in
-        <xref ref="tab-spotify-52-sample"/>.
+        the output below.
       </p>
 
       <program language="r">
@@ -1072,7 +1072,7 @@ spotify_52_shuffled |&gt;
       <idx><h>hypothesis testing</h><h>test statistic</h></idx> is a
       <em>point estimate/sample statistic</em> formula used for hypothesis testing. Note that a
       sample statistic is merely a summary statistic based on a sample of observations. Recall
-      we saw in <xref ref="summarize"/> that a summary statistic takes in many values and
+      we saw in <xref ref="wrangling"/> that a summary statistic takes in many values and
       returns only one. Here, the samples would be the <m>n_m = 1000</m> metal songs and the
       <m>n_d = 1000</m> deep house songs. Hence, the point estimate of interest is the
       difference in sample proportions <m>\widehat{p}_{m} - \widehat{p}_{d}</m>.
@@ -1229,7 +1229,7 @@ spotify_metal_deephouse |&gt;
           but the <c>Response: popular_or_not (factor)</c> and
           <c>Explanatory: track_genre (factor)</c> <em>meta-data</em> do. This is similar to
           how the <c>group_by()</c> verb from <c>dplyr</c> does not change the data, but only
-          adds "grouping" meta-data, as we saw in <xref ref="groupby"/>. We also now focus on
+          adds "grouping" meta-data, as we saw in <xref ref="wrangling"/>. We also now focus on
           only the two columns of interest in the data for our problem at hand with
           <c>popular_or_not</c> and <c>track_genre</c>.
         </p>
@@ -2080,9 +2080,9 @@ movies_sample
 
       <p>
         Let's perform an exploratory data analysis of this data. Recall from
-        <xref ref="geomboxplot"/> that a boxplot is a visualization we can use to show the
+        <xref ref="viz"/> that a boxplot is a visualization we can use to show the
         relationship between a numerical and a categorical variable. Another option you saw in
-        <xref ref="facets"/> would be to use a faceted histogram. However, in the interest of
+        <xref ref="viz"/> would be to use a faceted histogram. However, in the interest of
         brevity, let's only present the boxplot in <xref ref="action-romance-boxplot"/>.
       </p>
 
@@ -2772,8 +2772,7 @@ movies_sample |&gt;
         <em>all</em> flights leaving a New York City airport, are Hawaiian Airlines flights in
         the air for longer than Alaska Airlines flights? Furthermore, let's assume that 2023
         flights are a representative sample of all such flights. Then we can use the
-        <c>flights</c> data frame in the <c>nycflights23</c> package we introduced in
-        <xref ref="nycflights"/> to answer our question. Let's filter this data frame to only
+        <c>flights</c> data frame in the <c>nycflights23</c> package to answer our question. Let's filter this data frame to only
         include Hawaiian and Alaska Airlines using their <c>carrier</c> codes <c>HA</c> and
         <c>AS</c>:
       </p>
