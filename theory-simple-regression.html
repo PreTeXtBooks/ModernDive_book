@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Theory-based inference for simple linear regression</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "textmacros",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[tex]/textmacros",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Title">
+<meta property="book:author" content="NAME">
+<meta property="book:author" content="NAME">
+<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+</head>
+<body id="tidy-text-mining" class="pretext book ignore-math">
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="book-id-here.html"><span class="title">Title</span> <span class="subtitle">Subtitle</span></a></h1>
+<p class="byline">NAME, NAME</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d2;</span><span class="name">Contents</span></button><a class="index-button button" href="meta-back-1.html" title="Index"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span><span class="name">Index</span></a><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe8b6;</span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe51c;</span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="simple-linear-regression-model.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="inference-for-regression.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="infer-regression.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="meta-front.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-abstract"><div class="toc-title-box"><a href="meta-front.html#meta-front-3" class="internal"><span class="title">Abstract</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="packages.html" class="internal"><span class="codenumber">1.1</span> <span class="title">What are R packages?</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="viz.html" class="internal"><span class="codenumber">2</span> <span class="title">Data Visualization</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="wrangling.html" class="internal"><span class="codenumber">3</span> <span class="title">Data Wrangling</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="select.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Selecting variables with <code class="code-inline tex2jax_ignore">select()</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="tidy.html" class="internal"><span class="codenumber">4</span> <span class="title">Data Importing and Tidy Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-packages.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="csv.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Importing data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="csv.html#tidy-csv-console" class="internal"><span class="codenumber">4.1.1</span> <span class="title">Using the console</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="csv.html#tidy-rstudio-gui" class="internal"><span class="codenumber">4.1.2</span> <span class="title">Using RStudio’s interface</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="tidy-data-ex.html" class="internal"><span class="codenumber">4.2</span> <span class="title">Tidy data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="tidy-data-ex.html#tidy-definition" class="internal"><span class="codenumber">4.2.1</span> <span class="title">Definition of tidy data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-definition-14" class="internal"><span class="codenumber">4.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="tidy-data-ex.html#tidy-converting" class="internal"><span class="codenumber">4.2.2</span> <span class="title">Converting to tidy data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-converting-19" class="internal"><span class="codenumber">4.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-nycflights23" class="internal"><span class="codenumber">4.2.3</span> <span class="title"><code class="code-inline tex2jax_ignore">nycflights23</code> package</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="case-study-tidy.html" class="internal"><span class="codenumber">4.3</span> <span class="title">Case study: democracy in Guatemala</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="case-study-tidy.html#case-study-tidy-18" class="internal"><span class="codenumber">4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="tidyverse-package.html" class="internal"><span class="codenumber">4.4</span> <span class="title"><code class="code-inline tex2jax_ignore">tidyverse</code> package</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="tidy-data-conclusion.html" class="internal"><span class="codenumber">4.5</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-conclusion.html#tidy-additional-resources" class="internal"><span class="codenumber">4.5.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-conclusion.html#tidy-whats-to-come" class="internal"><span class="codenumber">4.5.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="regression.html" class="internal"><span class="codenumber">5</span> <span class="title">Simple Linear Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-packages.html" class="internal"><span class="codenumber">5.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model1.html" class="internal"><span class="codenumber">5.1</span> <span class="title">One numerical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1EDA" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1EDA-42" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1table" class="internal"><span class="codenumber">5.1.2</span> <span class="title">Simple linear regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1table-20" class="internal"><span class="codenumber">5.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1points" class="internal"><span class="codenumber">5.1.3</span> <span class="title">Observed/fitted values and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1points-17" class="internal"><span class="codenumber">5.1.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model2.html" class="internal"><span class="codenumber">5.2</span> <span class="title">One categorical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2EDA" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2EDA-32" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2table" class="internal"><span class="codenumber">5.2.2</span> <span class="title">Linear regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2table-27" class="internal"><span class="codenumber">5.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2points" class="internal"><span class="codenumber">5.2.3</span> <span class="title">Observed/fitted values and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2points-8" class="internal"><span class="codenumber">5.2.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="reg-related-topics.html" class="internal"><span class="codenumber">5.3</span> <span class="title">Related topics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-related-topics.html#correlation-is-not-causation" class="internal"><span class="codenumber">5.3.1</span> <span class="title">Correlation is not necessarily causation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="reg-related-topics.html#leastsquares" class="internal"><span class="codenumber">5.3.2</span> <span class="title">Best-fitting line</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="reg-related-topics.html#leastsquares-14" class="internal"><span class="codenumber">5.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-related-topics.html#underthehood" class="internal"><span class="codenumber">5.3.3</span> <span class="title">get_regression_x() functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="reg-conclusion.html" class="internal"><span class="codenumber">5.4</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-conclusion.html#additional-resources-basic-regression" class="internal"><span class="codenumber">5.4.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-conclusion.html#reg-whats-to-come" class="internal"><span class="codenumber">5.4.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="multiple-regression.html" class="internal"><span class="codenumber">6</span> <span class="title">Multiple Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-packages.html" class="internal"><span class="codenumber">6.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model4.html" class="internal"><span class="codenumber">6.1</span> <span class="title">One numerical and one categorical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="model4.html#model4EDA" class="internal"><span class="codenumber">6.1.1</span> <span class="title">Exploratory data analysis</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4interactiontable" class="internal"><span class="codenumber">6.1.2</span> <span class="title">Model with interactions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4interactiontable-38" class="internal"><span class="codenumber">6.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4table" class="internal"><span class="codenumber">6.1.3</span> <span class="title">Model without interactions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4table-17" class="internal"><span class="codenumber">6.1.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4points" class="internal"><span class="codenumber">6.1.4</span> <span class="title">Observed responses, fitted values, and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4points-8" class="internal"><span class="codenumber">6.1.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model3.html" class="internal"><span class="codenumber">6.2</span> <span class="title">Two numerical explanatory variables</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model3.html#model3EDA" class="internal"><span class="codenumber">6.2.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model3.html#model3EDA-28" class="internal"><span class="codenumber">6.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model3.html#model3table" class="internal"><span class="codenumber">6.2.2</span> <span class="title">Multiple regression with two numerical regressors</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model3.html#model3table-17" class="internal"><span class="codenumber">6.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="model3.html#model3points" class="internal"><span class="codenumber">6.2.3</span> <span class="title">Observed/fitted values and residuals</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="mult-reg-conclusion.html" class="internal"><span class="codenumber">6.3</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-conclusion.html#mult-reg-additional-resources" class="internal"><span class="codenumber">6.3.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-conclusion.html#mult-reg-whats-next" class="internal"><span class="codenumber">6.3.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="sampling.html" class="internal"><span class="codenumber">7</span> <span class="title">Sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-packages.html" class="internal"><span class="codenumber">7.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-activity.html" class="internal"><span class="codenumber">7.1</span> <span class="title">First activity: red balls</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity.html#population-proportion" class="internal"><span class="codenumber">7.1.1</span> <span class="title">The proportion of red balls in the bowl</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-manual" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Manual sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sampling-activity.html#sampling-one-sample" class="internal"><span class="codenumber">7.1.2.1</span> <span class="title">One sample</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-thirty-three" class="internal"><span class="codenumber">7.1.2.2</span> <span class="title">Thirty-three samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#sampling-thirty-three-13" class="internal"><span class="codenumber">7.1.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-simulation" class="internal"><span class="codenumber">7.1.3</span> <span class="title">Virtual sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sampling-activity.html#virtual-one-sample" class="internal"><span class="codenumber">7.1.3.1</span> <span class="title">One virtual sample</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-thirty-three" class="internal"><span class="codenumber">7.1.3.2</span> <span class="title">Thirty-three virtual samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-thirty-three-12" class="internal"><span class="codenumber">7.1.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-thousand" class="internal"><span class="codenumber">7.1.3.3</span> <span class="title">One thousand virtual samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-thousand-7" class="internal"><span class="codenumber">7.1.3.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-different-sizes" class="internal"><span class="codenumber">7.1.3.4</span> <span class="title">Different sample sizes</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-different-sizes-8" class="internal"><span class="codenumber">7.1.3.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-framework.html" class="internal"><span class="codenumber">7.2</span> <span class="title">Sampling framework</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-framework.html#terminology-and-notation" class="internal"><span class="codenumber">7.2.1</span> <span class="title">Population, sample, and the sampling distribution</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-framework.html#terminology-and-notation-6" class="internal"><span class="codenumber">7.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="central-limit-theorem.html" class="internal"><span class="codenumber">7.3</span> <span class="title">The Central Limit Theorem</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#random-variables-proportion" class="internal"><span class="codenumber">7.3.1</span> <span class="title">Random variables</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#sampling-dist-rv" class="internal"><span class="codenumber">7.3.2</span> <span class="title">The sampling distribution using random variables</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#expected-value" class="internal"><span class="codenumber">7.3.3</span> <span class="title">The center of the distribution: the expected value</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="central-limit-theorem.html#expected-value-8" class="internal"><span class="codenumber">7.3.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#sampling-variation" class="internal"><span class="codenumber">7.3.4</span> <span class="title">Sampling variation: standard deviation and standard error</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="central-limit-theorem.html#standard-deviation" class="internal"><span class="codenumber">7.3.4.1</span> <span class="title">The standard deviation</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="central-limit-theorem.html#standard-error" class="internal"><span class="codenumber">7.3.4.2</span> <span class="title">The standard error</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#shape-sampling-proportion" class="internal"><span class="codenumber">7.3.4.3</span> <span class="title">The sampling distribution of the sample proportion</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="central-limit-theorem.html#shape-sampling-proportion-7" class="internal"><span class="codenumber">7.3.4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#clt-summary" class="internal"><span class="codenumber">7.3.5</span> <span class="title">Summary</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-activity-mean.html" class="internal"><span class="codenumber">7.4</span> <span class="title">Second activity: chocolate-covered almonds</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#population-mean" class="internal"><span class="codenumber">7.4.1</span> <span class="title">The population mean weight of almonds in the bowl</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#resampling-tactile-bowl" class="internal"><span class="codenumber">7.4.2</span> <span class="title">Manual sampling and sample means</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#virtual-samples-mean-bowl" class="internal"><span class="codenumber">7.4.3</span> <span class="title">Virtual sampling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#sampling-dist-mean" class="internal"><span class="codenumber">7.4.4</span> <span class="title">The sampling distribution of the sample mean</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity-mean.html#random-variable-sample-mean" class="internal"><span class="codenumber">7.4.5</span> <span class="title">Random variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity-mean.html#random-variable-sample-mean-18" class="internal"><span class="codenumber">7.4.5</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity-mean.html#CLT-mean" class="internal"><span class="codenumber">7.4.6</span> <span class="title">The Central Limit Theorem revisited</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity-mean.html#CLT-mean-6" class="internal"><span class="codenumber">7.4.6</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html" class="internal"><span class="codenumber">7.5</span> <span class="title">The sampling distribution in other scenarios</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#sampling-two-samples" class="internal"><span class="codenumber">7.5.1</span> <span class="title">Sampling distribution for two samples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-means" class="internal"><span class="codenumber">7.5.1.1</span> <span class="title">Difference in sample means</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-means-5" class="internal"><span class="codenumber">7.5.1.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-proportions" class="internal"><span class="codenumber">7.5.1.2</span> <span class="title">Difference in sample proportions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-proportions-11" class="internal"><span class="codenumber">7.5.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-final-remarks.html" class="internal"><span class="codenumber">7.6</span> <span class="title">Summary and final remarks</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-summary-scenarios" class="internal"><span class="codenumber">7.6.1</span> <span class="title">Summary of scenarios</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-additional-resources" class="internal"><span class="codenumber">7.6.2</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-whats-next" class="internal"><span class="codenumber">7.6.3</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="confidence-intervals.html" class="internal"><span class="codenumber">8</span> <span class="title">Confidence Intervals</span></a></div></li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="hypothesis-testing.html" class="internal"><span class="codenumber">9</span> <span class="title">Hypothesis Testing and p-values</span></a></div></li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="inference-for-regression.html" class="internal"><span class="codenumber">10</span> <span class="title">Inference for Regression</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inf-packages.html" class="internal"><span class="codenumber">10.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="simple-linear-regression-model.html" class="internal"><span class="codenumber">10.1</span> <span class="title">The simple linear regression model</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#un-member-states-revisited" class="internal"><span class="codenumber">10.1.1</span> <span class="title">UN member states revisited</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#simple-linear-model" class="internal"><span class="codenumber">10.1.2</span> <span class="title">The model</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#sample-regression-inference" class="internal"><span class="codenumber">10.1.3</span> <span class="title">Using a sample for inference</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#least-squares" class="internal"><span class="codenumber">10.1.4</span> <span class="title">The method of least squares</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#properties-least-squares" class="internal"><span class="codenumber">10.1.5</span> <span class="title">Properties of the least squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simple-linear-regression-model.html#relating-regression-to-other-methods" class="internal"><span class="codenumber">10.1.6</span> <span class="title">Relating basic regression to other methods</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#two-sample-diff-means-reg" class="internal"><span class="codenumber">10.1.6.1</span> <span class="title">Two-sample difference in means</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#anova-in-regression" class="internal"><span class="codenumber">10.1.6.2</span> <span class="title">ANOVA</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="simple-linear-regression-model.html#relating-regression-to-other-methods-5" class="internal"><span class="codenumber">10.1.6.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="theory-simple-regression.html" class="internal"><span class="codenumber">10.2</span> <span class="title">Theory-based inference for simple linear regression</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#framework-simple-lm" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Conceptual framework</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#se-simple-lm" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Standard errors for least-squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#conf-intervals-b0-b1" class="internal"><span class="codenumber">10.2.3</span> <span class="title">Confidence intervals for the least-squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-simple-regression.html#hypo-test-simple-lm" class="internal"><span class="codenumber">10.2.4</span> <span class="title">Hypothesis test for population slope</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-simple-regression.html#hypo-test-simple-lm-15" class="internal"><span class="codenumber">10.2.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#regression-table" class="internal"><span class="codenumber">10.2.5</span> <span class="title">The regression table in R</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-simple-regression.html#model-fit" class="internal"><span class="codenumber">10.2.6</span> <span class="title">Model fit and model assumptions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="theory-simple-regression.html#residuals-ch10" class="internal"><span class="codenumber">10.2.6.1</span> <span class="title">Residuals</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="theory-simple-regression.html#residual-diagnostics" class="internal"><span class="codenumber">10.2.6.2</span> <span class="title">Residual diagnostics</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-simple-regression.html#model-fit-9" class="internal"><span class="codenumber">10.2.6.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="infer-regression.html" class="internal"><span class="codenumber">10.3</span> <span class="title">Simulation-based inference for simple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="infer-regression.html#infer-ci-slr" class="internal"><span class="codenumber">10.3.1</span> <span class="title">Confidence intervals for the population slope using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="infer-regression.html#percentile-ci-slr" class="internal"><span class="codenumber">10.3.1.1</span> <span class="title">Percentile method</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="infer-regression.html#se-ci-slr" class="internal"><span class="codenumber">10.3.1.2</span> <span class="title">Standard error method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="infer-regression.html#infer-hypo-slr" class="internal"><span class="codenumber">10.3.2</span> <span class="title">Hypothesis test for population slope using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="infer-regression.html#infer-hypo-slr-15" class="internal"><span class="codenumber">10.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="multiple-linear-regression-model.html" class="internal"><span class="codenumber">10.4</span> <span class="title">The multiple linear regression model</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#multiple-linear-model" class="internal"><span class="codenumber">10.4.1</span> <span class="title">The model</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#coffee-example" class="internal"><span class="codenumber">10.4.2</span> <span class="title">Example: coffee quality rating scores</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="multiple-linear-regression-model.html#least-squares-multiple" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Least squares for multiple regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#least-squares-multiple-14" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="theory-multiple-regression.html" class="internal"><span class="codenumber">10.5</span> <span class="title">Theory-based inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#model-dependency" class="internal"><span class="codenumber">10.5.1</span> <span class="title">Model dependency of estimators</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#ci-multiple-regression" class="internal"><span class="codenumber">10.5.2</span> <span class="title">Confidence intervals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#hypo-test-mult-lm" class="internal"><span class="codenumber">10.5.3</span> <span class="title">Hypothesis test for a single coefficient</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#hypo-test-mult-lm-1" class="internal"><span class="codenumber">10.5.4</span> <span class="title">Hypothesis test for model comparison</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-multiple-regression.html#model-fit-mult" class="internal"><span class="codenumber">10.5.5</span> <span class="title">Model fit and diagnostics</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-multiple-regression.html#model-fit-mult-8" class="internal"><span class="codenumber">10.5.5</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html" class="internal"><span class="codenumber">10.6</span> <span class="title">Simulation-based inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html#ci-mlr-infer" class="internal"><span class="codenumber">10.6.1</span> <span class="title">Confidence intervals for the partial slopes using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#observed-fit-mlr" class="internal"><span class="codenumber">10.6.1.1</span> <span class="title">Getting the observed fitted model</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#bootstrap-mlr" class="internal"><span class="codenumber">10.6.1.2</span> <span class="title">Bootstrap distribution for the partial slopes</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#ci-mlr-percentile" class="internal"><span class="codenumber">10.6.1.3</span> <span class="title">Confidence intervals for the partial slopes</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html#ht-mlr-infer" class="internal"><span class="codenumber">10.6.2</span> <span class="title">Hypothesis testing for the partial slopes using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="simulation-inference-mlr.html#ht-mlr-infer-10" class="internal"><span class="codenumber">10.6.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="inference-conclusion.html" class="internal"><span class="codenumber">10.7</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inference-conclusion.html#inference-summary" class="internal"><span class="codenumber">10.7.1</span> <span class="title">Summary of statistical inference</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inference-conclusion.html#what-is-to-come-ch10" class="internal"><span class="codenumber">10.7.2</span> <span class="title">What’s to come</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="thinking-with-data.html" class="internal"><span class="codenumber">11</span> <span class="title">Tell Your Story with Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch11-review.html" class="internal"><span class="codenumber">11.1</span> <span class="title">Review</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch11-review.html#story-packages" class="internal"><span class="codenumber">11.1.1</span> <span class="title">Needed packages</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="seattle-house-prices.html" class="internal"><span class="codenumber">11.2</span> <span class="title">Case study: Seattle house prices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-EDA-I" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Exploratory data analysis: part I</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-EDA-II" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Exploratory data analysis: part II</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-regression" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Regression modeling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-making-predictions" class="internal"><span class="codenumber">11.2.4</span> <span class="title">Making predictions</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-inference-for-regression" class="internal"><span class="codenumber">11.2.5</span> <span class="title">Inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-theory-inference" class="internal"><span class="codenumber">11.2.5.1</span> <span class="title">Theory-based hypothesis testing for partial slopes</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-simulation-inference" class="internal"><span class="codenumber">11.2.5.2</span> <span class="title">Simulation-based hypothesis testing for partial slopes</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-inference-for-regression-5" class="internal"><span class="codenumber">11.2.5.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="data-journalism.html" class="internal"><span class="codenumber">11.3</span> <span class="title">Case study: effective data storytelling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="data-journalism.html#bechdel" class="internal"><span class="codenumber">11.3.1</span> <span class="title">Bechdel test for Hollywood gender representation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="data-journalism.html#us-births-1999" class="internal"><span class="codenumber">11.3.2</span> <span class="title">US Births in 1999</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="data-journalism.html#us-births-1999-14" class="internal"><span class="codenumber">11.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="data-journalism.html#ch11-scripts" class="internal"><span class="codenumber">11.3.3</span> <span class="title">Scripts of R code</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch11-concluding-remarks.html" class="internal"><span class="codenumber">11.4</span> <span class="title">Concluding remarks</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixA.html" class="internal"><span class="codenumber">A</span> <span class="title">Statistical Background</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendix-stat-terms.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Basic statistical terms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-mean" class="internal"><span class="codenumber">A.1.1</span> <span class="title">Mean</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-median" class="internal"><span class="codenumber">A.1.2</span> <span class="title">Median</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-sd-variance" class="internal"><span class="codenumber">A.1.3</span> <span class="title">Standard deviation and variance</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-five-number-summary" class="internal"><span class="codenumber">A.1.4</span> <span class="title">Five-number summary</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-distribution" class="internal"><span class="codenumber">A.1.5</span> <span class="title">Distribution</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-outliers" class="internal"><span class="codenumber">A.1.6</span> <span class="title">Outliers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendix-normal-curve.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Normal distribution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="appendix-normal-curve.html#appendix-normal-curve-12" class="internal"><span class="codenumber">A.2.1</span> <span class="title">Exercises</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-normal-curve.html#appendix-normal-calculations" class="internal"><span class="codenumber">A.2.2</span> <span class="title">Additional normal calculations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendix-t-distribution.html" class="internal"><span class="codenumber">A.3</span> <span class="title">The <span class="process-math">\(t\)</span> distribution calculations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendix-log10-transformations.html" class="internal"><span class="codenumber">A.4</span> <span class="title">log10 transformations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixB.html" class="internal"><span class="codenumber">B</span> <span class="title">Inference Examples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-packages.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendixB-infer-map.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Inference mind map</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-one-mean.html" class="internal"><span class="codenumber">B.2</span> <span class="title">One mean</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-problem" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-hypotheses" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-eda" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-simulation" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-theory" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-one-proportion.html" class="internal"><span class="codenumber">B.3</span> <span class="title">One proportion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-problem" class="internal"><span class="codenumber">B.3.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-hypotheses" class="internal"><span class="codenumber">B.3.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-eda" class="internal"><span class="codenumber">B.3.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-simulation" class="internal"><span class="codenumber">B.3.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-theory" class="internal"><span class="codenumber">B.3.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-proportions.html" class="internal"><span class="codenumber">B.4</span> <span class="title">Two proportions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-problem" class="internal"><span class="codenumber">B.4.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-hypotheses" class="internal"><span class="codenumber">B.4.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-eda" class="internal"><span class="codenumber">B.4.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-simulation" class="internal"><span class="codenumber">B.4.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-theory" class="internal"><span class="codenumber">B.4.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-means-independent.html" class="internal"><span class="codenumber">B.5</span> <span class="title">Two means (independent samples)</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-problem" class="internal"><span class="codenumber">B.5.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-hypotheses" class="internal"><span class="codenumber">B.5.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-eda" class="internal"><span class="codenumber">B.5.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-simulation" class="internal"><span class="codenumber">B.5.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-theory" class="internal"><span class="codenumber">B.5.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-means-paired.html" class="internal"><span class="codenumber">B.6</span> <span class="title">Two means (paired samples)</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-problem" class="internal"><span class="codenumber">B.6.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-hypotheses" class="internal"><span class="codenumber">B.6.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-eda" class="internal"><span class="codenumber">B.6.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-simulation" class="internal"><span class="codenumber">B.6.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-theory" class="internal"><span class="codenumber">B.6.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixC.html" class="internal"><span class="codenumber">C</span> <span class="title">Tips and Tricks</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-packages.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixC-wrangling.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Data wrangling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-missing-values" class="internal"><span class="codenumber">C.1.1</span> <span class="title">Dealing with missing values</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-reordering-bars" class="internal"><span class="codenumber">C.1.2</span> <span class="title">Reordering bars in a barplot</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-money-on-axis" class="internal"><span class="codenumber">C.1.3</span> <span class="title">Showing money on an axis</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-changing-values" class="internal"><span class="codenumber">C.1.4</span> <span class="title">Changing values inside cells</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-if-else" class="internal"><span class="codenumber">C.1.4.1</span> <span class="title"><code class="code-inline tex2jax_ignore">if_else()</code></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-recode" class="internal"><span class="codenumber">C.1.4.2</span> <span class="title"><code class="code-inline tex2jax_ignore">recode()</code></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-case-when" class="internal"><span class="codenumber">C.1.4.3</span> <span class="title"><code class="code-inline tex2jax_ignore">case_when()</code></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-convert-numerical-categorical" class="internal"><span class="codenumber">C.1.5</span> <span class="title">Converting a numerical variable to a categorical one</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-prop" class="internal"><span class="codenumber">C.1.6</span> <span class="title">Computing proportions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-commas" class="internal"><span class="codenumber">C.1.7</span> <span class="title">Dealing with %, commas, and $</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixC-interactive.html" class="internal"><span class="codenumber">C.2</span> <span class="title">Interactive graphics</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-interactive.html#appendixC-interactive-linegraphs" class="internal"><span class="codenumber">C.2.1</span> <span class="title">Interactive linegraphs</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="appendixD.html" class="internal"><span class="codenumber">D</span> <span class="title">Learning Check Solutions</span></a></div></li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="appendixE.html" class="internal"><span class="codenumber">E</span> <span class="title">The Theory Behind the Bootstrap Method</span></a></div></li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="meta-back.html" class="internal"><span class="title">Back Matter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-index"><div class="toc-title-box"><a href="meta-back-1.html" class="internal"><span class="title">Index</span></a></div></li></ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content">
+<section class="section" id="theory-simple-regression">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Theory-based inference for simple linear regression</span>
+</h2>
+<div class="para" id="theory-simple-regression-2">This section introduces the conceptual framework needed for theory-based inference for regression and discusses the two most prominent methods for inference: confidence intervals and hypothesis tests. Some of this material is slightly more technical than other sections in this chapter, but most of the material is illustrated by working with a real example and interpretations and explanations complement the theory. <a href="theory-simple-regression.html#regression-table" class="internal" title="Subsection 10.2.5: The regression table in R">Subsection 10.2.5</a> presents the R code needed to calculate relevant quantities for inference.<div class="autopermalink" data-description="Paragraph"><a href="#theory-simple-regression-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="subsection" id="framework-simple-lm">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Conceptual framework</span>
+</h3>
+<div class="para" id="framework-simple-lm-2">We start by reviewing the assumptions of the linear model. We continue using <code class="code-inline tex2jax_ignore">old_faithful_2024</code> to illustrate some of this framework. Since we assume a linear relationship between the <code class="code-inline tex2jax_ignore">duration</code> of an eruption and the <code class="code-inline tex2jax_ignore">waiting</code> time to the next eruption, we can express the linear relationship for the <span class="process-math">\(i\)</span>th observation as <span class="process-math">\(y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i\)</span> for <span class="process-math">\(i=1,\dots,n\text{.}\)</span> The error term <span class="process-math">\(\epsilon_i\)</span> is a random variable that represents how different the observed response <span class="process-math">\(y_i\)</span> is from the expected response <span class="process-math">\(\beta_0 + \beta_1 \cdot x_i\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="framework-simple-lm-3">We can illustrate the role of the error term using two observations from <code class="code-inline tex2jax_ignore">old_faithful_2024</code>. We select the 49th and 51st observations using <code class="code-inline tex2jax_ignore">slice()</code>:<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">old_faithful_2024 |&gt;
+  slice(c(49, 51))
+</code></pre></div>
+<div class="para" id="framework-simple-lm-5">Observe that the <code class="code-inline tex2jax_ignore">duration</code> time is the same for both observations, but the response <code class="code-inline tex2jax_ignore">waiting</code> time is different. Assuming that the linear model is appropriate, both responses can be expressed as:<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/properties-least-squares.html" id="framework-simple-lm-6">
+\begin{align*}
+y_{49} &amp;= \beta_0 + \beta_1 \cdot 236 + \epsilon_{49}\\
+y_{51} &amp;= \beta_0 + \beta_1 \cdot 236 + \epsilon_{51},
+\end{align*}
+</div>
+<div class="para" id="framework-simple-lm-7">but <span class="process-math">\(y_{49} = 139\)</span> and <span class="process-math">\(y_{51} = 176\text{.}\)</span> The difference in responses is due to the error term as it accounts for variation in the response not accounted for by the linear model.<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="framework-simple-lm-8">In order to perform theory-based inference we require one additional assumption. We let the error term be normally distributed with an expected value (mean) equal to zero and a standard deviation equal to <span class="process-math">\(\sigma\text{:}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/properties-least-squares.html" id="framework-simple-lm-9">
+\begin{equation*}
+\epsilon_i \sim \text{Normal}(0, \sigma).
+\end{equation*}
+</div>
+<div class="para" id="framework-simple-lm-10">The response <span class="process-math">\(y_i\)</span> (the <code class="code-inline tex2jax_ignore">waiting</code> time for the <span class="process-math">\(i\)</span>th eruption) is the sum of the constant <span class="process-math">\(\beta_0 + \beta_1 \cdot x_i\)</span> and the normally distributed random variable <span class="process-math">\(\epsilon_i\text{.}\)</span> Based on properties of random variables and the normal distribution, we can state that <span class="process-math">\(y_i\)</span> is also a normally distributed random variable:<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/properties-least-squares.html" id="framework-simple-lm-11">
+\begin{equation*}
+y_i \sim \text{Normal}(\beta_0 + \beta_1 x_i\,,\, \sigma)
+\end{equation*}
+</div>
+<div class="para" id="framework-simple-lm-12">for <span class="process-math">\(i=1,\dots,n\text{.}\)</span> Since <span class="process-math">\(\epsilon_i\)</span> and <span class="process-math">\(\epsilon_j\)</span> are independent, <span class="process-math">\(y_i\)</span> and <span class="process-math">\(y_j\)</span> are also independent for any <span class="process-math">\(i \ne j\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="framework-simple-lm-13">In addition, as stated in <a href="simple-linear-regression-model.html#properties-least-squares" class="internal" title="Subsection 10.1.5: Properties of the least squares estimators">Subsection 10.1.5</a>, the least-squares estimator <span class="process-math">\(b_1\)</span> is a linear combination of the random variables <span class="process-math">\(y_1, \dots, y_n\text{.}\)</span> So <span class="process-math">\(b_1\)</span> is also a random variable! The coefficient for the slope results from <em class="emphasis">a particular sample</em> of <span class="process-math">\(n\)</span> pairs of <code class="code-inline tex2jax_ignore">duration</code> and <code class="code-inline tex2jax_ignore">waiting</code> times. If we collected a different sample of <span class="process-math">\(n\)</span> pairs, the coefficient for the slope would likely be different due to <em class="emphasis">sampling variation</em>.<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="framework-simple-lm-14">Because <span class="process-math">\(y_1, \dots, y_n\)</span> are normally distributed and <span class="process-math">\(b_1\)</span> is a linear combination of these random variables, <span class="process-math">\(b_1\)</span> is also normally distributed:<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/properties-least-squares.html" id="framework-simple-lm-15">
+\begin{equation*}
+b_1 \sim \text{Normal} \left(\beta_1\,,\, \frac{\sigma}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}\right).
+\end{equation*}
+</div>
+<div class="para" id="framework-simple-lm-16">Similarly, <span class="process-math">\(b_0\)</span> is a linear combination of <span class="process-math">\(y_1, \dots, y_n\text{:}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/properties-least-squares.html" id="framework-simple-lm-17">
+\begin{equation*}
+b_0 \sim \text{Normal} \left(\beta_0\,,\, \sigma\sqrt{\frac{1}{n} + \frac{\bar x^2}{\sum_{i=1}^n(x_i - \bar x)^2}}\right).
+\end{equation*}
+</div>
+<div class="para" id="framework-simple-lm-18">We can also standardize the least-square estimators such that<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-18" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/properties-least-squares.html" id="framework-simple-lm-19">
+\begin{equation*}
+z_0 = \frac{b_0 - \beta_0}{\sigma\sqrt{\dfrac{1}{n} + \dfrac{\bar x^2}{\sum_{i=1}^n(x_i - \bar x)^2}}}
+\qquad\text{ and }\qquad
+z_1 = \frac{b_1 - \beta_1}{\dfrac{\sigma}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}}
+\end{equation*}
+</div>
+<div class="para" id="framework-simple-lm-20">are the corresponding standard normal distributions.<div class="autopermalink" data-description="Paragraph"><a href="#framework-simple-lm-20" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 10.2.1: Conceptual framework"><a href="#framework-simple-lm" title="Copy heading and permalink for Subsection 10.2.1: Conceptual framework" aria-label="Copy heading and permalink for Subsection 10.2.1: Conceptual framework">🔗</a></div>
+</section>
+<section class="subsection" id="se-simple-lm">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Standard errors for least-squares estimators</span>
+</h3>
+<div class="para" id="se-simple-lm-2">Recall that in <a href="sampling.html" class="internal" title="Chapter 7: Sampling">Chapter 7</a> and <a href="sampling-activity-mean.html#CLT-mean" class="internal" title="Subsection 7.4.6: The Central Limit Theorem revisited">Subsection 7.4.6</a> we discussed that, due to the Central Limit Theorem, the distribution of the sample mean <span class="process-math">\(\overline{X}\)</span> was approximately normal with mean equal to the parameter <span class="process-math">\(\mu\)</span> and standard deviation equal to <span class="process-math">\(\sigma/\sqrt{n}\text{.}\)</span> We then used the estimated standard error of <span class="process-math">\(\overline{X}\)</span> to construct confidence intervals and hypothesis tests.<div class="autopermalink" data-description="Paragraph"><a href="#se-simple-lm-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="se-simple-lm-3">An analogous treatment is now used to construct confidence intervals and hypothesis tests for <span class="process-math">\(b_0\)</span> and <span class="process-math">\(b_1\text{.}\)</span> The standard deviations for <span class="process-math">\(b_0\)</span> and <span class="process-math">\(b_1\)</span> are constructed using the sample size <span class="process-math">\(n\text{,}\)</span> the values of the explanatory variables, their means, and the standard deviation of <span class="process-math">\(y_i\)</span> (<span class="process-math">\(\sigma\)</span>). While most of these values are known to us, <span class="process-math">\(\sigma\)</span> is typically not.<div class="autopermalink" data-description="Paragraph"><a href="#se-simple-lm-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="se-simple-lm-4">Instead, we estimate <span class="process-math">\(\sigma\)</span> using the estimator of the standard deviation, <span class="process-math">\(s\text{,}\)</span> introduced in <a href="simple-linear-regression-model.html#least-squares" class="internal" title="Subsection 10.1.4: The method of least squares">Subsection 10.1.4</a>. The estimated standard deviation of <span class="process-math">\(b_1\)</span> is called the <dfn class="terminology">standard error</dfn>  of <span class="process-math">\(b_1\text{,}\)</span> and it is given by:<div class="autopermalink" data-description="Paragraph"><a href="#se-simple-lm-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sampling.html ./knowl/xref/CLT-mean.html ./knowl/xref/least-squares.html" id="se-simple-lm-5">
+\begin{equation*}
+SE(b_1) = \frac{s}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}.
+\end{equation*}
+</div>
+<div class="para" id="se-simple-lm-6">The <em class="emphasis">standard error</em> of <span class="process-math">\(b_1\)</span> quantifies how much variation the estimator of the slope <span class="process-math">\(b_1\)</span> may have for different random samples. The larger the standard error, the more variation we would expect in the estimated slope <span class="process-math">\(b_1\text{.}\)</span> Similarly, the <em class="emphasis">standard error</em> of <span class="process-math">\(b_0\)</span> is:<div class="autopermalink" data-description="Paragraph"><a href="#se-simple-lm-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sampling.html ./knowl/xref/CLT-mean.html ./knowl/xref/least-squares.html" id="se-simple-lm-7">
+\begin{equation*}
+SE(b_0) = s\sqrt{\frac{1}{n} + \frac{\bar x^2}{\sum_{i=1}^n(x_i - \bar x)^2}}.
+\end{equation*}
+</div>
+<div class="para" id="se-simple-lm-8">When using the estimator <span class="process-math">\(s\)</span> instead of the parameter <span class="process-math">\(\sigma\text{,}\)</span> we are introducing additional uncertainty in our calculations. For example, we can standardize <span class="process-math">\(b_1\)</span> using<div class="autopermalink" data-description="Paragraph"><a href="#se-simple-lm-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sampling.html ./knowl/xref/CLT-mean.html ./knowl/xref/least-squares.html" id="se-simple-lm-9">
+\begin{equation*}
+t = \frac{b_1 - \beta_1}{SE(b_1)}.
+\end{equation*}
+</div>
+<div class="para" id="se-simple-lm-10">Because we are using <span class="process-math">\(s\)</span> to calculate <span class="process-math">\(SE(b_1)\text{,}\)</span> the value of the standard error changes from sample to sample, and this additional uncertainty makes the distribution of the test statistic <span class="process-math">\(t\)</span> no longer normal. Instead, it follows a <span class="process-math">\(t\)</span>-distribution with <span class="process-math">\(n-2\)</span> degrees of freedom. The loss of two degrees of freedom relates to the fact that we are estimating two parameters in the linear model: <span class="process-math">\(\beta_0\)</span> and <span class="process-math">\(\beta_1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#se-simple-lm-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 10.2.2: Standard errors for least-squares estimators"><a href="#se-simple-lm" title="Copy heading and permalink for Subsection 10.2.2: Standard errors for least-squares estimators" aria-label="Copy heading and permalink for Subsection 10.2.2: Standard errors for least-squares estimators">🔗</a></div>
+</section>
+<section class="subsection" id="conf-intervals-b0-b1">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Confidence intervals for the least-squares estimators</span>
+</h3>
+<div class="para" id="conf-intervals-b0-b1-2">A 95% confidence interval for <span class="process-math">\(\beta_1\)</span> can be thought of as a range of plausible values for the population slope <span class="process-math">\(\beta_1\)</span> of the linear relationship between <code class="code-inline tex2jax_ignore">duration</code> and <code class="code-inline tex2jax_ignore">waiting</code> times. In general, if the sampling distribution of an estimator is normal or approximately normal, the confidence interval for the relevant parameter is:<div class="autopermalink" data-description="Paragraph"><a href="#conf-intervals-b0-b1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/model-fit.html" id="conf-intervals-b0-b1-3">
+\begin{equation*}
+\text{point estimate} \pm \text{margin of error}
+= \text{point estimate} \pm (\text{critical value} \cdot \text{standard error}).
+\end{equation*}
+</div>
+<div class="para" id="conf-intervals-b0-b1-4">The formula for a 95% confidence interval for <span class="process-math">\(\beta_1\)</span> is given by <span class="process-math">\(b_1 \pm q \cdot SE(b_1)\)</span> where the critical value <span class="process-math">\(q\)</span> is determined by the level of confidence required, the sample size used, and the corresponding degrees of freedom for the <span class="process-math">\(t\)</span>-distribution. For the Old Faithful example, with <span class="process-math">\(n - 2 = 112\)</span> degrees of freedom, the critical value is <span class="process-math">\(q = 1.981\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#conf-intervals-b0-b1-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="conf-intervals-b0-b1-5">The standard error for <span class="process-math">\(b_1\)</span> using the formula presented earlier is:<div class="autopermalink" data-description="Paragraph"><a href="#conf-intervals-b0-b1-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/model-fit.html" id="conf-intervals-b0-b1-6">
+\begin{equation*}
+SE(b_1) = \frac{s}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}.
+\end{equation*}
+</div>
+<div class="para" id="conf-intervals-b0-b1-7">We are 95% confident that the population slope <span class="process-math">\(\beta_1\)</span> falls in this interval. The construction of a 95% confidence interval for <span class="process-math">\(\beta_0\)</span> follows exactly the same steps using <span class="process-math">\(b_0\text{,}\)</span> <span class="process-math">\(SE(b_0)\text{,}\)</span> and the same critical value <span class="process-math">\(q\)</span> as the degrees of freedom for the <span class="process-math">\(t\)</span>-distribution are the same, <span class="process-math">\(n-2\text{.}\)</span> The results of the confidence intervals are valid only if the linear model assumptions are satisfied, as discussed in <a href="theory-simple-regression.html#model-fit" class="internal" title="Subsection 10.2.6: Model fit and model assumptions">Subsection 10.2.6</a>.<div class="autopermalink" data-description="Paragraph"><a href="#conf-intervals-b0-b1-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 10.2.3: Confidence intervals for the least-squares estimators"><a href="#conf-intervals-b0-b1" title="Copy heading and permalink for Subsection 10.2.3: Confidence intervals for the least-squares estimators" aria-label="Copy heading and permalink for Subsection 10.2.3: Confidence intervals for the least-squares estimators">🔗</a></div>
+</section>
+<section class="subsection" id="hypo-test-simple-lm">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Hypothesis test for population slope</span>
+</h3>
+<div class="para" id="hypo-test-simple-lm-2">To perform a hypothesis test for <span class="process-math">\(\beta_1\text{,}\)</span> the general formulation of a two-sided test is:<div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" id="hypo-test-simple-lm-3">
+\begin{align*}
+H_0&amp;: \beta_1 = B\\
+H_A&amp;: \beta_1 \ne B,
+\end{align*}
+</div>
+<div class="para" id="hypo-test-simple-lm-4">where <span class="process-math">\(B\)</span> is the hypothesized value for <span class="process-math">\(\beta_1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="hypo-test-simple-lm-5">
+<em class="emphasis">Test statistic.</em> The <span class="process-math">\(t\)</span>-test statistic is given by<div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" id="hypo-test-simple-lm-6">
+\begin{equation*}
+t = \frac{b_1 - B}{SE(b_1)}.
+\end{equation*}
+</div>
+<div class="para" id="hypo-test-simple-lm-7">This test statistic follows, under the null hypothesis, a <span class="process-math">\(t\)</span>-distribution with <span class="process-math">\(n-2\)</span> degrees of freedom. A particularly useful test is whether there is a linear association between the explanatory variable and the response:<div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" id="hypo-test-simple-lm-8">
+\begin{align*}
+H_0&amp;: \beta_1 = 0\\
+H_A&amp;: \beta_1 \ne 0.
+\end{align*}
+</div>
+<div class="para" id="hypo-test-simple-lm-9">For the Old Faithful example, the <em class="emphasis">null hypothesis</em> <span class="process-math">\(H_0\)</span> assumes that the population slope <span class="process-math">\(\beta_1\)</span> is 0, meaning there is <em class="emphasis">no linear relationship</em> between <code class="code-inline tex2jax_ignore">duration</code> and <code class="code-inline tex2jax_ignore">waiting</code> times. The test statistic is:<div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" id="hypo-test-simple-lm-10">
+\begin{equation*}
+t = \frac{b_1 - 0}{SE(b_1)}.
+\end{equation*}
+</div>
+<div class="para" id="hypo-test-simple-lm-11">
+<em class="emphasis">The <span class="process-math">\(p\)</span>-value.</em> Recall the definition of the <span class="process-math">\(p\)</span>-value: the probability of obtaining a test statistic just as extreme as or more extreme than the one observed, <em class="emphasis">assuming the null hypothesis</em> <span class="process-math">\(H_0\)</span> is true. For a two-sided test, if the test statistic is <span class="process-math">\(t = 2\)</span> for example, the <span class="process-math">\(p\)</span>-value is the area under the <span class="process-math">\(t\)</span>-curve to the left of <span class="process-math">\(-2\)</span> and to the right of <span class="process-math">\(2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-pvalue1"><div class="image-box" style="width: 70%; margin-left: 15%; margin-right: 15%;"><img src="images/fig-pvalue1.png" class="contained" alt="A t-distribution curve with the two shaded tail areas (to the left of -2 and to the right of 2) highlighted in blue, illustrating the two-sided p-value calculation."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Illustration of a two-sided <span class="process-math">\(p\)</span>-value for a <span class="process-math">\(t\)</span>-test.<div class="autopermalink" data-description="Figure 10.2.1"><a href="#fig-pvalue1" title="Copy heading and permalink for Figure 10.2.1" aria-label="Copy heading and permalink for Figure 10.2.1">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="hypo-test-simple-lm-13">In the Old Faithful geyser eruptions example, the <span class="process-math">\(p\)</span>-value was so small that R simply shows that it is equal to zero.<div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="hypo-test-simple-lm-14">
+<em class="emphasis">Interpretation.</em> Since the <span class="process-math">\(p\)</span>-value was practically 0, for any choice of significance level <span class="process-math">\(\alpha\text{,}\)</span> we would reject <span class="process-math">\(H_0\)</span> in favor of <span class="process-math">\(H_A\text{.}\)</span> We reject the null hypothesis that there is no linear relationship between <code class="code-inline tex2jax_ignore">duration</code> and <code class="code-inline tex2jax_ignore">waiting</code> times. We have enough statistical evidence to conclude that there is a linear relationship between these variables.<div class="autopermalink" data-description="Paragraph"><a href="#hypo-test-simple-lm-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="hypo-test-simple-lm-15">
+<h4 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h4>
+<article class="exercise exercise-like" id="lc10-4"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-4-1-1">In the context of a linear regression model, what does the null hypothesis <span class="process-math">\(H_0: \beta_1 = 0\)</span> represent?<div class="autopermalink" data-description="Paragraph"><a href="#lc10-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ol class="upper-alpha ol-marker-2" id="lc10-4-1-2">
+<li id="lc10-4-1-2-1">
+<div class="para" id="lc10-4-1-2-1-1">There is no linear association between the response and the explanatory variable.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-4-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.1.A"><a href="#lc10-4-1-2-1" title="Copy heading and permalink for Item 10.2.4.1.A" aria-label="Copy heading and permalink for Item 10.2.4.1.A">🔗</a></div>
+</li>
+<li id="lc10-4-1-2-2">
+<div class="para" id="lc10-4-1-2-2-1">The difference between the observed and predicted values is zero.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-4-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.1.B"><a href="#lc10-4-1-2-2" title="Copy heading and permalink for Item 10.2.4.1.B" aria-label="Copy heading and permalink for Item 10.2.4.1.B">🔗</a></div>
+</li>
+<li id="lc10-4-1-2-3">
+<div class="para" id="lc10-4-1-2-3-1">The linear association between response and explanatory variable crosses the origin.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-4-1-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.1.C"><a href="#lc10-4-1-2-3" title="Copy heading and permalink for Item 10.2.4.1.C" aria-label="Copy heading and permalink for Item 10.2.4.1.C">🔗</a></div>
+</li>
+<li id="lc10-4-1-2-4">
+<div class="para" id="lc10-4-1-2-4-1">The probability of committing a Type II Error is zero.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-4-1-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.1.D"><a href="#lc10-4-1-2-4" title="Copy heading and permalink for Item 10.2.4.1.D" aria-label="Copy heading and permalink for Item 10.2.4.1.D">🔗</a></div>
+</li>
+</ol>
+<div class="solutions">
+<details id="lc10-4-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-4-2-1">A. The null hypothesis <span class="process-math">\(H_0: \beta_1 = 0\)</span> states that there is no linear association between the response and the explanatory variable.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.4.1.1"><a href="#lc10-4-2" title="Copy heading and permalink for Answer 10.2.4.1.1" aria-label="Copy heading and permalink for Answer 10.2.4.1.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.4.1"><a href="#lc10-4" title="Copy heading and permalink for Exercise 10.2.4.1" aria-label="Copy heading and permalink for Exercise 10.2.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc10-5"><h5 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-5-1-1">Which of the following is an assumption of the linear regression model?<div class="autopermalink" data-description="Paragraph"><a href="#lc10-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ol class="upper-alpha ol-marker-2" id="lc10-5-1-2">
+<li id="lc10-5-1-2-1">
+<div class="para" id="lc10-5-1-2-1-1">The error terms <span class="process-math">\(\epsilon_i\)</span> are normally distributed with constant variance.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-5-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.2.A"><a href="#lc10-5-1-2-1" title="Copy heading and permalink for Item 10.2.4.2.A" aria-label="Copy heading and permalink for Item 10.2.4.2.A">🔗</a></div>
+</li>
+<li id="lc10-5-1-2-2">
+<div class="para" id="lc10-5-1-2-2-1">The error terms <span class="process-math">\(\epsilon_i\)</span> have a non-zero mean.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-5-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.2.B"><a href="#lc10-5-1-2-2" title="Copy heading and permalink for Item 10.2.4.2.B" aria-label="Copy heading and permalink for Item 10.2.4.2.B">🔗</a></div>
+</li>
+<li id="lc10-5-1-2-3">
+<div class="para" id="lc10-5-1-2-3-1">The error terms <span class="process-math">\(\epsilon_i\)</span> are dependent on each other.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-5-1-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.2.C"><a href="#lc10-5-1-2-3" title="Copy heading and permalink for Item 10.2.4.2.C" aria-label="Copy heading and permalink for Item 10.2.4.2.C">🔗</a></div>
+</li>
+<li id="lc10-5-1-2-4">
+<div class="para" id="lc10-5-1-2-4-1">The explanatory variable must be normally distributed.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-5-1-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.2.D"><a href="#lc10-5-1-2-4" title="Copy heading and permalink for Item 10.2.4.2.D" aria-label="Copy heading and permalink for Item 10.2.4.2.D">🔗</a></div>
+</li>
+</ol>
+<div class="solutions">
+<details id="lc10-5-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-5-2-1">A. The error terms are assumed to be normally distributed with constant variance (homoskedasticity) and mean zero.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.4.2.1"><a href="#lc10-5-2" title="Copy heading and permalink for Answer 10.2.4.2.1" aria-label="Copy heading and permalink for Answer 10.2.4.2.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.4.2"><a href="#lc10-5" title="Copy heading and permalink for Exercise 10.2.4.2" aria-label="Copy heading and permalink for Exercise 10.2.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc10-6"><h5 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-6-1-1">What does it mean when we say that the slope estimator <span class="process-math">\(b_1\)</span> is a random variable?<div class="autopermalink" data-description="Paragraph"><a href="#lc10-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ol class="upper-alpha ol-marker-2" id="lc10-6-1-2">
+<li id="lc10-6-1-2-1">
+<div class="para" id="lc10-6-1-2-1-1">
+<span class="process-math">\(b_1\)</span> will be the same for every sample taken from the population.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-6-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.3.A"><a href="#lc10-6-1-2-1" title="Copy heading and permalink for Item 10.2.4.3.A" aria-label="Copy heading and permalink for Item 10.2.4.3.A">🔗</a></div>
+</li>
+<li id="lc10-6-1-2-2">
+<div class="para" id="lc10-6-1-2-2-1">
+<span class="process-math">\(b_1\)</span> is a fixed value that does not change with different samples.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-6-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.3.B"><a href="#lc10-6-1-2-2" title="Copy heading and permalink for Item 10.2.4.3.B" aria-label="Copy heading and permalink for Item 10.2.4.3.B">🔗</a></div>
+</li>
+<li id="lc10-6-1-2-3">
+<div class="para" id="lc10-6-1-2-3-1">
+<span class="process-math">\(b_1\)</span> can vary from sample to sample due to sampling variation.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-6-1-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.3.C"><a href="#lc10-6-1-2-3" title="Copy heading and permalink for Item 10.2.4.3.C" aria-label="Copy heading and permalink for Item 10.2.4.3.C">🔗</a></div>
+</li>
+<li id="lc10-6-1-2-4">
+<div class="para" id="lc10-6-1-2-4-1">
+<span class="process-math">\(b_1\)</span> is always equal to the population slope <span class="process-math">\(\beta_1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#lc10-6-1-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.4.3.D"><a href="#lc10-6-1-2-4" title="Copy heading and permalink for Item 10.2.4.3.D" aria-label="Copy heading and permalink for Item 10.2.4.3.D">🔗</a></div>
+</li>
+</ol>
+<div class="solutions">
+<details id="lc10-6-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-6-2-1">C. <span class="process-math">\(b_1\)</span> is computed from a particular random sample; different samples yield different values of <span class="process-math">\(b_1\text{,}\)</span> so it is a random variable.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-6-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.4.3.1"><a href="#lc10-6-2" title="Copy heading and permalink for Answer 10.2.4.3.1" aria-label="Copy heading and permalink for Answer 10.2.4.3.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.4.3"><a href="#lc10-6" title="Copy heading and permalink for Exercise 10.2.4.3" aria-label="Copy heading and permalink for Exercise 10.2.4.3">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 10.2.4"><a href="#hypo-test-simple-lm-15" title="Copy heading and permalink for Exercises 10.2.4" aria-label="Copy heading and permalink for Exercises 10.2.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Subsection 10.2.4: Hypothesis test for population slope"><a href="#hypo-test-simple-lm" title="Copy heading and permalink for Subsection 10.2.4: Hypothesis test for population slope" aria-label="Copy heading and permalink for Subsection 10.2.4: Hypothesis test for population slope">🔗</a></div>
+</section>
+<section class="subsection" id="regression-table">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The regression table in R</span>
+</h3>
+<div class="para" id="regression-table-2">The least-square estimates, standard errors, test statistics, <span class="process-math">\(p\)</span>-values, and confidence interval bounds discussed in <a href="theory-simple-regression.html" class="internal" title="Section 10.2: Theory-based inference for simple linear regression">Section 10.2</a> can be calculated all at once using the R wrapper function <code class="code-inline tex2jax_ignore">get_regression_table()</code>  from the <code class="code-inline tex2jax_ignore">moderndive</code> package. For <code class="code-inline tex2jax_ignore">model_1</code>:<div class="autopermalink" data-description="Paragraph"><a href="#regression-table-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">get_regression_table(model_1)
+</code></pre></div>
+<div class="para" id="regression-table-4">The first row in the regression table addresses inferences for the intercept <span class="process-math">\(\beta_0\text{,}\)</span> and the second row deals with inference for the slope <span class="process-math">\(\beta_1\text{.}\)</span> The columns present the following:<div class="autopermalink" data-description="Paragraph"><a href="#regression-table-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ul class="disc" id="regression-table-5">
+<li id="regression-table-5-1">
+<div class="para" id="regression-table-5-1-1">The <code class="code-inline tex2jax_ignore">estimate</code> column contains the least-squares estimates, <span class="process-math">\(b_0\)</span> (first row) and <span class="process-math">\(b_1\)</span> (second row).<div class="autopermalink" data-description="Paragraph"><a href="#regression-table-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#regression-table-5-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="regression-table-5-2">
+<div class="para" id="regression-table-5-2-1">The <code class="code-inline tex2jax_ignore">std_error</code> contains <span class="process-math">\(SE(b_0)\)</span> and <span class="process-math">\(SE(b_1)\text{,}\)</span> the standard errors for <span class="process-math">\(b_0\)</span> and <span class="process-math">\(b_1\text{,}\)</span> respectively.<div class="autopermalink" data-description="Paragraph"><a href="#regression-table-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#regression-table-5-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="regression-table-5-3">
+<div class="para" id="regression-table-5-3-1">The <code class="code-inline tex2jax_ignore">statistic</code> column contains the <span class="process-math">\(t\)</span>-test statistic for <span class="process-math">\(b_0\)</span> (first row) and <span class="process-math">\(b_1\)</span> (second row), constructed using <span class="process-math">\(t = b_1 / SE(b_1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#regression-table-5-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#regression-table-5-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="regression-table-5-4">
+<div class="para" id="regression-table-5-4-1">The <code class="code-inline tex2jax_ignore">p_value</code> is the probability of obtaining a test statistic just as extreme as or more extreme than the one observed, assuming the null hypothesis is true.<div class="autopermalink" data-description="Paragraph"><a href="#regression-table-5-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#regression-table-5-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="regression-table-5-5">
+<div class="para" id="regression-table-5-5-1">The values <code class="code-inline tex2jax_ignore">lower_ci</code> and <code class="code-inline tex2jax_ignore">upper_ci</code> are the lower and upper bounds of a 95% confidence interval for <span class="process-math">\(\beta_1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#regression-table-5-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#regression-table-5-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Subsection 10.2.5: The regression table in R"><a href="#regression-table" title="Copy heading and permalink for Subsection 10.2.5: The regression table in R" aria-label="Copy heading and permalink for Subsection 10.2.5: The regression table in R">🔗</a></div>
+</section>
+<section class="subsection" id="model-fit">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Model fit and model assumptions</span>
+</h3>
+<div class="para" id="model-fit-2">We have introduced the linear model alongside assumptions about many of its elements and assumed all along that this is an appropriate representation of the relationship between the response and the explanatory variable. In real-life applications, it is uncertain whether the relationship is appropriately described by the linear model or whether all the assumptions we have introduced are satisfied.<div class="autopermalink" data-description="Paragraph"><a href="#model-fit-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="model-fit-3">We do not expect the linear model, or any other model, to be a perfect representation of a phenomenon presented in nature. Models are simplifications of reality in that they do not intend to represent exactly the relationship in question but rather provide useful approximations. This approach is known as the <dfn class="terminology">principle of parsimony</dfn> or <dfn class="terminology">Occam’s razor</dfn>.<div class="autopermalink" data-description="Paragraph"><a href="#model-fit-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="model-fit-4">There are four elements in the linear model we want to check. To help you remember them, we use the following acrostic:<div class="autopermalink" data-description="Paragraph"><a href="#model-fit-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="model-fit-5">
+<li id="model-fit-5-1">
+<div class="para" id="model-fit-5-1-1">
+<em class="emphasis"><em class="alert">L</em>inearity of relationship between variables</em> — Is the relationship between <span class="process-math">\(y_i\)</span> and <span class="process-math">\(x_i\)</span> truly linear for each <span class="process-math">\(i = 1, \dots, n\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#model-fit-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#model-fit-5-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="model-fit-5-2">
+<div class="para" id="model-fit-5-2-1">
+<em class="emphasis"><em class="alert">I</em>ndependence of each of the response values <span class="process-math">\(y_i\)</span></em> — Are <span class="process-math">\(y_i\)</span> and <span class="process-math">\(y_j\)</span> independent for any <span class="process-math">\(i \ne j\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#model-fit-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#model-fit-5-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="model-fit-5-3">
+<div class="para" id="model-fit-5-3-1">
+<em class="emphasis"><em class="alert">N</em>ormality of the error terms</em> — Is the distribution of the error terms at least approximately normal?<div class="autopermalink" data-description="Paragraph"><a href="#model-fit-5-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#model-fit-5-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+<li id="model-fit-5-4">
+<div class="para" id="model-fit-5-4-1">
+<em class="emphasis"><em class="alert">E</em>quality or constancy of the variance for <span class="process-math">\(y_i\)</span></em> — Is the variance of the response <span class="process-math">\(y_i\)</span> always the same, regardless of the fitted value or regressor value?<div class="autopermalink" data-description="Paragraph"><a href="#model-fit-5-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4"><a href="#model-fit-5-4" title="Copy heading and permalink for Item 4" aria-label="Copy heading and permalink for Item 4">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="model-fit-6">This acrostic follows the word <dfn class="terminology">LINE</dfn> . To check for <em class="emphasis">L</em>inearity, <em class="emphasis">N</em>ormality, and <em class="emphasis">E</em>qual or constant variance, we use the residuals of the linear regression via <em class="emphasis">residual diagnostics</em> . To check for <em class="emphasis">I</em>ndependence, we can use the residuals if the data was collected in a time sequence, or otherwise independence may be achieved by taking a random sample.<div class="autopermalink" data-description="Paragraph"><a href="#model-fit-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="subsubsection" id="residuals-ch10">
+<h4 class="heading hide-type">
+<span class="type">Subsubsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.6.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Residuals</span>
+</h4>
+<div class="para" id="residuals-ch10-2">Recall that given a random sample of <span class="process-math">\(n\)</span> pairs <span class="process-math">\((x_1, y_1), \dots, (x_n, y_n)\)</span> the linear regression was given by <span class="process-math">\(\widehat{y}_i = b_0 + b_1 \cdot x_i\text{.}\)</span> The residual is the <em class="emphasis">observed response</em> minus the <em class="emphasis">fitted value</em>:<div class="autopermalink" data-description="Paragraph"><a href="#residuals-ch10-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig-residual-example.html" id="residuals-ch10-3">
+\begin{equation*}
+e_i = y_i - \widehat{y}_i \quad\text{ for } i = 1, \dots, n.
+\end{equation*}
+</div>
+<div class="para" id="residuals-ch10-4">Combining these two formulas we get <span class="process-math">\(y_i = \underbrace{b_0 + b_1 \cdot x_i}_{\widehat{y}_i} + e_i\text{,}\)</span> which looks very similar to our linear model <span class="process-math">\(y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i\text{.}\)</span> In this context, residuals can be thought of as rough estimates of the error terms.<div class="autopermalink" data-description="Paragraph"><a href="#residuals-ch10-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="residuals-ch10-5">In <a href="theory-simple-regression.html#fig-residual-example" class="xref" data-knowl="./knowl/xref/fig-residual-example.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.2">Figure 10.2.2</a>, we illustrate one particular residual for the Old Faithful geyser eruption. An arrow connects the observed waiting time (a circle) with the fitted waiting time (a square). The vertical distance between these two points is the value of the residual for this observation.<div class="autopermalink" data-description="Paragraph"><a href="#residuals-ch10-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-residual-example"><div class="image-box" style="width: 80%; margin-left: 10%; margin-right: 10%;"><img src="images/fig-residual-example.png" class="contained" alt="Scatterplot of Old Faithful duration versus waiting with the regression line. A single observation is highlighted with a circle for the observed value and a square for the fitted value, connected by an arrow indicating the residual."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example of observed value, fitted value, and residual for the Old Faithful data.<div class="autopermalink" data-description="Figure 10.2.2"><a href="#fig-residual-example" title="Copy heading and permalink for Figure 10.2.2" aria-label="Copy heading and permalink for Figure 10.2.2">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residuals-ch10-7">We can calculate all residuals by applying the <code class="code-inline tex2jax_ignore">get_regression_points()</code> function to the regression model <code class="code-inline tex2jax_ignore">model_1</code>:<div class="autopermalink" data-description="Paragraph"><a href="#residuals-ch10-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r"># Fit regression model:
+model_1 &lt;- lm(waiting ~ duration, data = old_faithful_2024)
+# Get regression points:
+fitted_and_residuals &lt;- get_regression_points(model_1)
+fitted_and_residuals
+</code></pre></div>
+<div class="autopermalink" data-description="Subsubsection 10.2.6.1: Residuals"><a href="#residuals-ch10" title="Copy heading and permalink for Subsubsection 10.2.6.1: Residuals" aria-label="Copy heading and permalink for Subsubsection 10.2.6.1: Residuals">🔗</a></div>
+</section>
+<section class="subsubsection" id="residual-diagnostics">
+<h4 class="heading hide-type">
+<span class="type">Subsubsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.6.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Residual diagnostics</span>
+</h4>
+<div class="para" id="residual-diagnostics-2">
+<em class="emphasis">Residual diagnostics</em> are used to verify conditions <em class="emphasis">L</em>, <em class="emphasis">N</em>, and <em class="emphasis">E</em>. One of the most useful plots is a <em class="emphasis">residual plot</em>, which is a scatterplot of the residuals against the fitted values. We use <code class="code-inline tex2jax_ignore">fitted_and_residuals</code> to draw the scatterplot with the fitted values (<code class="code-inline tex2jax_ignore">waiting_hat</code>) on the x-axis and the residuals (<code class="code-inline tex2jax_ignore">residual</code>) on the y-axis, and add a horizontal line at 0:<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">ggplot(fitted_and_residuals, aes(x = waiting_hat, y = residual)) +
+  geom_point() +
+  labs(x = "duration", y = "residual") +
+  geom_hline(yintercept = 0, col = "blue")
+</code></pre></div>
+<div class="para" id="residual-diagnostics-4">In <a href="theory-simple-regression.html#fig-scatt-and-residual" class="xref" data-knowl="./knowl/xref/fig-scatt-and-residual.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.3">Figure 10.2.3</a> we show this residual plot (right) alongside the scatterplot for <code class="code-inline tex2jax_ignore">duration</code> vs <code class="code-inline tex2jax_ignore">waiting</code> (left). Note how the residuals on the left plot are determined by the vertical distance between the observed response and the linear regression. On the right plot, the effect of the linear regression has been removed.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-scatt-and-residual"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-scatt-and-residual.png" class="contained" alt="Two side-by-side plots. Left: scatterplot of duration versus waiting with regression line. Right: scatterplot of fitted values versus residuals with a horizontal line at zero."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The scatterplot (left) and residual plot (right) for the Old Faithful data.<div class="autopermalink" data-description="Figure 10.2.3"><a href="#fig-scatt-and-residual" title="Copy heading and permalink for Figure 10.2.3" aria-label="Copy heading and permalink for Figure 10.2.3">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-6">
+<em class="emphasis">Linearity of relationship.</em> We want to check whether the association between the response <span class="process-math">\(y_i\)</span> and the explanatory variable <span class="process-math">\(x_i\)</span> is <em class="emphasis">L</em>inear. A scatterplot of residuals against fitted values showing no patterns but simply a cloud of points that seems randomly assigned — called a <em class="emphasis">null plot</em> — does not show any evidence against the linearity assumption. This is largely the case for the Old Faithful geyser example.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="residual-diagnostics-7">By contrast, <a href="theory-simple-regression.html#fig-non-linear" class="xref" data-knowl="./knowl/xref/fig-non-linear.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.4">Figure 10.2.4</a> shows a simulated example where the residual plot has a U-shaped polynomial curve. If this was the real data observed, using the linear regression would produce results that are not valid.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-non-linear"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-non-linear.png" class="contained" alt="Two side-by-side plots showing a simulated non-linear relationship. Left: scatterplot with regression line. Right: residual plot showing a clear U-shaped curve indicating the linearity assumption is violated."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example of a non-linear relationship (simulated data).<div class="autopermalink" data-description="Figure 10.2.4"><a href="#fig-non-linear" title="Copy heading and permalink for Figure 10.2.4" aria-label="Copy heading and permalink for Figure 10.2.4">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-9">
+<em class="emphasis">Independence of the error terms and the response.</em> Another assumption we want to check is the <em class="emphasis">I</em>ndependence of the response values. If data was collected in a time sequence, plotting residuals against time can help determine lack of independence. The <code class="code-inline tex2jax_ignore">old_faithful_2024</code> dataset contains a <code class="code-inline tex2jax_ignore">date</code> variable. <a href="theory-simple-regression.html#fig-time-plot" class="xref" data-knowl="./knowl/xref/fig-time-plot.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.5">Figure 10.2.5</a> shows the plot of residuals against date.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-time-plot"><div class="image-box" style="width: 80%; margin-left: 10%; margin-right: 10%;"><img src="images/fig-time-plot.png" class="contained" alt="Scatterplot of residuals on the y-axis versus date on the x-axis for the Old Faithful data, showing no systematic time-based pattern."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Scatterplot of date (time) vs residuals for the Old Faithful example.<div class="autopermalink" data-description="Figure 10.2.5"><a href="#fig-time-plot" title="Copy heading and permalink for Figure 10.2.5" aria-label="Copy heading and permalink for Figure 10.2.5">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-11">The plot of residuals against time seems to be a null plot. Based on this plot we could say that the residuals do not exhibit any evidence of dependency. Since we can consider this a random sample, the assumption of independence seems acceptable.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="residual-diagnostics-12">
+<em class="emphasis">Normality of the error terms.</em> The third assumption we want to check is whether the error terms follow <em class="emphasis">N</em>ormal distributions with expected value equal to zero. We can use a histogram and a <em class="emphasis">quantile-to-quantile (QQ) plot</em> of the residuals:<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">ggplot(fitted_and_residuals, aes(residual)) +
+  geom_histogram(binwidth = 10, color = "white")
+</code></pre></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">fitted_and_residuals |&gt;
+  ggplot(aes(sample = residual)) +
+  geom_qq() +
+  geom_qq_line()
+</code></pre></div>
+<div class="para" id="residual-diagnostics-15">The QQ-plot creates a scatterplot of the quantiles of the residuals against the quantiles of a normal distribution. If the residuals follow approximately a normal distribution, the scatterplot would be a straight line of 45 degrees. <a href="theory-simple-regression.html#fig-model1residualshist" class="xref" data-knowl="./knowl/xref/fig-model1residualshist.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.6">Figure 10.2.6</a> shows both plots for <code class="code-inline tex2jax_ignore">model_1</code>.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-model1residualshist"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-model1residualshist.png" class="contained" alt="Two plots side by side. Left: histogram of residuals with a normal distribution curve overlaid. Right: QQ-plot of residuals with a 45-degree reference line."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Histogram of residuals (left) with normal curve overlay, and QQ-plot (right) for the Old Faithful regression.<div class="autopermalink" data-description="Figure 10.2.6"><a href="#fig-model1residualshist" title="Copy heading and permalink for Figure 10.2.6" aria-label="Copy heading and permalink for Figure 10.2.6">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-17">The histogram does not appear exactly normal but does not deviate much. The QQ-plot supports this conclusion. For comparison, <a href="theory-simple-regression.html#fig-not-normal-residuals" class="xref" data-knowl="./knowl/xref/fig-not-normal-residuals.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.7">Figure 10.2.7</a> shows residuals from a simulated model that clearly do not follow normality.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-not-normal-residuals"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-not-normal-residuals.png" class="contained" alt="Histogram and QQ-plot for simulated non-normal residuals, showing clear deviation from the normal distribution curve and from the 45-degree reference line."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example of clearly non-normal residuals (simulated data).<div class="autopermalink" data-description="Figure 10.2.7"><a href="#fig-not-normal-residuals" title="Copy heading and permalink for Figure 10.2.7" aria-label="Copy heading and permalink for Figure 10.2.7">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-19">
+<em class="emphasis">Equality or constancy of variance for errors.</em> The final assumption we check is the <em class="emphasis">E</em>quality or constancy of the variance — <dfn class="terminology">homoskedasticity</dfn> — for the error term across all fitted values or regressor values. We check that the dispersion of the residuals is the same for any fitted value <span class="process-math">\(\widehat{y}_i\)</span> or regressor <span class="process-math">\(x_i\text{:}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-19" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
+  geom_point(alpha = 0.6) +
+  labs(x = "duration", y = "residual") +
+  geom_hline(yintercept = 0)
+</code></pre></div>
+<figure class="figure figure-like" id="fig-residual-plot-ch10"><div class="image-box" style="width: 80%; margin-left: 10%; margin-right: 10%;"><img src="images/fig-residual-plot-ch10.png" class="contained" alt="Scatterplot of residuals on the y-axis versus eruption duration in seconds on the x-axis, with a horizontal reference line at zero."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of residuals against the regressor <code class="code-inline tex2jax_ignore">duration</code>.<div class="autopermalink" data-description="Figure 10.2.8"><a href="#fig-residual-plot-ch10" title="Copy heading and permalink for Figure 10.2.8" aria-label="Copy heading and permalink for Figure 10.2.8">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-22">The spread of the residuals is not exactly constant across all values of <code class="code-inline tex2jax_ignore">duration</code>, but there is not clear evidence against the assumption of homoskedasticity. For comparison, <a href="theory-simple-regression.html#fig-equal-variance-residuals" class="xref" data-knowl="./knowl/xref/fig-equal-variance-residuals.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.2.9">Figure 10.2.9</a> shows a simulated example with non-constant variance.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-22" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-equal-variance-residuals"><div class="image-box" style="width: 75%; margin-left: 12.5%; margin-right: 12.5%;"><img src="images/fig-equal-variance-residuals.png" class="contained" alt="Scatterplot of simulated residuals versus duration showing a fan-shaped pattern where the spread of residuals increases as the regressor value increases, illustrating heteroskedasticity."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example of clearly non-equal variance (simulated data).<div class="autopermalink" data-description="Figure 10.2.9"><a href="#fig-equal-variance-residuals" title="Copy heading and permalink for Figure 10.2.9" aria-label="Copy heading and permalink for Figure 10.2.9">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="residual-diagnostics-24">Lack of constant variance is also known as <dfn class="terminology">heteroskedasticity</dfn>. When heteroskedasticity is present, the standard error of the least-square estimators, confidence intervals, or the conclusion for a related hypothesis test would not be valid.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-24" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="residual-diagnostics-25">
+<em class="emphasis">Conclusion.</em> For the Old Faithful data, we did not find conclusive evidence against any of the assumptions of the model: <em class="emphasis">L</em>inearity, <em class="emphasis">I</em>ndependence, <em class="emphasis">N</em>ormality, and <em class="emphasis">E</em>quality of variance. When there are clear violations, remedial measures include variable transformations for non-linearity, linear mixed-effects models for non-independence, and weighted least squares for non-constant variance.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-25" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="residual-diagnostics-26">Checking that the assumptions of the model are satisfied is a key component of regression analysis. It is important to highlight important elements that may suggest departures from relevant assumptions, and then provide pertinent conclusions.<div class="autopermalink" data-description="Paragraph"><a href="#residual-diagnostics-26" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsubsection 10.2.6.2: Residual diagnostics"><a href="#residual-diagnostics" title="Copy heading and permalink for Subsubsection 10.2.6.2: Residual diagnostics" aria-label="Copy heading and permalink for Subsubsection 10.2.6.2: Residual diagnostics">🔗</a></div>
+</section>
+<section class="exercises" id="model-fit-9">
+<h4 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.6.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h4>
+<article class="exercise exercise-like" id="lc10-7"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-7-1-1">Use the <code class="code-inline tex2jax_ignore">un_member_states_2024</code> data frame included in the <code class="code-inline tex2jax_ignore">moderndive</code> package with response variable fertility rate (<code class="code-inline tex2jax_ignore">fertility_rate_2022</code>) and the regressor human development index (<code class="code-inline tex2jax_ignore">hdi_2022</code>). Make sure to omit missing values.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ul class="disc" id="lc10-7-1-2">
+<li id="lc10-7-1-2-1">
+<div class="para" id="lc10-7-1-2-1-1">Use the <code class="code-inline tex2jax_ignore">get_regression_points()</code> function to get the observed values, fitted values, and residuals for all UN member countries.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-7-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#lc10-7-1-2-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="lc10-7-1-2-2">
+<div class="para" id="lc10-7-1-2-2-1">Perform a residual analysis and look for any systematic patterns in the residuals. Ideally, there should be little to no pattern but comment on what you find.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-7-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#lc10-7-1-2-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="solutions">
+<details id="lc10-7-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-7-2-1">Fit the model and obtain residuals using:<div class="autopermalink" data-description="Paragraph"><a href="#lc10-7-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">un_hdi &lt;- un_member_states_2024 |&gt;
+  select(fert_rate = fertility_rate_2022,
+         hdi = hdi_2022) |&gt;
+  na.omit()
+model_hdi &lt;- lm(fert_rate ~ hdi, data = un_hdi)
+get_regression_points(model_hdi)
+</code></pre></div>
+<div class="para" id="lc10-7-2-3">The residual plot may show some non-random patterns (e.g., non-linearity or non-constant variance) suggesting that a simple linear model may not fully capture the relationship between fertility rate and HDI.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-7-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.6.3.1.1"><a href="#lc10-7-2" title="Copy heading and permalink for Answer 10.2.6.3.1.1" aria-label="Copy heading and permalink for Answer 10.2.6.3.1.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.6.3.1"><a href="#lc10-7" title="Copy heading and permalink for Exercise 10.2.6.3.1" aria-label="Copy heading and permalink for Exercise 10.2.6.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc10-8"><h5 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-8-1-1">In the context of linear regression, a <code class="code-inline tex2jax_ignore">p_value</code> of near zero for the slope coefficient suggests which of the following?<div class="autopermalink" data-description="Paragraph"><a href="#lc10-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ol class="upper-alpha ol-marker-2" id="lc10-8-1-2">
+<li id="lc10-8-1-2-1">
+<div class="para" id="lc10-8-1-2-1-1">The intercept is statistically significant at a 95% confidence level.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-8-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.2.A"><a href="#lc10-8-1-2-1" title="Copy heading and permalink for Item 10.2.6.3.2.A" aria-label="Copy heading and permalink for Item 10.2.6.3.2.A">🔗</a></div>
+</li>
+<li id="lc10-8-1-2-2">
+<div class="para" id="lc10-8-1-2-2-1">There is strong evidence against the null hypothesis that the slope coefficient is zero, suggesting there exists a linear relationship between the explanatory and response variables.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-8-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.2.B"><a href="#lc10-8-1-2-2" title="Copy heading and permalink for Item 10.2.6.3.2.B" aria-label="Copy heading and permalink for Item 10.2.6.3.2.B">🔗</a></div>
+</li>
+<li id="lc10-8-1-2-3">
+<div class="para" id="lc10-8-1-2-3-1">The variance of the response variable is significantly greater than the variance of the explanatory variable.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-8-1-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.2.C"><a href="#lc10-8-1-2-3" title="Copy heading and permalink for Item 10.2.6.3.2.C" aria-label="Copy heading and permalink for Item 10.2.6.3.2.C">🔗</a></div>
+</li>
+<li id="lc10-8-1-2-4">
+<div class="para" id="lc10-8-1-2-4-1">The residuals are normally distributed with mean zero and constant variance.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-8-1-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.2.D"><a href="#lc10-8-1-2-4" title="Copy heading and permalink for Item 10.2.6.3.2.D" aria-label="Copy heading and permalink for Item 10.2.6.3.2.D">🔗</a></div>
+</li>
+</ol>
+<div class="solutions">
+<details id="lc10-8-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-8-2-1">B. A near-zero <span class="process-math">\(p\)</span>-value for the slope coefficient provides strong evidence against the null hypothesis that <span class="process-math">\(\beta_1 = 0\text{,}\)</span> indicating a linear relationship exists.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-8-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.6.3.2.1"><a href="#lc10-8-2" title="Copy heading and permalink for Answer 10.2.6.3.2.1" aria-label="Copy heading and permalink for Answer 10.2.6.3.2.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.6.3.2"><a href="#lc10-8" title="Copy heading and permalink for Exercise 10.2.6.3.2" aria-label="Copy heading and permalink for Exercise 10.2.6.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc10-9"><h5 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-9-1-1">Explain whether or not the residual plot helps assess each one of the following assumptions.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-9-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ul class="disc" id="lc10-9-1-2">
+<li id="lc10-9-1-2-1">
+<div class="para" id="lc10-9-1-2-1-1">Linearity of the relationship between variables<div class="autopermalink" data-description="Paragraph"><a href="#lc10-9-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#lc10-9-1-2-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="lc10-9-1-2-2">
+<div class="para" id="lc10-9-1-2-2-1">Independence of the error terms<div class="autopermalink" data-description="Paragraph"><a href="#lc10-9-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#lc10-9-1-2-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="lc10-9-1-2-3">
+<div class="para" id="lc10-9-1-2-3-1">Normality of the error terms<div class="autopermalink" data-description="Paragraph"><a href="#lc10-9-1-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#lc10-9-1-2-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="lc10-9-1-2-4">
+<div class="para" id="lc10-9-1-2-4-1">Equality or constancy of variance<div class="autopermalink" data-description="Paragraph"><a href="#lc10-9-1-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#lc10-9-1-2-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="solutions">
+<details id="lc10-9-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-9-2-1">The residual plot (residuals vs fitted values) directly helps assess: <em class="emphasis">Linearity</em> (look for non-linear patterns such as curves or U-shapes), <em class="emphasis">Equality of variance</em> (look for fan-shaped spread indicating heteroskedasticity). It can help assess <em class="emphasis">Independence</em> only when data are collected in a sequence (plot residuals vs time). It does <em class="emphasis">not</em> directly help assess <em class="emphasis">Normality</em>; for that, a histogram or QQ-plot of residuals is more appropriate.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-9-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.6.3.3.1"><a href="#lc10-9-2" title="Copy heading and permalink for Answer 10.2.6.3.3.1" aria-label="Copy heading and permalink for Answer 10.2.6.3.3.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.6.3.3"><a href="#lc10-9" title="Copy heading and permalink for Exercise 10.2.6.3.3" aria-label="Copy heading and permalink for Exercise 10.2.6.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc10-10"><h5 class="heading"><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc10-10-1-1">If the residual plot against fitted values shows a “U-shaped” pattern, what does this suggest?<div class="autopermalink" data-description="Paragraph"><a href="#lc10-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> 
+<ol class="upper-alpha ol-marker-2" id="lc10-10-1-2">
+<li id="lc10-10-1-2-1">
+<div class="para" id="lc10-10-1-2-1-1">The variance of the residuals is constant.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-10-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.4.A"><a href="#lc10-10-1-2-1" title="Copy heading and permalink for Item 10.2.6.3.4.A" aria-label="Copy heading and permalink for Item 10.2.6.3.4.A">🔗</a></div>
+</li>
+<li id="lc10-10-1-2-2">
+<div class="para" id="lc10-10-1-2-2-1">The linearity assumption is violated.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-10-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.4.B"><a href="#lc10-10-1-2-2" title="Copy heading and permalink for Item 10.2.6.3.4.B" aria-label="Copy heading and permalink for Item 10.2.6.3.4.B">🔗</a></div>
+</li>
+<li id="lc10-10-1-2-3">
+<div class="para" id="lc10-10-1-2-3-1">The independence assumption is violated.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-10-1-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.4.C"><a href="#lc10-10-1-2-3" title="Copy heading and permalink for Item 10.2.6.3.4.C" aria-label="Copy heading and permalink for Item 10.2.6.3.4.C">🔗</a></div>
+</li>
+<li id="lc10-10-1-2-4">
+<div class="para" id="lc10-10-1-2-4-1">The normality assumption is satisfied.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-10-1-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.6.3.4.D"><a href="#lc10-10-1-2-4" title="Copy heading and permalink for Item 10.2.6.3.4.D" aria-label="Copy heading and permalink for Item 10.2.6.3.4.D">🔗</a></div>
+</li>
+</ol>
+<div class="solutions">
+<details id="lc10-10-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc10-10-2-1">B. A U-shaped pattern in the residual plot suggests the linearity assumption is violated, indicating the relationship between the response and explanatory variable is non-linear.<div class="autopermalink" data-description="Paragraph"><a href="#lc10-10-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 10.2.6.3.4.1"><a href="#lc10-10-2" title="Copy heading and permalink for Answer 10.2.6.3.4.1" aria-label="Copy heading and permalink for Answer 10.2.6.3.4.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.6.3.4"><a href="#lc10-10" title="Copy heading and permalink for Exercise 10.2.6.3.4" aria-label="Copy heading and permalink for Exercise 10.2.6.3.4">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 10.2.6.3"><a href="#model-fit-9" title="Copy heading and permalink for Exercises 10.2.6.3" aria-label="Copy heading and permalink for Exercises 10.2.6.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Subsection 10.2.6: Model fit and model assumptions"><a href="#model-fit" title="Copy heading and permalink for Subsection 10.2.6: Model fit and model assumptions" aria-label="Copy heading and permalink for Subsection 10.2.6: Model fit and model assumptions">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 10.2: Theory-based inference for simple linear regression"><a href="#theory-simple-regression" title="Copy heading and permalink for Section 10.2: Theory-based inference for simple linear regression" aria-label="Copy heading and permalink for Section 10.2: Theory-based inference for simple linear regression">🔗</a></div>
+</section>
+</div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="simple-linear-regression-model.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="infer-regression.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="https://runestone.academy/runestone/static/images/RAIcon_cropped.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="https://www.mathjax.org/badge/badge-square-2.png" alt="MathJax logo"></a>
+</div>
+</body>
+</html>

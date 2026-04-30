@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Tidy data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "textmacros",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[tex]/textmacros",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Title">
+<meta property="book:author" content="NAME">
+<meta property="book:author" content="NAME">
+<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+</head>
+<body id="tidy-text-mining" class="pretext book ignore-math">
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="book-id-here.html"><span class="title">Title</span> <span class="subtitle">Subtitle</span></a></h1>
+<p class="byline">NAME, NAME</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d2;</span><span class="name">Contents</span></button><a class="index-button button" href="meta-back-1.html" title="Index"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span><span class="name">Index</span></a><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe8b6;</span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe51c;</span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="csv.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="tidy.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="case-study-tidy.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="meta-front.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-abstract"><div class="toc-title-box"><a href="meta-front.html#meta-front-3" class="internal"><span class="title">Abstract</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="packages.html" class="internal"><span class="codenumber">1.1</span> <span class="title">What are R packages?</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="viz.html" class="internal"><span class="codenumber">2</span> <span class="title">Data Visualization</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="wrangling.html" class="internal"><span class="codenumber">3</span> <span class="title">Data Wrangling</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="select.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Selecting variables with <code class="code-inline tex2jax_ignore">select()</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="tidy.html" class="internal"><span class="codenumber">4</span> <span class="title">Data Importing and Tidy Data</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-packages.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="csv.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Importing data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="csv.html#tidy-csv-console" class="internal"><span class="codenumber">4.1.1</span> <span class="title">Using the console</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="csv.html#tidy-rstudio-gui" class="internal"><span class="codenumber">4.1.2</span> <span class="title">Using RStudio’s interface</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="tidy-data-ex.html" class="internal"><span class="codenumber">4.2</span> <span class="title">Tidy data</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="tidy-data-ex.html#tidy-definition" class="internal"><span class="codenumber">4.2.1</span> <span class="title">Definition of tidy data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-definition-14" class="internal"><span class="codenumber">4.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="tidy-data-ex.html#tidy-converting" class="internal"><span class="codenumber">4.2.2</span> <span class="title">Converting to tidy data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-converting-19" class="internal"><span class="codenumber">4.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-nycflights23" class="internal"><span class="codenumber">4.2.3</span> <span class="title"><code class="code-inline tex2jax_ignore">nycflights23</code> package</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="case-study-tidy.html" class="internal"><span class="codenumber">4.3</span> <span class="title">Case study: democracy in Guatemala</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="case-study-tidy.html#case-study-tidy-18" class="internal"><span class="codenumber">4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="tidyverse-package.html" class="internal"><span class="codenumber">4.4</span> <span class="title"><code class="code-inline tex2jax_ignore">tidyverse</code> package</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="tidy-data-conclusion.html" class="internal"><span class="codenumber">4.5</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-conclusion.html#tidy-additional-resources" class="internal"><span class="codenumber">4.5.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-conclusion.html#tidy-whats-to-come" class="internal"><span class="codenumber">4.5.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="regression.html" class="internal"><span class="codenumber">5</span> <span class="title">Simple Linear Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-packages.html" class="internal"><span class="codenumber">5.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model1.html" class="internal"><span class="codenumber">5.1</span> <span class="title">One numerical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1EDA" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1EDA-42" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1table" class="internal"><span class="codenumber">5.1.2</span> <span class="title">Simple linear regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1table-20" class="internal"><span class="codenumber">5.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1points" class="internal"><span class="codenumber">5.1.3</span> <span class="title">Observed/fitted values and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1points-17" class="internal"><span class="codenumber">5.1.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model2.html" class="internal"><span class="codenumber">5.2</span> <span class="title">One categorical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2EDA" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2EDA-32" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2table" class="internal"><span class="codenumber">5.2.2</span> <span class="title">Linear regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2table-27" class="internal"><span class="codenumber">5.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2points" class="internal"><span class="codenumber">5.2.3</span> <span class="title">Observed/fitted values and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2points-8" class="internal"><span class="codenumber">5.2.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="reg-related-topics.html" class="internal"><span class="codenumber">5.3</span> <span class="title">Related topics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-related-topics.html#correlation-is-not-causation" class="internal"><span class="codenumber">5.3.1</span> <span class="title">Correlation is not necessarily causation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="reg-related-topics.html#leastsquares" class="internal"><span class="codenumber">5.3.2</span> <span class="title">Best-fitting line</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="reg-related-topics.html#leastsquares-14" class="internal"><span class="codenumber">5.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-related-topics.html#underthehood" class="internal"><span class="codenumber">5.3.3</span> <span class="title">get_regression_x() functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="reg-conclusion.html" class="internal"><span class="codenumber">5.4</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-conclusion.html#additional-resources-basic-regression" class="internal"><span class="codenumber">5.4.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-conclusion.html#reg-whats-to-come" class="internal"><span class="codenumber">5.4.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="multiple-regression.html" class="internal"><span class="codenumber">6</span> <span class="title">Multiple Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-packages.html" class="internal"><span class="codenumber">6.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model4.html" class="internal"><span class="codenumber">6.1</span> <span class="title">One numerical and one categorical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="model4.html#model4EDA" class="internal"><span class="codenumber">6.1.1</span> <span class="title">Exploratory data analysis</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4interactiontable" class="internal"><span class="codenumber">6.1.2</span> <span class="title">Model with interactions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4interactiontable-38" class="internal"><span class="codenumber">6.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4table" class="internal"><span class="codenumber">6.1.3</span> <span class="title">Model without interactions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4table-17" class="internal"><span class="codenumber">6.1.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4points" class="internal"><span class="codenumber">6.1.4</span> <span class="title">Observed responses, fitted values, and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4points-8" class="internal"><span class="codenumber">6.1.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model3.html" class="internal"><span class="codenumber">6.2</span> <span class="title">Two numerical explanatory variables</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model3.html#model3EDA" class="internal"><span class="codenumber">6.2.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model3.html#model3EDA-28" class="internal"><span class="codenumber">6.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model3.html#model3table" class="internal"><span class="codenumber">6.2.2</span> <span class="title">Multiple regression with two numerical regressors</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model3.html#model3table-17" class="internal"><span class="codenumber">6.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="model3.html#model3points" class="internal"><span class="codenumber">6.2.3</span> <span class="title">Observed/fitted values and residuals</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="mult-reg-conclusion.html" class="internal"><span class="codenumber">6.3</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-conclusion.html#mult-reg-additional-resources" class="internal"><span class="codenumber">6.3.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-conclusion.html#mult-reg-whats-next" class="internal"><span class="codenumber">6.3.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="sampling.html" class="internal"><span class="codenumber">7</span> <span class="title">Sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-packages.html" class="internal"><span class="codenumber">7.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-activity.html" class="internal"><span class="codenumber">7.1</span> <span class="title">First activity: red balls</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity.html#population-proportion" class="internal"><span class="codenumber">7.1.1</span> <span class="title">The proportion of red balls in the bowl</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-manual" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Manual sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sampling-activity.html#sampling-one-sample" class="internal"><span class="codenumber">7.1.2.1</span> <span class="title">One sample</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-thirty-three" class="internal"><span class="codenumber">7.1.2.2</span> <span class="title">Thirty-three samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#sampling-thirty-three-13" class="internal"><span class="codenumber">7.1.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-simulation" class="internal"><span class="codenumber">7.1.3</span> <span class="title">Virtual sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sampling-activity.html#virtual-one-sample" class="internal"><span class="codenumber">7.1.3.1</span> <span class="title">One virtual sample</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-thirty-three" class="internal"><span class="codenumber">7.1.3.2</span> <span class="title">Thirty-three virtual samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-thirty-three-12" class="internal"><span class="codenumber">7.1.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-thousand" class="internal"><span class="codenumber">7.1.3.3</span> <span class="title">One thousand virtual samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-thousand-7" class="internal"><span class="codenumber">7.1.3.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-different-sizes" class="internal"><span class="codenumber">7.1.3.4</span> <span class="title">Different sample sizes</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-different-sizes-8" class="internal"><span class="codenumber">7.1.3.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-framework.html" class="internal"><span class="codenumber">7.2</span> <span class="title">Sampling framework</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-framework.html#terminology-and-notation" class="internal"><span class="codenumber">7.2.1</span> <span class="title">Population, sample, and the sampling distribution</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-framework.html#terminology-and-notation-6" class="internal"><span class="codenumber">7.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="central-limit-theorem.html" class="internal"><span class="codenumber">7.3</span> <span class="title">The Central Limit Theorem</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#random-variables-proportion" class="internal"><span class="codenumber">7.3.1</span> <span class="title">Random variables</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#sampling-dist-rv" class="internal"><span class="codenumber">7.3.2</span> <span class="title">The sampling distribution using random variables</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#expected-value" class="internal"><span class="codenumber">7.3.3</span> <span class="title">The center of the distribution: the expected value</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="central-limit-theorem.html#expected-value-8" class="internal"><span class="codenumber">7.3.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#sampling-variation" class="internal"><span class="codenumber">7.3.4</span> <span class="title">Sampling variation: standard deviation and standard error</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="central-limit-theorem.html#standard-deviation" class="internal"><span class="codenumber">7.3.4.1</span> <span class="title">The standard deviation</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="central-limit-theorem.html#standard-error" class="internal"><span class="codenumber">7.3.4.2</span> <span class="title">The standard error</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#shape-sampling-proportion" class="internal"><span class="codenumber">7.3.4.3</span> <span class="title">The sampling distribution of the sample proportion</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="central-limit-theorem.html#shape-sampling-proportion-7" class="internal"><span class="codenumber">7.3.4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#clt-summary" class="internal"><span class="codenumber">7.3.5</span> <span class="title">Summary</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-activity-mean.html" class="internal"><span class="codenumber">7.4</span> <span class="title">Second activity: chocolate-covered almonds</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#population-mean" class="internal"><span class="codenumber">7.4.1</span> <span class="title">The population mean weight of almonds in the bowl</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#resampling-tactile-bowl" class="internal"><span class="codenumber">7.4.2</span> <span class="title">Manual sampling and sample means</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#virtual-samples-mean-bowl" class="internal"><span class="codenumber">7.4.3</span> <span class="title">Virtual sampling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#sampling-dist-mean" class="internal"><span class="codenumber">7.4.4</span> <span class="title">The sampling distribution of the sample mean</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity-mean.html#random-variable-sample-mean" class="internal"><span class="codenumber">7.4.5</span> <span class="title">Random variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity-mean.html#random-variable-sample-mean-18" class="internal"><span class="codenumber">7.4.5</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity-mean.html#CLT-mean" class="internal"><span class="codenumber">7.4.6</span> <span class="title">The Central Limit Theorem revisited</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity-mean.html#CLT-mean-6" class="internal"><span class="codenumber">7.4.6</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html" class="internal"><span class="codenumber">7.5</span> <span class="title">The sampling distribution in other scenarios</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#sampling-two-samples" class="internal"><span class="codenumber">7.5.1</span> <span class="title">Sampling distribution for two samples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-means" class="internal"><span class="codenumber">7.5.1.1</span> <span class="title">Difference in sample means</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-means-5" class="internal"><span class="codenumber">7.5.1.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-proportions" class="internal"><span class="codenumber">7.5.1.2</span> <span class="title">Difference in sample proportions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-proportions-11" class="internal"><span class="codenumber">7.5.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-final-remarks.html" class="internal"><span class="codenumber">7.6</span> <span class="title">Summary and final remarks</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-summary-scenarios" class="internal"><span class="codenumber">7.6.1</span> <span class="title">Summary of scenarios</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-additional-resources" class="internal"><span class="codenumber">7.6.2</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-whats-next" class="internal"><span class="codenumber">7.6.3</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="confidence-intervals.html" class="internal"><span class="codenumber">8</span> <span class="title">Confidence Intervals</span></a></div></li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="hypothesis-testing.html" class="internal"><span class="codenumber">9</span> <span class="title">Hypothesis Testing and p-values</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="inference-for-regression.html" class="internal"><span class="codenumber">10</span> <span class="title">Inference for Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inf-packages.html" class="internal"><span class="codenumber">10.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="simple-linear-regression-model.html" class="internal"><span class="codenumber">10.1</span> <span class="title">The simple linear regression model</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#un-member-states-revisited" class="internal"><span class="codenumber">10.1.1</span> <span class="title">UN member states revisited</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#simple-linear-model" class="internal"><span class="codenumber">10.1.2</span> <span class="title">The model</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#sample-regression-inference" class="internal"><span class="codenumber">10.1.3</span> <span class="title">Using a sample for inference</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#least-squares" class="internal"><span class="codenumber">10.1.4</span> <span class="title">The method of least squares</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#properties-least-squares" class="internal"><span class="codenumber">10.1.5</span> <span class="title">Properties of the least squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simple-linear-regression-model.html#relating-regression-to-other-methods" class="internal"><span class="codenumber">10.1.6</span> <span class="title">Relating basic regression to other methods</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#two-sample-diff-means-reg" class="internal"><span class="codenumber">10.1.6.1</span> <span class="title">Two-sample difference in means</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#anova-in-regression" class="internal"><span class="codenumber">10.1.6.2</span> <span class="title">ANOVA</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="simple-linear-regression-model.html#relating-regression-to-other-methods-5" class="internal"><span class="codenumber">10.1.6.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="theory-simple-regression.html" class="internal"><span class="codenumber">10.2</span> <span class="title">Theory-based inference for simple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#framework-simple-lm" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Conceptual framework</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#se-simple-lm" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Standard errors for least-squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#conf-intervals-b0-b1" class="internal"><span class="codenumber">10.2.3</span> <span class="title">Confidence intervals for the least-squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-simple-regression.html#hypo-test-simple-lm" class="internal"><span class="codenumber">10.2.4</span> <span class="title">Hypothesis test for population slope</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-simple-regression.html#hypo-test-simple-lm-15" class="internal"><span class="codenumber">10.2.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#regression-table" class="internal"><span class="codenumber">10.2.5</span> <span class="title">The regression table in R</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-simple-regression.html#model-fit" class="internal"><span class="codenumber">10.2.6</span> <span class="title">Model fit and model assumptions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="theory-simple-regression.html#residuals-ch10" class="internal"><span class="codenumber">10.2.6.1</span> <span class="title">Residuals</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="theory-simple-regression.html#residual-diagnostics" class="internal"><span class="codenumber">10.2.6.2</span> <span class="title">Residual diagnostics</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-simple-regression.html#model-fit-9" class="internal"><span class="codenumber">10.2.6.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="infer-regression.html" class="internal"><span class="codenumber">10.3</span> <span class="title">Simulation-based inference for simple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="infer-regression.html#infer-ci-slr" class="internal"><span class="codenumber">10.3.1</span> <span class="title">Confidence intervals for the population slope using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="infer-regression.html#percentile-ci-slr" class="internal"><span class="codenumber">10.3.1.1</span> <span class="title">Percentile method</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="infer-regression.html#se-ci-slr" class="internal"><span class="codenumber">10.3.1.2</span> <span class="title">Standard error method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="infer-regression.html#infer-hypo-slr" class="internal"><span class="codenumber">10.3.2</span> <span class="title">Hypothesis test for population slope using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="infer-regression.html#infer-hypo-slr-15" class="internal"><span class="codenumber">10.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="multiple-linear-regression-model.html" class="internal"><span class="codenumber">10.4</span> <span class="title">The multiple linear regression model</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#multiple-linear-model" class="internal"><span class="codenumber">10.4.1</span> <span class="title">The model</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#coffee-example" class="internal"><span class="codenumber">10.4.2</span> <span class="title">Example: coffee quality rating scores</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="multiple-linear-regression-model.html#least-squares-multiple" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Least squares for multiple regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#least-squares-multiple-14" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="theory-multiple-regression.html" class="internal"><span class="codenumber">10.5</span> <span class="title">Theory-based inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#model-dependency" class="internal"><span class="codenumber">10.5.1</span> <span class="title">Model dependency of estimators</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#ci-multiple-regression" class="internal"><span class="codenumber">10.5.2</span> <span class="title">Confidence intervals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#hypo-test-mult-lm" class="internal"><span class="codenumber">10.5.3</span> <span class="title">Hypothesis test for a single coefficient</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#hypo-test-mult-lm-1" class="internal"><span class="codenumber">10.5.4</span> <span class="title">Hypothesis test for model comparison</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-multiple-regression.html#model-fit-mult" class="internal"><span class="codenumber">10.5.5</span> <span class="title">Model fit and diagnostics</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-multiple-regression.html#model-fit-mult-8" class="internal"><span class="codenumber">10.5.5</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html" class="internal"><span class="codenumber">10.6</span> <span class="title">Simulation-based inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html#ci-mlr-infer" class="internal"><span class="codenumber">10.6.1</span> <span class="title">Confidence intervals for the partial slopes using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#observed-fit-mlr" class="internal"><span class="codenumber">10.6.1.1</span> <span class="title">Getting the observed fitted model</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#bootstrap-mlr" class="internal"><span class="codenumber">10.6.1.2</span> <span class="title">Bootstrap distribution for the partial slopes</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#ci-mlr-percentile" class="internal"><span class="codenumber">10.6.1.3</span> <span class="title">Confidence intervals for the partial slopes</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html#ht-mlr-infer" class="internal"><span class="codenumber">10.6.2</span> <span class="title">Hypothesis testing for the partial slopes using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="simulation-inference-mlr.html#ht-mlr-infer-10" class="internal"><span class="codenumber">10.6.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="inference-conclusion.html" class="internal"><span class="codenumber">10.7</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inference-conclusion.html#inference-summary" class="internal"><span class="codenumber">10.7.1</span> <span class="title">Summary of statistical inference</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inference-conclusion.html#what-is-to-come-ch10" class="internal"><span class="codenumber">10.7.2</span> <span class="title">What’s to come</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="thinking-with-data.html" class="internal"><span class="codenumber">11</span> <span class="title">Tell Your Story with Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch11-review.html" class="internal"><span class="codenumber">11.1</span> <span class="title">Review</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch11-review.html#story-packages" class="internal"><span class="codenumber">11.1.1</span> <span class="title">Needed packages</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="seattle-house-prices.html" class="internal"><span class="codenumber">11.2</span> <span class="title">Case study: Seattle house prices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-EDA-I" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Exploratory data analysis: part I</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-EDA-II" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Exploratory data analysis: part II</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-regression" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Regression modeling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-making-predictions" class="internal"><span class="codenumber">11.2.4</span> <span class="title">Making predictions</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-inference-for-regression" class="internal"><span class="codenumber">11.2.5</span> <span class="title">Inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-theory-inference" class="internal"><span class="codenumber">11.2.5.1</span> <span class="title">Theory-based hypothesis testing for partial slopes</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-simulation-inference" class="internal"><span class="codenumber">11.2.5.2</span> <span class="title">Simulation-based hypothesis testing for partial slopes</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-inference-for-regression-5" class="internal"><span class="codenumber">11.2.5.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="data-journalism.html" class="internal"><span class="codenumber">11.3</span> <span class="title">Case study: effective data storytelling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="data-journalism.html#bechdel" class="internal"><span class="codenumber">11.3.1</span> <span class="title">Bechdel test for Hollywood gender representation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="data-journalism.html#us-births-1999" class="internal"><span class="codenumber">11.3.2</span> <span class="title">US Births in 1999</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="data-journalism.html#us-births-1999-14" class="internal"><span class="codenumber">11.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="data-journalism.html#ch11-scripts" class="internal"><span class="codenumber">11.3.3</span> <span class="title">Scripts of R code</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch11-concluding-remarks.html" class="internal"><span class="codenumber">11.4</span> <span class="title">Concluding remarks</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixA.html" class="internal"><span class="codenumber">A</span> <span class="title">Statistical Background</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendix-stat-terms.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Basic statistical terms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-mean" class="internal"><span class="codenumber">A.1.1</span> <span class="title">Mean</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-median" class="internal"><span class="codenumber">A.1.2</span> <span class="title">Median</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-sd-variance" class="internal"><span class="codenumber">A.1.3</span> <span class="title">Standard deviation and variance</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-five-number-summary" class="internal"><span class="codenumber">A.1.4</span> <span class="title">Five-number summary</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-distribution" class="internal"><span class="codenumber">A.1.5</span> <span class="title">Distribution</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-outliers" class="internal"><span class="codenumber">A.1.6</span> <span class="title">Outliers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendix-normal-curve.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Normal distribution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="appendix-normal-curve.html#appendix-normal-curve-12" class="internal"><span class="codenumber">A.2.1</span> <span class="title">Exercises</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-normal-curve.html#appendix-normal-calculations" class="internal"><span class="codenumber">A.2.2</span> <span class="title">Additional normal calculations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendix-t-distribution.html" class="internal"><span class="codenumber">A.3</span> <span class="title">The <span class="process-math">\(t\)</span> distribution calculations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendix-log10-transformations.html" class="internal"><span class="codenumber">A.4</span> <span class="title">log10 transformations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixB.html" class="internal"><span class="codenumber">B</span> <span class="title">Inference Examples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-packages.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendixB-infer-map.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Inference mind map</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-one-mean.html" class="internal"><span class="codenumber">B.2</span> <span class="title">One mean</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-problem" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-hypotheses" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-eda" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-simulation" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-theory" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-one-proportion.html" class="internal"><span class="codenumber">B.3</span> <span class="title">One proportion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-problem" class="internal"><span class="codenumber">B.3.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-hypotheses" class="internal"><span class="codenumber">B.3.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-eda" class="internal"><span class="codenumber">B.3.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-simulation" class="internal"><span class="codenumber">B.3.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-theory" class="internal"><span class="codenumber">B.3.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-proportions.html" class="internal"><span class="codenumber">B.4</span> <span class="title">Two proportions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-problem" class="internal"><span class="codenumber">B.4.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-hypotheses" class="internal"><span class="codenumber">B.4.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-eda" class="internal"><span class="codenumber">B.4.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-simulation" class="internal"><span class="codenumber">B.4.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-theory" class="internal"><span class="codenumber">B.4.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-means-independent.html" class="internal"><span class="codenumber">B.5</span> <span class="title">Two means (independent samples)</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-problem" class="internal"><span class="codenumber">B.5.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-hypotheses" class="internal"><span class="codenumber">B.5.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-eda" class="internal"><span class="codenumber">B.5.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-simulation" class="internal"><span class="codenumber">B.5.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-theory" class="internal"><span class="codenumber">B.5.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-means-paired.html" class="internal"><span class="codenumber">B.6</span> <span class="title">Two means (paired samples)</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-problem" class="internal"><span class="codenumber">B.6.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-hypotheses" class="internal"><span class="codenumber">B.6.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-eda" class="internal"><span class="codenumber">B.6.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-simulation" class="internal"><span class="codenumber">B.6.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-theory" class="internal"><span class="codenumber">B.6.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixC.html" class="internal"><span class="codenumber">C</span> <span class="title">Tips and Tricks</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-packages.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixC-wrangling.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Data wrangling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-missing-values" class="internal"><span class="codenumber">C.1.1</span> <span class="title">Dealing with missing values</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-reordering-bars" class="internal"><span class="codenumber">C.1.2</span> <span class="title">Reordering bars in a barplot</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-money-on-axis" class="internal"><span class="codenumber">C.1.3</span> <span class="title">Showing money on an axis</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-changing-values" class="internal"><span class="codenumber">C.1.4</span> <span class="title">Changing values inside cells</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-if-else" class="internal"><span class="codenumber">C.1.4.1</span> <span class="title"><code class="code-inline tex2jax_ignore">if_else()</code></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-recode" class="internal"><span class="codenumber">C.1.4.2</span> <span class="title"><code class="code-inline tex2jax_ignore">recode()</code></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-case-when" class="internal"><span class="codenumber">C.1.4.3</span> <span class="title"><code class="code-inline tex2jax_ignore">case_when()</code></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-convert-numerical-categorical" class="internal"><span class="codenumber">C.1.5</span> <span class="title">Converting a numerical variable to a categorical one</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-prop" class="internal"><span class="codenumber">C.1.6</span> <span class="title">Computing proportions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-commas" class="internal"><span class="codenumber">C.1.7</span> <span class="title">Dealing with %, commas, and $</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixC-interactive.html" class="internal"><span class="codenumber">C.2</span> <span class="title">Interactive graphics</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-interactive.html#appendixC-interactive-linegraphs" class="internal"><span class="codenumber">C.2.1</span> <span class="title">Interactive linegraphs</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="appendixD.html" class="internal"><span class="codenumber">D</span> <span class="title">Learning Check Solutions</span></a></div></li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="appendixE.html" class="internal"><span class="codenumber">E</span> <span class="title">The Theory Behind the Bootstrap Method</span></a></div></li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="meta-back.html" class="internal"><span class="title">Back Matter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-index"><div class="toc-title-box"><a href="meta-back-1.html" class="internal"><span class="title">Index</span></a></div></li></ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content">
+<section class="section" id="tidy-data-ex">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Tidy data</span>
+</h2>
+<div class="para" id="tidy-data-ex-2">Let’s now switch gears and learn about the concept of “tidy” data format with a motivating example from the <code class="code-inline tex2jax_ignore">fivethirtyeight</code> package. The <code class="code-inline tex2jax_ignore">fivethirtyeight</code>  package provides access to the datasets used in many articles published by the data journalism website, <a class="external" href="https://fivethirtyeight.com/" target="_blank">FiveThirtyEight.com</a>. For a complete list of all datasets included in the <code class="code-inline tex2jax_ignore">fivethirtyeight</code> package, check out the package webpage by going to: <a class="external" href="https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html" target="_blank">https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html</a>.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-data-ex-3">Let’s focus our attention on the <code class="code-inline tex2jax_ignore">drinks</code> data frame and look at its first 5 rows:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks |&gt;
+  head(5)
+</code></pre></div>
+<div class="para" id="tidy-data-ex-5">After reading the help file by running <code class="code-inline tex2jax_ignore">?drinks</code>, you’ll see that <code class="code-inline tex2jax_ignore">drinks</code> is a data frame containing results from a survey of the average number of servings of beer, spirits, and wine consumed in 193 countries. This data was originally reported on FiveThirtyEight.com in Mona Chalabi’s article: <a class="external" href="https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/" target="_blank">“Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?”</a><div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-data-ex-6">Let’s apply some of the data-wrangling verbs we learned in <a href="wrangling.html" class="internal" title="Chapter 3: Data Wrangling">Chapter 3</a> on the <code class="code-inline tex2jax_ignore">drinks</code> data frame:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="tidy-data-ex-7">
+<li id="tidy-data-ex-7-1">
+<div class="para" id="tidy-data-ex-7-1-1">
+<code class="code-inline tex2jax_ignore">filter()</code> to only consider 4 countries: the United States, China, Italy, and Saudi Arabia, <em class="emphasis">then</em><div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#tidy-data-ex-7-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="tidy-data-ex-7-2">
+<div class="para" id="tidy-data-ex-7-2-1">
+<code class="code-inline tex2jax_ignore">select()</code> all columns except <code class="code-inline tex2jax_ignore">total_litres_of_pure_alcohol</code> by using the <code class="code-inline tex2jax_ignore">-</code> sign, <em class="emphasis">then</em><div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-7-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#tidy-data-ex-7-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="tidy-data-ex-7-3">
+<div class="para" id="tidy-data-ex-7-3-1">
+<code class="code-inline tex2jax_ignore">rename()</code> <code class="code-inline tex2jax_ignore">beer_servings</code>, <code class="code-inline tex2jax_ignore">spirit_servings</code>, and <code class="code-inline tex2jax_ignore">wine_servings</code> to <code class="code-inline tex2jax_ignore">beer</code>, <code class="code-inline tex2jax_ignore">spirit</code>, and <code class="code-inline tex2jax_ignore">wine</code>, respectively.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-7-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#tidy-data-ex-7-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="tidy-data-ex-8">and save the resulting data frame in <code class="code-inline tex2jax_ignore">drinks_smaller</code>:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks_smaller &lt;- drinks |&gt;
+  filter(country %in% c("USA", "China", "Italy", "Saudi Arabia")) |&gt;
+  select(-total_litres_of_pure_alcohol) |&gt;
+  rename(beer = beer_servings, spirit = spirit_servings, wine = wine_servings)
+drinks_smaller
+</code></pre></div>
+<div class="para" id="tidy-data-ex-10">Let’s now ask ourselves a question: “Using the <code class="code-inline tex2jax_ignore">drinks_smaller</code> data frame, how would we create the side-by-side barplot in <a href="tidy-data-ex.html#fig-drinks-smaller" class="xref" data-knowl="./knowl/xref/fig-drinks-smaller.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 4.2.1">Figure 4.2.1</a>?” Recall we saw barplots displaying two categorical variables in <a href="viz.html" class="internal" title="Chapter 2: Data Visualization">Chapter 2</a>.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-drinks-smaller"><div class="image-box" style="width: 80%; margin-left: 10%; margin-right: 10%;"><img src="images/fig-drinks-smaller.png" class="contained" alt="Side-by-side barplot comparing beer, spirit, and wine servings for China, Italy, Saudi Arabia, and the USA."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Comparing alcohol consumption in 4 countries.<div class="autopermalink" data-description="Figure 4.2.1"><a href="#fig-drinks-smaller" title="Copy heading and permalink for Figure 4.2.1" aria-label="Copy heading and permalink for Figure 4.2.1">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="tidy-data-ex-12">Let’s break down the grammar of graphics we introduced in <a href="viz.html" class="internal" title="Chapter 2: Data Visualization">Chapter 2</a>:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="tidy-data-ex-13">
+<li id="tidy-data-ex-13-1">
+<div class="para" id="tidy-data-ex-13-1-1">The categorical variable <code class="code-inline tex2jax_ignore">country</code> with four levels (China, Italy, Saudi Arabia, USA) would have to be mapped to the <code class="code-inline tex2jax_ignore">x</code>-position of the bars.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-13-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#tidy-data-ex-13-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="tidy-data-ex-13-2">
+<div class="para" id="tidy-data-ex-13-2-1">The numerical variable <code class="code-inline tex2jax_ignore">servings</code> would have to be mapped to the <code class="code-inline tex2jax_ignore">y</code>-position of the bars (the height of the bars).<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-13-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#tidy-data-ex-13-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="tidy-data-ex-13-3">
+<div class="para" id="tidy-data-ex-13-3-1">The categorical variable <code class="code-inline tex2jax_ignore">type</code> with three levels (beer, spirit, wine) would have to be mapped to the <code class="code-inline tex2jax_ignore">fill</code> color of the bars.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-13-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#tidy-data-ex-13-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="tidy-data-ex-14">Observe that <code class="code-inline tex2jax_ignore">drinks_smaller</code> has three separate variables <code class="code-inline tex2jax_ignore">beer</code>, <code class="code-inline tex2jax_ignore">spirit</code>, and <code class="code-inline tex2jax_ignore">wine</code>. In order to use the <code class="code-inline tex2jax_ignore">ggplot()</code> function to recreate the barplot in <a href="tidy-data-ex.html#fig-drinks-smaller" class="xref" data-knowl="./knowl/xref/fig-drinks-smaller.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 4.2.1">Figure 4.2.1</a> however, we need a <em class="emphasis">single variable</em> <code class="code-inline tex2jax_ignore">type</code> with three possible values: <code class="code-inline tex2jax_ignore">beer</code>, <code class="code-inline tex2jax_ignore">spirit</code>, and <code class="code-inline tex2jax_ignore">wine</code>. We could then map this <code class="code-inline tex2jax_ignore">type</code> variable to the <code class="code-inline tex2jax_ignore">fill</code> aesthetic of our plot. In other words, to recreate the barplot in <a href="tidy-data-ex.html#fig-drinks-smaller" class="xref" data-knowl="./knowl/xref/fig-drinks-smaller.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 4.2.1">Figure 4.2.1</a>, our data frame would have to look like this:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks_smaller_tidy
+</code></pre></div>
+<div class="para" id="tidy-data-ex-16">Observe that while <code class="code-inline tex2jax_ignore">drinks_smaller</code> and <code class="code-inline tex2jax_ignore">drinks_smaller_tidy</code> are both rectangular in shape and contain the same 12 numerical values (3 alcohol types by 4 countries), they are formatted differently. <code class="code-inline tex2jax_ignore">drinks_smaller</code> is formatted in what’s known as  <a class="external" href="https://en.wikipedia.org/wiki/Wide_and_narrow_data" target="_blank">“wide”</a> format, whereas <code class="code-inline tex2jax_ignore">drinks_smaller_tidy</code> is formatted in what’s known as <a class="external" href="https://en.wikipedia.org/wiki/Wide_and_narrow_data#Narrow" target="_blank">“long/narrow”</a> format.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-data-ex-17">In the context of data science in R, long/narrow format  is also known as “tidy” format. In order to use the <code class="code-inline tex2jax_ignore">ggplot2</code> and <code class="code-inline tex2jax_ignore">dplyr</code> packages for data visualization and data wrangling, your input data frames <em class="emphasis">must</em> be in “tidy” format. Thus, all non-“tidy” data must be converted to “tidy” format first. Before we convert non-“tidy” data frames like <code class="code-inline tex2jax_ignore">drinks_smaller</code> to “tidy” data frames like <code class="code-inline tex2jax_ignore">drinks_smaller_tidy</code>, let’s define “tidy” data.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-data-ex-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="subsection" id="tidy-definition">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Definition of tidy data</span>
+</h3>
+<div class="para" id="tidy-definition-2">You have surely heard the word “tidy” in your life:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ul class="disc" id="tidy-definition-3">
+<li id="tidy-definition-3-1">
+<div class="para" id="tidy-definition-3-1-1">“Tidy up your room!”<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-definition-3-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="tidy-definition-3-2">
+<div class="para" id="tidy-definition-3-2-1">“Write your homework in a tidy way, so it is easier to provide feedback.”<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-definition-3-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="tidy-definition-3-3">
+<div class="para" id="tidy-definition-3-3-1">Marie Kondo’s best-selling book, <a class="external" href="https://www.powells.com/book/-9781607747307" target="_blank"><em class="emphasis">The Life-Changing Magic of Tidying Up: The Japanese Art of Decluttering and Organizing</em></a>, and Netflix TV series <a class="external" href="https://www.netflix.com/title/80209379" target="_blank"><em class="emphasis">Tidying Up with Marie Kondo</em></a>.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-definition-3-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para" id="tidy-definition-4">What does it mean for your data to be “tidy”? While “tidy” has a clear English meaning of “organized,” the word “tidy” in data science using R means that your data follows a standardized format. We will follow Hadley Wickham’s definition of <dfn class="terminology">tidy data</dfn> shown also in <a href="tidy-data-ex.html#fig-tidy-r4ds" class="xref" data-knowl="./knowl/xref/fig-tidy-r4ds.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 4.2.2">Figure 4.2.2</a>:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<blockquote class="blockquote" id="tidy-definition-5">
+<div class="para" id="tidy-definition-5-1">A <em class="emphasis">dataset</em> is a collection of values, usually either numbers (if quantitative) or strings AKA text data (if qualitative/categorical). Values are organised in two ways. Every value belongs to a variable and an observation. A variable contains all values that measure the same underlying attribute (like height, temperature, duration) across units. An observation contains all values measured on the same unit (like a person, or a day, or a city) across attributes.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-definition-5-2">“Tidy” data is a standard way of mapping the meaning of a dataset to its structure. A dataset is messy or tidy depending on how rows, columns and tables are matched up with observations, variables and types. In <em class="emphasis">tidy data</em>:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-5-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="tidy-definition-5-3">
+<li id="tidy-definition-5-3-1">
+<div class="para" id="tidy-definition-5-3-1-1">Each variable forms a column.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-5-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#tidy-definition-5-3-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="tidy-definition-5-3-2">
+<div class="para" id="tidy-definition-5-3-2-1">Each observation forms a row.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-5-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#tidy-definition-5-3-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="tidy-definition-5-3-3">
+<div class="para" id="tidy-definition-5-3-3-1">Each type of observational unit forms a table.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-5-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#tidy-definition-5-3-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Quotation"><a href="#tidy-definition-5" title="Copy heading and permalink for Quotation" aria-label="Copy heading and permalink for Quotation">🔗</a></div>
+</blockquote>
+<figure class="figure figure-like" id="fig-tidy-r4ds"><div class="image-box" style="width: 80%; margin-left: 10%; margin-right: 10%;"><img src="images/r4ds/tidy-1.png" class="contained" alt="Diagram illustrating the three rules of tidy data: variables in columns, observations in rows, and one observational unit per table."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Tidy data graphic from <em class="emphasis">R for Data Science</em>.<div class="autopermalink" data-description="Figure 4.2.2"><a href="#fig-tidy-r4ds" title="Copy heading and permalink for Figure 4.2.2" aria-label="Copy heading and permalink for Figure 4.2.2">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="tidy-definition-7">For example, say you have the following table of stock prices in <a href="tidy-data-ex.html#table-non-tidy-stocks" class="xref" data-knowl="./knowl/xref/table-non-tidy-stocks.html" data-reveal-label="Reveal" data-close-label="Close" title="Table 4.2.3: Stock prices (non-tidy format)">Table 4.2.3</a>:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="table table-like" id="table-non-tidy-stocks"><figcaption><span class="type">Table</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Stock prices (non-tidy format)<div class="autopermalink" data-description="Table 4.2.3: Stock prices (non-tidy format)"><a href="#table-non-tidy-stocks" title="Copy heading and permalink for Table 4.2.3: Stock prices (non-tidy format)" aria-label="Copy heading and permalink for Table 4.2.3: Stock prices (non-tidy format)">🔗</a></div></figcaption><div class="tabular-box natural-width"><table class="tabular">
+<tr class="header-horizontal">
+<th scope="col" class="l m b1 r0 l0 t0 lines">Date</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Boeing stock price</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Amazon stock price</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Google stock price</th>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-01</td>
+<td class="l m b0 r0 l0 t0 lines">$173.55</td>
+<td class="l m b0 r0 l0 t0 lines">$174.90</td>
+<td class="l m b0 r0 l0 t0 lines">$174.34</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-02</td>
+<td class="l m b0 r0 l0 t0 lines">$172.61</td>
+<td class="l m b0 r0 l0 t0 lines">$171.42</td>
+<td class="l m b0 r0 l0 t0 lines">$170.04</td>
+</tr>
+</table></div>
+</figure>
+<div class="para" id="tidy-definition-9">Although the data is in a rectangular spreadsheet format, it is not “tidy.” There are three variables (date, stock name, and stock price), but not three separate columns. In tidy data, each variable should have its own column, as shown in <a href="tidy-data-ex.html#table-tidy-stocks" class="xref" data-knowl="./knowl/xref/table-tidy-stocks.html" data-reveal-label="Reveal" data-close-label="Close" title="Table 4.2.4: Stock prices (tidy format)">Table 4.2.4</a>. Both tables present the same information, but in different formats.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="table table-like" id="table-tidy-stocks"><figcaption><span class="type">Table</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Stock prices (tidy format)<div class="autopermalink" data-description="Table 4.2.4: Stock prices (tidy format)"><a href="#table-tidy-stocks" title="Copy heading and permalink for Table 4.2.4: Stock prices (tidy format)" aria-label="Copy heading and permalink for Table 4.2.4: Stock prices (tidy format)">🔗</a></div></figcaption><div class="tabular-box natural-width"><table class="tabular">
+<tr class="header-horizontal">
+<th scope="col" class="l m b1 r0 l0 t0 lines">Date</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Stock Name</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Stock Price</th>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-01</td>
+<td class="l m b0 r0 l0 t0 lines">Boeing</td>
+<td class="l m b0 r0 l0 t0 lines">$173.55</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-01</td>
+<td class="l m b0 r0 l0 t0 lines">Amazon</td>
+<td class="l m b0 r0 l0 t0 lines">$174.90</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-01</td>
+<td class="l m b0 r0 l0 t0 lines">Google</td>
+<td class="l m b0 r0 l0 t0 lines">$174.34</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-02</td>
+<td class="l m b0 r0 l0 t0 lines">Boeing</td>
+<td class="l m b0 r0 l0 t0 lines">$172.61</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-02</td>
+<td class="l m b0 r0 l0 t0 lines">Amazon</td>
+<td class="l m b0 r0 l0 t0 lines">$171.42</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-02</td>
+<td class="l m b0 r0 l0 t0 lines">Google</td>
+<td class="l m b0 r0 l0 t0 lines">$170.04</td>
+</tr>
+</table></div>
+</figure>
+<div class="para" id="tidy-definition-11">On the other hand, consider the data in <a href="tidy-data-ex.html#table-tidy-stocks-2" class="xref" data-knowl="./knowl/xref/table-tidy-stocks-2.html" data-reveal-label="Reveal" data-close-label="Close" title="Table 4.2.5: Example of tidy data">Table 4.2.5</a>.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="table table-like" id="table-tidy-stocks-2"><figcaption><span class="type">Table</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example of tidy data<div class="autopermalink" data-description="Table 4.2.5: Example of tidy data"><a href="#table-tidy-stocks-2" title="Copy heading and permalink for Table 4.2.5: Example of tidy data" aria-label="Copy heading and permalink for Table 4.2.5: Example of tidy data">🔗</a></div></figcaption><div class="tabular-box natural-width"><table class="tabular">
+<tr class="header-horizontal">
+<th scope="col" class="l m b1 r0 l0 t0 lines">Date</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Boeing Price</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">Weather</th>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-01</td>
+<td class="l m b0 r0 l0 t0 lines">$173.55</td>
+<td class="l m b0 r0 l0 t0 lines">Sunny</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">2009-01-02</td>
+<td class="l m b0 r0 l0 t0 lines">$172.61</td>
+<td class="l m b0 r0 l0 t0 lines">Overcast</td>
+</tr>
+</table></div>
+</figure>
+<div class="para" id="tidy-definition-13">In this case, even though the variable “Boeing Price” occurs just like in our non-“tidy” data in <a href="tidy-data-ex.html#table-non-tidy-stocks" class="xref" data-knowl="./knowl/xref/table-non-tidy-stocks.html" data-reveal-label="Reveal" data-close-label="Close" title="Table 4.2.3: Stock prices (non-tidy format)">Table 4.2.3</a>, the data <em class="emphasis">is</em> “tidy” since there are three variables for each of three unique pieces of information: Date, Boeing price, and the Weather that day.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-definition-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="tidy-definition-14">
+<h4 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h4>
+<article class="exercise exercise-like" id="lc4-1"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc4-1-1-1">What are common characteristics of “tidy” data frames?<div class="autopermalink" data-description="Paragraph"><a href="#lc4-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc4-1-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc4-1-2-1">In tidy data frames: (1) each variable forms its own column, (2) each observation forms its own row, and (3) each type of observational unit forms its own table.<div class="autopermalink" data-description="Paragraph"><a href="#lc4-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 4.2.1.1.1"><a href="#lc4-1-2" title="Copy heading and permalink for Answer 4.2.1.1.1" aria-label="Copy heading and permalink for Answer 4.2.1.1.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.1.1"><a href="#lc4-1" title="Copy heading and permalink for Exercise 4.2.1.1" aria-label="Copy heading and permalink for Exercise 4.2.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc4-2"><h5 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc4-2-1-1">What makes “tidy” data frames useful for organizing data?<div class="autopermalink" data-description="Paragraph"><a href="#lc4-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc4-2-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc4-2-2-1">Tidy data frames are useful because they provide a consistent structure that makes it straightforward to use tools like <code class="code-inline tex2jax_ignore">ggplot2</code> and <code class="code-inline tex2jax_ignore">dplyr</code> for data visualization and wrangling. Each variable being in its own column means functions that operate on variables work predictably.<div class="autopermalink" data-description="Paragraph"><a href="#lc4-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 4.2.1.2.1"><a href="#lc4-2-2" title="Copy heading and permalink for Answer 4.2.1.2.1" aria-label="Copy heading and permalink for Answer 4.2.1.2.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.1.2"><a href="#lc4-2" title="Copy heading and permalink for Exercise 4.2.1.2" aria-label="Copy heading and permalink for Exercise 4.2.1.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 4.2.1"><a href="#tidy-definition-14" title="Copy heading and permalink for Exercises 4.2.1" aria-label="Copy heading and permalink for Exercises 4.2.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Subsection 4.2.1: Definition of tidy data"><a href="#tidy-definition" title="Copy heading and permalink for Subsection 4.2.1: Definition of tidy data" aria-label="Copy heading and permalink for Subsection 4.2.1: Definition of tidy data">🔗</a></div>
+</section>
+<section class="subsection" id="tidy-converting">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Converting to tidy data</span>
+</h3>
+<div class="para" id="tidy-converting-2">In this book so far, you’ve only seen data frames that were already in “tidy” format. Furthermore, for the rest of this book, you’ll mostly only see data frames that are already in “tidy” format as well. This is not always the case however with all datasets in the world. If your original data frame is in wide (non-“tidy”) format and you would like to use the <code class="code-inline tex2jax_ignore">ggplot2</code> or <code class="code-inline tex2jax_ignore">dplyr</code> packages, you will first have to convert it to “tidy” format. To do so, we recommend using the  <code class="code-inline tex2jax_ignore">pivot_longer()</code> function in the <code class="code-inline tex2jax_ignore">tidyr</code>  package.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-converting-3">Going back to our <code class="code-inline tex2jax_ignore">drinks_smaller</code> data frame from earlier:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks_smaller
+</code></pre></div>
+<div class="para" id="tidy-converting-5">We convert it to “tidy” format by using the <code class="code-inline tex2jax_ignore">pivot_longer()</code> function from the <code class="code-inline tex2jax_ignore">tidyr</code> package as follows:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks_smaller_tidy &lt;- drinks_smaller |&gt;
+  pivot_longer(names_to = "type",
+               values_to = "servings",
+               cols = -country)
+drinks_smaller_tidy
+</code></pre></div>
+<div class="para" id="tidy-converting-7">We set the arguments to <code class="code-inline tex2jax_ignore">pivot_longer()</code> as follows:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="tidy-converting-8">
+<li id="tidy-converting-8-1">
+<div class="para" id="tidy-converting-8-1-1">
+<code class="code-inline tex2jax_ignore">names_to</code> here corresponds to the name of the variable in the new “tidy”/long data frame that will contain the <em class="emphasis">column names</em> of the original data. Observe how we set <code class="code-inline tex2jax_ignore">names_to = "type"</code>. In the resulting <code class="code-inline tex2jax_ignore">drinks_smaller_tidy</code>, the column <code class="code-inline tex2jax_ignore">type</code> contains the three types of alcohol <code class="code-inline tex2jax_ignore">beer</code>, <code class="code-inline tex2jax_ignore">spirit</code>, and <code class="code-inline tex2jax_ignore">wine</code>. Since <code class="code-inline tex2jax_ignore">type</code> is a variable name that doesn’t appear in <code class="code-inline tex2jax_ignore">drinks_smaller</code>, we use quotation marks around it. You’ll receive an error if you just use <code class="code-inline tex2jax_ignore">names_to = type</code> here.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#tidy-converting-8-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="tidy-converting-8-2">
+<div class="para" id="tidy-converting-8-2-1">
+<code class="code-inline tex2jax_ignore">values_to</code> here is the name of the variable in the new “tidy” data frame that will contain the <em class="emphasis">values</em> of the original data. Observe how we set <code class="code-inline tex2jax_ignore">values_to = "servings"</code> since each of the numeric values in each of the <code class="code-inline tex2jax_ignore">beer</code>, <code class="code-inline tex2jax_ignore">wine</code>, and <code class="code-inline tex2jax_ignore">spirit</code> columns of the <code class="code-inline tex2jax_ignore">drinks_smaller</code> data corresponds to a value of <code class="code-inline tex2jax_ignore">servings</code>. In the resulting <code class="code-inline tex2jax_ignore">drinks_smaller_tidy</code>, the column <code class="code-inline tex2jax_ignore">servings</code> contains the 4 <span class="times-sign">×</span> 3 = 12 numerical values. Note again that <code class="code-inline tex2jax_ignore">servings</code> doesn’t appear as a variable in <code class="code-inline tex2jax_ignore">drinks_smaller</code> so it again needs quotation marks around it for the <code class="code-inline tex2jax_ignore">values_to</code> argument.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-8-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#tidy-converting-8-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="tidy-converting-8-3">
+<div class="para" id="tidy-converting-8-3-1">The third argument <code class="code-inline tex2jax_ignore">cols</code> is the columns in the <code class="code-inline tex2jax_ignore">drinks_smaller</code> data frame you either want to or don’t want to “tidy.” Observe how we set this to <code class="code-inline tex2jax_ignore">-country</code> indicating that we don’t want to “tidy” the <code class="code-inline tex2jax_ignore">country</code> variable in <code class="code-inline tex2jax_ignore">drinks_smaller</code> and rather only <code class="code-inline tex2jax_ignore">beer</code>, <code class="code-inline tex2jax_ignore">spirit</code>, and <code class="code-inline tex2jax_ignore">wine</code>. Since <code class="code-inline tex2jax_ignore">country</code> is a column that appears in <code class="code-inline tex2jax_ignore">drinks_smaller</code> we don’t put quotation marks around it.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-8-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#tidy-converting-8-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="tidy-converting-9">The third argument here of <code class="code-inline tex2jax_ignore">cols</code> is a little nuanced, so let’s consider code that’s written slightly differently but that produces the same output:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks_smaller |&gt;
+  pivot_longer(names_to = "type",
+               values_to = "servings",
+               cols = c(beer, spirit, wine))
+</code></pre></div>
+<div class="para" id="tidy-converting-11">Note that the third argument now specifies which columns we want to “tidy” with <code class="code-inline tex2jax_ignore">c(beer, spirit, wine)</code>, instead of the columns we don’t want to “tidy” using <code class="code-inline tex2jax_ignore">-country</code>. We use the <code class="code-inline tex2jax_ignore">c()</code> function to create a vector of the columns in <code class="code-inline tex2jax_ignore">drinks_smaller</code> that we’d like to “tidy.” Note that since these three columns appear one after another in the <code class="code-inline tex2jax_ignore">drinks_smaller</code> data frame, we could also do the following for the <code class="code-inline tex2jax_ignore">cols</code> argument:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">drinks_smaller |&gt;
+  pivot_longer(names_to = "type",
+               values_to = "servings",
+               cols = beer:wine)
+</code></pre></div>
+<div class="para" id="tidy-converting-13">With our <code class="code-inline tex2jax_ignore">drinks_smaller_tidy</code> “tidy” formatted data frame, we can now produce the barplot you saw in <a href="tidy-data-ex.html#fig-drinks-smaller" class="xref" data-knowl="./knowl/xref/fig-drinks-smaller.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 4.2.1">Figure 4.2.1</a> using <code class="code-inline tex2jax_ignore">geom_col()</code>. This is done in <a href="tidy-data-ex.html#fig-drinks-smaller-tidy-barplot" class="xref" data-knowl="./knowl/xref/fig-drinks-smaller-tidy-barplot.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 4.2.6">Figure 4.2.6</a>. Recall from <a href="viz.html" class="internal" title="Chapter 2: Data Visualization">Chapter 2</a> on barplots that we use <code class="code-inline tex2jax_ignore">geom_col()</code> and not <code class="code-inline tex2jax_ignore">geom_bar()</code>, since we would like to map the “pre-counted” <code class="code-inline tex2jax_ignore">servings</code> variable to the <code class="code-inline tex2jax_ignore">y</code>-aesthetic of the bars.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">ggplot(drinks_smaller_tidy, aes(x = country, y = servings, fill = type)) +
+  geom_col(position = "dodge")
+</code></pre></div>
+<figure class="figure figure-like" id="fig-drinks-smaller-tidy-barplot"><div class="image-box" style="width: 80%; margin-left: 10%; margin-right: 10%;"><img src="images/fig-drinks-smaller-tidy-barplot.png" class="contained" alt="Side-by-side barplot comparing beer, spirit, and wine servings for China, Italy, Saudi Arabia, and the USA, produced from tidy data."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Comparing alcohol consumption in 4 countries using <code class="code-inline tex2jax_ignore">geom_col()</code>.<div class="autopermalink" data-description="Figure 4.2.6"><a href="#fig-drinks-smaller-tidy-barplot" title="Copy heading and permalink for Figure 4.2.6" aria-label="Copy heading and permalink for Figure 4.2.6">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="tidy-converting-16">Converting “wide” format data to “tidy” format often confuses new R users. The only way to learn to get comfortable with the <code class="code-inline tex2jax_ignore">pivot_longer()</code> function is with practice, practice, and more practice using different datasets. For example, run <code class="code-inline tex2jax_ignore">?pivot_longer</code> and look at the examples in the bottom of the help file. We’ll show another example of using <code class="code-inline tex2jax_ignore">pivot_longer()</code> to convert a “wide” formatted data frame to “tidy” format in <a href="case-study-tidy.html" class="internal" title="Section 4.3: Case study: democracy in Guatemala">Section 4.3</a>.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-converting-17">If however you want to convert a “tidy” data frame to “wide” format, you will need to use the <code class="code-inline tex2jax_ignore">pivot_wider()</code> function instead. Run <code class="code-inline tex2jax_ignore">?pivot_wider</code> and look at the examples in the bottom of the help file for examples.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-converting-18">You can also view examples of both <code class="code-inline tex2jax_ignore">pivot_longer()</code> and <code class="code-inline tex2jax_ignore">pivot_wider()</code> on the <a class="external" href="https://tidyr.tidyverse.org/dev/articles/pivot.html#pew" target="_blank">tidyverse.org</a> webpage. There’s a nice example to check out the different functions available for data tidying and a case study using data from the World Health Organization on that webpage. Furthermore, each week the R4DS Online Learning Community posts a dataset in the weekly <a class="external" href="https://github.com/rfordatascience/tidytuesday" target="_blank">#TidyTuesday event</a> that might serve as a nice place for you to find other data to explore and transform.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-converting-18" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="tidy-converting-19">
+<h4 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h4>
+<article class="exercise exercise-like" id="lc4-3"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc4-3-1-1">Take a look at the <code class="code-inline tex2jax_ignore">airline_safety</code> data frame included in the <code class="code-inline tex2jax_ignore">fivethirtyeight</code> data package. Run the following:<div class="autopermalink" data-description="Paragraph"><a href="#lc4-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="code-box"><pre class="program clipboardable"><code class="language-r">airline_safety
+</code></pre></div> 
+<div class="para" id="lc4-3-1-3">After reading the help file by running <code class="code-inline tex2jax_ignore">?airline_safety</code>, we see that <code class="code-inline tex2jax_ignore">airline_safety</code> is a data frame containing information on different airline companies’ safety records. This data was originally reported on the data journalism website, FiveThirtyEight.com, in Nate Silver’s article, <a class="external" href="https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/" target="_blank">“Should Travelers Avoid Flying Airlines That Have Had Crashes in the Past?”</a> Let’s only consider the variables <code class="code-inline tex2jax_ignore">airline</code> and those relating to fatalities for simplicity:<div class="autopermalink" data-description="Paragraph"><a href="#lc4-3-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="code-box"><pre class="program clipboardable"><code class="language-r">airline_safety_smaller &lt;- airline_safety |&gt;
+  select(airline, starts_with("fatalities"))
+airline_safety_smaller
+</code></pre></div> 
+<div class="para" id="lc4-3-1-5">This data frame is not in “tidy” format. How would you convert this data frame to be in “tidy” format, in particular so that it has a variable <code class="code-inline tex2jax_ignore">fatalities_years</code> indicating the incident year and a variable <code class="code-inline tex2jax_ignore">count</code> of the fatality counts?<div class="autopermalink" data-description="Paragraph"><a href="#lc4-3-1-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc4-3-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">airline_safety_smaller |&gt;
+  pivot_longer(names_to = "fatalities_years",
+               values_to = "count",
+               cols = -airline)
+</code></pre></div>
+<div class="autopermalink" data-description="Answer 4.2.2.1.1"><a href="#lc4-3-2" title="Copy heading and permalink for Answer 4.2.2.1.1" aria-label="Copy heading and permalink for Answer 4.2.2.1.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.2.1"><a href="#lc4-3" title="Copy heading and permalink for Exercise 4.2.2.1" aria-label="Copy heading and permalink for Exercise 4.2.2.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 4.2.2"><a href="#tidy-converting-19" title="Copy heading and permalink for Exercises 4.2.2" aria-label="Copy heading and permalink for Exercises 4.2.2">🔗</a></div>
+</section><div class="autopermalink" data-description="Subsection 4.2.2: Converting to tidy data"><a href="#tidy-converting" title="Copy heading and permalink for Subsection 4.2.2: Converting to tidy data" aria-label="Copy heading and permalink for Subsection 4.2.2: Converting to tidy data">🔗</a></div>
+</section>
+<section class="subsection" id="tidy-nycflights23">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title"><code class="code-inline tex2jax_ignore">nycflights23</code> package</span>
+</h3>
+<div class="para" id="tidy-nycflights23-2">Recall the <code class="code-inline tex2jax_ignore">nycflights23</code> package we introduced in <a href="ch-intro.html" class="internal" title="Chapter 1: Introduction">Chapter 1</a> with data about all domestic flights departing from New York City in 2023. Let’s revisit the <code class="code-inline tex2jax_ignore">flights</code> data frame by running <code class="code-inline tex2jax_ignore">View(flights)</code>. We saw that <code class="code-inline tex2jax_ignore">flights</code> has a rectangular shape, with each of its rows corresponding to a flight and each of its columns corresponding to different characteristics/measurements of each flight. This satisfied the first two criteria of the definition of “tidy” data from <a href="tidy-data-ex.html#tidy-definition" class="internal" title="Subsection 4.2.1: Definition of tidy data">Subsection 4.2.1</a>: that “Each variable forms a column” and “Each observation forms a row.” But what about the third property of “tidy” data that “Each type of observational unit forms a table”?<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="tidy-nycflights23-3">Recall that we saw in <a href="ch-intro.html" class="internal" title="Chapter 1: Introduction">Chapter 1</a> that the observational unit for the <code class="code-inline tex2jax_ignore">flights</code> data frame is an individual flight. In other words, the rows of the <code class="code-inline tex2jax_ignore">flights</code> data frame refer to characteristics/measurements of individual flights. Also included in the <code class="code-inline tex2jax_ignore">nycflights23</code> package are other data frames with their rows representing different observational units:<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ul class="disc" id="tidy-nycflights23-4">
+<li id="tidy-nycflights23-4-1">
+<div class="para" id="tidy-nycflights23-4-1-1">
+<code class="code-inline tex2jax_ignore">airlines</code>: translation between two letter IATA carrier codes and airline company names. The observational unit is an airline company.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-nycflights23-4-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="tidy-nycflights23-4-2">
+<div class="para" id="tidy-nycflights23-4-2-1">
+<code class="code-inline tex2jax_ignore">planes</code>: aircraft information about each of the planes used. The observational unit is an aircraft.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-nycflights23-4-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="tidy-nycflights23-4-3">
+<div class="para" id="tidy-nycflights23-4-3-1">
+<code class="code-inline tex2jax_ignore">weather</code>: hourly meteorological data for each of the three NYC airports. The observational unit is an hourly measurement of weather at one of the three airports.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-4-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-nycflights23-4-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="tidy-nycflights23-4-4">
+<div class="para" id="tidy-nycflights23-4-4-1">
+<code class="code-inline tex2jax_ignore">airports</code>: airport names and locations. The observational unit is an airport.<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-4-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#tidy-nycflights23-4-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para" id="tidy-nycflights23-5">The organization of the information into these five data frames follows the third “tidy” data property: observations corresponding to the same observational unit should be saved in the same table, i.e., data frame. You could think of this property as the old English expression: “birds of a feather flock together.”<div class="autopermalink" data-description="Paragraph"><a href="#tidy-nycflights23-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.2.3: nycflights23 package"><a href="#tidy-nycflights23" title="Copy heading and permalink for Subsection 4.2.3: nycflights23 package" aria-label="Copy heading and permalink for Subsection 4.2.3: nycflights23 package">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 4.2: Tidy data"><a href="#tidy-data-ex" title="Copy heading and permalink for Section 4.2: Tidy data" aria-label="Copy heading and permalink for Section 4.2: Tidy data">🔗</a></div>
+</section>
+</div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="csv.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="case-study-tidy.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="https://runestone.academy/runestone/static/images/RAIcon_cropped.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="https://www.mathjax.org/badge/badge-square-2.png" alt="MathJax logo"></a>
+</div>
+</body>
+</html>

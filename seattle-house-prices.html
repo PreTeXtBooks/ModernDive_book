@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Case study: Seattle house prices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "textmacros",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[tex]/textmacros",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Title">
+<meta property="book:author" content="NAME">
+<meta property="book:author" content="NAME">
+<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+</head>
+<body id="tidy-text-mining" class="pretext book ignore-math">
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="book-id-here.html"><span class="title">Title</span> <span class="subtitle">Subtitle</span></a></h1>
+<p class="byline">NAME, NAME</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d2;</span><span class="name">Contents</span></button><a class="index-button button" href="meta-back-1.html" title="Index"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span><span class="name">Index</span></a><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe8b6;</span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe51c;</span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="ch11-review.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="thinking-with-data.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="data-journalism.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="meta-front.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-abstract"><div class="toc-title-box"><a href="meta-front.html#meta-front-3" class="internal"><span class="title">Abstract</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="packages.html" class="internal"><span class="codenumber">1.1</span> <span class="title">What are R packages?</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="viz.html" class="internal"><span class="codenumber">2</span> <span class="title">Data Visualization</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="wrangling.html" class="internal"><span class="codenumber">3</span> <span class="title">Data Wrangling</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="select.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Selecting variables with <code class="code-inline tex2jax_ignore">select()</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="tidy.html" class="internal"><span class="codenumber">4</span> <span class="title">Data Importing and Tidy Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-packages.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="csv.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Importing data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="csv.html#tidy-csv-console" class="internal"><span class="codenumber">4.1.1</span> <span class="title">Using the console</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="csv.html#tidy-rstudio-gui" class="internal"><span class="codenumber">4.1.2</span> <span class="title">Using RStudio’s interface</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="tidy-data-ex.html" class="internal"><span class="codenumber">4.2</span> <span class="title">Tidy data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="tidy-data-ex.html#tidy-definition" class="internal"><span class="codenumber">4.2.1</span> <span class="title">Definition of tidy data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-definition-14" class="internal"><span class="codenumber">4.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="tidy-data-ex.html#tidy-converting" class="internal"><span class="codenumber">4.2.2</span> <span class="title">Converting to tidy data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-converting-19" class="internal"><span class="codenumber">4.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-ex.html#tidy-nycflights23" class="internal"><span class="codenumber">4.2.3</span> <span class="title"><code class="code-inline tex2jax_ignore">nycflights23</code> package</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="case-study-tidy.html" class="internal"><span class="codenumber">4.3</span> <span class="title">Case study: democracy in Guatemala</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="case-study-tidy.html#case-study-tidy-18" class="internal"><span class="codenumber">4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="tidyverse-package.html" class="internal"><span class="codenumber">4.4</span> <span class="title"><code class="code-inline tex2jax_ignore">tidyverse</code> package</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="tidy-data-conclusion.html" class="internal"><span class="codenumber">4.5</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-conclusion.html#tidy-additional-resources" class="internal"><span class="codenumber">4.5.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="tidy-data-conclusion.html#tidy-whats-to-come" class="internal"><span class="codenumber">4.5.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="regression.html" class="internal"><span class="codenumber">5</span> <span class="title">Simple Linear Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-packages.html" class="internal"><span class="codenumber">5.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model1.html" class="internal"><span class="codenumber">5.1</span> <span class="title">One numerical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1EDA" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1EDA-42" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1table" class="internal"><span class="codenumber">5.1.2</span> <span class="title">Simple linear regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1table-20" class="internal"><span class="codenumber">5.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model1.html#model1points" class="internal"><span class="codenumber">5.1.3</span> <span class="title">Observed/fitted values and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model1.html#model1points-17" class="internal"><span class="codenumber">5.1.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model2.html" class="internal"><span class="codenumber">5.2</span> <span class="title">One categorical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2EDA" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2EDA-32" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2table" class="internal"><span class="codenumber">5.2.2</span> <span class="title">Linear regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2table-27" class="internal"><span class="codenumber">5.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model2.html#model2points" class="internal"><span class="codenumber">5.2.3</span> <span class="title">Observed/fitted values and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model2.html#model2points-8" class="internal"><span class="codenumber">5.2.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="reg-related-topics.html" class="internal"><span class="codenumber">5.3</span> <span class="title">Related topics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-related-topics.html#correlation-is-not-causation" class="internal"><span class="codenumber">5.3.1</span> <span class="title">Correlation is not necessarily causation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="reg-related-topics.html#leastsquares" class="internal"><span class="codenumber">5.3.2</span> <span class="title">Best-fitting line</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="reg-related-topics.html#leastsquares-14" class="internal"><span class="codenumber">5.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-related-topics.html#underthehood" class="internal"><span class="codenumber">5.3.3</span> <span class="title">get_regression_x() functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="reg-conclusion.html" class="internal"><span class="codenumber">5.4</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-conclusion.html#additional-resources-basic-regression" class="internal"><span class="codenumber">5.4.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="reg-conclusion.html#reg-whats-to-come" class="internal"><span class="codenumber">5.4.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="multiple-regression.html" class="internal"><span class="codenumber">6</span> <span class="title">Multiple Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-packages.html" class="internal"><span class="codenumber">6.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model4.html" class="internal"><span class="codenumber">6.1</span> <span class="title">One numerical and one categorical explanatory variable</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="model4.html#model4EDA" class="internal"><span class="codenumber">6.1.1</span> <span class="title">Exploratory data analysis</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4interactiontable" class="internal"><span class="codenumber">6.1.2</span> <span class="title">Model with interactions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4interactiontable-38" class="internal"><span class="codenumber">6.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4table" class="internal"><span class="codenumber">6.1.3</span> <span class="title">Model without interactions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4table-17" class="internal"><span class="codenumber">6.1.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model4.html#model4points" class="internal"><span class="codenumber">6.1.4</span> <span class="title">Observed responses, fitted values, and residuals</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model4.html#model4points-8" class="internal"><span class="codenumber">6.1.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="model3.html" class="internal"><span class="codenumber">6.2</span> <span class="title">Two numerical explanatory variables</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model3.html#model3EDA" class="internal"><span class="codenumber">6.2.1</span> <span class="title">Exploratory data analysis</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model3.html#model3EDA-28" class="internal"><span class="codenumber">6.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="model3.html#model3table" class="internal"><span class="codenumber">6.2.2</span> <span class="title">Multiple regression with two numerical regressors</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="model3.html#model3table-17" class="internal"><span class="codenumber">6.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="model3.html#model3points" class="internal"><span class="codenumber">6.2.3</span> <span class="title">Observed/fitted values and residuals</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="mult-reg-conclusion.html" class="internal"><span class="codenumber">6.3</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-conclusion.html#mult-reg-additional-resources" class="internal"><span class="codenumber">6.3.1</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="mult-reg-conclusion.html#mult-reg-whats-next" class="internal"><span class="codenumber">6.3.2</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="sampling.html" class="internal"><span class="codenumber">7</span> <span class="title">Sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-packages.html" class="internal"><span class="codenumber">7.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-activity.html" class="internal"><span class="codenumber">7.1</span> <span class="title">First activity: red balls</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity.html#population-proportion" class="internal"><span class="codenumber">7.1.1</span> <span class="title">The proportion of red balls in the bowl</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-manual" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Manual sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sampling-activity.html#sampling-one-sample" class="internal"><span class="codenumber">7.1.2.1</span> <span class="title">One sample</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-thirty-three" class="internal"><span class="codenumber">7.1.2.2</span> <span class="title">Thirty-three samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#sampling-thirty-three-13" class="internal"><span class="codenumber">7.1.2.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity.html#sampling-simulation" class="internal"><span class="codenumber">7.1.3</span> <span class="title">Virtual sampling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sampling-activity.html#virtual-one-sample" class="internal"><span class="codenumber">7.1.3.1</span> <span class="title">One virtual sample</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-thirty-three" class="internal"><span class="codenumber">7.1.3.2</span> <span class="title">Thirty-three virtual samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-thirty-three-12" class="internal"><span class="codenumber">7.1.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-thousand" class="internal"><span class="codenumber">7.1.3.3</span> <span class="title">One thousand virtual samples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-thousand-7" class="internal"><span class="codenumber">7.1.3.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-activity.html#virtual-different-sizes" class="internal"><span class="codenumber">7.1.3.4</span> <span class="title">Different sample sizes</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity.html#virtual-different-sizes-8" class="internal"><span class="codenumber">7.1.3.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-framework.html" class="internal"><span class="codenumber">7.2</span> <span class="title">Sampling framework</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-framework.html#terminology-and-notation" class="internal"><span class="codenumber">7.2.1</span> <span class="title">Population, sample, and the sampling distribution</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-framework.html#terminology-and-notation-6" class="internal"><span class="codenumber">7.2.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="central-limit-theorem.html" class="internal"><span class="codenumber">7.3</span> <span class="title">The Central Limit Theorem</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#random-variables-proportion" class="internal"><span class="codenumber">7.3.1</span> <span class="title">Random variables</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#sampling-dist-rv" class="internal"><span class="codenumber">7.3.2</span> <span class="title">The sampling distribution using random variables</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#expected-value" class="internal"><span class="codenumber">7.3.3</span> <span class="title">The center of the distribution: the expected value</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="central-limit-theorem.html#expected-value-8" class="internal"><span class="codenumber">7.3.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#sampling-variation" class="internal"><span class="codenumber">7.3.4</span> <span class="title">Sampling variation: standard deviation and standard error</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="central-limit-theorem.html#standard-deviation" class="internal"><span class="codenumber">7.3.4.1</span> <span class="title">The standard deviation</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="central-limit-theorem.html#standard-error" class="internal"><span class="codenumber">7.3.4.2</span> <span class="title">The standard error</span></a></div></li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="central-limit-theorem.html#shape-sampling-proportion" class="internal"><span class="codenumber">7.3.4.3</span> <span class="title">The sampling distribution of the sample proportion</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="central-limit-theorem.html#shape-sampling-proportion-7" class="internal"><span class="codenumber">7.3.4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="central-limit-theorem.html#clt-summary" class="internal"><span class="codenumber">7.3.5</span> <span class="title">Summary</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-activity-mean.html" class="internal"><span class="codenumber">7.4</span> <span class="title">Second activity: chocolate-covered almonds</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#population-mean" class="internal"><span class="codenumber">7.4.1</span> <span class="title">The population mean weight of almonds in the bowl</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#resampling-tactile-bowl" class="internal"><span class="codenumber">7.4.2</span> <span class="title">Manual sampling and sample means</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#virtual-samples-mean-bowl" class="internal"><span class="codenumber">7.4.3</span> <span class="title">Virtual sampling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-activity-mean.html#sampling-dist-mean" class="internal"><span class="codenumber">7.4.4</span> <span class="title">The sampling distribution of the sample mean</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity-mean.html#random-variable-sample-mean" class="internal"><span class="codenumber">7.4.5</span> <span class="title">Random variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity-mean.html#random-variable-sample-mean-18" class="internal"><span class="codenumber">7.4.5</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-activity-mean.html#CLT-mean" class="internal"><span class="codenumber">7.4.6</span> <span class="title">The Central Limit Theorem revisited</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-activity-mean.html#CLT-mean-6" class="internal"><span class="codenumber">7.4.6</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html" class="internal"><span class="codenumber">7.5</span> <span class="title">The sampling distribution in other scenarios</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#sampling-two-samples" class="internal"><span class="codenumber">7.5.1</span> <span class="title">Sampling distribution for two samples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-means" class="internal"><span class="codenumber">7.5.1.1</span> <span class="title">Difference in sample means</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-means-5" class="internal"><span class="codenumber">7.5.1.1</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsubsection">
+<div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-proportions" class="internal"><span class="codenumber">7.5.1.2</span> <span class="title">Difference in sample proportions</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sampling-other-scenarios.html#diff-sample-proportions-11" class="internal"><span class="codenumber">7.5.1.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sampling-final-remarks.html" class="internal"><span class="codenumber">7.6</span> <span class="title">Summary and final remarks</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-summary-scenarios" class="internal"><span class="codenumber">7.6.1</span> <span class="title">Summary of scenarios</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-additional-resources" class="internal"><span class="codenumber">7.6.2</span> <span class="title">Additional resources</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sampling-final-remarks.html#sampling-whats-next" class="internal"><span class="codenumber">7.6.3</span> <span class="title">What’s to come?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="confidence-intervals.html" class="internal"><span class="codenumber">8</span> <span class="title">Confidence Intervals</span></a></div></li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="hypothesis-testing.html" class="internal"><span class="codenumber">9</span> <span class="title">Hypothesis Testing and p-values</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="inference-for-regression.html" class="internal"><span class="codenumber">10</span> <span class="title">Inference for Regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inf-packages.html" class="internal"><span class="codenumber">10.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="simple-linear-regression-model.html" class="internal"><span class="codenumber">10.1</span> <span class="title">The simple linear regression model</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#un-member-states-revisited" class="internal"><span class="codenumber">10.1.1</span> <span class="title">UN member states revisited</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#simple-linear-model" class="internal"><span class="codenumber">10.1.2</span> <span class="title">The model</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#sample-regression-inference" class="internal"><span class="codenumber">10.1.3</span> <span class="title">Using a sample for inference</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#least-squares" class="internal"><span class="codenumber">10.1.4</span> <span class="title">The method of least squares</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#properties-least-squares" class="internal"><span class="codenumber">10.1.5</span> <span class="title">Properties of the least squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simple-linear-regression-model.html#relating-regression-to-other-methods" class="internal"><span class="codenumber">10.1.6</span> <span class="title">Relating basic regression to other methods</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#two-sample-diff-means-reg" class="internal"><span class="codenumber">10.1.6.1</span> <span class="title">Two-sample difference in means</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simple-linear-regression-model.html#anova-in-regression" class="internal"><span class="codenumber">10.1.6.2</span> <span class="title">ANOVA</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="simple-linear-regression-model.html#relating-regression-to-other-methods-5" class="internal"><span class="codenumber">10.1.6.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="theory-simple-regression.html" class="internal"><span class="codenumber">10.2</span> <span class="title">Theory-based inference for simple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#framework-simple-lm" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Conceptual framework</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#se-simple-lm" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Standard errors for least-squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#conf-intervals-b0-b1" class="internal"><span class="codenumber">10.2.3</span> <span class="title">Confidence intervals for the least-squares estimators</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-simple-regression.html#hypo-test-simple-lm" class="internal"><span class="codenumber">10.2.4</span> <span class="title">Hypothesis test for population slope</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-simple-regression.html#hypo-test-simple-lm-15" class="internal"><span class="codenumber">10.2.4</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-simple-regression.html#regression-table" class="internal"><span class="codenumber">10.2.5</span> <span class="title">The regression table in R</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-simple-regression.html#model-fit" class="internal"><span class="codenumber">10.2.6</span> <span class="title">Model fit and model assumptions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="theory-simple-regression.html#residuals-ch10" class="internal"><span class="codenumber">10.2.6.1</span> <span class="title">Residuals</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="theory-simple-regression.html#residual-diagnostics" class="internal"><span class="codenumber">10.2.6.2</span> <span class="title">Residual diagnostics</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-simple-regression.html#model-fit-9" class="internal"><span class="codenumber">10.2.6.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="infer-regression.html" class="internal"><span class="codenumber">10.3</span> <span class="title">Simulation-based inference for simple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="infer-regression.html#infer-ci-slr" class="internal"><span class="codenumber">10.3.1</span> <span class="title">Confidence intervals for the population slope using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="infer-regression.html#percentile-ci-slr" class="internal"><span class="codenumber">10.3.1.1</span> <span class="title">Percentile method</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="infer-regression.html#se-ci-slr" class="internal"><span class="codenumber">10.3.1.2</span> <span class="title">Standard error method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="infer-regression.html#infer-hypo-slr" class="internal"><span class="codenumber">10.3.2</span> <span class="title">Hypothesis test for population slope using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="infer-regression.html#infer-hypo-slr-15" class="internal"><span class="codenumber">10.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="multiple-linear-regression-model.html" class="internal"><span class="codenumber">10.4</span> <span class="title">The multiple linear regression model</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#multiple-linear-model" class="internal"><span class="codenumber">10.4.1</span> <span class="title">The model</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#coffee-example" class="internal"><span class="codenumber">10.4.2</span> <span class="title">Example: coffee quality rating scores</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="multiple-linear-regression-model.html#least-squares-multiple" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Least squares for multiple regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="multiple-linear-regression-model.html#least-squares-multiple-14" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="theory-multiple-regression.html" class="internal"><span class="codenumber">10.5</span> <span class="title">Theory-based inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#model-dependency" class="internal"><span class="codenumber">10.5.1</span> <span class="title">Model dependency of estimators</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#ci-multiple-regression" class="internal"><span class="codenumber">10.5.2</span> <span class="title">Confidence intervals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#hypo-test-mult-lm" class="internal"><span class="codenumber">10.5.3</span> <span class="title">Hypothesis test for a single coefficient</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="theory-multiple-regression.html#hypo-test-mult-lm-1" class="internal"><span class="codenumber">10.5.4</span> <span class="title">Hypothesis test for model comparison</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="theory-multiple-regression.html#model-fit-mult" class="internal"><span class="codenumber">10.5.5</span> <span class="title">Model fit and diagnostics</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="theory-multiple-regression.html#model-fit-mult-8" class="internal"><span class="codenumber">10.5.5</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html" class="internal"><span class="codenumber">10.6</span> <span class="title">Simulation-based inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html#ci-mlr-infer" class="internal"><span class="codenumber">10.6.1</span> <span class="title">Confidence intervals for the partial slopes using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#observed-fit-mlr" class="internal"><span class="codenumber">10.6.1.1</span> <span class="title">Getting the observed fitted model</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#bootstrap-mlr" class="internal"><span class="codenumber">10.6.1.2</span> <span class="title">Bootstrap distribution for the partial slopes</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="simulation-inference-mlr.html#ci-mlr-percentile" class="internal"><span class="codenumber">10.6.1.3</span> <span class="title">Confidence intervals for the partial slopes</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="simulation-inference-mlr.html#ht-mlr-infer" class="internal"><span class="codenumber">10.6.2</span> <span class="title">Hypothesis testing for the partial slopes using <code class="code-inline tex2jax_ignore">infer</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="simulation-inference-mlr.html#ht-mlr-infer-10" class="internal"><span class="codenumber">10.6.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="inference-conclusion.html" class="internal"><span class="codenumber">10.7</span> <span class="title">Conclusion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inference-conclusion.html#inference-summary" class="internal"><span class="codenumber">10.7.1</span> <span class="title">Summary of statistical inference</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="inference-conclusion.html#what-is-to-come-ch10" class="internal"><span class="codenumber">10.7.2</span> <span class="title">What’s to come</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="thinking-with-data.html" class="internal"><span class="codenumber">11</span> <span class="title">Tell Your Story with Data</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch11-review.html" class="internal"><span class="codenumber">11.1</span> <span class="title">Review</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch11-review.html#story-packages" class="internal"><span class="codenumber">11.1.1</span> <span class="title">Needed packages</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="seattle-house-prices.html" class="internal"><span class="codenumber">11.2</span> <span class="title">Case study: Seattle house prices</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-EDA-I" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Exploratory data analysis: part I</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-EDA-II" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Exploratory data analysis: part II</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-regression" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Regression modeling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-making-predictions" class="internal"><span class="codenumber">11.2.4</span> <span class="title">Making predictions</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-inference-for-regression" class="internal"><span class="codenumber">11.2.5</span> <span class="title">Inference for multiple linear regression</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-theory-inference" class="internal"><span class="codenumber">11.2.5.1</span> <span class="title">Theory-based hypothesis testing for partial slopes</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-simulation-inference" class="internal"><span class="codenumber">11.2.5.2</span> <span class="title">Simulation-based hypothesis testing for partial slopes</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="seattle-house-prices.html#house-prices-inference-for-regression-5" class="internal"><span class="codenumber">11.2.5.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="data-journalism.html" class="internal"><span class="codenumber">11.3</span> <span class="title">Case study: effective data storytelling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="data-journalism.html#bechdel" class="internal"><span class="codenumber">11.3.1</span> <span class="title">Bechdel test for Hollywood gender representation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="data-journalism.html#us-births-1999" class="internal"><span class="codenumber">11.3.2</span> <span class="title">US Births in 1999</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="data-journalism.html#us-births-1999-14" class="internal"><span class="codenumber">11.3.2</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="data-journalism.html#ch11-scripts" class="internal"><span class="codenumber">11.3.3</span> <span class="title">Scripts of R code</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch11-concluding-remarks.html" class="internal"><span class="codenumber">11.4</span> <span class="title">Concluding remarks</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixA.html" class="internal"><span class="codenumber">A</span> <span class="title">Statistical Background</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendix-stat-terms.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Basic statistical terms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-mean" class="internal"><span class="codenumber">A.1.1</span> <span class="title">Mean</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-median" class="internal"><span class="codenumber">A.1.2</span> <span class="title">Median</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-sd-variance" class="internal"><span class="codenumber">A.1.3</span> <span class="title">Standard deviation and variance</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-five-number-summary" class="internal"><span class="codenumber">A.1.4</span> <span class="title">Five-number summary</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-distribution" class="internal"><span class="codenumber">A.1.5</span> <span class="title">Distribution</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-stat-terms.html#appendix-outliers" class="internal"><span class="codenumber">A.1.6</span> <span class="title">Outliers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendix-normal-curve.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Normal distribution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="appendix-normal-curve.html#appendix-normal-curve-12" class="internal"><span class="codenumber">A.2.1</span> <span class="title">Exercises</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendix-normal-curve.html#appendix-normal-calculations" class="internal"><span class="codenumber">A.2.2</span> <span class="title">Additional normal calculations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendix-t-distribution.html" class="internal"><span class="codenumber">A.3</span> <span class="title">The <span class="process-math">\(t\)</span> distribution calculations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendix-log10-transformations.html" class="internal"><span class="codenumber">A.4</span> <span class="title">log10 transformations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixB.html" class="internal"><span class="codenumber">B</span> <span class="title">Inference Examples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-packages.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="appendixB-infer-map.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Inference mind map</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-one-mean.html" class="internal"><span class="codenumber">B.2</span> <span class="title">One mean</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-problem" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-hypotheses" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-eda" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-simulation" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-mean.html#appendixB-one-mean-theory" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-one-proportion.html" class="internal"><span class="codenumber">B.3</span> <span class="title">One proportion</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-problem" class="internal"><span class="codenumber">B.3.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-hypotheses" class="internal"><span class="codenumber">B.3.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-eda" class="internal"><span class="codenumber">B.3.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-simulation" class="internal"><span class="codenumber">B.3.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-one-proportion.html#appendixB-one-prop-theory" class="internal"><span class="codenumber">B.3.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-proportions.html" class="internal"><span class="codenumber">B.4</span> <span class="title">Two proportions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-problem" class="internal"><span class="codenumber">B.4.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-hypotheses" class="internal"><span class="codenumber">B.4.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-eda" class="internal"><span class="codenumber">B.4.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-simulation" class="internal"><span class="codenumber">B.4.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-proportions.html#appendixB-two-props-theory" class="internal"><span class="codenumber">B.4.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-means-independent.html" class="internal"><span class="codenumber">B.5</span> <span class="title">Two means (independent samples)</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-problem" class="internal"><span class="codenumber">B.5.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-hypotheses" class="internal"><span class="codenumber">B.5.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-eda" class="internal"><span class="codenumber">B.5.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-simulation" class="internal"><span class="codenumber">B.5.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-independent.html#appendixB-two-means-ind-theory" class="internal"><span class="codenumber">B.5.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixB-two-means-paired.html" class="internal"><span class="codenumber">B.6</span> <span class="title">Two means (paired samples)</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-problem" class="internal"><span class="codenumber">B.6.1</span> <span class="title">Problem statement</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-hypotheses" class="internal"><span class="codenumber">B.6.2</span> <span class="title">Competing hypotheses</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-eda" class="internal"><span class="codenumber">B.6.3</span> <span class="title">Exploring the sample data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-simulation" class="internal"><span class="codenumber">B.6.4</span> <span class="title">Simulation-based methods</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixB-two-means-paired.html#appendixB-paired-theory" class="internal"><span class="codenumber">B.6.5</span> <span class="title">Theory-based methods</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="appendixC.html" class="internal"><span class="codenumber">C</span> <span class="title">Tips and Tricks</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-packages.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Needed packages</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixC-wrangling.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Data wrangling</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-missing-values" class="internal"><span class="codenumber">C.1.1</span> <span class="title">Dealing with missing values</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-reordering-bars" class="internal"><span class="codenumber">C.1.2</span> <span class="title">Reordering bars in a barplot</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-money-on-axis" class="internal"><span class="codenumber">C.1.3</span> <span class="title">Showing money on an axis</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-changing-values" class="internal"><span class="codenumber">C.1.4</span> <span class="title">Changing values inside cells</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-if-else" class="internal"><span class="codenumber">C.1.4.1</span> <span class="title"><code class="code-inline tex2jax_ignore">if_else()</code></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-recode" class="internal"><span class="codenumber">C.1.4.2</span> <span class="title"><code class="code-inline tex2jax_ignore">recode()</code></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendixC-case-when" class="internal"><span class="codenumber">C.1.4.3</span> <span class="title"><code class="code-inline tex2jax_ignore">case_when()</code></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-convert-numerical-categorical" class="internal"><span class="codenumber">C.1.5</span> <span class="title">Converting a numerical variable to a categorical one</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-prop" class="internal"><span class="codenumber">C.1.6</span> <span class="title">Computing proportions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-wrangling.html#appendix-commas" class="internal"><span class="codenumber">C.1.7</span> <span class="title">Dealing with %, commas, and $</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="appendixC-interactive.html" class="internal"><span class="codenumber">C.2</span> <span class="title">Interactive graphics</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="appendixC-interactive.html#appendixC-interactive-linegraphs" class="internal"><span class="codenumber">C.2.1</span> <span class="title">Interactive linegraphs</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="appendixD.html" class="internal"><span class="codenumber">D</span> <span class="title">Learning Check Solutions</span></a></div></li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="appendixE.html" class="internal"><span class="codenumber">E</span> <span class="title">The Theory Behind the Bootstrap Method</span></a></div></li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="meta-back.html" class="internal"><span class="title">Back Matter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-index"><div class="toc-title-box"><a href="meta-back-1.html" class="internal"><span class="title">Index</span></a></div></li></ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content">
+<section class="section" id="seattle-house-prices">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Case study: Seattle house prices</span>
+</h2>
+<div class="para" id="seattle-house-prices-2">
+<a class="external" href="https://www.kaggle.com/" target="_blank">Kaggle.com</a> is a machine learning and predictive modeling competition website that hosts datasets uploaded by companies, governmental organizations, and other individuals. One of their datasets is the <a class="external" href="https://www.kaggle.com/harlfoxem/housesalesprediction" target="_blank">“House Sales in King County, USA.”</a> It consists of sale prices of homes sold between May 2014 and May 2015 in King County, Washington, USA, which includes the greater Seattle metropolitan area. This dataset is in the <code class="code-inline tex2jax_ignore">house_prices</code> data frame included in the <code class="code-inline tex2jax_ignore">moderndive</code> package.<div class="autopermalink" data-description="Paragraph"><a href="#seattle-house-prices-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="seattle-house-prices-3">The dataset consists of 21,613 houses and 21 variables describing these houses (for a full list and description of these variables, see the help file by running <a class="external" href="https://moderndive.github.io/moderndive/reference/house_prices.html" target="_blank"><code class="code-inline tex2jax_ignore">?house_prices</code></a> in the console). In this case study, we’ll create a multiple regression model where:<div class="autopermalink" data-description="Paragraph"><a href="#seattle-house-prices-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ul class="disc" id="seattle-house-prices-4">
+<li id="seattle-house-prices-4-1">
+<div class="para" id="seattle-house-prices-4-1-1">The outcome variable <span class="process-math">\(y\)</span> is the sale <code class="code-inline tex2jax_ignore">price</code> of houses.<div class="autopermalink" data-description="Paragraph"><a href="#seattle-house-prices-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#seattle-house-prices-4-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="seattle-house-prices-4-2">
+<div class="para" id="seattle-house-prices-4-2-1">Two explanatory variables:<div class="autopermalink" data-description="Paragraph"><a href="#seattle-house-prices-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="seattle-house-prices-4-2-2">
+<li id="seattle-house-prices-4-2-2-1">
+<div class="para" id="seattle-house-prices-4-2-2-1-1">A numerical explanatory variable <span class="process-math">\(x_1\text{:}\)</span> house size <code class="code-inline tex2jax_ignore">sqft_living</code> as measured in square feet of living space. Note that 1 square foot is about 0.09 square meters.<div class="autopermalink" data-description="Paragraph"><a href="#seattle-house-prices-4-2-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#seattle-house-prices-4-2-2-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="seattle-house-prices-4-2-2-2">
+<div class="para" id="seattle-house-prices-4-2-2-2-1">A categorical explanatory variable <span class="process-math">\(x_2\text{:}\)</span> house <code class="code-inline tex2jax_ignore">condition</code>, a categorical variable with five levels where <code class="code-inline tex2jax_ignore">1</code> indicates “poor” and <code class="code-inline tex2jax_ignore">5</code> indicates “excellent.”<div class="autopermalink" data-description="Paragraph"><a href="#seattle-house-prices-4-2-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#seattle-house-prices-4-2-2-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Item"><a href="#seattle-house-prices-4-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<section class="subsection" id="house-prices-EDA-I">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exploratory data analysis: part I</span>
+</h3>
+<div class="para" id="house-prices-EDA-I-2">As we’ve said numerous times throughout this book, a crucial first step when presented with data is to perform an exploratory data analysis (EDA). Exploratory data analysis can give you a sense of your data, help identify issues with your data, bring to light any outliers, and help inform model construction. Recall the three common steps in an exploratory data analysis we introduced in <a href="model1.html#model1EDA" class="internal" title="Subsection 5.1.1: Exploratory data analysis">Subsection 5.1.1</a>:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="house-prices-EDA-I-3">
+<li id="house-prices-EDA-I-3-1">
+<div class="para" id="house-prices-EDA-I-3-1-1">Looking at the raw data values.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#house-prices-EDA-I-3-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="house-prices-EDA-I-3-2">
+<div class="para" id="house-prices-EDA-I-3-2-1">Computing summary statistics.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#house-prices-EDA-I-3-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="house-prices-EDA-I-3-3">
+<div class="para" id="house-prices-EDA-I-3-3-1">Creating data visualizations.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#house-prices-EDA-I-3-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="house-prices-EDA-I-4">First, let’s look at the raw data using <code class="code-inline tex2jax_ignore">View()</code> to bring up RStudio’s spreadsheet viewer and the <code class="code-inline tex2jax_ignore">glimpse()</code> function from the <code class="code-inline tex2jax_ignore">dplyr</code> package:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">View(house_prices)
+glimpse(house_prices)
+</code></pre></div>
+<div class="para" id="house-prices-EDA-I-6">Here are some questions you can ask yourself at this stage of an EDA: Which variables are numerical? Which are categorical? For the categorical variables, what are their levels? Besides the variables we’ll be using in our regression model, what other variables do you think would be useful to use in a model for predicting house price?<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-7">Observe, for example, with the raw data that while the <code class="code-inline tex2jax_ignore">condition</code> variable has values <code class="code-inline tex2jax_ignore">1</code> through <code class="code-inline tex2jax_ignore">5</code>, these are saved in R as <code class="code-inline tex2jax_ignore">fct</code> standing for “factors.” Recall this is one of R’s ways of saving categorical variables. So you should think of these as the “labels” <code class="code-inline tex2jax_ignore">1</code> through <code class="code-inline tex2jax_ignore">5</code> and not the numerical values <code class="code-inline tex2jax_ignore">1</code> through <code class="code-inline tex2jax_ignore">5</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-8">Let’s now perform the second step in an EDA: computing summary statistics. Recall from <a href="wrangling.html" class="internal" title="Chapter 3: Data Wrangling">Chapter 3</a> that <em class="emphasis">summary statistics</em> are single numerical values that summarize a large number of values. Examples of summary statistics include the mean, the median, the standard deviation, and various percentiles.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-9">Let’s use the convenient <code class="code-inline tex2jax_ignore">tidy_summary()</code>  function from the <code class="code-inline tex2jax_ignore">moderndive</code> package we first used in <a href="model4.html#model4EDA" class="internal" title="Subsection 6.1.1: Exploratory data analysis">Subsection 6.1.1</a>, being sure to only <code class="code-inline tex2jax_ignore">select()</code> the variables of interest for our model:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">house_prices |&gt;
+  select(price, sqft_living, condition) |&gt;
+  tidy_summary()
+</code></pre></div>
+<div class="para" id="house-prices-EDA-I-11">Observe that the mean <code class="code-inline tex2jax_ignore">price</code> is larger than the median. This is because a small number of very expensive houses are inflating the average. In other words, there are “outlier” house prices in our dataset. (This fact will become even more apparent when we create our visualizations next.)<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-12">However, the median is not as sensitive to such outlier house prices. This is why news about the real estate market generally report median house prices and not mean/average house prices. We say here that the median is more <em class="emphasis">robust to outliers</em> than the mean. Similarly, while both the standard deviation and interquartile-range (IQR) are both measures of spread and variability, the IQR being based on quantiles as <span class="process-math">\(Q3 - Q1\)</span> is more <em class="emphasis">robust to outliers</em>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-13">Let’s now perform the last of the three common steps in an exploratory data analysis: creating data visualizations. Let’s first create <em class="emphasis">univariate</em> visualizations. These are plots focusing on a single variable at a time. Since <code class="code-inline tex2jax_ignore">price</code> and <code class="code-inline tex2jax_ignore">sqft_living</code> are numerical variables, we can visualize their distributions using a <code class="code-inline tex2jax_ignore">geom_histogram()</code> as seen in <a href="viz.html" class="internal" title="Chapter 2: Data Visualization">Chapter 2</a> on histograms. On the other hand, since <code class="code-inline tex2jax_ignore">condition</code> is categorical, we can visualize its distribution using a <code class="code-inline tex2jax_ignore">geom_bar()</code>. Recall from <a href="viz.html" class="internal" title="Chapter 2: Data Visualization">Chapter 2</a> on barplots that since <code class="code-inline tex2jax_ignore">condition</code> is not “pre-counted,” we use a <code class="code-inline tex2jax_ignore">geom_bar()</code> and not a <code class="code-inline tex2jax_ignore">geom_col()</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r"># Histogram of house price:
+ggplot(house_prices, aes(x = price)) +
+  geom_histogram(color = "white") +
+  labs(x = "price (USD)", title = "House price")
+
+# Histogram of sqft_living:
+ggplot(house_prices, aes(x = sqft_living)) +
+  geom_histogram(color = "white") +
+  labs(x = "living space (square feet)", title = "House size")
+
+# Barplot of condition:
+ggplot(house_prices, aes(x = condition)) +
+  geom_bar() +
+  labs(x = "condition", title = "House condition")
+</code></pre></div>
+<div class="para" id="house-prices-EDA-I-15">In <a href="seattle-house-prices.html#fig-house-prices-viz" class="xref" data-knowl="./knowl/xref/fig-house-prices-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.1">Figure 11.2.1</a>, we display all three of these visualizations at once.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<figure class="figure figure-like" id="fig-house-prices-viz"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-house-prices-viz.png" class="contained" alt="Three plots: histogram of house price (right-skewed), histogram of house size (right-skewed), and barplot of house condition (most houses are condition 3)."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Exploratory visualizations of Seattle house prices data.<div class="autopermalink" data-description="Figure 11.2.1"><a href="#fig-house-prices-viz" title="Copy heading and permalink for Figure 11.2.1" aria-label="Copy heading and permalink for Figure 11.2.1">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-EDA-I-17">First, observe in the bottom plot that most houses are of condition <code class="code-inline tex2jax_ignore">3</code>, with a few more of conditions <code class="code-inline tex2jax_ignore">4</code> and <code class="code-inline tex2jax_ignore">5</code>, and almost none that are <code class="code-inline tex2jax_ignore">1</code> or <code class="code-inline tex2jax_ignore">2</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-18">Next, see in the histogram for <code class="code-inline tex2jax_ignore">price</code> (the top-left plot) that a majority of houses are less than two million dollars. Observe also that the x-axis stretches out to 8 million dollars, even though there does not appear to be any houses close to that price. This is because there are a <em class="emphasis">very small number</em> of houses with prices closer to 8 million as noted in the <code class="code-inline tex2jax_ignore">tidy_summary()</code>. These are the outlier house prices we mentioned earlier. We say that the variable <code class="code-inline tex2jax_ignore">price</code> is <em class="emphasis">right-skewed</em> as exhibited by the long right tail.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-18" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-19">Further, the histogram of <code class="code-inline tex2jax_ignore">sqft_living</code> in the middle plot shows that most houses appear to have less than 5000 square feet of living space. For comparison, an American football field in the US is about 57,600 square feet, whereas a standard soccer/association football field is about 64,000 square feet. Observe also that this variable is also right-skewed, although not as drastically as the <code class="code-inline tex2jax_ignore">price</code> variable.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-19" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-20">For both the <code class="code-inline tex2jax_ignore">price</code> and <code class="code-inline tex2jax_ignore">sqft_living</code> variables, the right-skew makes distinguishing houses at the lower end of the x-axis hard. This is because the scale of the x-axis is compressed by the small number of quite expensive and immensely-sized houses.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-20" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-21">So what can we do about this skew? Let’s apply a <em class="emphasis">log10 transformation</em> to these variables. In summary, log transformations allow us to alter the scale of a variable to focus on <em class="emphasis">multiplicative</em> changes instead of <em class="emphasis">additive</em> changes. In other words, they shift the view to be on <em class="emphasis">relative</em> changes instead of <em class="emphasis">absolute</em> changes. Such multiplicative/relative changes are also called changes in <em class="emphasis">orders of magnitude</em>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-21" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-22">Let’s create new log10 transformed versions of the right-skewed variable <code class="code-inline tex2jax_ignore">price</code> and <code class="code-inline tex2jax_ignore">sqft_living</code> using the <code class="code-inline tex2jax_ignore">mutate()</code> function from <a href="wrangling.html" class="internal" title="Chapter 3: Data Wrangling">Chapter 3</a>, but we’ll give the latter the name <code class="code-inline tex2jax_ignore">log10_size</code>, which is shorter and easier to understand than the name <code class="code-inline tex2jax_ignore">log10_sqft_living</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-22" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">house_prices &lt;- house_prices |&gt;
+  mutate(
+    log10_price = log10(price),
+    log10_size = log10(sqft_living)
+  )
+</code></pre></div>
+<div class="para" id="house-prices-EDA-I-24">Let’s display the before and after effects of this transformation on these variables for only the first 10 rows of <code class="code-inline tex2jax_ignore">house_prices</code>:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-24" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">house_prices |&gt;
+  select(price, log10_price, sqft_living, log10_size)
+</code></pre></div>
+<div class="para" id="house-prices-EDA-I-26">Observe in particular the houses in the sixth and third rows. The house in the sixth row has a price just above one million dollars. Since <span class="process-math">\(10^6\)</span> is one million, its <code class="code-inline tex2jax_ignore">log10_price</code> is around 6. Contrast this with all other houses with <code class="code-inline tex2jax_ignore">log10_price</code> less than six, since they all have <code class="code-inline tex2jax_ignore">price</code> less than $1,000,000. The house in the third row is the only house with <code class="code-inline tex2jax_ignore">sqft_living</code> less than 1000. Since <span class="process-math">\(1000 = 10^3\text{,}\)</span> it’s the lone house with <code class="code-inline tex2jax_ignore">log10_size</code> less than 3.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-26" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-27">Let’s now visualize the before and after effects of this transformation for <code class="code-inline tex2jax_ignore">price</code> in <a href="seattle-house-prices.html#fig-log10-price-viz" class="xref" data-knowl="./knowl/xref/fig-log10-price-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.2">Figure 11.2.2</a>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-27" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r"># Before log10 transformation:
+ggplot(house_prices, aes(x = price)) +
+  geom_histogram(color = "white") +
+  labs(x = "price (USD)", title = "House price: Before")
+
+# After log10 transformation:
+ggplot(house_prices, aes(x = log10_price)) +
+  geom_histogram(color = "white") +
+  labs(x = "log10 price (USD)", title = "House price: After")
+</code></pre></div>
+<figure class="figure figure-like" id="fig-log10-price-viz"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-log10-price-viz.png" class="contained" alt="Two histograms side by side: before log10 transformation showing right-skewed house prices, and after showing a more symmetric bell-shaped distribution."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>House price before and after log10 transformation.<div class="autopermalink" data-description="Figure 11.2.2"><a href="#fig-log10-price-viz" title="Copy heading and permalink for Figure 11.2.2" aria-label="Copy heading and permalink for Figure 11.2.2">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-EDA-I-30">Observe that after the transformation, the distribution is much less skewed, and in this case, more symmetric and more bell-shaped. Now you can more easily distinguish the lower priced houses.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-30" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-31">Let’s do the same for house size, where the variable <code class="code-inline tex2jax_ignore">sqft_living</code> was log10 transformed to <code class="code-inline tex2jax_ignore">log10_size</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-31" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r"># Before log10 transformation:
+ggplot(house_prices, aes(x = sqft_living)) +
+  geom_histogram(color = "white") +
+  labs(x = "living space (square feet)", title = "House size: Before")
+
+# After log10 transformation:
+ggplot(house_prices, aes(x = log10_size)) +
+  geom_histogram(color = "white") +
+  labs(x = "log10 living space (square feet)", title = "House size: After")
+</code></pre></div>
+<figure class="figure figure-like" id="fig-log10-size-viz"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-log10-size-viz.png" class="contained" alt="Two histograms side by side: before log10 transformation showing right-skewed house sizes, and after showing a more symmetric distribution."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>House size before and after log10 transformation.<div class="autopermalink" data-description="Figure 11.2.3"><a href="#fig-log10-size-viz" title="Copy heading and permalink for Figure 11.2.3" aria-label="Copy heading and permalink for Figure 11.2.3">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-EDA-I-34">Observe in <a href="seattle-house-prices.html#fig-log10-size-viz" class="xref" data-knowl="./knowl/xref/fig-log10-size-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.3">Figure 11.2.3</a> that the log10 transformation has a similar effect of un-skewing the variable. We emphasize that while in these two cases the resulting distributions are more symmetric and bell-shaped, this is not always necessarily the case.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-34" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-I-35">Given the now symmetric nature of <code class="code-inline tex2jax_ignore">log10_price</code> and <code class="code-inline tex2jax_ignore">log10_size</code>, we are going to revise our multiple regression model to use our new variables:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-35" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="house-prices-EDA-I-36">
+<li id="house-prices-EDA-I-36-1">
+<div class="para" id="house-prices-EDA-I-36-1-1">The outcome variable <span class="process-math">\(y\)</span> is the sale <code class="code-inline tex2jax_ignore">log10_price</code> of houses.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-36-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#house-prices-EDA-I-36-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="house-prices-EDA-I-36-2">
+<div class="para" id="house-prices-EDA-I-36-2-1">Two explanatory variables:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-36-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha lower-alpha-level-1" id="house-prices-EDA-I-36-2-2">
+<li id="house-prices-EDA-I-36-2-2-1">
+<div class="para" id="house-prices-EDA-I-36-2-2-1-1">A numerical explanatory variable <span class="process-math">\(x_1\text{:}\)</span> house size <code class="code-inline tex2jax_ignore">log10_size</code> as measured in log base 10 square feet of living space.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-36-2-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.a"><a href="#house-prices-EDA-I-36-2-2-1" title="Copy heading and permalink for Item 2.a" aria-label="Copy heading and permalink for Item 2.a">🔗</a></div>
+</li>
+<li id="house-prices-EDA-I-36-2-2-2">
+<div class="para" id="house-prices-EDA-I-36-2-2-2-1">A categorical explanatory variable <span class="process-math">\(x_2\text{:}\)</span> house <code class="code-inline tex2jax_ignore">condition</code>, a categorical variable with five levels where <code class="code-inline tex2jax_ignore">1</code> indicates “poor” and <code class="code-inline tex2jax_ignore">5</code> indicates “excellent.”<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-I-36-2-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.b"><a href="#house-prices-EDA-I-36-2-2-2" title="Copy heading and permalink for Item 2.b" aria-label="Copy heading and permalink for Item 2.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Item 2"><a href="#house-prices-EDA-I-36-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Subsection 11.2.1: Exploratory data analysis: part I"><a href="#house-prices-EDA-I" title="Copy heading and permalink for Subsection 11.2.1: Exploratory data analysis: part I" aria-label="Copy heading and permalink for Subsection 11.2.1: Exploratory data analysis: part I">🔗</a></div>
+</section>
+<section class="subsection" id="house-prices-EDA-II">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exploratory data analysis: part II</span>
+</h3>
+<div class="para" id="house-prices-EDA-II-2">Let’s now continue our EDA by creating <em class="emphasis">multivariate</em> visualizations. Unlike the <em class="emphasis">univariate</em> histograms and barplot in the earlier <a href="seattle-house-prices.html#fig-house-prices-viz" class="xref" data-knowl="./knowl/xref/fig-house-prices-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.1">Figure 11.2.1</a>, <a href="seattle-house-prices.html#fig-log10-price-viz" class="xref" data-knowl="./knowl/xref/fig-log10-price-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.2">Figure 11.2.2</a>, and <a href="seattle-house-prices.html#fig-log10-size-viz" class="xref" data-knowl="./knowl/xref/fig-log10-size-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.3">Figure 11.2.3</a>, <em class="emphasis">multivariate</em> visualizations show relationships between more than one variable. This is an important step of an EDA to perform since the goal of modeling is to explore relationships between variables.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-II-3">Since our model involves a numerical outcome variable, a numerical explanatory variable, and a categorical explanatory variable, we are in a similar regression modeling situation as in <a href="model4.html" class="internal" title="Section 6.1: One numerical and one categorical explanatory variable">Section 6.1</a> where we studied the UN member states dataset. Recall in that case the numerical outcome variable was fertility rate, the numerical explanatory variable was life expectancy, and the categorical explanatory variable was income group.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-II-4">We thus have two choices of models we can fit: either (1) an <em class="emphasis">interaction model</em> where the regression line for each <code class="code-inline tex2jax_ignore">condition</code> level will have both a different slope and a different intercept or (2) a <em class="emphasis">parallel slopes model</em> where the regression line for each <code class="code-inline tex2jax_ignore">condition</code> level will have the same slope but different intercepts.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-II-5">Recall from <a href="model4.html#model4table" class="internal" title="Subsection 6.1.3: Model without interactions">Subsection 6.1.3</a> that the <code class="code-inline tex2jax_ignore">geom_parallel_slopes()</code> function is a special purpose function that Evgeni Chasnovski created and included in the <code class="code-inline tex2jax_ignore">moderndive</code> package, since the <code class="code-inline tex2jax_ignore">geom_smooth()</code> method in the <code class="code-inline tex2jax_ignore">ggplot2</code> package does not have a convenient way to plot parallel slopes models. We plot both resulting models in <a href="seattle-house-prices.html#fig-house-price-parallel-slopes" class="xref" data-knowl="./knowl/xref/fig-house-price-parallel-slopes.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.4">Figure 11.2.4</a>, with the interaction model on the left.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r"># Plot interaction model
+ggplot(house_prices,
+       aes(x = log10_size, y = log10_price, col = condition)) +
+  geom_point(alpha = 0.05) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(y = "log10 price",
+       x = "log10 size",
+       title = "House prices in Seattle")
+
+# Plot parallel slopes model
+ggplot(house_prices,
+       aes(x = log10_size, y = log10_price, col = condition)) +
+  geom_point(alpha = 0.05) +
+  geom_parallel_slopes(se = FALSE) +
+  labs(y = "log10 price",
+       x = "log10 size",
+       title = "House prices in Seattle")
+</code></pre></div>
+<figure class="figure figure-like" id="fig-house-price-parallel-slopes"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-house-price-parallel-slopes.png" class="contained" alt="Two side-by-side scatterplots of log10 price vs log10 size colored by condition: the left plot shows the interaction model with five different-slope regression lines, and the right shows the parallel slopes model."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Interaction and parallel slopes models.<div class="autopermalink" data-description="Figure 11.2.4"><a href="#fig-house-price-parallel-slopes" title="Copy heading and permalink for Figure 11.2.4" aria-label="Copy heading and permalink for Figure 11.2.4">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-EDA-II-8">In both cases, we see there is a positive relationship between house price and size, meaning as houses are larger in size, they tend to be more expensive. Furthermore, in both plots it seems that houses of condition 5 tend to be the most expensive for most house sizes as evidenced by the fact that the line for condition 5 is highest, followed by conditions 4 and 3. As for conditions 1 and 2, this pattern isn’t as clear. Recall from the univariate barplot of <code class="code-inline tex2jax_ignore">condition</code> in <a href="seattle-house-prices.html#fig-house-prices-viz" class="xref" data-knowl="./knowl/xref/fig-house-prices-viz.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.1">Figure 11.2.1</a>, there are only a few houses of condition 1 or 2.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-EDA-II-9">Let’s also show a faceted version of just the interaction model in <a href="seattle-house-prices.html#fig-house-price-interaction-2" class="xref" data-knowl="./knowl/xref/fig-house-price-interaction-2.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.5">Figure 11.2.5</a>. It is now much more apparent just how few houses are of condition 1 or 2.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">ggplot(house_prices,
+       aes(x = log10_size, y = log10_price, col = condition)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(y = "log10 price",
+       x = "log10 size",
+       title = "House prices in Seattle") +
+  facet_wrap(~ condition)
+</code></pre></div>
+<div class="para" id="house-prices-EDA-II-11">This can be further checked using <code class="code-inline tex2jax_ignore">dplyr</code> and its <code class="code-inline tex2jax_ignore">count()</code> function:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">house_prices |&gt;
+  count(condition)
+</code></pre></div>
+<figure class="figure figure-like" id="fig-house-price-interaction-2"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-house-price-interaction-2.png" class="contained" alt="Scatterplot of log10 price vs log10 size faceted by condition (1 through 5), showing very few houses of conditions 1 and 2."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Faceted plot of interaction model.<div class="autopermalink" data-description="Figure 11.2.5"><a href="#fig-house-price-interaction-2" title="Copy heading and permalink for Figure 11.2.5" aria-label="Copy heading and permalink for Figure 11.2.5">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-EDA-II-14">Which exploratory visualization of the interaction model is better, the one in the left-hand plot of <a href="seattle-house-prices.html#fig-house-price-parallel-slopes" class="xref" data-knowl="./knowl/xref/fig-house-price-parallel-slopes.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.4">Figure 11.2.4</a> or the faceted version in <a href="seattle-house-prices.html#fig-house-price-interaction-2" class="xref" data-knowl="./knowl/xref/fig-house-price-interaction-2.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.5">Figure 11.2.5</a>? There is no universal right answer. You need to make a choice depending on what you want to convey, and own that choice, with including and discussing both also as an option as needed.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-EDA-II-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.2.2: Exploratory data analysis: part II"><a href="#house-prices-EDA-II" title="Copy heading and permalink for Subsection 11.2.2: Exploratory data analysis: part II" aria-label="Copy heading and permalink for Subsection 11.2.2: Exploratory data analysis: part II">🔗</a></div>
+</section>
+<section class="subsection" id="house-prices-regression">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Regression modeling</span>
+</h3>
+<div class="para" id="house-prices-regression-2">Which of the two models in <a href="seattle-house-prices.html#fig-house-price-parallel-slopes" class="xref" data-knowl="./knowl/xref/fig-house-price-parallel-slopes.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.4">Figure 11.2.4</a> is “better”? The interaction model in the left-hand plot or the parallel slopes model in the right-hand plot?<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-regression-3">With <em class="emphasis">model selection</em>, we should only favor more complex models if the additional complexity is <em class="emphasis">warranted</em>. In this case, the more complex model is the interaction model since it considers five intercepts and five slopes total. This is in contrast to the parallel slopes model which considers five intercepts but only one common slope.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-regression-4">Is the additional complexity of the interaction model warranted? Looking at the left-hand plot in <a href="seattle-house-prices.html#fig-house-price-parallel-slopes" class="xref" data-knowl="./knowl/xref/fig-house-price-parallel-slopes.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.4">Figure 11.2.4</a>, we’re of the opinion that it is, as evidenced by the slight x-like (crossing) pattern to some of the lines. Therefore, we’ll focus the rest of this analysis only on the interaction model. (This visual approach is somewhat subjective, however, so feel free to disagree!) What are the five different slopes and five different intercepts for the interaction model? We can get these values from the regression table. Recall our two-step process for getting the regression table:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
+get_regression_table(price_interaction)
+</code></pre></div>
+<div class="para" id="house-prices-regression-6">Recall we saw in <a href="model4.html#model4interactiontable" class="internal" title="Subsection 6.1.2: Model with interactions">Subsection 6.1.2</a> how to interpret a regression table when there are both numerical and categorical explanatory variables. Let’s now do the same for all 10 values in the <code class="code-inline tex2jax_ignore">estimate</code> column of the regression table output above.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-regression-7">In this case, the “baseline for comparison” group for the categorical variable <code class="code-inline tex2jax_ignore">condition</code> are the condition 1 houses, since “1” comes first alphanumerically. Thus, the <code class="code-inline tex2jax_ignore">intercept</code> and <code class="code-inline tex2jax_ignore">log10_size</code> values are the intercept and slope for <code class="code-inline tex2jax_ignore">log10_size</code> for this baseline group. Next, the <code class="code-inline tex2jax_ignore">condition2</code> through <code class="code-inline tex2jax_ignore">condition5</code> terms are the <em class="emphasis">offsets</em> in intercepts relative to the condition 1 intercept. Finally, the <code class="code-inline tex2jax_ignore">log10_size:condition2</code> through <code class="code-inline tex2jax_ignore">log10_size:condition5</code> are the <em class="emphasis">offsets</em> in slopes for <code class="code-inline tex2jax_ignore">log10_size</code> relative to the condition 1 slope for <code class="code-inline tex2jax_ignore">log10_size</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="house-prices-regression-8">
+<div class="para">Let’s simplify this by writing out the equation of each of the five regression lines. We’ll write out each line in the following format:</div>
+<div class="displaymath process-math" id="house-prices-regression-8-1">
+\begin{equation*}
+\widehat{\log_{10}(\text{price})} = \hat{\beta}_0 + \hat{\beta}_{\text{size}} \cdot \log_{10}(\text{size})
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-regression-9">Using the <code class="code-inline tex2jax_ignore">estimate</code> values from <code class="code-inline tex2jax_ignore">get_regression_table(price_interaction)</code>:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal" id="house-prices-regression-10">
+<li id="house-prices-regression-10-1">
+<div class="para logical" id="house-prices-regression-10-1-1">
+<div class="para">Condition 1 (baseline):</div>
+<div class="displaymath process-math" id="house-prices-regression-10-1-1-1">
+\begin{equation*}
+\widehat{\log_{10}(\text{price})} = \hat{\beta}_{0,1} + \hat{\beta}_{1,1} \cdot \log_{10}(\text{size})
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#house-prices-regression-10-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="house-prices-regression-10-2">
+<div class="para logical" id="house-prices-regression-10-2-1">
+<div class="para">Condition 2:</div>
+<div class="displaymath process-math" id="house-prices-regression-10-2-1-1">
+\begin{equation*}
+\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond2}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond2}}) \cdot \log_{10}(\text{size})
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-10-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#house-prices-regression-10-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="house-prices-regression-10-3">
+<div class="para logical" id="house-prices-regression-10-3-1">
+<div class="para">Condition 3:</div>
+<div class="displaymath process-math" id="house-prices-regression-10-3-1-1">
+\begin{equation*}
+\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond3}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond3}}) \cdot \log_{10}(\text{size})
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-10-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a href="#house-prices-regression-10-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+<li id="house-prices-regression-10-4">
+<div class="para logical" id="house-prices-regression-10-4-1">
+<div class="para">Condition 4:</div>
+<div class="displaymath process-math" id="house-prices-regression-10-4-1-1">
+\begin{equation*}
+\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond4}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond4}}) \cdot \log_{10}(\text{size})
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-10-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4"><a href="#house-prices-regression-10-4" title="Copy heading and permalink for Item 4" aria-label="Copy heading and permalink for Item 4">🔗</a></div>
+</li>
+<li id="house-prices-regression-10-5">
+<div class="para logical" id="house-prices-regression-10-5-1">
+<div class="para">Condition 5:</div>
+<div class="displaymath process-math" id="house-prices-regression-10-5-1-1">
+\begin{equation*}
+\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond5}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond5}}) \cdot \log_{10}(\text{size})
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-10-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5"><a href="#house-prices-regression-10-5" title="Copy heading and permalink for Item 5" aria-label="Copy heading and permalink for Item 5">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="house-prices-regression-11">These correspond to the regression lines in the left-hand plot of <a href="seattle-house-prices.html#fig-house-price-parallel-slopes" class="xref" data-knowl="./knowl/xref/fig-house-price-parallel-slopes.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.4">Figure 11.2.4</a> and the faceted plot in <a href="seattle-house-prices.html#fig-house-price-interaction-2" class="xref" data-knowl="./knowl/xref/fig-house-price-interaction-2.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.5">Figure 11.2.5</a>. For homes of all five condition types, as the size of the house increases, the price increases. This is what most would expect. However, the rate of increase of price with size is fastest for the homes with conditions 3, 4, and 5. These are the three largest slopes out of the five.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-regression-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.2.3: Regression modeling"><a href="#house-prices-regression" title="Copy heading and permalink for Subsection 11.2.3: Regression modeling" aria-label="Copy heading and permalink for Subsection 11.2.3: Regression modeling">🔗</a></div>
+</section>
+<section class="subsection" id="house-prices-making-predictions">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Making predictions</span>
+</h3>
+<div class="para" id="house-prices-making-predictions-2">Say you’re a realtor and someone calls you asking you how much their home will sell for. They tell you that it’s in condition = 5 and is sized 1900 square feet. What do you tell them? Let’s use the interaction model we fit to make predictions!<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-making-predictions-3">We first make this prediction visually in <a href="seattle-house-prices.html#fig-house-price-interaction-3" class="xref" data-knowl="./knowl/xref/fig-house-price-interaction-3.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.6">Figure 11.2.6</a>. The predicted <code class="code-inline tex2jax_ignore">log10_price</code> of this house is marked with a black dot. This is where the following two lines intersect:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ul class="disc" id="house-prices-making-predictions-4">
+<li id="house-prices-making-predictions-4-1">
+<div class="para" id="house-prices-making-predictions-4-1-1">The regression line for the condition = 5 homes, and<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#house-prices-making-predictions-4-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="house-prices-making-predictions-4-2">
+<div class="para" id="house-prices-making-predictions-4-2-1">The vertical dashed black line at <code class="code-inline tex2jax_ignore">log10_size</code> equals <span class="process-math">\(\log_{10}(1900) \approx 3.28\text{,}\)</span> since our predictor variable is the log10 transformed square feet of living space.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#house-prices-making-predictions-4-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<figure class="figure figure-like" id="fig-house-price-interaction-3"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/fig-house-price-interaction-3.png" class="contained" alt="Scatterplot of log10 price vs log10 size colored by condition, with five regression lines and a vertical dashed line at log10(1900) with a black dot indicating the predicted log10 price for a condition-5 house of 1900 square feet."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Interaction model with prediction.<div class="autopermalink" data-description="Figure 11.2.6"><a href="#fig-house-price-interaction-3" title="Copy heading and permalink for Figure 11.2.6" aria-label="Copy heading and permalink for Figure 11.2.6">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-making-predictions-6">Eyeballing it, it seems the predicted <code class="code-inline tex2jax_ignore">log10_price</code> seems to be around 5.75. Let’s now find the exact numerical value for the prediction using the equation of the regression line for the condition = 5 houses, being sure to <code class="code-inline tex2jax_ignore">log10()</code> the square footage first.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">2.45 + 1 * log10(1900)
+</code></pre></div>
+<div class="para" id="house-prices-making-predictions-8">This value is very close to our earlier visually made prediction of 5.75. But wait! Is our prediction for the price of this house $5.75? No, because we are using <code class="code-inline tex2jax_ignore">log10_price</code> as our outcome variable! If we want a prediction in dollar units of <code class="code-inline tex2jax_ignore">price</code>, we need to un-log this by taking a power of 10.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">10^(2.45 + 1 * log10(1900))
+</code></pre></div>
+<div class="para" id="house-prices-making-predictions-10">Our predicted price for this home of condition 5 and of size 1900 square feet is approximately $536,000.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-making-predictions-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.2.4: Making predictions"><a href="#house-prices-making-predictions" title="Copy heading and permalink for Subsection 11.2.4: Making predictions" aria-label="Copy heading and permalink for Subsection 11.2.4: Making predictions">🔗</a></div>
+</section>
+<section class="subsection" id="house-prices-inference-for-regression">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Inference for multiple linear regression</span>
+</h3>
+<div class="para" id="house-prices-inference-for-regression-2">Let’s next check the results of our multiple linear regression on house prices using both theory-based and simulation-based methods with hypothesis testing.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-inference-for-regression-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="subsubsection" id="house-prices-theory-inference">
+<h4 class="heading hide-type">
+<span class="type">Subsubsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Theory-based hypothesis testing for partial slopes</span>
+</h4>
+<div class="para" id="house-prices-theory-inference-2">Recall the results of our theory-based inference that were shown when we interpreted the <code class="code-inline tex2jax_ignore">estimate</code> column of <code class="code-inline tex2jax_ignore">get_regression_table(price_interaction)</code>. We can use these values to perform hypothesis tests on the partial slopes.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-theory-inference-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
+get_regression_table(price_interaction)
+</code></pre></div>
+<div class="para" id="house-prices-theory-inference-4">For this model, we can perform hypothesis tests on the partial slopes with an <span class="process-math">\(\alpha\)</span> significance level set to 0.05. For example, we can test the null hypothesis that the partial slope for <code class="code-inline tex2jax_ignore">log10_size</code> is zero. Looking at the <span class="process-math">\(p\)</span>-value in the row corresponding to <code class="code-inline tex2jax_ignore">log10_size</code> we see a value of 0 and a large <code class="code-inline tex2jax_ignore">statistic</code> of 4.652. With <span class="process-math">\(\alpha = 0.05\text{,}\)</span> <code class="code-inline tex2jax_ignore">log10_size</code> is the only regressor with a statistically significant relationship with <code class="code-inline tex2jax_ignore">log10_price</code> in this theory-based model.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-theory-inference-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsubsection 11.2.5.1: Theory-based hypothesis testing for partial slopes"><a href="#house-prices-theory-inference" title="Copy heading and permalink for Subsubsection 11.2.5.1: Theory-based hypothesis testing for partial slopes" aria-label="Copy heading and permalink for Subsubsection 11.2.5.1: Theory-based hypothesis testing for partial slopes">🔗</a></div>
+</section>
+<section class="subsubsection" id="house-prices-simulation-inference">
+<h4 class="heading hide-type">
+<span class="type">Subsubsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Simulation-based hypothesis testing for partial slopes</span>
+</h4>
+<div class="para" id="house-prices-simulation-inference-2">We can also perform hypothesis tests on the partial slopes using simulation-based methods. We can use the <code class="code-inline tex2jax_ignore">fit()</code> function and some of the other <code class="code-inline tex2jax_ignore">infer</code> verbs to do so to check the results of our theory-based inference.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-simulation-inference-3">Let’s begin by retrieving the observed fit values from our <code class="code-inline tex2jax_ignore">price_interaction</code> model:<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">observed_fit_coefficients &lt;- house_prices |&gt;
+  specify(
+    log10_price ~ log10_size * condition
+    ) |&gt;
+  fit()
+observed_fit_coefficients
+</code></pre></div>
+<div class="para" id="house-prices-simulation-inference-5">Next, we build a null distribution of the partial slopes using the <code class="code-inline tex2jax_ignore">generate()</code> function and the <code class="code-inline tex2jax_ignore">fit()</code> function, setting <code class="code-inline tex2jax_ignore">hypothesize()</code> to <code class="code-inline tex2jax_ignore">null = "independence"</code> which will shuffle the values of the response variable <code class="code-inline tex2jax_ignore">log10_price</code>.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">null_distribution_housing &lt;- house_prices |&gt;
+  specify(
+    log10_price ~ log10_size * condition
+    ) |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  fit()
+</code></pre></div>
+<div class="para" id="house-prices-simulation-inference-7">We then visualize this null distribution and shade the observed fit values to see if they are statistically significant.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">visualize(null_distribution_housing) +
+  shade_p_value(obs_stat = observed_fit_coefficients,
+                direction = "two-sided")
+</code></pre></div>
+<figure class="figure figure-like" id="fig-null-housing-shaded"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="images/null_housing_shaded.png" class="contained" alt="A grid of histograms, one per term in the regression model, each showing the null distribution of the partial slope with the observed value shaded to indicate statistical significance."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Null distributions for all partial slopes with observed fit values shaded.<div class="autopermalink" data-description="Figure 11.2.7"><a href="#fig-null-housing-shaded" title="Copy heading and permalink for Figure 11.2.7" aria-label="Copy heading and permalink for Figure 11.2.7">🔗</a></div></figcaption>
+</figure>
+<div class="para" id="house-prices-simulation-inference-10">Of the regressors, it appears that only <code class="code-inline tex2jax_ignore">log10_size</code> has a statistically significant relationship with <code class="code-inline tex2jax_ignore">log10_price</code>. This is evidenced by the fact that the observed fit value for <code class="code-inline tex2jax_ignore">log10_size</code> is far outside the range of the null distribution.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="house-prices-simulation-inference-11">Lastly, we can calculate the <span class="process-math">\(p\)</span>-value for the partial slopes using the <code class="code-inline tex2jax_ignore">get_p_value()</code> function.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-r">null_distribution_housing |&gt;
+  get_p_value(obs_stat = observed_fit_coefficients, direction = "two-sided")
+</code></pre></div>
+<div class="para" id="house-prices-simulation-inference-13">The <span class="process-math">\(p\)</span>-value matches up with this conclusion. Only <code class="code-inline tex2jax_ignore">log10_size</code> appears to be a significant regressor for predicting <code class="code-inline tex2jax_ignore">log10_price</code> in this model. This matches with the findings we had from our theory-based analysis for this same model. Remember that this won’t always be the case depending on the distributions of the variables and whether assumptions hold.<div class="autopermalink" data-description="Paragraph"><a href="#house-prices-simulation-inference-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsubsection 11.2.5.2: Simulation-based hypothesis testing for partial slopes"><a href="#house-prices-simulation-inference" title="Copy heading and permalink for Subsubsection 11.2.5.2: Simulation-based hypothesis testing for partial slopes" aria-label="Copy heading and permalink for Subsubsection 11.2.5.2: Simulation-based hypothesis testing for partial slopes">🔗</a></div>
+</section>
+<section class="exercises" id="house-prices-inference-for-regression-5">
+<h4 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.5.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h4>
+<article class="exercise exercise-like" id="lc11-1"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc11-1-1-1">Check that the LINE conditions are met for inference to be made in this Seattle house prices example with <code class="code-inline tex2jax_ignore">price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)</code>.<div class="autopermalink" data-description="Paragraph"><a href="#lc11-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc11-1-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc11-1-2-1">To check the LINE conditions, examine residual plots from <code class="code-inline tex2jax_ignore">get_regression_points(price_interaction)</code>. Look for: (L) a roughly linear pattern in the scatterplot; (I) independence of observations (generally assumed given random sampling); (N) near-normality in a histogram or QQ plot of residuals; and (E) roughly equal spread of residuals across all fitted values (homoscedasticity).<div class="autopermalink" data-description="Paragraph"><a href="#lc11-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 11.2.5.3.1.1"><a href="#lc11-1-2" title="Copy heading and permalink for Answer 11.2.5.3.1.1" aria-label="Copy heading and permalink for Answer 11.2.5.3.1.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.5.3.1"><a href="#lc11-1" title="Copy heading and permalink for Exercise 11.2.5.3.1" aria-label="Copy heading and permalink for Exercise 11.2.5.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc11-2"><h5 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc11-2-1-1">Repeat the regression modeling in <a href="seattle-house-prices.html#house-prices-regression" class="internal" title="Subsection 11.2.3: Regression modeling">Subsection 11.2.3</a> and the prediction making in <a href="seattle-house-prices.html#house-prices-making-predictions" class="internal" title="Subsection 11.2.4: Making predictions">Subsection 11.2.4</a> on the house of condition 5 and size 1900 square feet, but using the parallel slopes model you visualized in <a href="seattle-house-prices.html#fig-house-price-parallel-slopes" class="xref" data-knowl="./knowl/xref/fig-house-price-parallel-slopes.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 11.2.4">Figure 11.2.4</a>.<div class="autopermalink" data-description="Paragraph"><a href="#lc11-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc11-2-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc11-2-2-1">Fit the parallel slopes model with <code class="code-inline tex2jax_ignore">price_parallel &lt;- lm(log10_price ~ log10_size + condition, data = house_prices)</code>. Then use <code class="code-inline tex2jax_ignore">get_regression_table(price_parallel)</code> and apply the condition 5 regression line equation to <span class="process-math">\(\log_{10}(1900)\)</span> to find the predicted <code class="code-inline tex2jax_ignore">log10_price</code>, and convert with <span class="process-math">\(10^{\hat{y}}\)</span> to get the price in dollars.<div class="autopermalink" data-description="Paragraph"><a href="#lc11-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 11.2.5.3.2.1"><a href="#lc11-2-2" title="Copy heading and permalink for Answer 11.2.5.3.2.1" aria-label="Copy heading and permalink for Answer 11.2.5.3.2.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.5.3.2"><a href="#lc11-2" title="Copy heading and permalink for Exercise 11.2.5.3.2" aria-label="Copy heading and permalink for Exercise 11.2.5.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc11-3"><h5 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc11-3-1-1">Interpret the results of the other rows in terms of inference in the <code class="code-inline tex2jax_ignore">get_regression_table(price_interaction)</code> output that we did not interpret in <a href="seattle-house-prices.html#house-prices-inference-for-regression" class="internal" title="Subsection 11.2.5: Inference for multiple linear regression">Subsection 11.2.5</a>.<div class="autopermalink" data-description="Paragraph"><a href="#lc11-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc11-3-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc11-3-2-1">For each row other than <code class="code-inline tex2jax_ignore">log10_size</code>, examine the <span class="process-math">\(p\)</span>-value. A <span class="process-math">\(p\)</span>-value greater than 0.05 suggests that the term is not statistically significantly different from zero at the <span class="process-math">\(\alpha = 0.05\)</span> level, meaning we cannot conclude that particular offset in intercept or slope differs from the baseline (condition 1).<div class="autopermalink" data-description="Paragraph"><a href="#lc11-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 11.2.5.3.3.1"><a href="#lc11-3-2" title="Copy heading and permalink for Answer 11.2.5.3.3.1" aria-label="Copy heading and permalink for Answer 11.2.5.3.3.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.5.3.3"><a href="#lc11-3" title="Copy heading and permalink for Exercise 11.2.5.3.3" aria-label="Copy heading and permalink for Exercise 11.2.5.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="lc11-4"><h5 class="heading"><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="lc11-4-1-1">Create, visualize, and interpret confidence intervals using both theory-based and simulation-based approaches to mirror the hypothesis testing done in <a href="seattle-house-prices.html#house-prices-inference-for-regression" class="internal" title="Subsection 11.2.5: Inference for multiple linear regression">Subsection 11.2.5</a>.<div class="autopermalink" data-description="Paragraph"><a href="#lc11-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="lc11-4-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="answer solution-like knowl__content">
+<div class="para" id="lc11-4-2-1">For theory-based confidence intervals, use <code class="code-inline tex2jax_ignore">get_regression_table()</code> which provides <code class="code-inline tex2jax_ignore">lower_ci</code> and <code class="code-inline tex2jax_ignore">upper_ci</code> columns. For simulation-based confidence intervals, use the <code class="code-inline tex2jax_ignore">infer</code> workflow with <code class="code-inline tex2jax_ignore">specify()</code>, <code class="code-inline tex2jax_ignore">generate(reps = 1000, type = "bootstrap")</code>, and <code class="code-inline tex2jax_ignore">fit()</code>, then apply <code class="code-inline tex2jax_ignore">get_confidence_interval()</code> to the resulting bootstrap distribution.<div class="autopermalink" data-description="Paragraph"><a href="#lc11-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 11.2.5.3.4.1"><a href="#lc11-4-2" title="Copy heading and permalink for Answer 11.2.5.3.4.1" aria-label="Copy heading and permalink for Answer 11.2.5.3.4.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.5.3.4"><a href="#lc11-4" title="Copy heading and permalink for Exercise 11.2.5.3.4" aria-label="Copy heading and permalink for Exercise 11.2.5.3.4">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.2.5.3"><a href="#house-prices-inference-for-regression-5" title="Copy heading and permalink for Exercises 11.2.5.3" aria-label="Copy heading and permalink for Exercises 11.2.5.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Subsection 11.2.5: Inference for multiple linear regression"><a href="#house-prices-inference-for-regression" title="Copy heading and permalink for Subsection 11.2.5: Inference for multiple linear regression" aria-label="Copy heading and permalink for Subsection 11.2.5: Inference for multiple linear regression">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.2: Case study: Seattle house prices"><a href="#seattle-house-prices" title="Copy heading and permalink for Section 11.2: Case study: Seattle house prices" aria-label="Copy heading and permalink for Section 11.2: Case study: Seattle house prices">🔗</a></div>
+</section>
+</div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="ch11-review.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="data-journalism.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="https://runestone.academy/runestone/static/images/RAIcon_cropped.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="https://www.mathjax.org/badge/badge-square-2.png" alt="MathJax logo"></a>
+</div>
+</body>
+</html>
