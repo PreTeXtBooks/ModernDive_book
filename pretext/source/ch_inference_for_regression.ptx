@@ -404,7 +404,7 @@ sigma(model_1)
         <title>Two-sample difference in means</title>
         <p>
           The two-sample difference in means is a common statistical technique used to compare
-          the means of two groups, as seen in <xref ref="ht-case-study"/>. It can be
+          the means of two groups, as seen in <xref ref="hypothesis-testing"/>. It can be
           represented in the regression framework by using a dummy variable to represent the
           two groups. Let's consider the <c>movies_sample</c> data frame in the
           <c>moderndive</c> package. We compare the average rating for the genres
@@ -427,7 +427,7 @@ get_regression_table(mod_diff_means)
         </md>
         <p>
           This <m>p</m>-value result matches closely with what was found in
-          <xref ref="ht-case-study"/>, but here we are using a theory-based approach with a
+          <xref ref="hypothesis-testing"/>, but here we are using a theory-based approach with a
           linear model. The <c>estimate</c> for the <c>genre: Romance</c> row is the observed
           difference in means between the <q>Action</q> and <q>Romance</q> genres (with the
           sign switched since <q>Action</q> is the reference level).
@@ -2477,7 +2477,7 @@ null_distribution_mlr |>
 
       <p>
         You've now concluded the last major part of this book on statistical inference with
-        <c>infer</c>. The closing <xref ref="tell-your-story"/> concludes this book with
+        <c>infer</c>. The closing <xref ref="thinking-with-data"/> concludes this book with
         various short case studies involving real data, such as house prices in the city of
         Seattle, Washington in the US. You'll see how the principles in this book can help
         you become a great storyteller with data!

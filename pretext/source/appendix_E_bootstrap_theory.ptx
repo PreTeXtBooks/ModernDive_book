@@ -34,7 +34,7 @@
 
   <p>
     So now, <m>F_n</m> is considered the population distribution, and as described in
-    <xref ref="simulation-based-CI"/> we obtain a bootstrap sample by sampling, with
+    <xref ref="confidence-intervals"/> we obtain a bootstrap sample by sampling, with
     replacement, a sample of size <m>n</m> from this empirical distribution. This
     bootstrap sample is now considered an empirical distribution, and we call it
     <m>F^*_n</m>.
@@ -60,7 +60,7 @@
   <p>
     Furthermore, we could obtain every possible bootstrap sample <m>F^*_n</m> from
     <m>F_n</m>, but this is a really large number, as discussed in
-    <xref ref="simulation-based-CI"/>. Instead, only a few thousand bootstrap samples
+    <xref ref="confidence-intervals"/>. Instead, only a few thousand bootstrap samples
     are used.
   </p>
 
