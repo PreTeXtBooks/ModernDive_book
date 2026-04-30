@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix xml:id="appendixA" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Statistical Background</title>
+
+  <!-- ============================================================ -->
+  <section xml:id="appendix-stat-terms">
+    <title>Basic statistical terms</title>
+
+    <p>
+      Note that all of the following statistical terms apply only to <em>numerical</em>
+      variables, except the <em>distribution</em> which can exist for both numerical and
+      categorical variables.
+    </p>
+
+    <subsection xml:id="appendix-mean">
+      <title>Mean</title>
+      <p>
+        The <term>mean</term><idx><h>mean</h></idx> is the most commonly reported measure
+        of center. It is commonly called the <em>average</em> though this term can be a
+        little ambiguous. The mean is the sum of all of the data elements divided by how
+        many elements there are. If we have <m>n</m> data points, the mean is given by:
+      </p>
+      <me>
+        \text{Mean} = \frac{x_1 + x_2 + \cdots + x_n}{n}
+      </me>
+    </subsection>
+
+    <subsection xml:id="appendix-median">
+      <title>Median</title>
+      <p>
+        The <term>median</term><idx><h>median</h></idx> is calculated by first sorting a
+        variable's data from smallest to largest. After sorting the data, the middle
+        element in the list is the median. If the middle falls between two values, then
+        the median is the mean of those two middle values.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendix-sd-variance">
+      <title>Standard deviation and variance</title>
+      <p>
+        We will next discuss the <term>standard deviation</term>
+        <idx><h>standard deviation</h></idx> (<m>sd</m>) of a variable. The formula can
+        be a little intimidating at first but it is important to remember that it is
+        essentially a measure of how far we expect a given data value will be from its
+        mean:
+      </p>
+      <me>
+        sd = \sqrt{\frac{(x_1 - \text{Mean})^2 + (x_2 - \text{Mean})^2 + \cdots +
+        (x_n - \text{Mean})^2}{n - 1}}
+      </me>
+      <p>
+        The <term>variance</term><idx><h>variance</h></idx> of a variable is merely the
+        standard deviation squared.
+      </p>
+      <me>
+        \text{variance} = sd^2 = \frac{(x_1 - \text{Mean})^2 + (x_2 - \text{Mean})^2 +
+        \cdots + (x_n - \text{Mean})^2}{n - 1}
+      </me>
+    </subsection>
+
+    <subsection xml:id="appendix-five-number-summary">
+      <title>Five-number summary</title>
+      <p>
+        The <term>five-number summary</term><idx><h>five-number summary</h></idx> consists
+        of five summary statistics: the minimum, the first quantile AKA 25th percentile,
+        the second quantile AKA median or 50th percentile, the third quantile AKA 75th,
+        and the maximum. The five-number summary of a variable is used when constructing
+        boxplots, as seen in <xref ref="ch-visualization"/>.
+      </p>
+      <p>
+        The quantiles are calculated as:
+      </p>
+      <ul>
+        <li><p>First quantile (<m>Q_1</m>): the median of the first half of the sorted data.</p></li>
+        <li><p>Third quantile (<m>Q_3</m>): the median of the second half of the sorted data.</p></li>
+      </ul>
+      <p>
+        The <term>interquartile range (IQR)</term>
+        <idx><h>interquartile range (IQR)</h></idx> is defined as <m>Q_3 - Q_1</m> and
+        is a measure of how spread out the middle 50% of values are. The IQR corresponds
+        to the length of the box in a boxplot.
+      </p>
+      <p>
+        The median and the IQR are not influenced by the presence of outliers in the ways
+        that the mean and standard deviation are. They are, thus, recommended for skewed
+        datasets. We say in this case that the median and IQR are more <em>robust to
+        outliers</em>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendix-distribution">
+      <title>Distribution</title>
+      <p>
+        The <term>distribution</term><idx><h>distribution</h></idx> of a variable shows
+        how frequently different values of a variable occur. Looking at the visualization
+        of a distribution can show where the values are centered, show how the values
+        vary, and give some information about where a typical value might fall. It can
+        also alert you to the presence of outliers.
+      </p>
+      <p>
+        Recall from <xref ref="ch-visualization"/> that we can visualize the distribution of a
+        numerical variable using binning in a histogram and that we can visualize the
+        distribution of a categorical variable using a barplot.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendix-outliers">
+      <title>Outliers</title>
+      <p>
+        <term>Outliers</term><idx><h>outliers</h></idx> correspond to values in the
+        dataset that fall far outside the range of <q>ordinary</q> values. In the context
+        of a boxplot, by default they correspond to values below <m>Q_1 - (1.5 \cdot
+        IQR)</m> or above <m>Q_3 + (1.5 \cdot IQR)</m>.
+      </p>
+    </subsection>
+
+  </section><!-- end Basic statistical terms -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendix-normal-curve">
+    <title>Normal distribution</title>
+
+    <p>
+      Let's next discuss one particular kind of distribution:
+      <term>normal distributions</term><idx><h>distribution</h><h>normal</h></idx>.
+      Such bell-shaped distributions are defined by two values: (1) the <em>mean</em>
+      <m>\mu</m> (<q>mu</q>) which locates the center of the distribution and (2) the
+      <em>standard deviation</em> <m>\sigma</m> (<q>sigma</q>) which determines the
+      variation of the distribution. In <xref ref="fig-normal-curves2"/>, we plot three
+      normal distributions where:
+    </p>
+    <ol>
+      <li><p>The solid normal curve has mean <m>\mu = 5</m> and standard deviation <m>\sigma = 2</m>.</p></li>
+      <li><p>The dotted normal curve has mean <m>\mu = 5</m> and standard deviation <m>\sigma = 5</m>.</p></li>
+      <li><p>The dashed normal curve has mean <m>\mu = 15</m> and standard deviation <m>\sigma = 2</m>.</p></li>
+    </ol>
+
+    <figure xml:id="fig-normal-curves2">
+      <caption>Three normal distributions.</caption>
+      <image source="images/fig-normal-curves2.png" width="90%">
+        <description>Three normal distribution curves: solid (mu=5, sigma=2), dotted (mu=5, sigma=5), and dashed (mu=15, sigma=2), illustrating differences in center and spread.</description>
+      </image>
+    </figure>
+
+    <p>
+      Notice how the solid and dotted line normal curves have the same center due to their
+      common mean <m>\mu = 5</m>. However, the dotted line normal curve is wider due to
+      its larger standard deviation of <m>\sigma = 5</m>. On the other hand, the solid
+      and dashed line normal curves have the same variation due to their common standard
+      deviation <m>\sigma = 2</m>. However, they are centered at different locations.
+    </p>
+
+    <p>
+      When the mean <m>\mu = 0</m> and the standard deviation <m>\sigma = 1</m>, the
+      normal distribution has a special name. It's called the
+      <term>standard normal distribution</term>
+      <idx><h>distribution</h><h>standard normal</h></idx>
+      or the <m>z</m>-curve.
+    </p>
+
+    <p>
+      Furthermore, if a variable follows a normal curve, there are <em>three rules of
+      thumb</em> we can use:
+    </p>
+    <ol>
+      <li><p>68% of values will lie within <m>\pm 1</m> standard deviation of the mean.</p></li>
+      <li><p>95% of values will lie within <m>\pm 1.96 \approx 2</m> standard deviations of the mean.</p></li>
+      <li><p>99.7% of values will lie within <m>\pm 3</m> standard deviations of the mean.</p></li>
+    </ol>
+
+    <p>
+      Let's illustrate this on a standard normal curve in
+      <xref ref="fig-normal-rule-of-thumb"/>. The dashed lines are at
+      <m>-3, -1.96, -1, 0, 1, 1.96,</m> and <m>3</m>. These 7 lines cut up the x-axis
+      into 8 segments. The areas under the normal curve for each of the 8 segments are
+      marked and add up to 100%. For example:
+    </p>
+    <ol>
+      <li>
+        <p>
+          The middle two segments represent the interval <m>-1</m> to <m>1</m>. The
+          shaded area above this interval represents <m>34\% + 34\% = 68\%</m> of the
+          area under the curve. In other words, 68% of values.
+        </p>
+      </li>
+      <li>
+        <p>
+          The middle four segments represent the interval <m>-1.96</m> to <m>1.96</m>.
+          The shaded area above this interval represents
+          <m>13.5\% + 34\% + 34\% + 13.5\% = 95\%</m> of the area under the curve.
+          In other words, 95% of values.
+        </p>
+      </li>
+      <li>
+        <p>
+          The middle six segments represent the interval <m>-3</m> to <m>3</m>. The
+          shaded area above this interval represents
+          <m>2.35\% + 13.5\% + 34\% + 34\% + 13.5\% + 2.35\% = 99.7\%</m> of the area
+          under the curve. In other words, 99.7% of values.
+        </p>
+      </li>
+    </ol>
+
+    <figure xml:id="fig-normal-rule-of-thumb">
+      <caption>Rules of thumb about areas under normal curves.</caption>
+      <image source="images/fig-normal-rule-of-thumb.png" width="80%">
+        <description>Standard normal curve with dashed vertical lines at -3, -1.96, -1, 0, 1, 1.96, and 3, with percentage areas labeled in each segment: 0.15%, 2.35%, 13.5%, 34%, 34%, 13.5%, 2.35%, 0.15%.</description>
+      </image>
+    </figure>
+
+    <exercises>
+      <exercise xml:id="lcA-1">
+        <statement>
+          <p>
+            Say you have a normal distribution with mean <m>\mu = 6</m> and standard
+            deviation <m>\sigma = 3</m>. What proportion of the area under the normal
+            curve is less than 3? Greater than 12? Between 0 and 12?
+          </p>
+        </statement>
+        <answer>
+          <p>
+            Using the 68-95-99.7 rule: the value 3 is one standard deviation below the
+            mean (<m>6 - 3 = 3</m>), so the area to the left of 3 is approximately
+            <m>(1 - 0.68)/2 = 16\%</m>. The value 12 is two standard deviations above
+            the mean (<m>6 + 2 \cdot 3 = 12</m>), so the area to the right of 12 is
+            approximately <m>(1 - 0.95)/2 = 2.5\%</m>. The value 0 is two standard
+            deviations below the mean, so the area between 0 and 12 is approximately
+            <m>95\%</m>.
+          </p>
+        </answer>
+      </exercise>
+      <exercise xml:id="lcA-2">
+        <statement>
+          <p>
+            What is the 2.5th percentile of the area under the normal curve? The 97.5th
+            percentile? The 100th percentile?
+          </p>
+        </statement>
+        <answer>
+          <p>
+            For the <em>standard</em> normal curve: the 2.5th percentile corresponds to
+            <m>z \approx -1.96</m> standard deviations, and the 97.5th percentile
+            corresponds to <m>z \approx +1.96</m>. The 100th percentile does not exist
+            for a normal distribution since the tails extend to infinity — the area
+            approaches (but never reaches) 100%.
+          </p>
+        </answer>
+      </exercise>
+    </exercises>
+
+    <subsection xml:id="appendix-normal-calculations">
+      <title>Additional normal calculations</title>
+
+      <p>
+        For a normal density curve, the probabilities or areas for any given interval can
+        be obtained using the R function <c>pnorm()</c>. Think of the <c>p</c> in the
+        name as <em>p</em>robability or <em>p</em>ercentage as this function finds the
+        area under the curve to the left of any given value which is the probability of
+        observing any number less than or equal to that value. It is possible to indicate
+        the appropriate expected value and standard deviation as arguments in the
+        function, but the default uses the standard normal values, <m>\mu = 0</m> and
+        <m>\sigma = 1</m>. For example, the probability of observing a value that is less
+        than or equal to 1 in the standard normal curve is given by:
+      </p>
+      <program language="r">
+        <input>
+pnorm(1)
+        </input>
+      </program>
+      <p>
+        or 84%. This is the probability of observing a value that is less than or equal
+        to one standard deviation above the mean.
+      </p>
+      <p>
+        Similarly, the probability of observing a standard value between <m>-1</m> and
+        <m>1</m> is given by subtracting the area to the left of <m>-1</m> from the area
+        to the left of <m>1</m>. In R, we obtain this probability as follows:
+      </p>
+      <program language="r">
+        <input>
+pnorm(1) - pnorm(-1)
+        </input>
+      </program>
+      <p>
+        The probability of getting a standard value between <m>-1</m> and <m>1</m>, or
+        equivalently, the probability of observing a value within one standard deviation
+        from the mean is about 68%. Similarly, the probability of getting a value within
+        2 standard deviations from the mean is given by:
+      </p>
+      <program language="r">
+        <input>
+pnorm(2) - pnorm(-2)
+        </input>
+      </program>
+      <p>
+        or about 95%.
+      </p>
+
+      <p>
+        Moreover, we do not need to restrict our study to areas within one or two standard
+        deviations from the mean. We can find the number of standard deviations needed for
+        any desired percentage around the mean using the R function <c>qnorm()</c>. The
+        <c>q</c> in the name stands for <em>quantile</em> and this function can be thought
+        of as the inverse or complement of <c>pnorm()</c>. It finds the value of the
+        random variable for a given area under the curve to the left of this value. When
+        using the standard normal, the quantile also represents the number of standard
+        deviations. For example, we learned that the area under the standard normal curve
+        to the left of a standard value of 1 was approximately 84%. If instead, we want
+        to find the standard value that corresponds to exactly an area of 84% under the
+        curve to the left of this value, we can use the following syntax:
+      </p>
+      <program language="r">
+        <input>
+qnorm(0.84)
+        </input>
+      </program>
+      <p>
+        In other words, there is exactly an 84% chance that the observed standard value
+        is less than or equal to 0.994.
+      </p>
+
+      <p>
+        We want to find the standard value <c>q</c> such that the area in the middle is
+        exactly 0.95 (or 95%). Before using <c>qnorm()</c> we need to provide the total
+        area under the curve to the left of <c>q</c>. Since the total area under the
+        normal density curve is 1, the curve is symmetric, and the area in the middle is
+        0.95, the total area on the tails is <m>1 - 0.95 = 0.05</m> (or 5%), and the
+        area on each tail is <m>0.05/2 = 0.025</m> (or 2.5%). The total area under the
+        curve to the left of <c>q</c> will be the area in the middle and the area on the
+        left tail or <m>0.95 + 0.025 = 0.975</m>. We can now obtain the standard value
+        <c>q</c> by using <c>qnorm()</c>:
+      </p>
+      <program language="r">
+        <input>
+q &lt;- qnorm(0.975)
+q
+        </input>
+      </program>
+      <p>
+        The probability of observing a value within 1.96 standard deviations from the
+        mean is exactly 95%.
+      </p>
+
+      <p>
+        We can follow this method to obtain the number of standard deviations needed for
+        any area, or probability, around the mean. For example, if we want an area of 98%
+        around the mean, the area on the tails is <m>1 - 0.98 = 0.02</m>, or
+        <m>0.02/2 = 0.01</m> on each tail, the area under the curve to the left of the
+        desired <c>q</c> value would be <m>0.98 + 0.01 = 0.99</m> so:
+      </p>
+      <program language="r">
+        <input>
+qnorm(0.99)
+        </input>
+      </program>
+      <p>
+        The area within 2.33 standard deviations from the mean is 98%.
+      </p>
+
+    </subsection>
+
+  </section><!-- end Normal distribution -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendix-t-distribution">
+    <title>The <m>t</m> distribution calculations</title>
+
+    <p>
+      The syntax in R for the <m>t</m> distribution is analogous to the standard normal
+      distribution. We use the function <c>pt()</c> instead of <c>pnorm()</c> and
+      <c>qt()</c> instead of <c>qnorm()</c>. In addition, the <m>t</m> distribution
+      requires one additional parameter, the degrees of freedom. For the sample mean
+      problems, the degrees of freedom needed are exactly <m>n - 1</m>, the size of the
+      samples minus one.
+    </p>
+
+    <p>
+      We construct a 95% confidence interval for the population mean, using the sample
+      standard deviation to estimate the standard error and the <m>t</m> distribution to
+      determine how wide the confidence interval should be.
+    </p>
+
+    <p>
+      We start by obtaining the sample statistics (assuming a dataset <c>almonds_sample_100</c>
+      with a variable <c>weight</c>):
+    </p>
+    <program language="r">
+      <input>
+almonds_sample_100 |>
+  summarize(
+    mean_weight = mean(weight),
+    sd_weight = sd(weight),
+    sample_size = n()
+  )
+      </input>
+    </program>
+
+    <p>
+      To obtain the number of standard deviations on the <m>t</m> distribution to
+      account for 95% of the values, we proceed as we did in the normal case: the area in
+      the middle is 0.95, so the area on the tails is <m>1 - 0.95 = 0.05</m>. Since the
+      <m>t</m> distribution is also symmetric, the area on each tail is <m>0.025</m>. The
+      number of standard deviations around the center is given by the value <m>q</m> such
+      that the area under the <m>t</m> curve to the left of <m>q</m> is exactly
+      <m>0.975</m>. Using R we get:
+    </p>
+    <program language="r">
+      <input>
+qt(0.975, df = 100 - 1)
+      </input>
+    </program>
+    <p>
+      So, in order to account for 95% of the observations around the mean, we need to
+      take into account all the values within 1.98 standard deviations from the mean.
+      Compare this number with the 1.96 obtained for the standard normal; the difference
+      is due to the fact that the <m>t</m> curve has thicker tails than the standard
+      normal. We can now construct the 95% confidence interval:
+    </p>
+    <program language="r">
+      <input>
+xbar &lt;- 3.682
+se_xbar &lt;- 0.362 / sqrt(100)
+lower_bound &lt;- xbar - 1.98 * se_xbar
+upper_bound &lt;- xbar + 1.98 * se_xbar
+c(lower_bound, upper_bound)
+      </input>
+    </program>
+    <p>
+      We are 95% confident that the population mean weight of almonds is a number between
+      3.61 and 3.75 grams.
+    </p>
+
+  </section><!-- end t distribution -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendix-log10-transformations">
+    <title>log10 transformations</title>
+
+    <p>
+      At its simplest, log10 transformations return base 10
+      <term>logarithms</term><idx><h>log transformations</h></idx>. For example, since
+      <m>1000 = 10^3</m>, running <c>log10(1000)</c> returns <c>3</c> in R. To undo a
+      log10 transformation, we raise 10 to this value. For example, to undo the previous
+      log10 transformation and return the original value of 1000, we raise 10 to the
+      power of 3 by running <c>10^(3) = 1000</c> in R.
+    </p>
+
+    <p>
+      Log transformations allow us to focus on changes in <em>orders of magnitude</em>.
+      In other words, they allow us to focus on <em>multiplicative changes</em> instead
+      of <em>additive ones</em>. Let's illustrate this idea in
+      <xref ref="tab-log10-prices"/> with examples of prices of consumer goods in 2019
+      US dollars.
+    </p>
+
+    <table xml:id="tab-log10-prices">
+      <title>log10 transformed prices, orders of magnitude, and examples</title>
+      <tabular halign="left">
+        <row header="yes" bottom="medium">
+          <cell>Price</cell>
+          <cell>log10(Price)</cell>
+          <cell>Order of magnitude</cell>
+          <cell>Examples</cell>
+        </row>
+        <row>
+          <cell>$1</cell>
+          <cell>0</cell>
+          <cell>Singles</cell>
+          <cell>Cups of coffee</cell>
+        </row>
+        <row>
+          <cell>$10</cell>
+          <cell>1</cell>
+          <cell>Tens</cell>
+          <cell>Books</cell>
+        </row>
+        <row>
+          <cell>$100</cell>
+          <cell>2</cell>
+          <cell>Hundreds</cell>
+          <cell>Mobile phones</cell>
+        </row>
+        <row>
+          <cell>$1,000</cell>
+          <cell>3</cell>
+          <cell>Thousands</cell>
+          <cell>High definition TVs</cell>
+        </row>
+        <row>
+          <cell>$10,000</cell>
+          <cell>4</cell>
+          <cell>Tens of thousands</cell>
+          <cell>Cars</cell>
+        </row>
+        <row>
+          <cell>$100,000</cell>
+          <cell>5</cell>
+          <cell>Hundreds of thousands</cell>
+          <cell>Luxury cars and houses</cell>
+        </row>
+        <row bottom="medium">
+          <cell>$1,000,000</cell>
+          <cell>6</cell>
+          <cell>Millions</cell>
+          <cell>Luxury houses</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      Let's make some remarks about log10 transformations based on
+      <xref ref="tab-log10-prices"/>:
+    </p>
+    <ol>
+      <li>
+        <p>
+          When purchasing a cup of coffee, we tend to think of prices ranging in single
+          dollars, such as $2 or $3. However, when purchasing a mobile phone, we don't
+          tend to think of their prices in units of single dollars such as $313 or $727.
+          Instead, we tend to think of their prices in units of hundreds of dollars like
+          $300 or $700. Thus, cups of coffee and mobile phones are of different
+          <em>orders of magnitude</em> in price.
+        </p>
+      </li>
+      <li>
+        <p>
+          Let's say we want to know the log10 transformed value of $76. This would be
+          hard to compute exactly without a calculator. However, since $76 is between $10
+          and $100 and since <m>\log_{10}(10) = 1</m> and <m>\log_{10}(100) = 2</m>, we
+          know <m>\log_{10}(76)</m> will be between 1 and 2. In fact,
+          <m>\log_{10}(76) \approx 1.881</m>.
+        </p>
+      </li>
+      <li>
+        <p>
+          log10 transformations are <em>monotonic</em>, meaning they preserve orders. So
+          if Price A is lower than Price B, then <m>\log_{10}(\text{Price A})</m> will
+          also be lower than <m>\log_{10}(\text{Price B})</m>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Most importantly, increments of one in log10-scale correspond to <em>relative
+          multiplicative changes</em> in the original scale and not <em>absolute additive
+          changes</em>. For example, increasing a <m>\log_{10}(\text{Price})</m> from 3
+          to 4 corresponds to a multiplicative increase by a factor of 10: $100 to
+          $1,000.
+        </p>
+      </li>
+    </ol>
+
+  </section><!-- end log10 transformations -->
+
+</appendix>

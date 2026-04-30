@@ -35,3 +35,9 @@ copy_pdf_to_google_drive.R
 # the release branch
 docs/*
 bib/packages.bib
+pretext/output/
+
+# PreTeXt build output HTML (accidentally generated in repo root)
+/[a-z]*.html
+lunr-pretext-search-index.js
+/lunr-pretext-search-index.js

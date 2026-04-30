@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix xml:id="appendixC" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Tips and Tricks</title>
+
+  <p>
+    <em>Note: This appendix is still under construction as we update some materials from
+    the First Edition to the Second Edition. If you would like to contribute, please
+    check us out on GitHub at
+    <url href="https://github.com/moderndive/moderndive_book">https://github.com/moderndive/moderndive_book</url>.</em>
+  </p>
+
+  <subsection xml:id="appendixC-packages">
+    <title>Needed packages</title>
+    <p>
+      Let's load all the packages needed for this appendix (this assumes you've already
+      installed them). Recall from <xref ref="tidyverse-package"/> that loading the
+      <c>tidyverse</c> package by running <c>library(tidyverse)</c> loads the following
+      commonly used data science packages all at once:
+    </p>
+    <ul>
+      <li><p><c>ggplot2</c> for data visualization</p></li>
+      <li><p><c>dplyr</c> for data wrangling</p></li>
+      <li><p><c>tidyr</c> for converting data to <q>tidy</q> format</p></li>
+      <li><p><c>readr</c> for importing spreadsheet data into R</p></li>
+      <li><p>As well as the more advanced <c>purrr</c>, <c>tibble</c>, <c>stringr</c>, and <c>forcats</c> packages.</p></li>
+    </ul>
+    <p>
+      Read <xref ref="sec-packages"/> for information on how to install and load R packages.
+    </p>
+    <program language="r">
+      <input>
+library(tidyverse)
+library(scales)
+library(janitor)
+library(dygraphs)
+library(nycflights23)
+      </input>
+    </program>
+  </subsection>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixC-wrangling">
+    <title>Data wrangling</title>
+
+    <p>
+      In this section, we address some of the most common data wrangling questions we've
+      encountered in student projects:
+    </p>
+    <ul>
+      <li><p><xref ref="appendix-missing-values"/>: Dealing with missing values</p></li>
+      <li><p><xref ref="appendix-reordering-bars"/>: Reordering bars in a barplot</p></li>
+      <li><p><xref ref="appendix-money-on-axis"/>: Showing money on an axis</p></li>
+      <li><p><xref ref="appendix-changing-values"/>: Changing values inside cells</p></li>
+      <li><p><xref ref="appendix-convert-numerical-categorical"/>: Converting a numerical variable to a categorical one</p></li>
+      <li><p><xref ref="appendix-prop"/>: Computing proportions</p></li>
+      <li><p><xref ref="appendix-commas"/>: Dealing with %, commas, and $</p></li>
+    </ul>
+
+    <p>
+      Let's load an example movies dataset, pare down the rows and columns a bit, and
+      then show the first 10 rows using <c>slice()</c>.
+    </p>
+    <program language="r">
+      <input>
+movies_ex &lt;- read_csv("https://moderndive.com/data/movies.csv") |>
+  filter(type %in% c("action", "comedy", "drama", "animated", "fantasy", "rom comedy")) |>
+  select(-over200)
+
+movies_ex |>
+  slice(1:10)
+      </input>
+    </program>
+
+
+    <subsection xml:id="appendix-missing-values">
+      <title>Dealing with missing values</title>
+
+      <p>
+        You may see the revenue in <c>million</c>s value for some movies is <c>NA</c>
+        (missing). So the following occurs when computing the median revenue:
+      </p>
+      <program language="r">
+        <input>
+movies_ex |>
+  summarize(mean_profit = median(millions))
+        </input>
+      </program>
+      <p>
+        You should always think about why a data value might be missing and what that
+        missingness may mean. For example, imagine you are conducting a study on the
+        effects of smoking on lung cancer and a lot of your patients' data is missing
+        because they died of lung cancer. If you just <q>sweep these patients under the
+        rug</q> and ignore them, you are clearly biasing the results.
+      </p>
+      <p>
+        While there are statistical methods to deal with missing data they are beyond the
+        reach of this class. The easiest thing to do is to remove all missing cases, but
+        <em>you should always at the very least report to the reader if you do so, as by
+        removing the missing values you may be biasing your results.</em>
+      </p>
+      <p>
+        You can do this with a <c>na.rm = TRUE</c> argument like so:
+      </p>
+      <program language="r">
+        <input>
+movies_ex |>
+  summarize(mean_profit = median(millions, na.rm = TRUE))
+        </input>
+      </program>
+      <p>
+        If you decide you want to remove the row with the missing data, you can use the
+        filter function like so:
+      </p>
+      <program language="r">
+        <input>
+movies_no_missing &lt;- movies_ex |>
+  filter(!is.na(millions))
+
+movies_no_missing |>
+  slice(1:10)
+        </input>
+      </program>
+    </subsection>
+
+
+    <subsection xml:id="appendix-reordering-bars">
+      <title>Reordering bars in a barplot</title>
+
+      <p>
+        Let's compute the total revenue for each movie type and plot a barplot.
+      </p>
+      <program language="r">
+        <input>
+revenue_by_type &lt;- movies_ex |>
+  group_by(type) |>
+  summarize(total_revenue = sum(millions))
+
+ggplot(revenue_by_type, aes(x = type, y = total_revenue)) +
+  geom_col() +
+  labs(x = "Movie genre", y = "Total box office revenue (in millions of $)")
+        </input>
+      </program>
+      <p>
+        Say we want to reorder the categorical variable <c>type</c> so that the bars show
+        in a different order. We can reorder the bars by manually defining the order of
+        the <c>levels</c> in the <c>factor()</c> command:
+      </p>
+      <program language="r">
+        <input>
+type_levels &lt;- c("rom comedy", "action", "drama", "animated", "comedy", "fantasy")
+
+revenue_by_type &lt;- revenue_by_type |>
+  mutate(type = factor(type, levels = type_levels))
+
+ggplot(revenue_by_type, aes(x = type, y = total_revenue)) +
+  geom_col() +
+  labs(x = "Movie genre", y = "Total boxoffice revenue (in millions of $)")
+        </input>
+      </program>
+      <p>
+        Or if you want to reorder <c>type</c> in ascending order of
+        <c>total_revenue</c>, we use <c>reorder()</c>:
+      </p>
+      <program language="r">
+        <input>
+revenue_by_type &lt;- revenue_by_type |>
+  mutate(type = reorder(type, total_revenue))
+
+ggplot(revenue_by_type, aes(x = type, y = total_revenue)) +
+  geom_col() +
+  labs(x = "Movie genre", y = "Total boxoffice revenue (in millions of $)")
+        </input>
+      </program>
+      <p>
+        Or if you want to reorder <c>type</c> in descending order of
+        <c>total_revenue</c>, just put a <c>-</c> sign in front of
+        <c>-total_revenue</c> in <c>reorder()</c>:
+      </p>
+      <program language="r">
+        <input>
+revenue_by_type &lt;- revenue_by_type |>
+  mutate(type = reorder(type, -total_revenue))
+
+ggplot(revenue_by_type, aes(x = type, y = total_revenue)) +
+  geom_col() +
+  labs(x = "Movie genre", y = "Total boxoffice revenue (in millions of $)")
+        </input>
+      </program>
+      <p>
+        For more advanced categorical variable (i.e. factor) manipulations, check out the
+        <url href="https://forcats.tidyverse.org/"><c>forcats</c> package</url>. Note:
+        <c>forcats</c> is an anagram of <c>factors</c>.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="appendix-money-on-axis">
+      <title>Showing money on an axis</title>
+
+      <program language="r">
+        <input>
+movies_ex &lt;- movies_ex |>
+  mutate(revenue = millions * 10^6)
+
+ggplot(data = movies_ex, aes(x = rating, y = revenue)) +
+  geom_boxplot() +
+  labs(x = "rating", y = "Revenue in $", title = "Profits for different movie ratings")
+        </input>
+      </program>
+      <p>
+        To format the y-axis with dollar signs, load the <c>scales</c> package and use
+        <c>scale_y_continuous(labels = dollar)</c>:
+      </p>
+      <program language="r">
+        <input>
+library(scales)
+
+ggplot(data = movies_ex, aes(x = rating, y = revenue)) +
+  geom_boxplot() +
+  labs(x = "rating", y = "Revenue in $", title = "Profits for different movie ratings") +
+  scale_y_continuous(labels = dollar)
+        </input>
+      </program>
+    </subsection>
+
+
+    <subsection xml:id="appendix-changing-values">
+      <title>Changing values inside cells</title>
+
+      <p>
+        The <c>rename()</c> function in the <c>dplyr</c> package renames column/variable
+        names. To <q>rename</q> values inside cells of a particular column, you need to
+        <c>mutate()</c> the column using one of the three functions below. In these
+        examples, we'll change values in the variable <c>type</c>.
+      </p>
+      <ol>
+        <li><p><c>if_else()</c></p></li>
+        <li><p><c>recode()</c></p></li>
+        <li><p><c>case_when()</c></p></li>
+      </ol>
+
+      <subsubsection xml:id="appendixC-if-else">
+        <title><c>if_else()</c></title>
+        <p>
+          Switch all instances of <c>rom comedy</c> with <c>romantic comedy</c> using
+          <c>if_else()</c> from the <c>dplyr</c> package. If a particular row has
+          <c>type == "rom comedy"</c>, then return <c>"romantic comedy"</c>, else return
+          whatever was originally in <c>type</c>. Save everything in a new variable
+          <c>type_new</c>:
+        </p>
+        <program language="r">
+          <input>
+movies_ex |>
+  mutate(type_new = if_else(type == "rom comedy", "romantic comedy", type)) |>
+  slice(1:10)
+          </input>
+        </program>
+        <p>
+          Do the same here, but return <c>"not romantic comedy"</c> if <c>type</c> is
+          not <c>"rom comedy"</c> and this time overwrite the original <c>type</c>
+          variable:
+        </p>
+        <program language="r">
+          <input>
+movies_ex |>
+  mutate(type = if_else(type == "rom comedy", "romantic comedy", "not romantic comedy")) |>
+  slice(1:10)
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="appendixC-recode">
+        <title><c>recode()</c></title>
+        <p>
+          <c>if_else()</c> is rather limited. What if we want to <q>rename</q> all
+          <c>type</c> so that they start with uppercase? Use <c>recode()</c>:
+        </p>
+        <program language="r">
+          <input>
+movies_ex |>
+  mutate(type_new = recode(type,
+    "action" = "Action",
+    "animated" = "Animated",
+    "comedy" = "Comedy",
+    "drama" = "Drama",
+    "fantasy" = "Fantasy",
+    "rom comedy" = "Romantic Comedy"
+  )) |>
+  slice(1:10)
+          </input>
+        </program>
+      </subsubsection>
+
+      <subsubsection xml:id="appendixC-case-when">
+        <title><c>case_when()</c></title>
+        <p>
+          <c>case_when()</c> is a little trickier, but allows you to evaluate boolean
+          operations using <c>==</c>, <c>&gt;</c>, <c>&gt;=</c>, <c>&amp;</c>,
+          <c>|</c>, etc:
+        </p>
+        <program language="r">
+          <input>
+movies_ex |>
+  mutate(
+    type_new = case_when(
+      type == "action" &amp; millions > 40 ~ "Big budget action",
+      type == "rom comedy" &amp; millions &lt; 40 ~ "Small budget romcom",
+      TRUE ~ "Rest"
+    )
+  )
+          </input>
+        </program>
+      </subsubsection>
+
+    </subsection>
+
+
+    <subsection xml:id="appendix-convert-numerical-categorical">
+      <title>Converting a numerical variable to a categorical one</title>
+
+      <p>
+        Sometimes we want to turn a numerical, continuous variable into a categorical
+        variable. For instance, what if we wanted to have a variable that tells us if a
+        movie made one hundred million dollars or more. We can create a binary variable
+        using the <c>mutate()</c> function:
+      </p>
+      <program language="r">
+        <input>
+movies_ex |>
+  mutate(big_budget = millions > 100) |>
+  slice(1:10)
+        </input>
+      </program>
+      <p>
+        What if you want to convert a numerical variable into a categorical variable with
+        more than 2 levels? One way is to use the <c>cut()</c> command. For instance,
+        below, we <c>cut()</c> the <c>score</c> variable to recode it into 4 categories:
+      </p>
+      <ol>
+        <li><p>0 – 40 = bad</p></li>
+        <li><p>40.1 – 60 = so-so</p></li>
+        <li><p>60.1 – 80 = good</p></li>
+        <li><p>80.1+ = great</p></li>
+      </ol>
+      <program language="r">
+        <input>
+movies_ex |>
+  mutate(score_categ = cut(score,
+    breaks = c(0, 40, 60, 80, 100),
+    labels = c("bad", "so-so", "good", "great")
+  )) |>
+  slice(1:10)
+        </input>
+      </program>
+      <p>
+        Other options with the <c>cut</c> function:
+      </p>
+      <ul>
+        <li>
+          <p>
+            By default, if the value is exactly the upper bound of an interval, it's
+            included in the lesser category (e.g. 60.0 is <q>so-so</q> not <q>good</q>).
+            To flip this, include the argument <c>right = FALSE</c>.
+          </p>
+        </li>
+        <li>
+          <p>
+            You could also have R equally divide the variable into a balanced number of
+            groups. For example, specifying <c>breaks = 3</c> would create 3 groups with
+            approximately the same number of values in each group.
+          </p>
+        </li>
+      </ul>
+    </subsection>
+
+
+    <subsection xml:id="appendix-prop">
+      <title>Computing proportions</title>
+
+      <p>
+        By using a <c>group_by()</c> followed not by a <c>summarize()</c> as is often
+        the case, but rather a <c>mutate()</c>. So say we compute the total revenue
+        millions for each movie rating and type:
+      </p>
+      <program language="r">
+        <input>
+rating_by_type_millions &lt;- movies_ex |>
+  group_by(rating, type) |>
+  summarize(millions = sum(millions)) |>
+  arrange(rating, type)
+
+rating_by_type_millions
+        </input>
+      </program>
+      <p>
+        Say within each movie rating (G, PG, PG-13, R), we want to know the proportion
+        of <c>total_millions</c> made by each movie type (animated, action, comedy, etc).
+        We can:
+      </p>
+      <program language="r">
+        <input>
+rating_by_type_millions |>
+  group_by(rating) |>
+  mutate(
+    total_millions = sum(millions),
+    prop = millions / total_millions
+  )
+        </input>
+      </program>
+      <p>
+        So for example, the 4 proportions corresponding to R rated movies sum to 1.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="appendix-commas">
+      <title>Dealing with %, commas, and $</title>
+
+      <p>
+        Say you have numerical data that are recorded as percentages, have commas, or are
+        in dollar form and hence are character strings. How do you convert these to
+        numerical values? Using the <c>parse_number()</c> function from the
+        <c>readr</c> package inside a <c>mutate()</c>!
+      </p>
+      <program language="r">
+        <input>
+library(readr)
+parse_number("10.5%")
+parse_number("145,897")
+parse_number("$1,234.5")
+        </input>
+      </program>
+      <p>
+        What about the other way around? Use the <c>scales</c> package!
+      </p>
+      <program language="r">
+        <input>
+library(scales)
+percent(0.105)
+comma(145897)
+dollar(1234.5)
+        </input>
+      </program>
+    </subsection>
+
+  </section><!-- end Data wrangling -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="appendixC-interactive">
+    <title>Interactive graphics</title>
+
+    <subsection xml:id="appendixC-interactive-linegraphs">
+      <title>Interactive linegraphs</title>
+
+      <p>
+        Another useful tool for viewing linegraphs is the <c>dygraph</c> function in the
+        <c>dygraphs</c> package in combination with the <c>dyRangeSelector</c> function.
+        This allows us to zoom in on a selected range and get an interactive plot for us
+        to work with:
+      </p>
+      <program language="r">
+        <input>
+library(dygraphs)
+library(nycflights23)
+flights_day &lt;- mutate(flights, date = as.Date(time_hour))
+flights_summarized &lt;- flights_day |>
+  group_by(date) |>
+  summarize(median_arr_delay = median(arr_delay, na.rm = TRUE)) |>
+  as.data.frame()
+rownames(flights_summarized) &lt;- flights_summarized$date
+flights_summarized &lt;- select(flights_summarized, -date)
+dyRangeSelector(dygraph(flights_summarized))
+        </input>
+      </program>
+      <p>
+        The syntax here is a little different than what we have covered so far. The
+        <c>dygraph</c> function is expecting for the dates to be given as the
+        <c>rownames</c> of the object. We convert our data to a data frame (since tibbles
+        don't allow for easy row name manipulation), and then remove the <c>date</c>
+        variable from the <c>flights_summarized</c> data frame since it is accounted for
+        in the <c>rownames</c>. Lastly, we run the <c>dygraph</c> function on the new
+        data frame that only contains the median arrival delay as a column and then
+        provide the ability to have a selector to zoom in on the interactive plot via
+        <c>dyRangeSelector</c>. (Note that this plot will only be interactive in the HTML
+        version of this book.)
+      </p>
+    </subsection>
+
+  </section><!-- end Interactive graphics -->
+
+</appendix>

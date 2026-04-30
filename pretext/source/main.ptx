@@ -53,6 +53,9 @@
     <!-- Chapter 10: Inference for Regression -->
     <xi:include href="./ch_inference_for_regression.ptx" />
 
+    <!-- Chapter 11: Tell Your Story with Data -->
+    <xi:include href="./ch_tell_your_story.ptx" />
+    
     <!-- Additional chapters will be added here as the book develops -->
 
     <!-- This chapter contains a wide variety of elements to  -->
@@ -67,6 +70,21 @@
     <!-- provided by the CLI. Uncomment to view this chapter, and comment    -->
     <!-- features you don't wish to generate.                                -->
     <!-- <xi:include href="./ch_generate.ptx" /> -->
+
+    <!-- Appendix A: Statistical Background -->
+    <xi:include href="./appendix_A_statistical_background.ptx" />
+
+    <!-- Appendix B: Inference Examples -->
+    <xi:include href="./appendix_B_inference_examples.ptx" />
+
+    <!-- Appendix C: Tips and Tricks -->
+    <xi:include href="./appendix_C_tips_tricks.ptx" />
+
+    <!-- Appendix D: Learning Check Solutions -->
+    <xi:include href="./appendix_D_lc_solutions.ptx" />
+
+    <!-- Appendix E: The Theory Behind the Bootstrap Method -->
+    <xi:include href="./appendix_E_bootstrap_theory.ptx" />
 
     <!-- Finaly we place the backmatter in its own file and inlcude-->
     <xi:include href="./meta_backmatter.ptx" />

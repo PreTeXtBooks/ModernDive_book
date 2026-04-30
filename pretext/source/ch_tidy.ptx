@@ -3,7 +3,1185 @@
   <title>Data Importing and Tidy Data</title>
 
   <p>
-    This chapter will cover data importing and the concept of tidy data.
+    In <xref ref="ch-getting-started"/>, we introduced the concept of a
+    <term>data frame</term><idx><h>data frame</h></idx> in R: a rectangular
+    spreadsheet-like representation of data where the rows correspond to
+    observations and the columns correspond to variables describing each
+    observation. In <xref ref="ch-getting-started"/>, we started exploring our first
+    data frame: the <c>flights</c> data frame included in the
+    <c>nycflights23</c> package. In <xref ref="ch-visualization"/>, we created
+    visualizations based on the data included in <c>flights</c> and other data
+    frames such as <c>weather</c>. In <xref ref="ch-wrangling"/>, we learned how
+    to take existing data frames and transform/modify them to suit our ends.
   </p>
 
+  <p>
+    In this final chapter of the <q>Data Science with <c>tidyverse</c></q>
+    portion of the book, we extend some of these ideas by discussing a type of
+    data formatting called <q>tidy</q> data. You will see that having data
+    stored in <q>tidy</q> format is about more than just what the everyday
+    definition of the term <q>tidy</q> might suggest: having your data
+    <q>neatly organized.</q> Instead, we define the term <q>tidy</q> as it's
+    used by data scientists who use R, outlining a set of rules by which data
+    is saved.
+  </p>
+
+  <p>
+    Knowledge of this type of data formatting was not necessary for our
+    treatment of data visualization in <xref ref="ch-visualization"/> and data wrangling in
+    <xref ref="ch-wrangling"/>. This is because all the data used were already in
+    <q>tidy</q> format. In this chapter, we'll now see that this format is
+    essential to using the tools we covered up until now. Furthermore, it will
+    also be useful for all subsequent chapters in this book when we cover
+    regression and statistical inference. First, however, we'll show you how
+    to import spreadsheet data in R.
+  </p>
+
+  <!-- Needed packages -->
+  <subsection xml:id="tidy-packages">
+    <title>Needed packages</title>
+    <p>
+      Let's load all the packages needed for this chapter (this assumes you've
+      already installed them). If needed, read <xref ref="sec-packages"/> for
+      information on how to install and load R packages.
+    </p>
+    <program language="r">
+      <input>
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(nycflights23)
+library(fivethirtyeight)
+      </input>
+    </program>
+    <p>
+      Note that when you load the <c>fivethirtyeight</c> package, you'll
+      receive the following message:
+    </p>
+    <blockquote>
+      <p>
+        Some larger datasets need to be installed separately, like senators and
+        house_district_forecast. To install these, we recommend you install the
+        fivethirtyeightdata package by running:
+        <c>install.packages('fivethirtyeightdata', repos =
+        'https://fivethirtyeightdata.github.io/drat/', type = 'source')</c>
+      </p>
+    </blockquote>
+    <p>
+      This message can be ignored for the purposes of this book, but if you'd
+      like to explore these larger datasets, you can install the
+      <c>fivethirtyeightdata</c> package as suggested.
+    </p>
+  </subsection>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="csv">
+    <title>Importing data</title>
+
+    <p>
+      Up to this point, we've almost entirely used data stored inside of an R
+      package. Say instead you have your own data saved on your computer or
+      somewhere online. How can you analyze this data in R? Spreadsheet data
+      is often saved in one of the following three formats:
+    </p>
+
+    <p>
+      First, a <em>Comma Separated Values</em> <c>.csv</c>
+      <idx><h>CSV file</h></idx> file. You can think of a <c>.csv</c> file as
+      a bare-bones spreadsheet where:
+    </p>
+    <ul>
+      <li><p>Each line in the file corresponds to one row of data/one observation.</p></li>
+      <li><p>Values for each line are separated with commas. In other words, the values of different variables are separated by commas in each row.</p></li>
+      <li><p>The first line is often, but not always, a <em>header</em> row indicating the names of the columns/variables.</p></li>
+    </ul>
+
+    <p>
+      Second, an Excel <c>.xlsx</c> spreadsheet file. This format is based on
+      Microsoft's proprietary Excel software. As opposed to bare-bones
+      <c>.csv</c> files, <c>.xlsx</c> Excel files contain a lot of
+      meta-data<idx><h>meta-data</h></idx> (data about data). Recall we saw a
+      previous example of meta-data in <xref ref="ch-wrangling"/> when adding
+      <q>group structure</q> meta-data to a data frame by using the
+      <c>group_by()</c> verb. Some examples of Excel spreadsheet meta-data
+      include the use of bold and italic fonts, colored cells, different
+      column widths, and formula macros.
+    </p>
+
+    <p>
+      Third, a <url href="https://www.google.com/sheets/about/">Google
+      Sheets</url> file, which is a <q>cloud</q> or online-based way to work
+      with a spreadsheet. Google Sheets allows you to download your data in
+      both comma separated values <c>.csv</c> and Excel <c>.xlsx</c> formats.
+      One way to import Google Sheets data in R is to go to the Google Sheets
+      menu bar <m>\to</m> File <m>\to</m> Download as <m>\to</m> Select
+      <q>Microsoft Excel</q> or <q>Comma-separated values</q> and then load
+      that data into R. A more advanced way to import Google Sheets data in R
+      is by using the <url href="https://googlesheets4.tidyverse.org/"><c>googlesheets4</c></url>
+      package, a method we leave to a more advanced data science book.
+    </p>
+
+    <p>
+      We'll cover two methods for importing <c>.csv</c> and <c>.xlsx</c>
+      spreadsheet data in R: one using the console and the other using
+      RStudio's graphical user interface, abbreviated as <q>GUI.</q>
+    </p>
+
+
+    <subsection xml:id="tidy-csv-console">
+      <title>Using the console</title>
+
+      <p>
+        First, let's import a Comma Separated Values <c>.csv</c> file that
+        exists on the internet. The <c>.csv</c> file <c>dem_score.csv</c>
+        contains ratings of the level of democracy in different countries
+        spanning 1952 to 1992 and is accessible at
+        <url href="https://moderndive.com/data/dem_score.csv">https://moderndive.com/data/dem_score.csv</url>.
+        Let's use the <c>read_csv()</c>
+        <idx><h>R packages</h><h>readr</h><h>read_csv()</h></idx> function
+        from the <c>readr</c> package to read it off the web, import it into
+        R, and save it in a data frame called <c>dem_score</c>.
+      </p>
+
+      <program language="r">
+        <input>
+library(readr)
+dem_score &lt;- read_csv("https://moderndive.com/data/dem_score.csv")
+dem_score
+        </input>
+      </program>
+
+      <p>
+        In this <c>dem_score</c> data frame, the minimum value of
+        <c>-10</c> corresponds to a highly autocratic nation, whereas a value
+        of <c>10</c> corresponds to a highly democratic nation. Note also that
+        backticks surround the different variable names. Variable names in R
+        by default are not allowed to start with a number nor include spaces,
+        but we can get around this fact by surrounding the column name with
+        backticks. We'll revisit the <c>dem_score</c> data frame in a case
+        study in the upcoming <xref ref="case-study-tidy"/>.
+      </p>
+
+      <p>
+        Note that the <c>read_csv()</c> function included in the <c>readr</c>
+        package is different than the <c>read.csv()</c> function that comes
+        installed with R. While the difference in the names might seem trivial
+        (an <c>_</c> instead of a <c>.</c>), the <c>read_csv()</c> function
+        is, in our opinion, easier to use since it can more easily read data
+        off the web and generally imports data at a much faster speed.
+        Furthermore, the <c>read_csv()</c> function included in the
+        <c>readr</c> saves data frames as <c>tibbles</c> by default.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="tidy-rstudio-gui">
+      <title>Using RStudio's interface</title>
+
+      <p>
+        Let's read in the exact same data, but this time from an Excel file
+        saved on your computer. Furthermore, we'll do this using RStudio's
+        graphical interface instead of running <c>read_csv()</c> in the
+        console. First, download the Excel file <c>dem_score.xlsx</c> by
+        going to
+        <url href="https://moderndive.com/data/dem_score.xlsx">https://moderndive.com/data/dem_score.xlsx</url>,
+        then
+      </p>
+      <ol>
+        <li><p>Go to the Files pane of RStudio.</p></li>
+        <li><p>Navigate to the directory (i.e., folder on your computer) where the downloaded <c>dem_score.xlsx</c> Excel file is saved. For example, this might be in your Downloads folder.</p></li>
+        <li><p>Click on <c>dem_score.xlsx</c>.</p></li>
+        <li><p>Click <q>Import Dataset...</q></p></li>
+      </ol>
+
+      <p>
+        At this point, you should see a screen pop-up like in
+        <xref ref="fig-read-excel"/>. After clicking on the
+        <q>Import</q><idx><h>RStudio</h><h>import data</h></idx> button on
+        the bottom right of <xref ref="fig-read-excel"/>, RStudio will save
+        this spreadsheet's data in a data frame called <c>dem_score</c> and
+        display its contents in the spreadsheet viewer.
+      </p>
+
+      <figure xml:id="fig-read-excel">
+        <caption>Importing an Excel file to R.</caption>
+        <image source="images/rstudio_screenshots/read_excel.png" width="100%">
+          <description>Screenshot of RStudio's Import Dataset interface for reading an Excel file.</description>
+        </image>
+      </figure>
+
+      <p>
+        Furthermore, note the <q>Code Preview</q> block in the bottom right
+        of <xref ref="fig-read-excel"/>. You can copy and paste this code to
+        reload your data again later programmatically, instead of repeating
+        this manual point-and-click process.
+      </p>
+    </subsection>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="tidy-data-ex">
+    <title>Tidy data</title>
+
+    <p>
+      Let's now switch gears and learn about the concept of <q>tidy</q> data
+      format with a motivating example from the <c>fivethirtyeight</c>
+      package. The <c>fivethirtyeight</c>
+      <idx><h>R packages</h><h>fivethirtyeight</h></idx> package provides
+      access to the datasets used in many articles published by the data
+      journalism website,
+      <url href="https://fivethirtyeight.com/">FiveThirtyEight.com</url>. For
+      a complete list of all datasets included in the <c>fivethirtyeight</c>
+      package, check out the package webpage by going to:
+      <url href="https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html">https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html</url>.
+    </p>
+
+    <p>
+      Let's focus our attention on the <c>drinks</c> data frame and look at
+      its first 5 rows:
+    </p>
+
+    <program language="r">
+      <input>
+drinks |>
+  head(5)
+      </input>
+    </program>
+
+    <p>
+      After reading the help file by running <c>?drinks</c>, you'll see that
+      <c>drinks</c> is a data frame containing results from a survey of the
+      average number of servings of beer, spirits, and wine consumed in 193
+      countries. This data was originally reported on FiveThirtyEight.com in
+      Mona Chalabi's article:
+      <url href="https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/"><q>Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?</q></url>
+    </p>
+
+    <p>
+      Let's apply some of the data-wrangling verbs we learned in
+      <xref ref="ch-wrangling"/> on the <c>drinks</c> data frame:
+    </p>
+    <ol>
+      <li><p><c>filter()</c> to only consider 4 countries: the United States, China, Italy, and Saudi Arabia, <em>then</em></p></li>
+      <li><p><c>select()</c> all columns except <c>total_litres_of_pure_alcohol</c> by using the <c>-</c> sign, <em>then</em></p></li>
+      <li><p><c>rename()</c> <c>beer_servings</c>, <c>spirit_servings</c>, and <c>wine_servings</c> to <c>beer</c>, <c>spirit</c>, and <c>wine</c>, respectively.</p></li>
+    </ol>
+
+    <p>and save the resulting data frame in <c>drinks_smaller</c>:</p>
+
+    <program language="r">
+      <input>
+drinks_smaller &lt;- drinks |>
+  filter(country %in% c("USA", "China", "Italy", "Saudi Arabia")) |>
+  select(-total_litres_of_pure_alcohol) |>
+  rename(beer = beer_servings, spirit = spirit_servings, wine = wine_servings)
+drinks_smaller
+      </input>
+    </program>
+
+    <p>
+      Let's now ask ourselves a question: <q>Using the <c>drinks_smaller</c>
+      data frame, how would we create the side-by-side barplot in
+      <xref ref="fig-drinks-smaller"/>?</q> Recall we saw barplots displaying
+      two categorical variables in <xref ref="ch-visualization"/>.
+    </p>
+
+    <figure xml:id="fig-drinks-smaller">
+      <caption>Comparing alcohol consumption in 4 countries.</caption>
+      <image source="images/fig-drinks-smaller.png" width="80%">
+        <description>Side-by-side barplot comparing beer, spirit, and wine servings for China, Italy, Saudi Arabia, and the USA.</description>
+      </image>
+    </figure>
+
+    <p>
+      Let's break down the grammar of graphics we introduced in
+      <xref ref="ch-visualization"/>:
+    </p>
+    <ol>
+      <li><p>The categorical variable <c>country</c> with four levels (China, Italy, Saudi Arabia, USA) would have to be mapped to the <c>x</c>-position of the bars.</p></li>
+      <li><p>The numerical variable <c>servings</c> would have to be mapped to the <c>y</c>-position of the bars (the height of the bars).</p></li>
+      <li><p>The categorical variable <c>type</c> with three levels (beer, spirit, wine) would have to be mapped to the <c>fill</c> color of the bars.</p></li>
+    </ol>
+
+    <p>
+      Observe that <c>drinks_smaller</c> has three separate variables
+      <c>beer</c>, <c>spirit</c>, and <c>wine</c>. In order to use the
+      <c>ggplot()</c> function to recreate the barplot in
+      <xref ref="fig-drinks-smaller"/> however, we need a <em>single
+      variable</em> <c>type</c> with three possible values: <c>beer</c>,
+      <c>spirit</c>, and <c>wine</c>. We could then map this <c>type</c>
+      variable to the <c>fill</c> aesthetic of our plot. In other words, to
+      recreate the barplot in <xref ref="fig-drinks-smaller"/>, our data frame
+      would have to look like this:
+    </p>
+
+    <program language="r">
+      <input>
+drinks_smaller_tidy
+      </input>
+    </program>
+
+    <p>
+      Observe that while <c>drinks_smaller</c> and <c>drinks_smaller_tidy</c>
+      are both rectangular in shape and contain the same 12 numerical values
+      (3 alcohol types by 4 countries), they are formatted differently.
+      <c>drinks_smaller</c> is formatted in what's known as
+      <idx><h>wide data format</h></idx>
+      <url href="https://en.wikipedia.org/wiki/Wide_and_narrow_data"><q>wide</q></url>
+      format, whereas <c>drinks_smaller_tidy</c> is formatted in what's known
+      as
+      <url href="https://en.wikipedia.org/wiki/Wide_and_narrow_data#Narrow"><q>long/narrow</q></url>
+      format.
+    </p>
+
+    <p>
+      In the context of data science in R, long/narrow format
+      <idx><h>long data format</h></idx> is also known as <q>tidy</q> format.
+      In order to use the <c>ggplot2</c> and <c>dplyr</c> packages for data
+      visualization and data wrangling, your input data frames <em>must</em>
+      be in <q>tidy</q> format. Thus, all non-<q>tidy</q> data must be
+      converted to <q>tidy</q> format first. Before we convert
+      non-<q>tidy</q> data frames like <c>drinks_smaller</c> to <q>tidy</q>
+      data frames like <c>drinks_smaller_tidy</c>, let's define <q>tidy</q>
+      data.
+    </p>
+
+
+    <subsection xml:id="tidy-definition">
+      <title>Definition of tidy data</title>
+
+      <p>You have surely heard the word <q>tidy</q> in your life:</p>
+      <ul>
+        <li><p><q>Tidy up your room!</q></p></li>
+        <li><p><q>Write your homework in a tidy way, so it is easier to provide feedback.</q></p></li>
+        <li><p>Marie Kondo's best-selling book,
+          <url href="https://www.powells.com/book/-9781607747307"><em>The Life-Changing Magic of Tidying Up: The Japanese Art of Decluttering and Organizing</em></url>,
+          and Netflix TV series
+          <url href="https://www.netflix.com/title/80209379"><em>Tidying Up with Marie Kondo</em></url>.
+        </p></li>
+      </ul>
+
+      <p>
+        What does it mean for your data to be <q>tidy</q>? While <q>tidy</q>
+        has a clear English meaning of <q>organized,</q> the word
+        <q>tidy</q> in data science using R means that your data follows a
+        standardized format. We will follow Hadley
+        Wickham's<idx><h>Wickham, Hadley</h></idx> definition of
+        <term>tidy data</term><idx><h>tidy data</h></idx> shown also in
+        <xref ref="fig-tidy-r4ds"/>:
+      </p>
+
+      <blockquote>
+        <p>
+          A <em>dataset</em> is a collection of values, usually either numbers
+          (if quantitative) or strings AKA text data (if
+          qualitative/categorical). Values are organised in two ways. Every
+          value belongs to a variable and an observation. A variable contains
+          all values that measure the same underlying attribute (like height,
+          temperature, duration) across units. An observation contains all
+          values measured on the same unit (like a person, or a day, or a
+          city) across attributes.
+        </p>
+        <p>
+          <q>Tidy</q> data is a standard way of mapping the meaning of a
+          dataset to its structure. A dataset is messy or tidy depending on
+          how rows, columns and tables are matched up with observations,
+          variables and types. In <em>tidy data</em>:
+        </p>
+        <ol>
+          <li><p>Each variable forms a column.</p></li>
+          <li><p>Each observation forms a row.</p></li>
+          <li><p>Each type of observational unit forms a table.</p></li>
+        </ol>
+      </blockquote>
+
+      <figure xml:id="fig-tidy-r4ds">
+        <caption>Tidy data graphic from <em>R for Data Science</em>.</caption>
+        <image source="images/r4ds/tidy-1.png" width="80%">
+          <description>Diagram illustrating the three rules of tidy data: variables in columns, observations in rows, and one observational unit per table.</description>
+        </image>
+      </figure>
+
+      <p>
+        For example, say you have the following table of stock prices in
+        <xref ref="table-non-tidy-stocks"/>:
+      </p>
+
+      <table xml:id="table-non-tidy-stocks">
+        <title>Stock prices (non-tidy format)</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>Date</cell>
+            <cell>Boeing stock price</cell>
+            <cell>Amazon stock price</cell>
+            <cell>Google stock price</cell>
+          </row>
+          <row>
+            <cell>2009-01-01</cell>
+            <cell>$173.55</cell>
+            <cell>$174.90</cell>
+            <cell>$174.34</cell>
+          </row>
+          <row>
+            <cell>2009-01-02</cell>
+            <cell>$172.61</cell>
+            <cell>$171.42</cell>
+            <cell>$170.04</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Although the data is in a rectangular spreadsheet format, it is not
+        <q>tidy.</q> There are three variables (date, stock name, and stock
+        price), but not three separate columns. In tidy data, each variable
+        should have its own column, as shown in
+        <xref ref="table-tidy-stocks"/>. Both tables present the same
+        information, but in different formats.
+      </p>
+
+      <table xml:id="table-tidy-stocks">
+        <title>Stock prices (tidy format)</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>Date</cell>
+            <cell>Stock Name</cell>
+            <cell>Stock Price</cell>
+          </row>
+          <row>
+            <cell>2009-01-01</cell>
+            <cell>Boeing</cell>
+            <cell>$173.55</cell>
+          </row>
+          <row>
+            <cell>2009-01-01</cell>
+            <cell>Amazon</cell>
+            <cell>$174.90</cell>
+          </row>
+          <row>
+            <cell>2009-01-01</cell>
+            <cell>Google</cell>
+            <cell>$174.34</cell>
+          </row>
+          <row>
+            <cell>2009-01-02</cell>
+            <cell>Boeing</cell>
+            <cell>$172.61</cell>
+          </row>
+          <row>
+            <cell>2009-01-02</cell>
+            <cell>Amazon</cell>
+            <cell>$171.42</cell>
+          </row>
+          <row>
+            <cell>2009-01-02</cell>
+            <cell>Google</cell>
+            <cell>$170.04</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        On the other hand, consider the data in
+        <xref ref="table-tidy-stocks-2"/>.
+      </p>
+
+      <table xml:id="table-tidy-stocks-2">
+        <title>Example of tidy data</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>Date</cell>
+            <cell>Boeing Price</cell>
+            <cell>Weather</cell>
+          </row>
+          <row>
+            <cell>2009-01-01</cell>
+            <cell>$173.55</cell>
+            <cell>Sunny</cell>
+          </row>
+          <row>
+            <cell>2009-01-02</cell>
+            <cell>$172.61</cell>
+            <cell>Overcast</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        In this case, even though the variable <q>Boeing Price</q> occurs
+        just like in our non-<q>tidy</q> data in
+        <xref ref="table-non-tidy-stocks"/>, the data <em>is</em>
+        <q>tidy</q> since there are three variables for each of three unique
+        pieces of information: Date, Boeing price, and the Weather that day.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc4-1">
+          <statement>
+            <p>What are common characteristics of <q>tidy</q> data frames?</p>
+          </statement>
+          <answer>
+            <p>
+              In tidy data frames: (1) each variable forms its own column,
+              (2) each observation forms its own row, and (3) each type of
+              observational unit forms its own table.
+            </p>
+          </answer>
+        </exercise>
+
+        <exercise xml:id="lc4-2">
+          <statement>
+            <p>What makes <q>tidy</q> data frames useful for organizing data?</p>
+          </statement>
+          <answer>
+            <p>
+              Tidy data frames are useful because they provide a consistent
+              structure that makes it straightforward to use tools like
+              <c>ggplot2</c> and <c>dplyr</c> for data visualization and
+              wrangling. Each variable being in its own column means functions
+              that operate on variables work predictably.
+            </p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="tidy-converting">
+      <title>Converting to tidy data</title>
+
+      <p>
+        In this book so far, you've only seen data frames that were already in
+        <q>tidy</q> format. Furthermore, for the rest of this book, you'll
+        mostly only see data frames that are already in <q>tidy</q> format as
+        well. This is not always the case however with all datasets in the
+        world. If your original data frame is in wide (non-<q>tidy</q>) format
+        and you would like to use the <c>ggplot2</c> or <c>dplyr</c> packages,
+        you will first have to convert it to <q>tidy</q> format. To do so, we
+        recommend using the
+        <idx><h>R packages</h><h>tidyr</h><h>pivot_longer()</h></idx>
+        <c>pivot_longer()</c> function in the <c>tidyr</c>
+        <idx><h>R packages</h><h>tidyr</h></idx> package.
+      </p>
+
+      <p>Going back to our <c>drinks_smaller</c> data frame from earlier:</p>
+
+      <program language="r">
+        <input>
+drinks_smaller
+        </input>
+      </program>
+
+      <p>
+        We convert it to <q>tidy</q> format by using the
+        <c>pivot_longer()</c> function from the <c>tidyr</c> package as
+        follows:
+      </p>
+
+      <program language="r">
+        <input>
+drinks_smaller_tidy &lt;- drinks_smaller |>
+  pivot_longer(names_to = "type",
+               values_to = "servings",
+               cols = -country)
+drinks_smaller_tidy
+        </input>
+      </program>
+
+      <p>
+        We set the arguments to <c>pivot_longer()</c> as follows:
+      </p>
+      <ol>
+        <li>
+          <p>
+            <c>names_to</c> here corresponds to the name of the variable in
+            the new <q>tidy</q>/long data frame that will contain the
+            <em>column names</em> of the original data. Observe how we set
+            <c>names_to = "type"</c>. In the resulting
+            <c>drinks_smaller_tidy</c>, the column <c>type</c> contains the
+            three types of alcohol <c>beer</c>, <c>spirit</c>, and
+            <c>wine</c>. Since <c>type</c> is a variable name that doesn't
+            appear in <c>drinks_smaller</c>, we use quotation marks around it.
+            You'll receive an error if you just use <c>names_to = type</c>
+            here.
+          </p>
+        </li>
+        <li>
+          <p>
+            <c>values_to</c> here is the name of the variable in the new
+            <q>tidy</q> data frame that will contain the <em>values</em> of
+            the original data. Observe how we set <c>values_to =
+            "servings"</c> since each of the numeric values in each of the
+            <c>beer</c>, <c>wine</c>, and <c>spirit</c> columns of the
+            <c>drinks_smaller</c> data corresponds to a value of
+            <c>servings</c>. In the resulting <c>drinks_smaller_tidy</c>, the
+            column <c>servings</c> contains the 4 <times/> 3 = 12 numerical
+            values. Note again that <c>servings</c> doesn't appear as a
+            variable in <c>drinks_smaller</c> so it again needs quotation
+            marks around it for the <c>values_to</c> argument.
+          </p>
+        </li>
+        <li>
+          <p>
+            The third argument <c>cols</c> is the columns in the
+            <c>drinks_smaller</c> data frame you either want to or don't want
+            to <q>tidy.</q> Observe how we set this to <c>-country</c>
+            indicating that we don't want to <q>tidy</q> the <c>country</c>
+            variable in <c>drinks_smaller</c> and rather only <c>beer</c>,
+            <c>spirit</c>, and <c>wine</c>. Since <c>country</c> is a column
+            that appears in <c>drinks_smaller</c> we don't put quotation marks
+            around it.
+          </p>
+        </li>
+      </ol>
+
+      <p>
+        The third argument here of <c>cols</c> is a little nuanced, so let's
+        consider code that's written slightly differently but that produces
+        the same output:
+      </p>
+
+      <program language="r">
+        <input>
+drinks_smaller |>
+  pivot_longer(names_to = "type",
+               values_to = "servings",
+               cols = c(beer, spirit, wine))
+        </input>
+      </program>
+
+      <p>
+        Note that the third argument now specifies which columns we want to
+        <q>tidy</q> with <c>c(beer, spirit, wine)</c>, instead of the columns
+        we don't want to <q>tidy</q> using <c>-country</c>. We use the
+        <c>c()</c> function to create a vector of the columns in
+        <c>drinks_smaller</c> that we'd like to <q>tidy.</q> Note that since
+        these three columns appear one after another in the
+        <c>drinks_smaller</c> data frame, we could also do the following for
+        the <c>cols</c> argument:
+      </p>
+
+      <program language="r">
+        <input>
+drinks_smaller |>
+  pivot_longer(names_to = "type",
+               values_to = "servings",
+               cols = beer:wine)
+        </input>
+      </program>
+
+      <p>
+        With our <c>drinks_smaller_tidy</c> <q>tidy</q> formatted data frame,
+        we can now produce the barplot you saw in
+        <xref ref="fig-drinks-smaller"/> using <c>geom_col()</c>. This is
+        done in <xref ref="fig-drinks-smaller-tidy-barplot"/>. Recall from
+        <xref ref="ch-visualization"/> on barplots that we use <c>geom_col()</c> and
+        not <c>geom_bar()</c>, since we would like to map the
+        <q>pre-counted</q> <c>servings</c> variable to the
+        <c>y</c>-aesthetic of the bars.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(drinks_smaller_tidy, aes(x = country, y = servings, fill = type)) +
+  geom_col(position = "dodge")
+        </input>
+      </program>
+
+      <figure xml:id="fig-drinks-smaller-tidy-barplot">
+        <caption>Comparing alcohol consumption in 4 countries using <c>geom_col()</c>.</caption>
+        <image source="images/fig-drinks-smaller-tidy-barplot.png" width="80%">
+          <description>Side-by-side barplot comparing beer, spirit, and wine servings for China, Italy, Saudi Arabia, and the USA, produced from tidy data.</description>
+        </image>
+      </figure>
+
+      <p>
+        Converting <q>wide</q> format data to <q>tidy</q> format often
+        confuses new R users. The only way to learn to get comfortable with
+        the <c>pivot_longer()</c> function is with practice, practice, and
+        more practice using different datasets. For example, run
+        <c>?pivot_longer</c> and look at the examples in the bottom of the
+        help file. We'll show another example of using <c>pivot_longer()</c>
+        to convert a <q>wide</q> formatted data frame to <q>tidy</q> format
+        in <xref ref="case-study-tidy"/>.
+      </p>
+
+      <p>
+        If however you want to convert a <q>tidy</q> data frame to <q>wide</q>
+        format, you will need to use the
+        <c>pivot_wider()</c><idx><h>R packages</h><h>tidyr</h><h>pivot_wider()</h></idx>
+        function instead. Run <c>?pivot_wider</c> and look at the examples in
+        the bottom of the help file for examples.
+      </p>
+
+      <p>
+        You can also view examples of both <c>pivot_longer()</c> and
+        <c>pivot_wider()</c> on the
+        <url href="https://tidyr.tidyverse.org/dev/articles/pivot.html#pew">tidyverse.org</url>
+        webpage. There's a nice example to check out the different functions
+        available for data tidying and a case study using data from the World
+        Health Organization on that webpage. Furthermore, each week the R4DS
+        Online Learning Community posts a dataset in the weekly
+        <url href="https://github.com/rfordatascience/tidytuesday"><hash/>TidyTuesday event</url>
+        that might serve as a nice place for you to find other data to explore
+        and transform.
+      </p>
+
+      <exercises>
+        <exercise xml:id="lc4-3">
+          <statement>
+            <p>
+              Take a look at the <c>airline_safety</c> data frame included in
+              the <c>fivethirtyeight</c> data package. Run the following:
+            </p>
+            <program language="r">
+              <input>
+airline_safety
+              </input>
+            </program>
+            <p>
+              After reading the help file by running <c>?airline_safety</c>,
+              we see that <c>airline_safety</c> is a data frame containing
+              information on different airline companies' safety records. This
+              data was originally reported on the data journalism website,
+              FiveThirtyEight.com, in Nate Silver's article,
+              <url href="https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/"><q>Should Travelers Avoid Flying Airlines That Have Had Crashes in the Past?</q></url>
+              Let's only consider the variables <c>airline</c> and those
+              relating to fatalities for simplicity:
+            </p>
+            <program language="r">
+              <input>
+airline_safety_smaller &lt;- airline_safety |>
+  select(airline, starts_with("fatalities"))
+airline_safety_smaller
+              </input>
+            </program>
+            <p>
+              This data frame is not in <q>tidy</q> format. How would you
+              convert this data frame to be in <q>tidy</q> format, in
+              particular so that it has a variable <c>fatalities_years</c>
+              indicating the incident year and a variable <c>count</c> of the
+              fatality counts?
+            </p>
+          </statement>
+          <answer>
+            <program language="r">
+              <input>
+airline_safety_smaller |>
+  pivot_longer(names_to = "fatalities_years",
+               values_to = "count",
+               cols = -airline)
+              </input>
+            </program>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection>
+
+
+    <subsection xml:id="tidy-nycflights23">
+      <title><c>nycflights23</c> package</title>
+
+      <p>
+        Recall the <c>nycflights23</c> package we introduced in
+        <xref ref="ch-getting-started"/> with data about all domestic flights
+        departing from New York City in 2023. Let's revisit the <c>flights</c>
+        data frame by running <c>View(flights)</c>. We saw that <c>flights</c>
+        has a rectangular shape, with each of its rows corresponding to a
+        flight and each of its columns corresponding to different
+        characteristics/measurements of each flight. This satisfied the first
+        two criteria of the definition of <q>tidy</q> data from
+        <xref ref="tidy-definition"/>: that <q>Each variable forms a
+        column</q> and <q>Each observation forms a row.</q> But what about
+        the third property of <q>tidy</q> data that <q>Each type of
+        observational unit forms a table</q>?
+      </p>
+
+      <p>
+        Recall that we saw in <xref ref="ch-getting-started"/> that the
+        observational unit for the <c>flights</c> data frame is an individual
+        flight. In other words, the rows of the <c>flights</c> data frame
+        refer to characteristics/measurements of individual flights. Also
+        included in the <c>nycflights23</c> package are other data frames with
+        their rows representing different observational units:
+      </p>
+      <ul>
+        <li><p><c>airlines</c>: translation between two letter IATA carrier codes and airline company names. The observational unit is an airline company.</p></li>
+        <li><p><c>planes</c>: aircraft information about each of the planes used. The observational unit is an aircraft.</p></li>
+        <li><p><c>weather</c>: hourly meteorological data for each of the three NYC airports. The observational unit is an hourly measurement of weather at one of the three airports.</p></li>
+        <li><p><c>airports</c>: airport names and locations. The observational unit is an airport.</p></li>
+      </ul>
+
+      <p>
+        The organization of the information into these five data frames follows
+        the third <q>tidy</q> data property: observations corresponding to the
+        same observational unit should be saved in the same table, i.e., data
+        frame. You could think of this property as the old English expression:
+        <q>birds of a feather flock together.</q>
+      </p>
+    </subsection>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="case-study-tidy">
+    <title>Case study: democracy in Guatemala</title>
+
+    <p>
+      In this section, we'll show you another example of how to convert a
+      data frame that isn't in <q>tidy</q> format (<q>wide</q> format) to a
+      data frame that is in <q>tidy</q> format (<q>long/narrow</q> format).
+      We'll do this using the <c>pivot_longer()</c> function from the
+      <c>tidyr</c> package again.
+    </p>
+
+    <p>
+      Furthermore, we'll make use of functions from the <c>ggplot2</c> and
+      <c>dplyr</c> packages to produce a <em>time-series plot</em> showing
+      how the democracy scores have changed over the 40 years from 1952 to
+      1992 for Guatemala. Recall that we saw time-series plots in
+      <xref ref="ch-visualization"/> on creating linegraphs using
+      <c>geom_line()</c>.
+    </p>
+
+    <p>
+      Let's use the <c>dem_score</c> data frame we imported in
+      <xref ref="csv"/>, but focus on only data corresponding to Guatemala.
+    </p>
+
+    <program language="r">
+      <input>
+guat_dem &lt;- dem_score |>
+  filter(country == "Guatemala")
+guat_dem
+      </input>
+    </program>
+
+    <p>
+      Let's lay out the grammar of graphics we saw in
+      <xref ref="ch-visualization"/>.
+    </p>
+
+    <p>
+      First we know we need to set <c>data = guat_dem</c> and use a
+      <c>geom_line()</c> layer, but what is the aesthetic mapping of
+      variables? We'd like to see how the democracy score has changed over
+      the years, so we need to map:
+    </p>
+    <ul>
+      <li><p><c>year</c> to the x-position aesthetic and</p></li>
+      <li><p><c>democracy_score</c> to the y-position aesthetic</p></li>
+    </ul>
+
+    <p>
+      Now we are stuck in a predicament, much like with our
+      <c>drinks_smaller</c> example in <xref ref="tidy-data-ex"/>. We see
+      that we have a variable named <c>country</c>, but its only value is
+      <c>"Guatemala"</c>. We have other variables denoted by different year
+      values. Unfortunately, the <c>guat_dem</c> data frame is not
+      <q>tidy</q> and hence is not in the appropriate format to apply the
+      grammar of graphics, and thus we cannot use the <c>ggplot2</c> package
+      just yet.
+    </p>
+
+    <p>
+      We need to take the values of the columns corresponding to years in
+      <c>guat_dem</c> and convert them into a new <q>names</q> variable
+      called <c>year</c>. Furthermore, we need to take the democracy score
+      values in the inside of the data frame and turn them into a new
+      <q>values</q> variable called <c>democracy_score</c>. Our resulting
+      data frame will have three columns: <c>country</c>, <c>year</c>, and
+      <c>democracy_score</c>. Recall that the <c>pivot_longer()</c> function
+      in the <c>tidyr</c> package does this for us:
+    </p>
+
+    <program language="r">
+      <input>
+guat_dem_tidy &lt;- guat_dem |>
+  pivot_longer(names_to = "year",
+               values_to = "democracy_score",
+               cols = -country,
+               names_transform = list(year = as.integer))
+guat_dem_tidy
+      </input>
+    </program>
+
+    <p>We set the arguments to <c>pivot_longer()</c> as follows:</p>
+    <ol>
+      <li>
+        <p>
+          <c>names_to</c> is the name of the variable in the new <q>tidy</q>
+          data frame that will contain the <em>column names</em> of the
+          original data. Observe how we set <c>names_to = "year"</c>. In the
+          resulting <c>guat_dem_tidy</c>, the column <c>year</c> contains the
+          years where Guatemala's democracy scores were measured.
+        </p>
+      </li>
+      <li>
+        <p>
+          <c>values_to</c> is the name of the variable in the new <q>tidy</q>
+          data frame that will contain the <em>values</em> of the original
+          data. Observe how we set <c>values_to = "democracy_score"</c>. In
+          the resulting <c>guat_dem_tidy</c> the column
+          <c>democracy_score</c> contains the 1 <times/> 9 = 9 democracy
+          scores as numeric values.
+        </p>
+      </li>
+      <li>
+        <p>
+          The third argument is the columns you either want to or don't want
+          to <q>tidy.</q> Observe how we set this to <c>cols = -country</c>
+          indicating that we don't want to <q>tidy</q> the <c>country</c>
+          variable in <c>guat_dem</c> and rather only variables <c>1952</c>
+          through <c>1992</c>.
+        </p>
+      </li>
+      <li>
+        <p>
+          The last argument of <c>names_transform</c> tells R what type of
+          variable <c>year</c> should be set to. Without specifying that it
+          is an <c>integer</c> as we've done here, <c>pivot_longer()</c> will
+          set it to be a character value by default.
+        </p>
+      </li>
+    </ol>
+
+    <p>
+      We can now create the time-series plot in
+      <xref ref="fig-guat-dem-tidy"/> to visualize how democracy scores in
+      Guatemala have changed from 1952 to 1992 using a
+      <idx><h>R packages</h><h>ggplot2</h><h>geom_line()</h></idx>
+      <c>geom_line()</c>. Furthermore, we'll use the <c>labs()</c> function
+      in the <c>ggplot2</c> package to add informative labels to all the
+      <c>aes()</c>thetic attributes of our plot, in this case the <c>x</c>
+      and <c>y</c> positions.
+    </p>
+
+    <program language="r">
+      <input>
+ggplot(guat_dem_tidy, aes(x = year, y = democracy_score)) +
+  geom_line() +
+  labs(x = "Year", y = "Democracy Score")
+      </input>
+    </program>
+
+    <figure xml:id="fig-guat-dem-tidy">
+      <caption>Democracy scores in Guatemala 1952<ndash/>1992.</caption>
+      <image source="images/fig-guat-dem-tidy.png" width="80%">
+        <description>Line graph showing democracy scores in Guatemala from 1952 to 1992.</description>
+      </image>
+    </figure>
+
+    <p>
+      Note that if we forgot to include the <c>names_transform</c> argument
+      specifying that <c>year</c> was not of character format, we would have
+      gotten an error here since <c>geom_line()</c> wouldn't have known how
+      to sort the character values in <c>year</c> in the right order.
+    </p>
+
+    <exercises>
+      <exercise xml:id="lc4-4">
+        <statement>
+          <p>
+            Convert the <c>dem_score</c> data frame into a <q>tidy</q> data
+            frame and assign the name of <c>dem_score_tidy</c> to the
+            resulting long-formatted data frame.
+          </p>
+        </statement>
+        <answer>
+          <program language="r">
+            <input>
+dem_score_tidy &lt;- dem_score |>
+  pivot_longer(names_to = "year",
+               values_to = "democracy_score",
+               cols = -country,
+               names_transform = list(year = as.integer))
+dem_score_tidy
+            </input>
+          </program>
+        </answer>
+      </exercise>
+
+      <exercise xml:id="lc4-5">
+        <statement>
+          <p>
+            Read in the life expectancy data stored at
+            <url href="https://moderndive.com/data/le_mess.csv">https://moderndive.com/data/le_mess.csv</url>
+            and convert it to a <q>tidy</q> data frame.
+          </p>
+        </statement>
+        <answer>
+          <program language="r">
+            <input>
+le_mess &lt;- read_csv("https://moderndive.com/data/le_mess.csv")
+le_mess_tidy &lt;- le_mess |>
+  pivot_longer(names_to = "year",
+               values_to = "life_expectancy",
+               cols = -country,
+               names_transform = list(year = as.integer))
+le_mess_tidy
+            </input>
+          </program>
+        </answer>
+      </exercise>
+    </exercises>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="tidyverse-package">
+    <title><c>tidyverse</c> package</title>
+
+    <p>
+      Notice at the beginning of the chapter we loaded the following four
+      packages, which are among four of the most frequently used R packages
+      for data science:
+    </p>
+
+    <program language="r">
+      <input>
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+      </input>
+    </program>
+
+    <p>
+      Recall that <c>ggplot2</c> is for data visualization, <c>dplyr</c> is
+      for data wrangling, <c>readr</c> is for importing spreadsheet data into
+      R, and <c>tidyr</c> is for converting data to <q>tidy</q> format. There
+      is a much quicker way to load these packages than by individually
+      loading them: by installing and loading the <c>tidyverse</c> package.
+      The <c>tidyverse</c> package acts as an <q>umbrella</q> package whereby
+      installing/loading it will install/load multiple packages at once for
+      you.
+    </p>
+
+    <p>
+      After installing the <c>tidyverse</c> package as you would a normal
+      package as seen in <xref ref="sec-packages"/>, running:
+    </p>
+
+    <program language="r">
+      <input>
+library(tidyverse)
+      </input>
+    </program>
+
+    <p>would be the same as running:</p>
+
+    <program language="r">
+      <input>
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(tibble)
+library(stringr)
+library(forcats)
+      </input>
+    </program>
+
+    <p>
+      The <c>purrr</c>, <c>tibble</c>, <c>stringr</c>, and <c>forcats</c>
+      are left for a more advanced book; check out
+      <url href="http://r4ds.had.co.nz/"><em>R for Data Science</em></url>
+      to learn about these packages.
+    </p>
+
+    <p>
+      For the remainder of this book, we'll start every chapter by running
+      <c>library(tidyverse)</c>, instead of loading the various component
+      packages individually. The <c>tidyverse</c> <q>umbrella</q> package
+      gets its name from the fact that all the functions in all its packages
+      are designed to have common inputs and outputs: data frames are in
+      <q>tidy</q> format. This standardization of input and output data
+      frames makes transitions between different functions in the different
+      packages as seamless as possible. For more information, check out the
+      <url href="https://www.tidyverse.org/">tidyverse.org</url> webpage for
+      the package.
+    </p>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="tidy-data-conclusion">
+    <title>Conclusion</title>
+
+    <subsection xml:id="tidy-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        If you want to learn more about using the <c>readr</c> and
+        <c>tidyr</c> package, we suggest that you check out RStudio's
+        <q>Data Import Cheat Sheet.</q> In the current version of RStudio in
+        mid-2025, you can access this cheatsheet by going to the RStudio Menu
+        Bar <m>\to</m> Help <m>\to</m> Cheat Sheets <m>\to</m>
+        <q>Browse Cheat Sheets...</q> <m>\to</m> Scroll down the page to the
+        <q>Data import with reader, readxl, and googlesheets4...</q> for
+        information on using the <c>readr</c>, <c>readxl</c> and
+        <c>googlesheets4</c> packages to import data and the <q>Data tidying
+        with tidyr cheatsheet</q> for information on using the <c>tidyr</c>
+        package to <q>tidy</q> data.
+      </p>
+
+      <figure xml:id="fig-import-cheatsheet">
+        <caption>Data Import cheatsheet (first page): <c>readr</c> package.</caption>
+        <image source="images/cheatsheets/data-import-1.png" width="66%">
+          <description>First page of the RStudio Data Import cheatsheet covering the readr package.</description>
+        </image>
+      </figure>
+
+      <figure xml:id="fig-tidyr-cheatsheet">
+        <caption>Data Tidying cheatsheet (first page): <c>tidyr</c> package.</caption>
+        <image source="images/cheatsheets/data-tidying-1.png" width="66%">
+          <description>First page of the RStudio Data Tidying cheatsheet covering the tidyr package.</description>
+        </image>
+      </figure>
+
+    </subsection>
+
+    <subsection xml:id="tidy-whats-to-come">
+      <title>What's to come?</title>
+
+      <p>
+        Congratulations! You've completed the <q>Data Science with
+        <c>tidyverse</c></q> portion of this book. We'll now move to the
+        <q>Statistical modeling with moderndive</q> portion of this book in
+        <xref ref="regression"/> and <xref ref="multiple-regression"/>, where
+        you'll leverage your data visualization and wrangling skills to model
+        relationships between different variables in data frames.
+      </p>
+
+      <p>
+        However, we're going to leave <xref ref="inference-for-regression"/>
+        on <q>Inference for Regression</q> until after we've covered
+        statistical inference in <xref ref="sampling"/>,
+        <xref ref="confidence-intervals"/>, and
+        <xref ref="hypothesis-testing"/>. Onwards and upwards into
+        Statistical/Data Modeling as shown in
+        <xref ref="fig-part2"/>!
+      </p>
+
+      <figure xml:id="fig-part2">
+        <caption><em>ModernDive</em> flowchart <ndash/> on to Part II!</caption>
+        <image source="images/flowcharts/flowchart/flowchart.005.png" width="50%">
+          <description>ModernDive flowchart showing progression to Part II on Statistical Modeling.</description>
+        </image>
+      </figure>
+
+    </subsection>
+
+  </section>
 </chapter>

@@ -1,0 +1,1243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="thinking-with-data" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Tell Your Story with Data</title>
+
+  <p>
+    Recall in the Preface and at the end of chapters throughout this book, we displayed
+    the <em>ModernDive</em> flowchart mapping your journey through this book.
+  </p>
+
+  <figure xml:id="fig-moderndive-figure-conclusion">
+    <caption><em>ModernDive</em> flowchart.</caption>
+    <image source="images/flowcharts/flowchart/flowchart.002.png" width="100%">
+      <description>The ModernDive flowchart showing the full journey through the book.</description>
+    </image>
+  </figure>
+
+  <!-- ============================================================ -->
+  <section xml:id="ch11-review">
+    <title>Review</title>
+
+    <p>
+      Let's go over a refresher of what you've covered so far. You first got started with
+      data in <xref ref="ch-getting-started"/> where you learned about the difference between
+      R and RStudio, started coding in R, installed and loaded your first R packages, and
+      explored your first dataset: all domestic departure <c>flights</c> from a major New
+      York City airport in 2023. Then you covered the following three parts of this book
+      (Parts 2 and 4 are combined into a single portion):
+    </p>
+    <ol>
+      <li>
+        <p>
+          <em>Data science with <c>tidyverse</c></em>. You assembled your data science
+          toolbox using <c>tidyverse</c> packages. In particular, you
+        </p>
+        <ul>
+          <li><p>Ch. <xref ref="ch-visualization"/>: Visualized data using the <c>ggplot2</c> package.</p></li>
+          <li><p>Ch. <xref ref="ch-wrangling"/>: Wrangled data using the <c>dplyr</c> package.</p></li>
+          <li>
+            <p>
+              Ch. <xref ref="tidy"/>: Learned about the concept of <q>tidy</q> data as a
+              standardized data frame input and output format for all packages in the
+              <c>tidyverse</c>. Furthermore, you learned how to import spreadsheet files
+              into R using the <c>readr</c> package.
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          <em>Statistical/Data modeling with <c>moderndive</c></em>. Using these data
+          science tools and helper functions from the <c>moderndive</c> package, you fit
+          your first data models. In particular, you
+        </p>
+        <ul>
+          <li><p>Ch. <xref ref="regression"/>: Discovered basic regression models with only one explanatory variable.</p></li>
+          <li><p>Ch. <xref ref="multiple-regression"/>: Examined multiple regression models with more than one explanatory variable.</p></li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          <em>Statistical inference with <c>infer</c></em>. Once again using your newly
+          acquired data science tools, you unpacked statistical inference using the
+          <c>infer</c> package. In particular, you
+        </p>
+        <ul>
+          <li><p>Ch. <xref ref="sampling"/>: Learned about the role that sampling variability plays in statistical inference and the role that sample size plays in this sampling variability.</p></li>
+          <li><p>Ch. <xref ref="confidence-intervals"/>: Constructed confidence intervals using bootstrapping and learned some about a theory-based approach to confidence intervals.</p></li>
+          <li><p>Ch. <xref ref="hypothesis-testing"/>: Conducted hypothesis tests using permutation.</p></li>
+        </ul>
+      </li>
+      <li>
+        <p>
+          <em>Statistical/Data modeling with <c>moderndive</c></em> (revisited): Armed with
+          your understanding of statistical inference, you revisited and reviewed the models
+          you constructed in Ch. <xref ref="regression"/> and Ch.
+          <xref ref="multiple-regression"/>. In particular, you
+        </p>
+        <ul>
+          <li>
+            <p>
+              Ch. <xref ref="inference-for-regression"/>: Interpreted confidence intervals
+              and hypothesis tests in a regression setting using both theory-based and
+              simulation-based approaches.
+            </p>
+          </li>
+        </ul>
+      </li>
+    </ol>
+
+    <p>
+      We've guided you through your first experiences of
+      <url href="https://arxiv.org/pdf/1410.3127.pdf"><q>thinking with data,</q></url>
+      an expression originally coined by Dr. Diane Lambert
+      <idx><h>Lambert, Diane</h></idx>. The philosophy underlying this expression guided
+      your path in the flowchart in <xref ref="fig-moderndive-figure-conclusion"/>.
+    </p>
+
+    <p>
+      This philosophy is also well-summarized in
+      <url href="https://peerj.com/collections/50-practicaldatascistats/"><q>Practical Data Science for Stats</q></url>:
+      a collection of pre-prints focusing on the practical side of data science workflows
+      and statistical analysis curated by
+      <url href="https://twitter.com/jennybryan">Dr. Jennifer Bryan</url>
+      <idx><h>Bryan, Jenny</h></idx> and
+      <url href="https://twitter.com/hadleywickham">Dr. Hadley Wickham</url>. They quote:
+    </p>
+
+    <blockquote>
+      <p>
+        There are many aspects of day-to-day analytical work that are almost absent from
+        the conventional statistics literature and curriculum. And yet these activities
+        account for a considerable share of the time and effort of data analysts and
+        applied statisticians. The goal of this collection is to increase the visibility
+        and adoption of modern data analytical workflows. We aim to facilitate the
+        transfer of tools and frameworks between industry and academia, between software
+        engineering and statistics and computer science, and across different domains.
+      </p>
+    </blockquote>
+
+    <p>
+      In other words, to be equipped to <q>think with data</q> in the 21st century and
+      beyond, analysts need practice going through the
+      <url href="http://r4ds.had.co.nz/explore-intro.html"><q>data/science pipeline</q></url>
+      we saw in the Preface (re-displayed in
+      <xref ref="fig-pipeline-figure-conclusion"/>). It is our opinion that, for too long,
+      statistics education has only focused on parts of this pipeline, instead of going
+      through it in its <em>entirety</em>.
+    </p>
+
+    <figure xml:id="fig-pipeline-figure-conclusion">
+      <caption>Data/science pipeline.</caption>
+      <image source="images/r4ds/data_science_pipeline.png" width="80%">
+        <description>The data/science pipeline diagram showing import, tidy, transform, visualize, model, and communicate steps.</description>
+      </image>
+    </figure>
+
+    <p>
+      To conclude this book, we'll present you with some additional case studies of working
+      with data. In <xref ref="seattle-house-prices"/> we'll take you through a full-pass
+      of the <q>Data/Science Pipeline</q> in order to analyze the sale price of houses in
+      Seattle, Washington, USA. In <xref ref="data-journalism"/>, we'll present you with
+      some examples of effective data storytelling drawn from the data journalism website,
+      <url href="https://fivethirtyeight.com/"><idx><h>FiveThirtyEight</h></idx>FiveThirtyEight.com</url>.
+      We present these case studies to you because we believe that you should not only be
+      able to <q>think with data,</q> but also be able to <q>tell your story with data.</q>
+      Let's explore how to do this!
+    </p>
+
+    <!-- Needed packages -->
+    <subsection xml:id="story-packages">
+      <title>Needed packages</title>
+      <p>
+        Let's load all the packages needed for this chapter (this assumes you've already
+        installed them). Read <xref ref="sec-packages"/> for information on how to install and
+        load R packages.
+      </p>
+      <program language="r">
+        <input>
+library(tidyverse)
+library(moderndive)
+library(fivethirtyeight)
+library(infer)
+        </input>
+      </program>
+    </subsection>
+
+  </section><!-- end Review -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="seattle-house-prices">
+    <title>Case study: Seattle house prices</title>
+
+    <p>
+      <url href="https://www.kaggle.com/">Kaggle.com</url> is a machine learning and
+      predictive modeling competition website that hosts datasets uploaded by companies,
+      governmental organizations, and other individuals. One of their datasets is the
+      <url href="https://www.kaggle.com/harlfoxem/housesalesprediction"><q>House Sales in
+      King County, USA.</q></url> It consists of sale prices of homes sold between May
+      2014 and May 2015 in King County, Washington, USA, which includes the greater Seattle
+      metropolitan area. This dataset is in the <c>house_prices</c> data frame included in
+      the <c>moderndive</c> package.
+    </p>
+
+    <p>
+      The dataset consists of 21,613 houses and 21 variables describing these houses (for
+      a full list and description of these variables, see the help file by running
+      <url href="https://moderndive.github.io/moderndive/reference/house_prices.html"><c>?house_prices</c></url>
+      in the console). In this case study, we'll create a multiple regression model where:
+    </p>
+    <ul>
+      <li><p>The outcome variable <m>y</m> is the sale <c>price</c> of houses.</p></li>
+      <li>
+        <p>Two explanatory variables:</p>
+        <ol>
+          <li><p>A numerical explanatory variable <m>x_1</m>: house size <c>sqft_living</c> as measured in square feet of living space. Note that 1 square foot is about 0.09 square meters.</p></li>
+          <li><p>A categorical explanatory variable <m>x_2</m>: house <c>condition</c>, a categorical variable with five levels where <c>1</c> indicates <q>poor</q> and <c>5</c> indicates <q>excellent.</q></p></li>
+        </ol>
+      </li>
+    </ul>
+
+
+    <!-- == EDA Part I == -->
+    <subsection xml:id="house-prices-EDA-I">
+      <title>Exploratory data analysis: part I</title>
+
+      <p>
+        As we've said numerous times throughout this book, a crucial first step when
+        presented with data is to perform an exploratory data analysis (EDA). Exploratory
+        data analysis can give you a sense of your data, help identify issues with your
+        data, bring to light any outliers, and help inform model construction. Recall the
+        three common steps in an exploratory data analysis we introduced in
+        <xref ref="model1EDA"/>:
+      </p>
+      <ol>
+        <li><p>Looking at the raw data values.</p></li>
+        <li><p>Computing summary statistics.</p></li>
+        <li><p>Creating data visualizations.</p></li>
+      </ol>
+
+      <p>
+        First, let's look at the raw data using <c>View()</c> to bring up RStudio's
+        spreadsheet viewer and the <c>glimpse()</c> function from the <c>dplyr</c> package:
+      </p>
+      <program language="r">
+        <input>
+View(house_prices)
+glimpse(house_prices)
+        </input>
+      </program>
+
+      <p>
+        Here are some questions you can ask yourself at this stage of an EDA: Which
+        variables are numerical? Which are categorical? For the categorical variables, what
+        are their levels? Besides the variables we'll be using in our regression model,
+        what other variables do you think would be useful to use in a model for predicting
+        house price?
+      </p>
+
+      <p>
+        Observe, for example, with the raw data that while the <c>condition</c> variable
+        has values <c>1</c> through <c>5</c>, these are saved in R as <c>fct</c> standing
+        for <q>factors.</q> Recall this is one of R's ways of saving categorical variables.
+        So you should think of these as the <q>labels</q> <c>1</c> through <c>5</c> and
+        not the numerical values <c>1</c> through <c>5</c>.
+      </p>
+
+      <p>
+        Let's now perform the second step in an EDA: computing summary statistics. Recall
+        from <xref ref="ch-wrangling"/> that <em>summary statistics</em> are single numerical
+        values that summarize a large number of values. Examples of summary statistics
+        include the mean, the median, the standard deviation, and various percentiles.
+      </p>
+
+      <p>
+        Let's use the convenient <c>tidy_summary()</c>
+        <idx><h>R packages</h><h>moderndive</h><h>tidy_summary()</h></idx> function from
+        the <c>moderndive</c> package we first used in <xref ref="model4EDA"/>, being sure
+        to only <c>select()</c> the variables of interest for our model:
+      </p>
+      <program language="r">
+        <input>
+house_prices |&gt;
+  select(price, sqft_living, condition) |&gt;
+  tidy_summary()
+        </input>
+      </program>
+
+      <p>
+        Observe that the mean <c>price</c> is larger than the median. This is because a
+        small number of very expensive houses are inflating the average. In other words,
+        there are <q>outlier</q> house prices in our dataset. (This fact will become even
+        more apparent when we create our visualizations next.)
+      </p>
+
+      <p>
+        However, the median is not as sensitive to such outlier house prices. This is why
+        news about the real estate market generally report median house prices and not
+        mean/average house prices. We say here that the median is more <em>robust to
+        outliers</em><idx><h>outliers</h></idx> than the mean. Similarly, while both the
+        standard deviation and interquartile-range (IQR) are both measures of spread and
+        variability, the IQR being based on quantiles as <m>Q3 - Q1</m> is more <em>robust
+        to outliers</em>.
+      </p>
+
+      <p>
+        Let's now perform the last of the three common steps in an exploratory data
+        analysis: creating data visualizations. Let's first create <em>univariate</em>
+        visualizations. These are plots focusing on a single variable at a time. Since
+        <c>price</c> and <c>sqft_living</c> are numerical variables, we can visualize
+        their distributions using a <c>geom_histogram()</c> as seen in
+        <xref ref="ch-visualization"/> on histograms. On the other hand, since <c>condition</c>
+        is categorical, we can visualize its distribution using a <c>geom_bar()</c>.
+        Recall from <xref ref="ch-visualization"/> on barplots that since <c>condition</c> is not
+        <q>pre-counted,</q> we use a <c>geom_bar()</c> and not a <c>geom_col()</c>.
+      </p>
+      <program language="r">
+        <input>
+# Histogram of house price:
+ggplot(house_prices, aes(x = price)) +
+  geom_histogram(color = "white") +
+  labs(x = "price (USD)", title = "House price")
+
+# Histogram of sqft_living:
+ggplot(house_prices, aes(x = sqft_living)) +
+  geom_histogram(color = "white") +
+  labs(x = "living space (square feet)", title = "House size")
+
+# Barplot of condition:
+ggplot(house_prices, aes(x = condition)) +
+  geom_bar() +
+  labs(x = "condition", title = "House condition")
+        </input>
+      </program>
+
+      <p>
+        In <xref ref="fig-house-prices-viz"/>, we display all three of these visualizations
+        at once.
+      </p>
+
+      <figure xml:id="fig-house-prices-viz">
+        <caption>Exploratory visualizations of Seattle house prices data.</caption>
+        <image source="images/fig-house-prices-viz.png" width="90%">
+          <description>Three plots: histogram of house price (right-skewed), histogram of house size (right-skewed), and barplot of house condition (most houses are condition 3).</description>
+        </image>
+      </figure>
+
+      <p>
+        First, observe in the bottom plot that most houses are of condition <c>3</c>, with
+        a few more of conditions <c>4</c> and <c>5</c>, and almost none that are <c>1</c>
+        or <c>2</c>.
+      </p>
+
+      <p>
+        Next, see in the histogram for <c>price</c> (the top-left plot) that a majority of
+        houses are less than two million dollars. Observe also that the x-axis stretches
+        out to 8 million dollars, even though there does not appear to be any houses close
+        to that price. This is because there are a <em>very small number</em> of houses
+        with prices closer to 8 million as noted in the <c>tidy_summary()</c>. These are
+        the outlier house prices we mentioned earlier. We say that the variable <c>price</c>
+        is <em>right-skewed</em><idx><h>skew</h></idx> as exhibited by the long right tail.
+      </p>
+
+      <p>
+        Further, the histogram of <c>sqft_living</c> in the middle plot shows that most
+        houses appear to have less than 5000 square feet of living space. For comparison,
+        an American football field in the US is about 57,600 square feet, whereas a
+        standard soccer/association football field is about 64,000 square feet. Observe
+        also that this variable is also right-skewed, although not as drastically as the
+        <c>price</c> variable.
+      </p>
+
+      <p>
+        For both the <c>price</c> and <c>sqft_living</c> variables, the right-skew makes
+        distinguishing houses at the lower end of the x-axis hard. This is because the
+        scale of the x-axis is compressed by the small number of quite expensive and
+        immensely-sized houses.
+      </p>
+
+      <p>
+        So what can we do about this skew? Let's apply a <em>log10
+        transformation</em><idx><h>log10 transformation</h></idx> to these variables. In
+        summary, log transformations allow us to alter the scale of a variable to focus on
+        <em>multiplicative</em> changes instead of <em>additive</em> changes. In other
+        words, they shift the view to be on <em>relative</em> changes instead of
+        <em>absolute</em> changes. Such multiplicative/relative changes are also called
+        changes in <em>orders of magnitude</em>.
+      </p>
+
+      <p>
+        Let's create new log10 transformed versions of the right-skewed variable
+        <c>price</c> and <c>sqft_living</c> using the <c>mutate()</c> function from
+        <xref ref="ch-wrangling"/>, but we'll give the latter the name <c>log10_size</c>, which
+        is shorter and easier to understand than the name <c>log10_sqft_living</c>.
+      </p>
+      <program language="r">
+        <input>
+house_prices &lt;- house_prices |&gt;
+  mutate(
+    log10_price = log10(price),
+    log10_size = log10(sqft_living)
+  )
+        </input>
+      </program>
+
+      <p>
+        Let's display the before and after effects of this transformation on these
+        variables for only the first 10 rows of <c>house_prices</c>:
+      </p>
+      <program language="r">
+        <input>
+house_prices |&gt;
+  select(price, log10_price, sqft_living, log10_size)
+        </input>
+      </program>
+
+      <p>
+        Observe in particular the houses in the sixth and third rows. The house in the
+        sixth row has a price just above one million dollars. Since <m>10^6</m> is one
+        million, its <c>log10_price</c> is around 6. Contrast this with all other houses
+        with <c>log10_price</c> less than six, since they all have <c>price</c> less than
+        $1,000,000. The house in the third row is the only house with <c>sqft_living</c>
+        less than 1000. Since <m>1000 = 10^3</m>, it's the lone house with
+        <c>log10_size</c> less than 3.
+      </p>
+
+      <p>
+        Let's now visualize the before and after effects of this transformation for
+        <c>price</c> in <xref ref="fig-log10-price-viz"/>.
+      </p>
+      <program language="r">
+        <input>
+# Before log10 transformation:
+ggplot(house_prices, aes(x = price)) +
+  geom_histogram(color = "white") +
+  labs(x = "price (USD)", title = "House price: Before")
+
+# After log10 transformation:
+ggplot(house_prices, aes(x = log10_price)) +
+  geom_histogram(color = "white") +
+  labs(x = "log10 price (USD)", title = "House price: After")
+        </input>
+      </program>
+
+      <figure xml:id="fig-log10-price-viz">
+        <caption>House price before and after log10 transformation.</caption>
+        <image source="images/fig-log10-price-viz.png" width="90%">
+          <description>Two histograms side by side: before log10 transformation showing right-skewed house prices, and after showing a more symmetric bell-shaped distribution.</description>
+        </image>
+      </figure>
+
+      <p>
+        Observe that after the transformation, the distribution is much less skewed, and
+        in this case, more symmetric and more bell-shaped. Now you can more easily
+        distinguish the lower priced houses.
+      </p>
+
+      <p>
+        Let's do the same for house size, where the variable <c>sqft_living</c> was log10
+        transformed to <c>log10_size</c>.
+      </p>
+      <program language="r">
+        <input>
+# Before log10 transformation:
+ggplot(house_prices, aes(x = sqft_living)) +
+  geom_histogram(color = "white") +
+  labs(x = "living space (square feet)", title = "House size: Before")
+
+# After log10 transformation:
+ggplot(house_prices, aes(x = log10_size)) +
+  geom_histogram(color = "white") +
+  labs(x = "log10 living space (square feet)", title = "House size: After")
+        </input>
+      </program>
+
+      <figure xml:id="fig-log10-size-viz">
+        <caption>House size before and after log10 transformation.</caption>
+        <image source="images/fig-log10-size-viz.png" width="90%">
+          <description>Two histograms side by side: before log10 transformation showing right-skewed house sizes, and after showing a more symmetric distribution.</description>
+        </image>
+      </figure>
+
+      <p>
+        Observe in <xref ref="fig-log10-size-viz"/> that the log10 transformation has a
+        similar effect of un-skewing the variable. We emphasize that while in these two
+        cases the resulting distributions are more symmetric and bell-shaped, this is not
+        always necessarily the case.
+      </p>
+
+      <p>
+        Given the now symmetric nature of <c>log10_price</c> and <c>log10_size</c>, we
+        are going to revise our multiple regression model to use our new variables:
+      </p>
+      <ol>
+        <li><p>The outcome variable <m>y</m> is the sale <c>log10_price</c> of houses.</p></li>
+        <li>
+          <p>Two explanatory variables:</p>
+          <ol>
+            <li><p>A numerical explanatory variable <m>x_1</m>: house size <c>log10_size</c> as measured in log base 10 square feet of living space.</p></li>
+            <li><p>A categorical explanatory variable <m>x_2</m>: house <c>condition</c>, a categorical variable with five levels where <c>1</c> indicates <q>poor</q> and <c>5</c> indicates <q>excellent.</q></p></li>
+          </ol>
+        </li>
+      </ol>
+
+    </subsection><!-- end EDA Part I -->
+
+
+    <!-- == EDA Part II == -->
+    <subsection xml:id="house-prices-EDA-II">
+      <title>Exploratory data analysis: part II</title>
+
+      <p>
+        Let's now continue our EDA by creating <em>multivariate</em> visualizations.
+        Unlike the <em>univariate</em> histograms and barplot in the earlier
+        <xref ref="fig-house-prices-viz"/>, <xref ref="fig-log10-price-viz"/>, and
+        <xref ref="fig-log10-size-viz"/>, <em>multivariate</em> visualizations show
+        relationships between more than one variable. This is an important step of an EDA
+        to perform since the goal of modeling is to explore relationships between variables.
+      </p>
+
+      <p>
+        Since our model involves a numerical outcome variable, a numerical explanatory
+        variable, and a categorical explanatory variable, we are in a similar regression
+        modeling situation as in <xref ref="model4"/> where we studied the UN member states
+        dataset. Recall in that case the numerical outcome variable was fertility rate, the
+        numerical explanatory variable was life expectancy, and the categorical explanatory
+        variable was income group.
+      </p>
+
+      <p>
+        We thus have two choices of models we can fit: either (1) an <em>interaction
+        model</em> where the regression line for each <c>condition</c> level will have
+        both a different slope and a different intercept or (2) a <em>parallel slopes
+        model</em> where the regression line for each <c>condition</c> level will have the
+        same slope but different intercepts.
+      </p>
+
+      <p>
+        Recall from <xref ref="model4table"/> that the <c>geom_parallel_slopes()</c>
+        function is a special purpose function that Evgeni Chasnovski created and included
+        in the <c>moderndive</c> package, since the <c>geom_smooth()</c> method in the
+        <c>ggplot2</c> package does not have a convenient way to plot parallel slopes
+        models. We plot both resulting models in
+        <xref ref="fig-house-price-parallel-slopes"/>, with the interaction model on the
+        left.
+      </p>
+      <program language="r">
+        <input>
+# Plot interaction model
+ggplot(house_prices,
+       aes(x = log10_size, y = log10_price, col = condition)) +
+  geom_point(alpha = 0.05) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(y = "log10 price",
+       x = "log10 size",
+       title = "House prices in Seattle")
+
+# Plot parallel slopes model
+ggplot(house_prices,
+       aes(x = log10_size, y = log10_price, col = condition)) +
+  geom_point(alpha = 0.05) +
+  geom_parallel_slopes(se = FALSE) +
+  labs(y = "log10 price",
+       x = "log10 size",
+       title = "House prices in Seattle")
+        </input>
+      </program>
+
+      <figure xml:id="fig-house-price-parallel-slopes">
+        <caption>Interaction and parallel slopes models.</caption>
+        <image source="images/fig-house-price-parallel-slopes.png" width="90%">
+          <description>Two side-by-side scatterplots of log10 price vs log10 size colored by condition: the left plot shows the interaction model with five different-slope regression lines, and the right shows the parallel slopes model.</description>
+        </image>
+      </figure>
+
+      <p>
+        In both cases, we see there is a positive relationship between house price and
+        size, meaning as houses are larger in size, they tend to be more expensive.
+        Furthermore, in both plots it seems that houses of condition 5 tend to be the most
+        expensive for most house sizes as evidenced by the fact that the line for condition
+        5 is highest, followed by conditions 4 and 3. As for conditions 1 and 2, this
+        pattern isn't as clear. Recall from the univariate barplot of <c>condition</c> in
+        <xref ref="fig-house-prices-viz"/>, there are only a few houses of condition 1
+        or 2.
+      </p>
+
+      <p>
+        Let's also show a faceted version of just the interaction model in
+        <xref ref="fig-house-price-interaction-2"/>. It is now much more apparent just how
+        few houses are of condition 1 or 2.
+      </p>
+      <program language="r">
+        <input>
+ggplot(house_prices,
+       aes(x = log10_size, y = log10_price, col = condition)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(y = "log10 price",
+       x = "log10 size",
+       title = "House prices in Seattle") +
+  facet_wrap(~ condition)
+        </input>
+      </program>
+
+      <p>
+        This can be further checked using <c>dplyr</c> and its <c>count()</c> function:
+      </p>
+      <program language="r">
+        <input>
+house_prices |&gt;
+  count(condition)
+        </input>
+      </program>
+
+      <figure xml:id="fig-house-price-interaction-2">
+        <caption>Faceted plot of interaction model.</caption>
+        <image source="images/fig-house-price-interaction-2.png" width="90%">
+          <description>Scatterplot of log10 price vs log10 size faceted by condition (1 through 5), showing very few houses of conditions 1 and 2.</description>
+        </image>
+      </figure>
+
+      <p>
+        Which exploratory visualization of the interaction model is better, the one in the
+        left-hand plot of <xref ref="fig-house-price-parallel-slopes"/> or the faceted
+        version in <xref ref="fig-house-price-interaction-2"/>? There is no universal right
+        answer. You need to make a choice depending on what you want to convey, and own
+        that choice, with including and discussing both also as an option as needed.
+      </p>
+
+    </subsection><!-- end EDA Part II -->
+
+
+    <!-- == Regression modeling == -->
+    <subsection xml:id="house-prices-regression">
+      <title>Regression modeling</title>
+
+      <p>
+        Which of the two models in <xref ref="fig-house-price-parallel-slopes"/> is
+        <q>better</q>? The interaction model in the left-hand plot or the parallel slopes
+        model in the right-hand plot?
+      </p>
+
+      <p>
+        With <em>model selection</em>, we should only favor more complex models if the
+        additional complexity is <em>warranted</em>. In this case, the more complex model
+        is the interaction model since it considers five intercepts and five slopes total.
+        This is in contrast to the parallel slopes model which considers five intercepts
+        but only one common slope.
+      </p>
+
+      <p>
+        Is the additional complexity of the interaction model warranted? Looking at the
+        left-hand plot in <xref ref="fig-house-price-parallel-slopes"/>, we're of the
+        opinion that it is, as evidenced by the slight x-like (crossing) pattern to some
+        of the lines. Therefore, we'll focus the rest of this analysis only on the
+        interaction model. (This visual approach is somewhat subjective, however, so feel
+        free to disagree!) What are the five different slopes and five different intercepts
+        for the interaction model? We can get these values from the regression table.
+        Recall our two-step process for getting the regression table:
+      </p>
+      <program language="r">
+        <input>
+price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
+get_regression_table(price_interaction)
+        </input>
+      </program>
+
+      <p>
+        Recall we saw in <xref ref="model4interactiontable"/> how to interpret a regression
+        table when there are both numerical and categorical explanatory variables. Let's
+        now do the same for all 10 values in the <c>estimate</c> column of the regression
+        table output above.
+      </p>
+
+      <p>
+        In this case, the <q>baseline for comparison</q> group for the categorical variable
+        <c>condition</c> are the condition 1 houses, since <q>1</q> comes first
+        alphanumerically. Thus, the <c>intercept</c> and <c>log10_size</c> values are the
+        intercept and slope for <c>log10_size</c> for this baseline group. Next, the
+        <c>condition2</c> through <c>condition5</c> terms are the <em>offsets</em> in
+        intercepts relative to the condition 1 intercept. Finally, the
+        <c>log10_size:condition2</c> through <c>log10_size:condition5</c> are the
+        <em>offsets</em> in slopes for <c>log10_size</c> relative to the condition 1 slope
+        for <c>log10_size</c>.
+      </p>
+
+      <p>
+        Let's simplify this by writing out the equation of each of the five regression
+        lines. We'll write out each line in the following format:
+        <me>\widehat{\log_{10}(\text{price})} = \hat{\beta}_0 + \hat{\beta}_{\text{size}} \cdot \log_{10}(\text{size})</me>
+      </p>
+
+      <p>
+        Using the <c>estimate</c> values from <c>get_regression_table(price_interaction)</c>:
+      </p>
+      <ol>
+        <li>
+          <p>
+            Condition 1 (baseline):
+            <me>\widehat{\log_{10}(\text{price})} = \hat{\beta}_{0,1} + \hat{\beta}_{1,1} \cdot \log_{10}(\text{size})</me>
+          </p>
+        </li>
+        <li>
+          <p>
+            Condition 2:
+            <me>\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond2}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond2}}) \cdot \log_{10}(\text{size})</me>
+          </p>
+        </li>
+        <li>
+          <p>
+            Condition 3:
+            <me>\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond3}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond3}}) \cdot \log_{10}(\text{size})</me>
+          </p>
+        </li>
+        <li>
+          <p>
+            Condition 4:
+            <me>\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond4}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond4}}) \cdot \log_{10}(\text{size})</me>
+          </p>
+        </li>
+        <li>
+          <p>
+            Condition 5:
+            <me>\widehat{\log_{10}(\text{price})} = (\hat{\beta}_{0,1} + \hat{\beta}_{0,\text{cond5}}) + (\hat{\beta}_{1,1} + \hat{\beta}_{1,\text{cond5}}) \cdot \log_{10}(\text{size})</me>
+          </p>
+        </li>
+      </ol>
+
+      <p>
+        These correspond to the regression lines in the left-hand plot of
+        <xref ref="fig-house-price-parallel-slopes"/> and the faceted plot in
+        <xref ref="fig-house-price-interaction-2"/>. For homes of all five condition types,
+        as the size of the house increases, the price increases. This is what most would
+        expect. However, the rate of increase of price with size is fastest for the homes
+        with conditions 3, 4, and 5. These are the three largest slopes out of the five.
+      </p>
+
+    </subsection><!-- end Regression modeling -->
+
+
+    <!-- == Making predictions == -->
+    <subsection xml:id="house-prices-making-predictions">
+      <title>Making predictions</title>
+
+      <p>
+        Say you're a realtor and someone calls you asking you how much their home will sell
+        for. They tell you that it's in condition = 5 and is sized 1900 square feet. What
+        do you tell them? Let's use the interaction model we fit to make predictions!
+      </p>
+
+      <p>
+        We first make this prediction visually in
+        <xref ref="fig-house-price-interaction-3"/>. The predicted <c>log10_price</c> of
+        this house is marked with a black dot. This is where the following two lines
+        intersect:
+      </p>
+      <ul>
+        <li><p>The regression line for the condition = 5 homes, and</p></li>
+        <li>
+          <p>
+            The vertical dashed black line at <c>log10_size</c> equals
+            <m>\log_{10}(1900) \approx 3.28</m>, since our predictor variable is the log10
+            transformed square feet of living space.
+          </p>
+        </li>
+      </ul>
+
+      <figure xml:id="fig-house-price-interaction-3">
+        <caption>Interaction model with prediction.</caption>
+        <image source="images/fig-house-price-interaction-3.png" width="90%">
+          <description>Scatterplot of log10 price vs log10 size colored by condition, with five regression lines and a vertical dashed line at log10(1900) with a black dot indicating the predicted log10 price for a condition-5 house of 1900 square feet.</description>
+        </image>
+      </figure>
+
+      <p>
+        Eyeballing it, it seems the predicted <c>log10_price</c> seems to be around 5.75.
+        Let's now find the exact numerical value for the prediction using the equation of
+        the regression line for the condition = 5 houses, being sure to <c>log10()</c> the
+        square footage first.
+      </p>
+      <program language="r">
+        <input>
+2.45 + 1 * log10(1900)
+        </input>
+      </program>
+
+      <p>
+        This value is very close to our earlier visually made prediction of 5.75. But
+        wait! Is our prediction for the price of this house $5.75? No, because we are
+        using <c>log10_price</c> as our outcome variable! If we want a prediction in
+        dollar units of <c>price</c>, we need to un-log this by taking a power of 10.
+      </p>
+      <program language="r">
+        <input>
+10^(2.45 + 1 * log10(1900))
+        </input>
+      </program>
+
+      <p>
+        Our predicted price for this home of condition 5 and of size 1900 square feet is
+        approximately $536,000.
+      </p>
+
+    </subsection><!-- end Making predictions -->
+
+
+    <!-- == Inference for multiple linear regression == -->
+    <subsection xml:id="house-prices-inference-for-regression">
+      <title>Inference for multiple linear regression</title>
+
+      <p>
+        Let's next check the results of our multiple linear regression on house prices
+        using both theory-based and simulation-based methods with hypothesis testing.
+      </p>
+
+      <!-- Theory-based -->
+      <subsubsection xml:id="house-prices-theory-inference">
+        <title>Theory-based hypothesis testing for partial slopes</title>
+
+        <p>
+          Recall the results of our theory-based inference that were shown when we
+          interpreted the <c>estimate</c> column of
+          <c>get_regression_table(price_interaction)</c>. We can use these values to
+          perform hypothesis tests on the partial slopes.
+        </p>
+        <program language="r">
+          <input>
+price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
+get_regression_table(price_interaction)
+          </input>
+        </program>
+
+        <p>
+          For this model, we can perform hypothesis tests on the partial slopes with an
+          <m>\alpha</m> significance level set to 0.05. For example, we can test the null
+          hypothesis that the partial slope for <c>log10_size</c> is zero. Looking at the
+          <m>p</m>-value in the row corresponding to <c>log10_size</c> we see a value of 0
+          and a large <c>statistic</c> of 4.652. With <m>\alpha = 0.05</m>,
+          <c>log10_size</c> is the only regressor with a statistically significant
+          relationship with <c>log10_price</c> in this theory-based model.
+        </p>
+      </subsubsection>
+
+      <!-- Simulation-based -->
+      <subsubsection xml:id="house-prices-simulation-inference">
+        <title>Simulation-based hypothesis testing for partial slopes</title>
+
+        <p>
+          We can also perform hypothesis tests on the partial slopes using simulation-based
+          methods. We can use the <c>fit()</c> function and some of the other <c>infer</c>
+          verbs to do so to check the results of our theory-based inference.
+        </p>
+
+        <p>
+          Let's begin by retrieving the observed fit values from our
+          <c>price_interaction</c> model:
+        </p>
+        <program language="r">
+          <input>
+observed_fit_coefficients &lt;- house_prices |&gt;
+  specify(
+    log10_price ~ log10_size * condition
+    ) |&gt;
+  fit()
+observed_fit_coefficients
+          </input>
+        </program>
+
+        <p>
+          Next, we build a null distribution of the partial slopes using the
+          <c>generate()</c> function and the <c>fit()</c> function, setting
+          <c>hypothesize()</c> to <c>null = "independence"</c> which will shuffle the
+          values of the response variable <c>log10_price</c>.
+        </p>
+        <program language="r">
+          <input>
+null_distribution_housing &lt;- house_prices |&gt;
+  specify(
+    log10_price ~ log10_size * condition
+    ) |&gt;
+  hypothesize(null = "independence") |&gt;
+  generate(reps = 1000, type = "permute") |&gt;
+  fit()
+          </input>
+        </program>
+
+        <p>
+          We then visualize this null distribution and shade the observed fit values to see
+          if they are statistically significant.
+        </p>
+        <program language="r">
+          <input>
+visualize(null_distribution_housing) +
+  shade_p_value(obs_stat = observed_fit_coefficients,
+                direction = "two-sided")
+          </input>
+        </program>
+
+        <figure xml:id="fig-null-housing-shaded">
+          <caption>Null distributions for all partial slopes with observed fit values shaded.</caption>
+          <image source="images/null_housing_shaded.png" width="90%">
+            <description>A grid of histograms, one per term in the regression model, each showing the null distribution of the partial slope with the observed value shaded to indicate statistical significance.</description>
+          </image>
+        </figure>
+
+        <p>
+          Of the regressors, it appears that only <c>log10_size</c> has a statistically
+          significant relationship with <c>log10_price</c>. This is evidenced by the fact
+          that the observed fit value for <c>log10_size</c> is far outside the range of
+          the null distribution.
+        </p>
+
+        <p>
+          Lastly, we can calculate the <m>p</m>-value for the partial slopes using the
+          <c>get_p_value()</c> function.
+        </p>
+        <program language="r">
+          <input>
+null_distribution_housing |&gt;
+  get_p_value(obs_stat = observed_fit_coefficients, direction = "two-sided")
+          </input>
+        </program>
+
+        <p>
+          The <m>p</m>-value matches up with this conclusion. Only <c>log10_size</c>
+          appears to be a significant regressor for predicting <c>log10_price</c> in this
+          model. This matches with the findings we had from our theory-based analysis for
+          this same model. Remember that this won't always be the case depending on the
+          distributions of the variables and whether assumptions hold.
+        </p>
+      </subsubsection>
+
+      <!-- Learning checks for Section 11.1 -->
+      <exercises>
+        <exercise xml:id="lc11-1">
+          <statement>
+            <p>
+              Check that the LINE conditions are met for inference to be made in this
+              Seattle house prices example with
+              <c>price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)</c>.
+            </p>
+          </statement>
+          <answer>
+            <p>
+              To check the LINE conditions, examine residual plots from
+              <c>get_regression_points(price_interaction)</c>. Look for: (L) a roughly
+              linear pattern in the scatterplot; (I) independence of observations (generally
+              assumed given random sampling); (N) near-normality in a histogram or QQ plot
+              of residuals; and (E) roughly equal spread of residuals across all fitted
+              values (homoscedasticity).
+            </p>
+          </answer>
+        </exercise>
+        <exercise xml:id="lc11-2">
+          <statement>
+            <p>
+              Repeat the regression modeling in <xref ref="house-prices-regression"/> and
+              the prediction making in <xref ref="house-prices-making-predictions"/> on the
+              house of condition 5 and size 1900 square feet, but using the parallel slopes
+              model you visualized in <xref ref="fig-house-price-parallel-slopes"/>.
+            </p>
+          </statement>
+          <answer>
+            <p>
+              Fit the parallel slopes model with
+              <c>price_parallel &lt;- lm(log10_price ~ log10_size + condition, data = house_prices)</c>.
+              Then use <c>get_regression_table(price_parallel)</c> and apply the condition 5
+              regression line equation to <m>\log_{10}(1900)</m> to find the predicted
+              <c>log10_price</c>, and convert with <m>10^{\hat{y}}</m> to get the price in
+              dollars.
+            </p>
+          </answer>
+        </exercise>
+        <exercise xml:id="lc11-3">
+          <statement>
+            <p>
+              Interpret the results of the other rows in terms of inference in the
+              <c>get_regression_table(price_interaction)</c> output that we did not
+              interpret in <xref ref="house-prices-inference-for-regression"/>.
+            </p>
+          </statement>
+          <answer>
+            <p>
+              For each row other than <c>log10_size</c>, examine the <m>p</m>-value. A
+              <m>p</m>-value greater than 0.05 suggests that the term is not statistically
+              significantly different from zero at the <m>\alpha = 0.05</m> level, meaning
+              we cannot conclude that particular offset in intercept or slope differs from
+              the baseline (condition 1).
+            </p>
+          </answer>
+        </exercise>
+        <exercise xml:id="lc11-4">
+          <statement>
+            <p>
+              Create, visualize, and interpret confidence intervals using both theory-based
+              and simulation-based approaches to mirror the hypothesis testing done in
+              <xref ref="house-prices-inference-for-regression"/>.
+            </p>
+          </statement>
+          <answer>
+            <p>
+              For theory-based confidence intervals, use <c>get_regression_table()</c>
+              which provides <c>lower_ci</c> and <c>upper_ci</c> columns. For
+              simulation-based confidence intervals, use the <c>infer</c> workflow with
+              <c>specify()</c>, <c>generate(reps = 1000, type = "bootstrap")</c>, and
+              <c>fit()</c>, then apply <c>get_confidence_interval()</c> to the resulting
+              bootstrap distribution.
+            </p>
+          </answer>
+        </exercise>
+      </exercises>
+
+    </subsection><!-- end Inference for multiple linear regression -->
+
+  </section><!-- end Case study: Seattle house prices -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="data-journalism">
+    <title>Case study: effective data storytelling</title>
+
+    <p>
+      As we've progressed throughout this book, you've seen how to work with data in a
+      variety of ways. You've learned effective strategies for plotting data by
+      understanding which types of plots work best for which combinations of variable
+      types. You've summarized data in spreadsheet form and calculated summary statistics
+      for a variety of different variables. Furthermore, you've seen the value of
+      statistical inference as a process to come to conclusions about a population by
+      using sampling. Lastly, you've explored how to fit linear regression models and the
+      importance of checking the conditions required so that all confidence intervals and
+      hypothesis tests have valid interpretation. All throughout, you've learned many
+      computational techniques and focused on writing R code that's reproducible.
+    </p>
+
+    <p>
+      We now present another set of case studies, but this time on the <q>effective data
+      storytelling</q> done by data journalists around the world. Great data stories don't
+      mislead the reader, but rather engulf them in understanding the importance that data
+      plays in our lives through storytelling.
+    </p>
+
+
+    <!-- == Bechdel test == -->
+    <subsection xml:id="bechdel">
+      <title>Bechdel test for Hollywood gender representation</title>
+
+      <p>
+        We recommend you read and analyze Walt Hickey's
+        <idx><h>Hickey, Walt</h></idx>
+        FiveThirtyEight.com article,
+        <url href="http://fivethirtyeight.com/features/the-dollar-and-cents-case-against-hollywoods-exclusion-of-women/"><q>The Dollar-And-Cents Case Against Hollywood's Exclusion of Women.</q></url>
+        In it, Walt completed a multi-decade study of how many movies pass the
+        <url href="https://bechdeltest.com/">Bechdel test</url>, an informal test of gender
+        representation in a movie that was created by Alison Bechdel
+        <idx><h>Bechdel, Alison</h></idx>.
+      </p>
+
+      <p>
+        As you read over the article, think carefully about how Walt Hickey is using data,
+        graphics, and analyses to tell the reader a story. In the spirit of
+        reproducibility, FiveThirtyEight have also shared the
+        <url href="https://github.com/fivethirtyeight/data/tree/master/bechdel">data and R code</url>
+        that they used for this article. You can also find the data used in many more of
+        their articles on their
+        <url href="https://github.com/fivethirtyeight/data">GitHub</url> page.
+      </p>
+
+      <p>
+        <em>ModernDive</em> co-authors Chester Ismay and Albert Y. Kim along with Jennifer
+        Chunn went one step further by creating the <c>fivethirtyeight</c> package which
+        provides access to these datasets more easily in R. For a complete list of all
+        datasets included in the <c>fivethirtyeight</c> package, check out the package
+        webpage at
+        <url href="https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html">https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html</url>.
+        <idx><h>R packages</h><h>fivethirtyeight</h></idx>
+      </p>
+
+      <p>
+        Furthermore, example <q>vignettes</q> of fully reproducible start-to-finish
+        analyses of some of these data using <c>dplyr</c>, <c>ggplot2</c>, and other
+        packages in the <c>tidyverse</c> are available
+        <url href="https://fivethirtyeight-r.netlify.app/articles/">here</url>. For
+        example, a vignette showing how to reproduce one of the plots at the end of the
+        article on the Bechdel test is available
+        <url href="https://fivethirtyeightdata.github.io/fivethirtyeightdata/articles/bechdel.html">here</url>.
+      </p>
+
+    </subsection><!-- end Bechdel -->
+
+
+    <!-- == US Births == -->
+    <subsection xml:id="us-births-1999">
+      <title>US Births in 1999</title>
+
+      <p>
+        The <c>US_births_1994_2003</c> data frame included in the <c>fivethirtyeight</c>
+        package provides information about the number of daily births in the United States
+        between 1994 and 2003. For more information on this data frame including a link
+        to the original article on FiveThirtyEight.com, check out the help file by running
+        <c>?US_births_1994_2003</c> in the console.
+      </p>
+
+      <p>
+        It's always a good idea to preview your data, either by using RStudio's spreadsheet
+        <c>View()</c> function or using <c>glimpse()</c> from the <c>dplyr</c> package:
+      </p>
+      <program language="r">
+        <input>
+glimpse(US_births_1994_2003)
+        </input>
+      </program>
+
+      <p>
+        We'll focus on the number of <c>births</c> for each <c>date</c>, but only for
+        births that occurred in 1999. Recall from <xref ref="ch-wrangling"/> we can do this
+        using the <c>filter()</c> function from the <c>dplyr</c> package:
+      </p>
+      <program language="r">
+        <input>
+US_births_1999 &lt;- US_births_1994_2003 |&gt;
+  filter(year == 1999)
+        </input>
+      </program>
+
+      <p>
+        As discussed in <xref ref="ch-visualization"/>, since <c>date</c> is a notion of time
+        and thus has sequential ordering to it, a linegraph would be a more appropriate
+        visualization to use than a scatterplot. In other words, we should use a
+        <c>geom_line()</c> instead of <c>geom_point()</c>. Recall that such plots are
+        called <term>time series</term><idx><h>time series plots</h></idx> plots.
+      </p>
+      <program language="r">
+        <input>
+ggplot(US_births_1999, aes(x = date, y = births)) +
+  geom_line() +
+  labs(x = "Date",
+       y = "Number of births",
+       title = "US Births in 1999")
+        </input>
+      </program>
+
+      <figure xml:id="fig-us-births">
+        <caption>Number of births in the US in 1999.</caption>
+        <image source="images/fig-us-births.png" width="90%">
+          <description>A time series line graph of the number of US births per day in 1999, showing a large spike just before October 1st (on 9/9/99) and a dip near the end of the year during the holiday season.</description>
+        </image>
+      </figure>
+
+      <p>
+        In <xref ref="fig-us-births"/>, we see a big dip occurring just before January 1st,
+        2000, most likely due to the holiday season. However, what about the large spike of
+        over 14,000 births occurring just before October 1st, 1999? What could be the
+        reason for this anomalously high spike?
+      </p>
+
+      <p>
+        Let's sort the rows of <c>US_births_1999</c> in descending order of the number of
+        births. Recall from <xref ref="ch-wrangling"/> that we can use the <c>arrange()</c>
+        function from the <c>dplyr</c> function to do this, making sure to sort
+        <c>births</c> in descending order:
+      </p>
+      <program language="r">
+        <input>
+US_births_1999 |&gt;
+  arrange(desc(births))
+        </input>
+      </program>
+
+      <p>
+        The date with the highest number of births (14,540) is in fact 1999-09-09. If we
+        write down this date in month/day/year format (a standard format in the US), the
+        date with the highest number of births is 9/9/99! All nines! Could it be that
+        parents deliberately induced labor at a higher rate on this date? Maybe? Whatever
+        the cause may be, this fact makes a fun story!
+      </p>
+
+      <!-- Learning check for data journalism section -->
+      <exercises>
+        <exercise xml:id="lc11-5">
+          <statement>
+            <p>
+              What date between 1994 and 2003 has the fewest number of births in the US?
+              What story could you tell about why this is the case?
+            </p>
+          </statement>
+          <answer>
+            <p>
+              Run the following to find out:
+            </p>
+            <program language="r">
+              <input>
+US_births_1994_2003 |&gt;
+  arrange(births)
+              </input>
+            </program>
+            <p>
+              The date with the fewest births is likely December 25th (Christmas Day) or
+              January 1st (New Year's Day), since hospitals often avoid scheduling elective
+              procedures and induced labors on major holidays, and mothers may delay or be
+              encouraged to wait until after the holiday.
+            </p>
+          </answer>
+        </exercise>
+      </exercises>
+
+      <p>
+        Time to think with data and further tell your story with data! How could statistical
+        modeling help you here? What types of statistical inference would be helpful? What
+        else can you find and where can you take this analysis? What assumptions did you
+        make in this analysis? We leave these questions to you as the reader to explore and
+        examine. Remember to get in touch with us via our contact info in the Preface. We'd
+        love to see what you come up with!
+      </p>
+
+      <p>
+        Please check out additional problem sets and labs at
+        <url href="https://moderndive.com/labs">https://moderndive.com/labs</url>.
+      </p>
+
+    </subsection><!-- end US Births -->
+
+
+    <!-- == Scripts of R code == -->
+    <subsection xml:id="ch11-scripts">
+      <title>Scripts of R code</title>
+
+      <p>
+        R code files saved as <c>.R</c> files for all relevant chapters throughout the
+        entire book are available at
+        <url href="https://moderndive.com/v2/">https://moderndive.com/v2/</url>.
+      </p>
+
+    </subsection>
+
+  </section><!-- end Case study: effective data storytelling -->
+
+
+  <!-- ============================================================ -->
+  <section xml:id="ch11-concluding-remarks">
+    <title>Concluding remarks</title>
+
+    <p>
+      Now that you've made it to this point in the book, we suspect that you know a thing
+      or two about how to work with data in R! You've also gained a lot of knowledge about
+      how to use simulation-based techniques for statistical inference and how these
+      techniques help build intuition about traditional theory-based inferential methods.
+    </p>
+
+    <p>
+      The hope is that you've come to appreciate the power of data in all respects, such
+      as data wrangling, tidying datasets, data visualization, statistical/data modeling,
+      and statistical inference. In our opinion, while each of these is important, data
+      visualization may be the most important tool for a citizen or professional data
+      scientist to have in their toolbox. If you can create truly beautiful graphics that
+      display information in ways that the reader can clearly understand, you have great
+      power to tell your tale with data. Let's hope that these skills help you tell great
+      stories with data into the future. Thanks for coming along this journey as we dove
+      into modern data analysis using R and the <c>tidyverse</c>!
+    </p>
+
+  </section><!-- end Concluding remarks -->
+
+</chapter>
