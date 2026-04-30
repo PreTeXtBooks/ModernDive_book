@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="ch-getting-started" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Getting Started with Data in R</title>
-
+<introduction>
   <p>
     Before we can start exploring data in R, there are some key concepts to understand first:
   </p>
@@ -21,6 +21,7 @@
     explore this dataset in depth for much of the rest of this book.
   </p>
 
+</introduction>
 
   <!-- ============================================================ -->
   <section xml:id="sec-r-rstudio">
