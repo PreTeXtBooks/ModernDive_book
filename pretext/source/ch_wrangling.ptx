@@ -225,7 +225,7 @@ envoy_flights &lt;- flights |&gt;
   <section xml:id="sec-filter">
     <title><c>filter</c> rows</title>
 
-    <figure xml:id="fig-filter-diagram">
+    <figure xml:id="fig-filter">
       <caption>Diagram of <c>filter()</c> rows operation.</caption>
       <image source="images/cheatsheets/filter.png" width="80%">
         <description>Diagram showing how the filter() function selects a subset of
@@ -460,12 +460,12 @@ View(many_airports)
       within the <c>summarize()</c>
       <idx><h>R packages</h><h>dplyr</h><h>summarize()</h></idx> function from the
       <c>dplyr</c> package. Note you can also use the British English spelling of
-      <c>summarise()</c>. As shown in <xref ref="fig-summarize-diagram"/>, the
+      <c>summarise()</c>. As shown in <xref ref="fig-sum1"/>, the
       <c>summarize()</c> function takes in a data frame and returns a data frame with
       only one row corresponding to the summary statistics.
     </p>
 
-    <figure xml:id="fig-summarize-diagram">
+    <figure xml:id="fig-sum1">
       <caption>Diagram of <c>summarize()</c> rows.</caption>
       <image source="images/cheatsheets/summarize1.png" width="80%">
         <description>Diagram showing how the summarize() function collapses a data
@@ -1025,6 +1025,12 @@ gain_summary
     </program>
 
     <p>
+      However, this code would take some time to type out in practice. We'll see later on
+      in <xref ref="model1EDA"/> that there is a much more succinct way to compute a
+      variety of common summary statistics using the <c>tidy_summary()</c> function from
+      the <c>moderndive</c> package.
+    </p>
+    <p>
       Recall from <xref ref="sec-histograms"/> that since <c>gain</c> is a numerical
       variable, we can visualize its distribution using a histogram.
     </p>
@@ -1199,7 +1205,8 @@ View(airlines)
       <idx><h>joining data</h><h>key variable</h></idx> <em>key variable</em> to
       match the rows of the two data frames. Key variables are almost always
       <em>identification variables</em> that uniquely identify the observational
-      units. This ensures that rows in both data frames are appropriately matched
+      units as we saw in <xref ref="subsec-identification-vs-measurement-variables"/>.
+      This ensures that rows in both data frames are appropriately matched
       during the join. Hadley and Garrett created the diagram in
       <xref ref="fig-reldiagram"/> to show how the different data frames in the
       <c>nycflights23</c> package are linked by various key variables:
@@ -1711,13 +1718,13 @@ named_dests |&gt;
 
       <p>
         Let's recap our data-wrangling verbs in
-        <xref ref="tab-wrangle-summary"/>. Using these verbs and the pipe
+        <xref ref="tab-wrangle-summary-table"/>. Using these verbs and the pipe
         <c>|&gt;</c> operator from <xref ref="sec-piping"/>, you'll be able to write
         easily legible code to perform almost all the data wrangling and data
         transformation necessary for the rest of this book.
       </p>
 
-      <table xml:id="tab-wrangle-summary">
+      <table xml:id="tab-wrangle-summary-table">
         <title>Summary of data-wrangling verbs</title>
         <tabular halign="left">
           <row header="yes" bottom="minor">
@@ -1787,9 +1794,9 @@ named_dests |&gt;
             flights.
           </p>
           <p>
-            For example, consider a scenario where an airplane has 4 seats and it
-            travels 200 miles; the available seat miles are
-            <m>4 \times 200 = 800</m>.
+            For example, consider the scenario in <xref ref="fig-available-seat-miles"/>
+            where an airplane has 4 seats and it travels 200 miles; the available seat
+            miles are <m>4 \times 200 = 800</m>.
           </p>
 
           <figure xml:id="fig-available-seat-miles">
@@ -1832,7 +1839,7 @@ named_dests |&gt;
               <li><p><xref ref="fig-reldiagram"/> showing how the various datasets
               can be joined will also be useful.</p></li>
               <li><p>Consider the data-wrangling verbs in
-              <xref ref="tab-wrangle-summary"/> as your toolbox!</p></li>
+              <xref ref="tab-wrangle-summary-table"/> as your toolbox!</p></li>
             </ol>
           </p>
         </statement>
@@ -1851,7 +1858,7 @@ named_dests |&gt;
         intermediate level and advanced data-wrangling functions, while providing
         quick and easy-to-read visual descriptions. In fact, many of the diagrams
         illustrating data wrangling operations in this chapter, such as
-        <xref ref="fig-filter-diagram"/> on <c>filter()</c>, originate from this
+        <xref ref="fig-filter"/> on <c>filter()</c>, originate from this
         cheatsheet.
       </p>
       <p>
@@ -1905,7 +1912,7 @@ named_dests |&gt;
         Furthermore, up until now we've only explored, visualized, and wrangled data
         saved within R packages. But what if you want to analyze data that you have
         saved in a Microsoft Excel, a Google Sheets, or a
-        <q>Comma-Separated Values</q> (CSV) file? In <xref ref="tidy"/>, we'll
+        <q>Comma-Separated Values</q> (CSV) file? In <xref ref="csv"/>, we'll
         show you how to import this data into R using the <c>readr</c> package.
       </p>
     </subsection>
