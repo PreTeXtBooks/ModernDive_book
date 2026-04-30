@@ -2723,6 +2723,12 @@ bootstrap_distribution_yawning
           resulting bootstrap resampling distribution. Let's also add a vertical line at 0 by
           adding a <c>geom_vline()</c> layer.
         </p>
+        <program language="r">
+          <input>
+visualize(bootstrap_distribution_yawning) +
+  geom_vline(xintercept = 0)
+          </input>
+        </program>
         <figure xml:id="fig-bootstrap-distribution-mythbusters">
           <caption>Bootstrap distribution.</caption>
           <image source="images/08-confidence-intervals/bootstrap-distribution-mythbusters-1.png" width="80%">
@@ -2739,8 +2745,9 @@ bootstrap_distribution_yawning
         </p>
         <program language="r">
           <input>
-bootstrap_distribution_yawning |&gt;
+myth_ci_percentile &lt;- bootstrap_distribution_yawning |&gt;
   get_confidence_interval(type = "percentile", level = 0.95)
+myth_ci_percentile
           </input>
         </program>
 
@@ -2784,6 +2791,20 @@ myth_ci_se
           interval marked with black lines and the standard-error method marked with grey
           lines. Observe that they are both similar to each other.
         </p>
+        <program language="r">
+          <input>
+visualize(bootstrap_distribution_yawning) +
+  ggtitle("") +
+  shade_confidence_interval(
+    endpoints = myth_ci_percentile, fill = NULL,
+    color = "black"
+  ) +
+  shade_confidence_interval(
+    endpoints = myth_ci_se, fill = NULL,
+    color = "grey70"
+  )
+          </input>
+        </program>
         <figure xml:id="fig-bootstrap-distribution-mythbusters-CI">
           <caption>Two 95% confidence intervals: percentile method (black) and standard error
           method (grey).</caption>
