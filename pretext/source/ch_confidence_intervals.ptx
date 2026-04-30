@@ -2117,28 +2117,775 @@ visualize(bootstrap_means) +
     </subsection>
   </section>
 
-  <!-- Stub sections for second half of chapter 8 (to be fully converted) -->
   <section xml:id="bootstrap-remarks">
-    <title>Additional Bootstrap Remarks</title>
+    <title>Additional remarks about the bootstrap</title>
+
     <p>
-      This section will cover additional remarks about the bootstrap, including rate of
-      convergence and reasons to prefer the bootstrap in certain settings.
+      This section expands explanations on the bootstrap methods, provides some historical
+      context, gives a comparison between the theory-based approach and the simulation-based
+      approach when working with confidence intervals, and provides reasons for using the
+      bootstrap. The presentation is more theoretical than other sections in this chapter,
+      and you are welcome to skip to <xref ref="case-study-two-prop-ci"/> if you want to go
+      over directly another application of the bootstrap methods in R. Additional theoretical
+      explanations are available in the
+      <url href="https://moderndive.com/v2/appendixa">Appendices of the online version of the
+      book</url>.
     </p>
+
+    <subsection xml:id="bootstrap-resampling-methods">
+      <title>The bootstrap and other resampling methods</title>
+
+      <p>
+        The bootstrap is one of many resampling methods. Chernick and LaBudde noted that the
+        bootstrap's roots trace back to the development of similar techniques like permutations
+        and the jackknife (Chernick and LaBudde, 2011). The bootstrap was initially conceived
+        as an approximation to another resampling method called
+        <em>the jackknife</em><idx>jackknife</idx> but quickly gained recognition for its
+        broader applicability and efficiency. Since then, it has been shown in multiple
+        contexts that the bootstrap performs at least as well as traditional methods in
+        estimating standard errors, constructing confidence intervals, performing hypothesis
+        testing, and many other statistical techniques.
+      </p>
+
+      <p>
+        Furthermore, since the 1980s (but even more in the last two decades), the use of
+        simulations to compare advanced bootstrap methods against other techniques, such as
+        cross-validation, further established its superiority in specific contexts,
+        particularly when dealing with small sample sizes. The use of the bootstrap and
+        bootstrap-related methods has become a cornerstone in modern statistical and data
+        science practices.
+      </p>
+
+      <p>
+        In this section, we introduce additional details about the bootstrap, and explain the
+        advantages and limitations of using the bootstrap.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="rate-convergence">
+      <title>Confidence intervals and rate of convergence</title>
+
+      <p>
+        We want to compare how the bootstrap performs when building confidence intervals with
+        respect to the theory-based approach discussed in <xref ref="theory-based-CI"/>. The
+        formal comparison requires mathematical concepts beyond the scope of this book, and it
+        is not pursued here. Instead, we provide just enough elements to help you with the
+        intuition of how this comparison is made and why bootstrap-related methods can be as
+        strong as or even stronger than theory-based or alternative methods.
+      </p>
+
+      <p>
+        Let's start with an illustration using the theory-based confidence interval. A 95%
+        confidence interval for <m>\mu</m>, when a sample of size <m>n = 100</m> is used,
+        is given by
+        <me>\overline{x} \pm 1.96 \frac{\sigma}{\sqrt{n}}</me>
+        when <m>\sigma</m> is known, or
+        <me>\overline{x} \pm 1.98 \frac{s}{\sqrt{n}}</me>
+        when <m>\sigma</m> is unknown. We use 95% and <m>n = 100</m> for this illustration,
+        but the exposition is also true with any other confidence level or other sample sizes.
+        We understand that 95% of all the possible samples would lead to an interval that
+        contains <m>\mu</m>. This statement is exactly true if the distribution of
+        <m>\overline{X}</m> is precisely normal, and we say that 95% is the
+        <term>true coverage probability</term><idx><h>Confidence interval</h><h>true coverage
+        probability</h></idx>. In reality, we do not know what is the distribution of the
+        population, but because of the Central Limit Theorem we know that for a large sample
+        size <m>n</m> the distribution of <m>\overline{X}</m> is <em>approximately</em>
+        normal. In this case, the 95% is an
+        <term>approximate coverage probability</term><idx><h>Confidence interval</h><h>approximate
+        coverage probability</h></idx>. This means that if we were to take every possible
+        sample of size <m>n</m> and construct a confidence interval using the formulas above,
+        not exactly 95% of the intervals will include <m>\mu</m>. Again, this happens because
+        <m>\overline{X}</m> is not exactly, but approximately, normal. Still, the Central
+        Limit Theorem states that when <m>n</m> tends to infinity, the distribution of
+        <m>\overline{X}</m> tends to normal, so the larger the sample size <m>n</m> the
+        closer the distribution of <m>\overline{X}</m> is to the normal distribution, and the
+        smaller the difference between the true and the approximate coverage probability.
+      </p>
+
+      <p>
+        Given that we can never make <m>n</m> infinity in real-life applications, we would
+        like to produce 95% confidence intervals that make the difference between the
+        <em>approximate coverage probability</em> and the <em>true coverage probability</em>
+        as small as possible when we increase the sample size of our sample. Imagine a
+        sequence of sample sizes <m>n_1, n_2, n_3, \dots</m> that gets bigger and bigger and
+        bigger. The rate at which the corresponding consecutive differences in confidence
+        intervals' coverage probability decreases is called the
+        <term>rate of convergence</term><idx><h>Confidence interval</h><h>rate of
+        convergence</h></idx> of the difference between approximate and true coverage
+        probabilities.
+      </p>
+
+      <p>
+        In the case of a 95% confidence interval for <m>\mu</m> using the theory-based
+        approach, the rate of convergence for the difference is about <m>1/\sqrt{n}</m>.
+        This means that if we increase <m>n</m> from 100 to 400, the difference between the
+        approximate and true coverage goes down from a factor of
+        <m>1/\sqrt{100} = 0.1</m> to a factor of <m>1/\sqrt{400} = 0.05</m>. Thus,
+        increasing <m>n</m> four times leads to a decrease of the difference of about two
+        times. In the statistical literature, a method that has this rate of convergence is
+        called <term>first-order correct</term><idx><h>Confidence interval</h><h>first-order-correct</h></idx>
+        (Hall, 1992) or
+        <term>first-order accurate</term><idx><h>Confidence interval</h><h>first-order-accurate</h></idx>
+        (Chernick and LaBudde, 2011).
+      </p>
+
+      <p>
+        The bootstrap percentile method discussed in <xref ref="conf-int-infer"/>, in the
+        case of a 95% confidence interval for <m>\mu</m>, is also first-order accurate. Thus,
+        confidence intervals calculated using the theory-based and the bootstrap percentile
+        method are comparable. This is consistent with the results we obtained earlier in this
+        chapter.
+      </p>
+
+      <p>
+        In general, if you have two different methods that produce similar 95% confidence
+        intervals and we need to choose one of them, we would choose the one that has a
+        faster rate of convergence. As we discuss in the next subsection, other bootstrap
+        methods have, in certain contexts, faster rates of convergence.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="why-bootstrap">
+      <title>Why bootstrap methods</title>
+
+      <p>
+        Why is it suitable to learn and use bootstrap methods for confidence intervals? The
+        most important reason is that bootstrap methods, in particular advanced bootstrap
+        methods, can deal with many limitations of the theory-based approach. Let's discuss
+        three of these limitations.
+      </p>
+
+      <p>
+        First, a 95% confidence interval for <m>\mu</m> is appropriate if the population
+        distribution is not too extreme and the sample size is large enough for the
+        distribution of <m>\overline{X}</m> to be approximately normal. But there are
+        situations where these conditions are not satisfied, for example, if the population
+        distribution is heavily skewed to the right, as in the case of income or wealth; or
+        the distribution is constructed from only two values (1 or 0) but the chances of
+        getting zero are much greater than the ones of getting one (for example, chance of
+        getting zero is 0.999 and chance of getting 1 is 0.001) as it is the case in lottery
+        outcomes or the presence of some disease in a population. When these situations are
+        present, the confidence intervals would be inaccurate because the sample mean
+        <m>\overline{X}</m> is biased when <m>n</m> is not too large. This means that if you
+        were to take a large number of random samples and construct the sample mean of these
+        samples, their average will be clearly different than <m>\mu</m>, breaking down the
+        theory we developed in <xref ref="theory-based-CI"/>. This problem may be fixed if the
+        sample size is large, but, depending on how extreme the population distribution is,
+        the sample size may need to be extremely large; perhaps in the order of thousands, or
+        tens of thousands, or even more. Getting samples of those sizes may not be doable in
+        real-life situations.
+      </p>
+
+      <p>
+        Second, in this chapter, we have studied confidence intervals for the population mean
+        <m>\mu</m>, because it is a fundamental quantity and it is the foundation for other
+        cases. However, building confidence intervals for other parameters using the
+        theory-based approach (for example, for the median, the first quartile, the standard
+        deviation, etc.) becomes more complicated or even unfeasible.
+      </p>
+
+      <p>
+        Third, when working with estimators more complicated than <m>\overline{X}</m>, it is
+        often not possible to derive the standard error estimator with a formula as clean as
+        <m>\sigma/\sqrt{n}</m>. Sometimes, there is no formula for the standard error and
+        alternative methods have to be used to estimate it. This can create an additional
+        source of bias. When bias is present, the confidence intervals created using the
+        theory-based approach in <xref ref="CI-general"/> could be suspect, even completely
+        useless.
+      </p>
+
+      <p>
+        The bootstrap percentile method is not affected directly by the second and third
+        limitations. It can be implemented for any other parameter beyond the population mean,
+        as long as all the information needed can be extracted from each bootstrap sample. On
+        the other hand, the first limitation listed above can also affect the accuracy of this
+        method.
+      </p>
+
+      <p>
+        Fortunately, since the inception of the bootstrap, many improvements have been made
+        to the percentile method. Bootstrap methods have been proposed that address the
+        presence of bias either by the limitations discussed above or the bias created when
+        obtaining estimators or incorporating these methods. In addition, in certain contexts,
+        these methods also improve the rate of convergence of the difference between the
+        approximate and true coverage probability. Some of these methods are the
+        percentile-<m>t</m> and the Bias Correction and Acceleration bootstrap method (BCa).
+        In terms of rates of convergence, these methods are
+        <term>second-order accurate</term><idx><h>Confidence interval</h><h>second-order
+        accurate</h></idx>; that is, they have a rate of convergence of about <m>1/n</m>.
+        Another method called the double bootstrap (or more generally, the iterated bootstrap)
+        can even be a <em>third-order accurate</em>.
+      </p>
+
+      <p>
+        We have not included these methods directly here because the theory that justifies
+        them goes beyond the scope of this book and, when dealing with confidence intervals
+        for <m>\mu</m> from populations with distributions that are not extreme, there are
+        not real gains in using them over the theory-based approach or the percentile method.
+        (We encourage you to check out one implementation of bias-corrected confidence
+        intervals in the <c>infer</c> package by setting <c>type = "bias-corrected"</c> in
+        the <c>get_confidence_interval()</c><idx><h>R packages</h><h>infer</h><h>get_confidence_interval()</h><h>bias-corrected
+        type</h></idx> function.)
+      </p>
+
+      <p>
+        To summarize, when working with skewed distributions, small sample sizes, estimators
+        of parameters other than <m>\mu</m> (such as the median), or the estimation of the
+        standard error when there are no formulas to obtain them, many advanced bootstrap
+        methods would be preferred over the theory-based approach. In the Appendices of the
+        online version of the book, we plan to explore some of these advanced methods and
+        present simulations that show when these methods are preferred over the percentile
+        method or the theory-based approach.
+      </p>
+    </subsection>
   </section>
+
 
   <section xml:id="case-study-two-prop-ci">
-    <title>Case Study: Is Yawning Contagious?</title>
+    <title>Case study: is yawning contagious?</title>
+
     <p>
-      This section will present the Mythbusters yawning experiment as a case study for
-      two-sample confidence intervals for a difference in proportions.
+      Let's apply our knowledge of confidence intervals to answer the question: <q>Is yawning
+      contagious?</q>. If you see someone else yawn, are you more likely to yawn? In an
+      episode of the US show <em>Mythbusters</em> that aired on Discovery, the hosts
+      conducted an experiment to answer this question. More information about the episode is
+      available on <url href="https://www.imdb.com/title/tt0768479/">IMDb</url>.
     </p>
+
+    <subsection xml:id="mythbusters-data">
+      <title><em>Mythbusters</em> study data</title>
+
+      <p>
+        Fifty adult participants who thought they were being considered for an appearance on
+        the show were interviewed by a show recruiter. In the interview, the recruiter either
+        yawned or did not. Participants then sat by themselves in a large van and were asked
+        to wait. While in the van, the <em>Mythbusters</em> team watched the participants
+        using a hidden camera to see if they yawned. The data frame containing the results of
+        their experiment is available as
+        <c>mythbusters_yawn</c><idx><h>R packages</h><h>moderndive</h><h>mythbusters_yawn</h></idx>
+        included in the <c>moderndive</c> package:
+      </p>
+      <program language="r">
+        <input>
+mythbusters_yawn
+        </input>
+      </program>
+
+      <p>
+        The variables are:
+      </p>
+      <p>
+        <ul>
+          <li><c>subj</c>: The participant ID with values 1 through 50.</li>
+          <li><c>group</c>: A binary
+            <term>treatment</term><idx><h>variables</h><h>treatment</h></idx> variable
+            indicating whether the participant was exposed to yawning. <c>"seed"</c>
+            indicates the participant was exposed to yawning while <c>"control"</c>
+            indicates the participant was not.</li>
+          <li><c>yawn</c>: A binary
+            <term>response</term><idx><h>variables</h><h>response</h></idx> variable
+            indicating whether the participant ultimately yawned.</li>
+        </ul>
+      </p>
+
+      <p>
+        Recall that you learned about treatment and response variables in
+        <xref ref="correlation-is-not-causation"/> in our discussion on confounding
+        variables.
+      </p>
+
+      <p>
+        Let's use some data wrangling to calculate counts of the four possible outcomes:
+      </p>
+      <program language="r">
+        <input>
+mythbusters_yawn |&gt;
+  group_by(group, yawn) |&gt;
+  summarize(count = n(), .groups = "keep")
+        </input>
+      </program>
+
+      <p>
+        Let's first focus on the <c>"control"</c> group participants who were not exposed to
+        yawning. 12 such participants did not yawn, while 4 such participants did. So out of
+        the 16 people who were not exposed to yawning, 4/16 = 0.25 = 25% did yawn.
+      </p>
+
+      <p>
+        Let's now focus on the <c>"seed"</c> group participants who were exposed to yawning
+        where 24 such participants did not yawn, while 10 such participants did yawn. So out
+        of the 34 people who were exposed to yawning, 10/34 = 0.294 = 29.4% did yawn.
+        Comparing these two percentages, the participants who were exposed to yawning yawned
+        <m>29.4\% - 25\% = 4.4\%</m> more often than those who were not.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="mythbusters-sampling-scenario">
+      <title>Sampling scenario</title>
+
+      <p>
+        Let's review the terminology and notation related to sampling we studied in
+        <xref ref="terminology-and-notation"/>. In <xref ref="sampling"/>, our
+        <em>study population</em> was the bowl of <m>N = 2400</m> balls. Our
+        <em>population parameter</em> of interest was the <em>population proportion</em> of
+        these balls that were red, denoted mathematically by <m>p</m>. In order to estimate
+        <m>p</m>, we extracted a sample of 50 balls using the shovel and computed the
+        relevant <em>point estimate</em>: the <em>sample proportion</em> that were red,
+        denoted mathematically by <m>\widehat{p}</m>.
+      </p>
+
+      <p>
+        Who is the study population here? All humans? All the people who watch the show
+        <em>Mythbusters</em>? It's hard to say! This question can only be answered if we know
+        how the show's hosts recruited participants! In other words, what was the
+        <term>sampling methodology</term><idx>sampling methodology</idx> used by the
+        <em>Mythbusters</em> to recruit participants? We alas are not provided with this
+        information. Only for the purposes of this case study, however, we'll <em>assume</em>
+        that the 50 participants are a representative sample of all Americans given the
+        popularity of this show. Thus, we'll be assuming that any results of this experiment
+        will generalize to all <m>N</m> = 346 million Americans (2024 population estimate).
+      </p>
+
+      <p>
+        Just like with our sampling bowl, the population parameter here will involve
+        proportions. However, in this case, it will be the <em>difference in population
+        proportions</em> <m>p_{seed} - p_{control}</m>, where <m>p_{seed}</m> is the
+        proportion of <em>all</em> Americans who if exposed to yawning will yawn themselves,
+        and <m>p_{control}</m> is the proportion of <em>all</em> Americans who if not exposed
+        to yawning still yawn themselves. Correspondingly, the point estimate/sample
+        statistic based on the <em>Mythbusters</em>' sample of participants will be the
+        <em>difference in sample proportions</em>
+        <m>\widehat{p}_{seed} - \widehat{p}_{control}</m>. Let's extend
+        <xref ref="tab-table-ch8-c"/> of scenarios of sampling for inference to include our
+        latest scenario.
+      </p>
+
+      <table xml:id="tab-table-ch8-c">
+        <title>Scenarios of sampling for inference</title>
+        <tabular halign="center">
+          <row header="yes" bottom="minor">
+            <cell>Scenario</cell>
+            <cell>Population parameter</cell>
+            <cell>Notation</cell>
+            <cell>Point estimate</cell>
+            <cell>Notation</cell>
+          </row>
+          <row>
+            <cell>1</cell>
+            <cell>Population proportion</cell>
+            <cell><m>p</m></cell>
+            <cell>Sample proportion</cell>
+            <cell><m>\widehat{p}</m></cell>
+          </row>
+          <row>
+            <cell>2</cell>
+            <cell>Population mean</cell>
+            <cell><m>\mu</m></cell>
+            <cell>Sample mean</cell>
+            <cell><m>\overline{x}</m></cell>
+          </row>
+          <row>
+            <cell>3</cell>
+            <cell>Difference in population proportions</cell>
+            <cell><m>p_1 - p_2</m></cell>
+            <cell>Difference in sample proportions</cell>
+            <cell><m>\widehat{p}_1 - \widehat{p}_2</m></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        This is known as a
+        <term>two-sample inference</term><idx>two-sample inference</idx> situation since we
+        have two separate samples. Based on their two-samples of size <m>n_{seed} = 34</m>
+        and <m>n_{control} = 16</m>, the point estimate is
+        <me>
+          \widehat{p}_{seed} - \widehat{p}_{control} = \frac{10}{34} - \frac{4}{16}
+          = 0.04411765 \approx 4.4\%
+        </me>
+      </p>
+
+      <p>
+        However, say the <em>Mythbusters</em> repeated this experiment. In other words, say
+        they recruited 50 new participants and exposed 34 of them to yawning and 16 not.
+        Would they find the exact same estimated difference of 4.4%? Probably not, again,
+        because of <em>sampling variation</em>.
+      </p>
+
+      <p>
+        How does this sampling variation affect their estimate of 4.4%? In other words, what
+        would be a plausible range of values for this difference that accounts for this
+        sampling variation? We can answer this question with confidence intervals!
+        Furthermore, since the <em>Mythbusters</em> only have a single two-sample of 50
+        participants, they would have to construct a 95% confidence interval for
+        <m>p_{seed} - p_{control}</m> using <em>bootstrap resampling with replacement</em>.
+      </p>
+
+      <p>
+        We make a couple of important notes. First, for the comparison between the
+        <c>"seed"</c> and <c>"control"</c> groups to make sense, however, both groups need to
+        be <em>independent</em> from each other. Otherwise, they could influence each other's
+        results. This means that a participant being selected for the <c>"seed"</c> or
+        <c>"control"</c> group has no influence on another participant being assigned to one
+        of the two groups. As an example, if there were a mother and her child as participants
+        in the study, they wouldn't necessarily be in the same group. They would each be
+        assigned randomly to one of the two groups of the explanatory variable.
+      </p>
+
+      <p>
+        Second, the order of the subtraction in the difference doesn't matter so long as you
+        are consistent and tailor your interpretations accordingly. In other words, using a
+        point estimate of <m>\widehat{p}_{seed} - \widehat{p}_{control}</m> or
+        <m>\widehat{p}_{control} - \widehat{p}_{seed}</m> does not make a material
+        difference, you just need to stay consistent and interpret your results accordingly.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="ci-build">
+      <title>Constructing the confidence interval</title>
+
+      <p>
+        As we did in <xref ref="infer-workflow-CI"/>, let's first construct the bootstrap
+        distribution for <m>\widehat{p}_{seed} - \widehat{p}_{control}</m> and then use this
+        to construct 95% confidence intervals for <m>p_{seed} - p_{control}</m>. We'll do
+        this using the <c>infer</c> workflow again. However, since the difference in
+        proportions is a new scenario for inference, we'll need to use some new arguments in
+        the <c>infer</c> functions along the way.
+      </p>
+
+      <subsubsection xml:id="ci-build-specify">
+        <title>1. <c>specify</c> variables</title>
+
+        <p>
+          Let's take our <c>mythbusters_yawn</c> data frame and <c>specify()</c> which
+          variables are of interest using the <c>y ~ x</c> formula interface where:
+        </p>
+        <p>
+          <ul>
+            <li>Our response variable is <c>yawn</c>: whether or not a participant yawned.
+            It has levels <c>"yes"</c> and <c>"no"</c>.</li>
+            <li>The explanatory variable is <c>group</c>. It has levels <c>"seed"</c>
+            (exposed to yawning) and <c>"control"</c> (not exposed to yawning).</li>
+          </ul>
+        </p>
+        <program language="r">
+          <input>
+mythbusters_yawn |&gt;
+  specify(formula = yawn ~ group)
+          </input>
+        </program>
+        <program language="r">
+          <input>
+Error: A level of the response variable `yawn` needs to be specified for the
+`success` argument in `specify()`.
+          </input>
+        </program>
+        <p>
+          Alas, we got an error message that <c>infer</c> is telling us that one of the
+          levels of the categorical variable <c>yawn</c> needs to be defined as the
+          <c>success</c>. Recall that we define <c>success</c> to be the event of interest we
+          are trying to count and compute proportions of. Are we interested in those
+          participants who <c>"yes"</c> yawned or those who <c>"no"</c> didn't yawn? This
+          isn't clear to R or someone just picking up the code and results for the first time,
+          so we need to set the <c>success</c> argument to <c>"yes"</c> as follows to improve
+          the transparency of the code:
+        </p>
+        <program language="r">
+          <input>
+mythbusters_yawn |&gt;
+  specify(formula = yawn ~ group, success = "yes")
+          </input>
+        </program>
+      </subsubsection>
+
+
+      <subsubsection xml:id="ci-build-generate">
+        <title>2. <c>generate</c> replicates</title>
+
+        <p>
+          Our next step is to perform <em>bootstrap resampling with replacement</em>. In the
+          <c>infer</c> package, bootstrapping with multiple variables means that each
+          <em>row</em> is potentially resampled. Let's investigate this by focusing only on
+          the first six rows of <c>mythbusters_yawn</c>:
+        </p>
+        <program language="r">
+          <input>
+first_six_rows &lt;- head(mythbusters_yawn)
+first_six_rows
+          </input>
+        </program>
+        <p>
+          When we bootstrap this data, we are potentially pulling the subject's readings
+          multiple times. Thus, we could see the entries of <c>"seed"</c> for <c>group</c>
+          and <c>"no"</c> for <c>yawn</c> together in a new row in a bootstrap sample. This
+          is further seen by exploring the <c>sample_n()</c> function in <c>dplyr</c> on this
+          smaller 6-row data frame comprised of <c>head(mythbusters_yawn)</c>. The
+          <c>sample_n()</c> function can perform this bootstrapping procedure and is similar
+          to the <c>rep_sample_n()</c> function in <c>infer</c>, except that it is not
+          repeated, but rather only performs one sample with or without replacement.
+        </p>
+        <program language="r">
+          <input>
+first_six_rows |&gt;
+  sample_n(size = 6, replace = TRUE)
+          </input>
+        </program>
+        <p>
+          We can see that in this bootstrap sample generated from the first six rows of
+          <c>mythbusters_yawn</c>, we have some rows repeated. The same is true when we
+          perform the <c>generate()</c> step in <c>infer</c> as done in what follows. Using
+          this fact, we <c>generate</c> 1000 replicates, or, in other words, we bootstrap
+          resample the 50 participants with replacement 1000 times.
+        </p>
+        <program language="r">
+          <input>
+mythbusters_yawn |&gt;
+  specify(formula = yawn ~ group, success = "yes") |&gt;
+  generate(reps = 1000, type = "bootstrap")
+          </input>
+        </program>
+        <p>
+          Observe that the resulting data frame has 50,000 rows. This is because we performed
+          resampling of 50 participants with replacement 1000 times and
+          50,000 = 1000 <m>\cdot</m> 50. The variable <c>replicate</c> indicates which
+          resample each row belongs to. So it has the value <c>1</c> 50 times, the value
+          <c>2</c> 50 times, all the way through to the value <c>1000</c> 50 times.
+        </p>
+      </subsubsection>
+
+
+      <subsubsection xml:id="ci-build-calculate">
+        <title>3. <c>calculate</c> summary statistics</title>
+
+        <p>
+          After we <c>generate()</c> many replicates of bootstrap resampling with
+          replacement, we next want to summarize the bootstrap resamples of size 50 with a
+          single summary statistic, the difference in proportions. We do this by setting the
+          <c>stat</c> argument to <c>"diff in props"</c>:
+        </p>
+        <program language="r">
+          <input>
+mythbusters_yawn |&gt;
+  specify(formula = yawn ~ group, success = "yes") |&gt;
+  generate(reps = 1000, type = "bootstrap") |&gt;
+  calculate(stat = "diff in props")
+          </input>
+        </program>
+        <program language="r">
+          <input>
+Warning message:
+The statistic is based on a difference or ratio; by default, for
+difference-based statistics, the explanatory variable is subtracted in the
+order "control" - "seed", or divided in the order "control" / "seed" for
+ratio-based statistics. To specify this order yourself, supply
+`order = c("control", "seed")` to the calculate() function.
+          </input>
+        </program>
+        <p>
+          We see another warning here. We need to specify the order of the subtraction. Is it
+          <m>\widehat{p}_{seed} - \widehat{p}_{control}</m> or
+          <m>\widehat{p}_{control} - \widehat{p}_{seed}</m>? We specify it to be
+          <m>\widehat{p}_{seed} - \widehat{p}_{control}</m> by setting
+          <c>order = c("seed", "control")</c>. Note that you could've also set
+          <c>order = c("control", "seed")</c>. As we stated earlier, the order of the
+          subtraction does not matter, so long as you stay consistent throughout your analysis
+          and tailor your interpretations accordingly.
+        </p>
+        <p>
+          Let's save the output in a data frame <c>bootstrap_distribution_yawning</c>:
+        </p>
+        <program language="r">
+          <input>
+bootstrap_distribution_yawning &lt;- mythbusters_yawn |&gt;
+  specify(formula = yawn ~ group, success = "yes") |&gt;
+  generate(reps = 1000, type = "bootstrap") |&gt;
+  calculate(stat = "diff in props", order = c("seed", "control"))
+bootstrap_distribution_yawning
+          </input>
+        </program>
+        <p>
+          Observe that the resulting data frame has 1000 rows and 2 columns corresponding to
+          the 1000 <c>replicate</c> ID's and the 1000 differences in proportions for each
+          bootstrap resample in <c>stat</c>.
+        </p>
+      </subsubsection>
+
+
+      <subsubsection xml:id="ci-build-visualize">
+        <title>4. <c>visualize</c> the results</title>
+
+        <p>
+          In <xref ref="fig-bootstrap-distribution-mythbusters"/> we <c>visualize()</c> the
+          resulting bootstrap resampling distribution. Let's also add a vertical line at 0 by
+          adding a <c>geom_vline()</c> layer.
+        </p>
+        <program language="r">
+          <input>
+visualize(bootstrap_distribution_yawning) +
+  geom_vline(xintercept = 0)
+          </input>
+        </program>
+        <figure xml:id="fig-bootstrap-distribution-mythbusters">
+          <caption>Bootstrap distribution.</caption>
+          <image source="images/08-confidence-intervals/bootstrap-distribution-mythbusters-1.png" width="80%">
+            <description>Histogram of 1000 bootstrap differences in sample proportions for the
+            Mythbusters yawning experiment, with a vertical line at 0.</description>
+          </image>
+        </figure>
+
+        <p>
+          First, let's compute the 95% confidence interval for <m>p_{seed} - p_{control}</m>
+          using the percentile method, in other words, by identifying the 2.5th and 97.5th
+          percentiles which include the middle 95% of values. Recall that this method does not
+          require the bootstrap distribution to be normally shaped.
+        </p>
+        <program language="r">
+          <input>
+myth_ci_percentile &lt;- bootstrap_distribution_yawning |&gt;
+  get_confidence_interval(type = "percentile", level = 0.95)
+myth_ci_percentile
+          </input>
+        </program>
+
+        <p>
+          Second, since the bootstrap distribution is roughly bell-shaped, we can construct a
+          confidence interval using the standard error method as well. Recall that to construct
+          a confidence interval using the standard error method, we need to specify the center
+          of the interval using the <c>point_estimate</c> argument. In our case, we need to
+          set it to be the difference in sample proportions of 4.4% that the
+          <em>Mythbusters</em> observed.
+        </p>
+        <p>
+          We can also use the <c>infer</c> workflow to compute this value by excluding the
+          <c>generate()</c> 1000 bootstrap replicates step. In other words, do not generate
+          replicates, but rather use only the original sample data. We can achieve this by
+          commenting out the <c>generate()</c> line, telling R to ignore it:
+        </p>
+        <program language="r">
+          <input>
+obs_diff_in_props &lt;- mythbusters_yawn |&gt;
+  specify(formula = yawn ~ group, success = "yes") |&gt;
+  # generate(reps = 1000, type = "bootstrap") |&gt;
+  calculate(stat = "diff in props", order = c("seed", "control"))
+obs_diff_in_props
+          </input>
+        </program>
+        <p>
+          We thus plug this value in as the <c>point_estimate</c> argument.
+        </p>
+        <program language="r">
+          <input>
+myth_ci_se &lt;- bootstrap_distribution_yawning |&gt;
+  get_confidence_interval(type = "se", point_estimate = obs_diff_in_props,
+                          level = 0.95)
+myth_ci_se
+          </input>
+        </program>
+        <p>
+          Let's visualize both confidence intervals in
+          <xref ref="fig-bootstrap-distribution-mythbusters-CI"/>, with the percentile method
+          interval marked with black lines and the standard-error method marked with grey
+          lines. Observe that they are both similar to each other.
+        </p>
+        <program language="r">
+          <input>
+visualize(bootstrap_distribution_yawning) +
+  ggtitle("") +
+  shade_confidence_interval(
+    endpoints = myth_ci_percentile, fill = NULL,
+    color = "black"
+  ) +
+  shade_confidence_interval(
+    endpoints = myth_ci_se, fill = NULL,
+    color = "grey70"
+  )
+          </input>
+        </program>
+        <figure xml:id="fig-bootstrap-distribution-mythbusters-CI">
+          <caption>Two 95% confidence intervals: percentile method (black) and standard error
+          method (grey).</caption>
+          <image source="images/08-confidence-intervals/bootstrap-distribution-mythbusters-CI-1.png" width="80%">
+            <description>Histogram of 1000 bootstrap differences in sample proportions with
+            two shaded 95% confidence intervals: percentile method in black and standard error
+            method in grey.</description>
+          </image>
+        </figure>
+      </subsubsection>
+    </subsection>
+
+
+    <subsection xml:id="mythbusters-interpretation">
+      <title>Interpreting the confidence interval</title>
+
+      <p>
+        Given that both confidence intervals are quite similar, let's focus our
+        interpretation to only the percentile method confidence interval. The precise
+        statistical interpretation of a 95% confidence interval is: if this construction
+        procedure is repeated 100 times, then we expect about 95 of the confidence intervals
+        to capture the true value of <m>p_{seed} - p_{control}</m>. In other words, if we
+        gathered 100 samples of <m>n = 50</m> participants from a similar pool of people and
+        constructed 100 confidence intervals each based on each of the 100 samples, about 95
+        of them will contain the true value of <m>p_{seed} - p_{control}</m> while about
+        five won't. Given that this is a little long winded, we use the shorthand
+        interpretation: we're 95% <q>confident</q> that the true difference in proportions
+        <m>p_{seed} - p_{control}</m> is within the computed interval.
+      </p>
+
+      <p>
+        There is one value of particular interest that this 95% confidence interval contains:
+        zero. If <m>p_{seed} - p_{control}</m> were equal to 0, then there would be no
+        difference in proportion yawning between the two groups. This would suggest that
+        there is no associated effect of being exposed to a yawning recruiter on whether you
+        yawn yourself.
+      </p>
+
+      <p>
+        In our case, since the 95% confidence interval includes 0, we cannot conclusively say
+        if either proportion is larger. Of our 1000 bootstrap resamples with replacement,
+        sometimes <m>\widehat{p}_{seed}</m> was higher and thus those exposed to yawning
+        yawned themselves more often. At other times, the reverse happened.
+      </p>
+
+      <p>
+        Say, on the other hand, the 95% confidence interval was entirely above zero. This
+        would suggest that <m>p_{seed} - p_{control} \gt 0</m>, or, in other words
+        <m>p_{seed} \gt p_{control}</m>, and thus we'd have evidence suggesting those exposed
+        to yawning do yawn more often.
+      </p>
+    </subsection>
   </section>
 
+
   <section xml:id="summary-CI">
-    <title>Summary and Final Remarks</title>
-    <p>
-      This section will summarize confidence interval methods and present extensions.
-    </p>
+    <title>Summary and final remarks</title>
+
+    <subsection xml:id="ci-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        If you want more examples of the <c>infer</c> workflow to construct confidence
+        intervals, we suggest you check out the <c>infer</c> package homepage, in particular,
+        a series of example analyses available at
+        <url href="https://infer.netlify.app/articles/">https://infer.netlify.app/articles/</url>.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="ci-whats-to-come">
+      <title>What's to come?</title>
+
+      <p>
+        Now that we've equipped ourselves with confidence intervals, in
+        <xref ref="hypothesis-testing"/> we'll cover the other common tool for statistical
+        inference: hypothesis testing. Just like confidence intervals, hypothesis tests are
+        used to infer about a population using a sample. However, we'll see that the
+        framework for making such inferences is slightly different.
+      </p>
+    </subsection>
   </section>
 
 </chapter>
