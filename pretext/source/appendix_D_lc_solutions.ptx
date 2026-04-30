@@ -28,17 +28,17 @@
       <row>
         <cell>Chapter 1 (Getting Started)</cell>
         <cell>LC1.1–LC1.7</cell>
-        <cell><xref ref="ch-intro"/></cell>
+        <cell><xref ref="ch-getting-started"/></cell>
       </row>
       <row>
         <cell>Chapter 2 (Data Visualization)</cell>
         <cell>LC2.1–LC2.29</cell>
-        <cell><xref ref="viz"/></cell>
+        <cell><xref ref="ch-visualization"/></cell>
       </row>
       <row>
         <cell>Chapter 3 (Data Wrangling)</cell>
         <cell>LC3.1–LC3.22</cell>
-        <cell><xref ref="wrangling"/></cell>
+        <cell><xref ref="ch-wrangling"/></cell>
       </row>
       <row>
         <cell>Chapter 4 (Tidy Data)</cell>

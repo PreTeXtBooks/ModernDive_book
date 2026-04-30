@@ -3,15 +3,15 @@
   <title>Data Importing and Tidy Data</title>
 
   <p>
-    In <xref ref="ch-intro"/>, we introduced the concept of a
+    In <xref ref="ch-getting-started"/>, we introduced the concept of a
     <term>data frame</term><idx><h>data frame</h></idx> in R: a rectangular
     spreadsheet-like representation of data where the rows correspond to
     observations and the columns correspond to variables describing each
-    observation. In <xref ref="ch-intro"/>, we started exploring our first
+    observation. In <xref ref="ch-getting-started"/>, we started exploring our first
     data frame: the <c>flights</c> data frame included in the
-    <c>nycflights23</c> package. In <xref ref="viz"/>, we created
+    <c>nycflights23</c> package. In <xref ref="ch-visualization"/>, we created
     visualizations based on the data included in <c>flights</c> and other data
-    frames such as <c>weather</c>. In <xref ref="wrangling"/>, we learned how
+    frames such as <c>weather</c>. In <xref ref="ch-wrangling"/>, we learned how
     to take existing data frames and transform/modify them to suit our ends.
   </p>
 
@@ -28,8 +28,8 @@
 
   <p>
     Knowledge of this type of data formatting was not necessary for our
-    treatment of data visualization in <xref ref="viz"/> and data wrangling in
-    <xref ref="wrangling"/>. This is because all the data used were already in
+    treatment of data visualization in <xref ref="ch-visualization"/> and data wrangling in
+    <xref ref="ch-wrangling"/>. This is because all the data used were already in
     <q>tidy</q> format. In this chapter, we'll now see that this format is
     essential to using the tools we covered up until now. Furthermore, it will
     also be useful for all subsequent chapters in this book when we cover
@@ -42,7 +42,7 @@
     <title>Needed packages</title>
     <p>
       Let's load all the packages needed for this chapter (this assumes you've
-      already installed them). If needed, read <xref ref="packages"/> for
+      already installed them). If needed, read <xref ref="sec-packages"/> for
       information on how to install and load R packages.
     </p>
     <program language="r">
@@ -103,7 +103,7 @@ library(fivethirtyeight)
       Microsoft's proprietary Excel software. As opposed to bare-bones
       <c>.csv</c> files, <c>.xlsx</c> Excel files contain a lot of
       meta-data<idx><h>meta-data</h></idx> (data about data). Recall we saw a
-      previous example of meta-data in <xref ref="wrangling"/> when adding
+      previous example of meta-data in <xref ref="ch-wrangling"/> when adding
       <q>group structure</q> meta-data to a data frame by using the
       <c>group_by()</c> verb. Some examples of Excel spreadsheet meta-data
       include the use of bold and italic fonts, colored cells, different
@@ -263,7 +263,7 @@ drinks |>
 
     <p>
       Let's apply some of the data-wrangling verbs we learned in
-      <xref ref="wrangling"/> on the <c>drinks</c> data frame:
+      <xref ref="ch-wrangling"/> on the <c>drinks</c> data frame:
     </p>
     <ol>
       <li><p><c>filter()</c> to only consider 4 countries: the United States, China, Italy, and Saudi Arabia, <em>then</em></p></li>
@@ -287,7 +287,7 @@ drinks_smaller
       Let's now ask ourselves a question: <q>Using the <c>drinks_smaller</c>
       data frame, how would we create the side-by-side barplot in
       <xref ref="fig-drinks-smaller"/>?</q> Recall we saw barplots displaying
-      two categorical variables in <xref ref="viz"/>.
+      two categorical variables in <xref ref="ch-visualization"/>.
     </p>
 
     <figure xml:id="fig-drinks-smaller">
@@ -299,7 +299,7 @@ drinks_smaller
 
     <p>
       Let's break down the grammar of graphics we introduced in
-      <xref ref="viz"/>:
+      <xref ref="ch-visualization"/>:
     </p>
     <ol>
       <li><p>The categorical variable <c>country</c> with four levels (China, Italy, Saudi Arabia, USA) would have to be mapped to the <c>x</c>-position of the bars.</p></li>
@@ -680,7 +680,7 @@ drinks_smaller |>
         we can now produce the barplot you saw in
         <xref ref="fig-drinks-smaller"/> using <c>geom_col()</c>. This is
         done in <xref ref="fig-drinks-smaller-tidy-barplot"/>. Recall from
-        <xref ref="viz"/> on barplots that we use <c>geom_col()</c> and
+        <xref ref="ch-visualization"/> on barplots that we use <c>geom_col()</c> and
         not <c>geom_bar()</c>, since we would like to map the
         <q>pre-counted</q> <c>servings</c> variable to the
         <c>y</c>-aesthetic of the bars.
@@ -790,7 +790,7 @@ airline_safety_smaller |>
 
       <p>
         Recall the <c>nycflights23</c> package we introduced in
-        <xref ref="ch-intro"/> with data about all domestic flights
+        <xref ref="ch-getting-started"/> with data about all domestic flights
         departing from New York City in 2023. Let's revisit the <c>flights</c>
         data frame by running <c>View(flights)</c>. We saw that <c>flights</c>
         has a rectangular shape, with each of its rows corresponding to a
@@ -804,7 +804,7 @@ airline_safety_smaller |>
       </p>
 
       <p>
-        Recall that we saw in <xref ref="ch-intro"/> that the
+        Recall that we saw in <xref ref="ch-getting-started"/> that the
         observational unit for the <c>flights</c> data frame is an individual
         flight. In other words, the rows of the <c>flights</c> data frame
         refer to characteristics/measurements of individual flights. Also
@@ -847,7 +847,7 @@ airline_safety_smaller |>
       <c>dplyr</c> packages to produce a <em>time-series plot</em> showing
       how the democracy scores have changed over the 40 years from 1952 to
       1992 for Guatemala. Recall that we saw time-series plots in
-      <xref ref="viz"/> on creating linegraphs using
+      <xref ref="ch-visualization"/> on creating linegraphs using
       <c>geom_line()</c>.
     </p>
 
@@ -866,7 +866,7 @@ guat_dem
 
     <p>
       Let's lay out the grammar of graphics we saw in
-      <xref ref="viz"/>.
+      <xref ref="ch-visualization"/>.
     </p>
 
     <p>
@@ -1068,7 +1068,7 @@ library(tidyr)
 
     <p>
       After installing the <c>tidyverse</c> package as you would a normal
-      package as seen in <xref ref="packages"/>, running:
+      package as seen in <xref ref="sec-packages"/>, running:
     </p>
 
     <program language="r">

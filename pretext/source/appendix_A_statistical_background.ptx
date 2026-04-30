@@ -65,7 +65,7 @@
         of five summary statistics: the minimum, the first quantile AKA 25th percentile,
         the second quantile AKA median or 50th percentile, the third quantile AKA 75th,
         and the maximum. The five-number summary of a variable is used when constructing
-        boxplots, as seen in <xref ref="viz"/>.
+        boxplots, as seen in <xref ref="ch-visualization"/>.
       </p>
       <p>
         The quantiles are calculated as:
@@ -98,7 +98,7 @@
         also alert you to the presence of outliers.
       </p>
       <p>
-        Recall from <xref ref="viz"/> that we can visualize the distribution of a
+        Recall from <xref ref="ch-visualization"/> that we can visualize the distribution of a
         numerical variable using binning in a histogram and that we can visualize the
         distribution of a categorical variable using a barplot.
       </p>

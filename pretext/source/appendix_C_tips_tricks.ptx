@@ -25,7 +25,7 @@
       <li><p>As well as the more advanced <c>purrr</c>, <c>tibble</c>, <c>stringr</c>, and <c>forcats</c> packages.</p></li>
     </ul>
     <p>
-      Read <xref ref="packages"/> for information on how to install and load R packages.
+      Read <xref ref="sec-packages"/> for information on how to install and load R packages.
     </p>
     <program language="r">
       <input>
