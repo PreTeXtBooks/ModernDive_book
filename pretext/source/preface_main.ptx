@@ -430,9 +430,9 @@
 
       <p>
         <ul>
-          <li><p><em>Mathematical Statistics with Resampling and R</em></p></li>
-          <li><p><em>OpenIntro: Intro Stat with Randomization and Simulation</em></p></li>
-          <li><p><em>R for Data Science</em></p></li>
+          <li><p><pubtitle>Mathematical Statistics with Resampling and R</pubtitle> <xref ref="biblio-hester2011"/></p></li>
+          <li><p><pubtitle>OpenIntro: Intro Stat with Randomization and Simulation</pubtitle> <xref ref="biblio-isrs2014"/></p></li>
+          <li><p><pubtitle>R for Data Science</pubtitle> <xref ref="biblio-rds2016"/></p></li>
         </ul>
       </p>
 
@@ -659,7 +659,7 @@
     <p>
       This book was originally written using the
       <url href="https://bookdown.org/" visual="bookdown.org">bookdown</url>
-      package by Yihui Xie. The R Markdown source code of ModernDive is available on
+      package <xref ref="biblio-R-bookdown"/> by Yihui Xie. The R Markdown source code of ModernDive is available on
       GitHub:
     </p>
 
@@ -713,5 +713,39 @@
       Y. Kim, Arturo Valdivia, and YOU!</q>
     </p>
   </subsection>
+  <!-- ============================================================ -->
+  <references xml:id="preface-references">
+    <title>References</title>
+
+    <biblio type="raw" xml:id="biblio-hester2011">
+      Laura M. Chihara and Tim C. Hesterberg.
+      <pubtitle>Mathematical Statistics with Resampling and R</pubtitle>.
+      First Edition. John Wiley &amp; Sons, Hoboken, NJ, 2011.
+      <url href="https://github.com/lchihara/MathStatsResamplingR/tree/main"
+           visual="github.com/lchihara/MathStatsResamplingR"/>.
+    </biblio>
+
+    <biblio type="raw" xml:id="biblio-isrs2014">
+      David M. Diez, Christopher D. Barr, and Mine Çetinkaya-Rundel.
+      <pubtitle>Introductory Statistics with Randomization and Simulation</pubtitle>.
+      First Edition. CreateSpace Independent Publishing Platform, 2014.
+      <url href="https://www.openintro.org/stat/textbook.php?stat_book=isrs"
+           visual="openintro.org/stat/textbook.php?stat_book=isrs"/>.
+    </biblio>
+
+    <biblio type="raw" xml:id="biblio-rds2016">
+      Garrett Grolemund and Hadley Wickham.
+      <pubtitle>R for Data Science</pubtitle>.
+      First Edition. O'Reilly Media, Sebastopol, CA, 2017.
+      <url href="https://r4ds.had.co.nz/" visual="r4ds.had.co.nz"/>.
+    </biblio>
+
+    <biblio type="raw" xml:id="biblio-R-bookdown">
+      Yihui Xie.
+      <pubtitle>bookdown: Authoring Books and Technical Documents with R Markdown</pubtitle>.
+      Chapman and Hall/CRC, Boca Raton, Florida, 2016.
+      <url href="https://bookdown.org/yihui/bookdown/" visual="bookdown.org/yihui/bookdown"/>.
+    </biblio>
+  </references>
 
 </preface>
