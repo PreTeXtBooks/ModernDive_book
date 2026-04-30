@@ -75,7 +75,7 @@
   </p>
 
   <p>
-    Hall (1992) has provided the theoretical justification to use bootstrap confidence
+    Hall <xref ref="bib-Hall1992"/> has provided the theoretical justification to use bootstrap confidence
     intervals using Edgeworth expansions. The description of Edgeworth expansions are
     beyond the scope of this book, but in simple terms, you can think of them as
     approximations to the population distribution and of parameter estimates, that in

@@ -1064,7 +1064,7 @@ ggplot(data = flights, mapping = aes(x = gain)) +
       refer to new variables we just created. As an example, consider the
       <c>mutate()</c> code Hadley Wickham
       <idx><h>Wickham, Hadley</h></idx> and Garrett Grolemund
-      <idx><h>Grolemund, Garrett</h></idx> show in <em>R for Data Science</em>:
+      <idx><h>Grolemund, Garrett</h></idx> show in <em>R for Data Science</em> <xref ref="bib-rds2016"/>:
     </p>
 
     <program language="r">
@@ -1207,13 +1207,13 @@ View(airlines)
       <em>identification variables</em> that uniquely identify the observational
       units as we saw in <xref ref="subsec-identification-vs-measurement-variables"/>.
       This ensures that rows in both data frames are appropriately matched
-      during the join. Hadley and Garrett created the diagram in
+      during the join. Hadley and Garrett <xref ref="bib-rds2016"/> created the diagram in
       <xref ref="fig-reldiagram"/> to show how the different data frames in the
       <c>nycflights23</c> package are linked by various key variables:
     </p>
 
     <figure xml:id="fig-reldiagram">
-      <caption>Data relationships in nycflights from <em>R for Data Science</em>.</caption>
+      <caption>Data relationships in nycflights from <em>R for Data Science</em> <xref ref="bib-rds2016"/>.</caption>
       <image source="images/r4ds/relational-nycflights.png" width="65%">
         <description>Entity-relationship diagram showing the connections between the
         flights, airlines, airports, planes, and weather data frames in the
@@ -1256,11 +1256,11 @@ View(flights_joined)
         <xref ref="fig-ijdiagram"/>. There are other types of joins available (such
         as <c>left_join()</c>, <c>right_join()</c>, <c>outer_join()</c>, and
         <c>anti_join()</c>), but the <c>inner_join()</c> will solve nearly all of the
-        problems you'll encounter in this book.
+        problems you'll encounter in this book <xref ref="bib-rds2016"/>.
       </p>
 
       <figure xml:id="fig-ijdiagram">
-        <caption>Diagram of inner join from <em>R for Data Science</em>.</caption>
+        <caption>Diagram of inner join from <em>R for Data Science</em> <xref ref="bib-rds2016"/>.</caption>
         <image source="images/r4ds/join-inner.png" width="80%">
           <description>Diagram of an inner join between two tables x and y, showing
           that only rows whose key variable values appear in both tables are retained
@@ -1882,7 +1882,7 @@ named_dests |&gt;
         if you'd like to see more examples of using the <c>dplyr</c> package for data
         wrangling, check out
         <url href="http://r4ds.had.co.nz/transform.html">Chapter 5</url> of
-        <em>R for Data Science</em>.
+        <em>R for Data Science</em> <xref ref="bib-rds2016"/>.
       </p>
     </subsection>
 

@@ -951,7 +951,7 @@ glimpse(flights)
         <url href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em>
         by Tiffany-Anne Timbers, Melissa Lee, and Trevor Campbell</url> or
         <url href="https://r4ds.had.co.nz/dates-and-times.html"><em>R for Data
-        Science</em></url>.
+        Science</em></url> <xref ref="bib-rds2016"/>.
       </p>
 
       <exercise xml:id="lc1-4">
@@ -1130,7 +1130,7 @@ glimpse(airports)
         If you are new to the world of coding, R, and RStudio and feel you could benefit
         from a more detailed introduction, we suggest the short book,
         <url href="https://rbasics.netlify.app/"><em>Getting Used to R, RStudio, and R
-        Markdown</em></url>, previewed in <xref ref="fig-ismay-book"/>. It includes
+        Markdown</em></url> <xref ref="bib-usedtor2016"/>, previewed in <xref ref="fig-ismay-book"/>. It includes
         screencasts that you can follow along and pause as you learn. This book also
         contains an introduction to R Markdown, a tool used for reproducible research.
       </p>

@@ -8,7 +8,7 @@
     looking at the raw data values. We'll use the <c>ggplot2</c> package, as it provides
     an easy way to customize your plots. <c>ggplot2</c> is rooted in the data
     visualization theory known as <em>the grammar of graphics</em>, developed by Leland
-    Wilkinson. <idx><h>Wilkinson, Leland</h></idx>
+    Wilkinson <xref ref="bib-wilkinson2005"/>. <idx><h>Wilkinson, Leland</h></idx>
   </p>
   <p>
     At their most basic, graphics/plots/charts (we use these terms interchangeably in
@@ -61,7 +61,7 @@ library(tibble)
       linguistic grammar. Similarly to a linguistic grammar, <q>the grammar of
       graphics</q> defines a set of rules for constructing <em>statistical graphics</em>
       by combining different types of <em>layers</em>. This grammar was created by Leland
-      Wilkinson and has been implemented in a variety of data visualization software
+      Wilkinson <xref ref="bib-wilkinson2005"/> and has been implemented in a variety of data visualization software
       platforms like R, but also <url href="https://plot.ly/">Plotly</url> and
       <url href="https://www.tableau.com/">Tableau</url>.
     </p>
@@ -239,7 +239,7 @@ library(tibble)
       <p>
         Other more complex components like <c>scales</c> and <c>coord</c>inate systems
         are left for a more advanced text such as
-        <url href="http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings"><em>R for Data Science</em></url>.
+        <url href="http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings"><em>R for Data Science</em></url> <xref ref="bib-rds2016"/>.
         Generally speaking, the grammar of graphics allows for a high degree of
         customization of plots and also a consistent framework for easily updating and
         modifying them.
@@ -1663,7 +1663,7 @@ ggplot(data = flights, mapping = aes(x = carrier)) +
         angles well.
       </p>
       <p>
-        As Naomi Robbins describes in her book, <em>Creating More Effective Graphs</em>,
+        As Naomi Robbins describes in her book, <em>Creating More Effective Graphs</em> <xref ref="bib-robbins2013"/>,
         we overestimate angles greater than 90 degrees and we underestimate angles less
         than 90 degrees. In other words, it is difficult for us to determine the relative
         size of one piece of the pie compared to another.

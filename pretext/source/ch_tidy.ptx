@@ -371,7 +371,7 @@ drinks_smaller_tidy
         <q>tidy</q> in data science using R means that your data follows a
         standardized format. We will follow Hadley
         Wickham's<idx><h>Wickham, Hadley</h></idx> definition of
-        <term>tidy data</term><idx><h>tidy data</h></idx> shown also in
+        <term>tidy data</term><idx><h>tidy data</h></idx> <xref ref="bib-tidy"/> shown also in
         <xref ref="fig-tidyfig"/>:
       </p>
 
@@ -400,7 +400,7 @@ drinks_smaller_tidy
       </blockquote>
 
       <figure xml:id="fig-tidyfig">
-        <caption>Tidy data graphic from <em>R for Data Science</em>.</caption>
+        <caption>Tidy data graphic from <em>R for Data Science</em> <xref ref="bib-rds2016"/>.</caption>
         <image source="images/r4ds/tidy-1.png" width="80%">
           <description>Diagram illustrating the three rules of tidy data: variables in columns, observations in rows, and one observational unit per table.</description>
         </image>
@@ -1095,7 +1095,7 @@ library(forcats)
     <p>
       The <c>purrr</c>, <c>tibble</c>, <c>stringr</c>, and <c>forcats</c>
       are left for a more advanced book; check out
-      <url href="http://r4ds.had.co.nz/"><em>R for Data Science</em></url>
+      <url href="http://r4ds.had.co.nz/"><em>R for Data Science</em></url> <xref ref="bib-rds2016"/>
       to learn about these packages.
     </p>
 
