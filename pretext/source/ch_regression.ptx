@@ -3,7 +3,7 @@
   <title>Simple Linear Regression</title>
 
   <p>
-    We have introduced data visualization in <xref ref="viz"/>, data wrangling in <xref ref="wrangling"/>, and data importing and <q>tidy</q> data in <xref ref="tidy"/>. In this chapter, we work with <term>regression</term>, a method that helps us study the relationship between an <em>outcome variable</em> or <em>response</em> and one or more <em>explanatory variables</em> or <em>regressors</em>.
+    We have introduced data visualization in <xref ref="ch-visualization"/>, data wrangling in <xref ref="ch-wrangling"/>, and data importing and <q>tidy</q> data in <xref ref="tidy"/>. In this chapter, we work with <term>regression</term>, a method that helps us study the relationship between an <em>outcome variable</em> or <em>response</em> and one or more <em>explanatory variables</em> or <em>regressors</em>.
     The method starts by proposing a <em>statistical model</em>. Data is then collected and used to estimate the coefficients or parameters for the model, and these results are typically used for two purposes:
   </p>
   <ol>

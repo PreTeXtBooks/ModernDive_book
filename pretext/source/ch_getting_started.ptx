@@ -1,0 +1,1172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-getting-started" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Getting Started with Data in R</title>
+
+  <p>
+    Before we can start exploring data in R, there are some key concepts to understand first:
+  </p>
+  <p>
+    <ol>
+      <li><p>What are R and RStudio?</p></li>
+      <li><p>How do I code in R?</p></li>
+      <li><p>What are R packages?</p></li>
+    </ol>
+  </p>
+  <p>
+    We'll introduce these concepts in the upcoming
+    <xref ref="sec-r-rstudio" text="title"/>&#8211;<xref ref="sec-packages" text="title"/>.
+    If you are already somewhat familiar with these concepts, feel free to skip to
+    <xref ref="sec-nycflights"/> where we'll introduce our first dataset: all domestic
+    flights departing one of the three main New York City (NYC) airports in 2023. We will
+    explore this dataset in depth for much of the rest of this book.
+  </p>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-r-rstudio">
+    <title>What are R and RStudio?</title>
+
+    <p>
+      Throughout this book, we will assume that you are using R via RStudio. First time
+      users often confuse the two. At its simplest, R is like a car's engine
+      <idx><h>R</h></idx> while RStudio is like a car's dashboard
+      <idx><h>RStudio</h></idx> as illustrated in <xref ref="fig-R-vs-RStudio-1"/>.
+    </p>
+
+    <figure xml:id="fig-R-vs-RStudio-1">
+      <caption>Analogy of difference between R and RStudio.</caption>
+      <image source="images/shutterstock/R_vs_RStudio_1.png" width="95%">
+        <description>Two images side by side: on the left, a car engine representing R; on the right, a car dashboard representing RStudio.</description>
+      </image>
+    </figure>
+
+    <p>
+      More precisely, R is a programming language that runs computations, whereas RStudio
+      is an <em>integrated development environment (IDE)</em> that provides an interface
+      by adding many convenient features and tools. So just as the way of having access to
+      a speedometer, rear-view mirrors, and a navigation system makes driving much easier,
+      using RStudio's interface makes using R much easier as well.
+    </p>
+
+
+    <subsection xml:id="sec-installing">
+      <title>Installing R and RStudio</title>
+
+      <note>
+        <title>Note about RStudio Server or Posit (formerly RStudio) Cloud</title>
+        <p>
+          If your instructor has provided you with a link and access to RStudio Server or
+          Posit Cloud, then you can skip this section. We do recommend after a few months
+          of working on RStudio Server/Posit Cloud that you return to these instructions
+          to install this software on your own computer though.
+        </p>
+      </note>
+
+      <p>
+        You will first need to download and install both R and RStudio (Desktop version)
+        on your computer. It is important that you install R first and then install
+        RStudio.
+      </p>
+
+      <p>
+        <ol>
+          <li>
+            <p>
+              <alert>You must do this first:</alert> Download and install R by going to
+              <url href="https://cloud.r-project.org/"/>.
+              <idx><h>R</h><h>installation</h></idx>
+            </p>
+            <p>
+              <ul>
+                <li><p>If you are a Windows user: Click on <q>Download R for Windows,</q>
+                then click on <q>base,</q> then click on the Download link.</p></li>
+                <li><p>If you are macOS user: Click on <q>Download R for macOS,</q> then
+                under <q>Latest release:</q> click on R-X.X.X.pkg, where R-X.X.X is the
+                version number. For example, the latest version of R as of December 4,
+                2024 was R-4.4.2.</p></li>
+                <li><p>If you are a Linux user: Click on <q>Download R for Linux</q> and
+                choose your distribution for more information on installing R for your
+                setup.</p></li>
+              </ul>
+            </p>
+          </li>
+          <li>
+            <p>
+              <alert>You must do this second:</alert> Download and install RStudio at
+              <url href="https://posit.co/download/rstudio-desktop/"/>.
+              <idx><h>RStudio</h><h>installation</h></idx>
+            </p>
+            <p>
+              <ul>
+                <li><p>Scroll down to <q>All Installers and Tarballs</q> near the bottom
+                of the page.</p></li>
+                <li><p>Click on the download link corresponding to your computer's
+                operating system.</p></li>
+              </ul>
+            </p>
+          </li>
+        </ol>
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-using-r-via-rstudio">
+      <title>Using R via RStudio</title>
+
+      <p>
+        Recall our car analogy from earlier. Much as we don't drive a car by interacting
+        directly with the engine but rather by interacting with elements on the car's
+        dashboard, we won't be using R directly but rather we will use RStudio's
+        interface. After you install R and RStudio on your computer, you'll have two new
+        <em>programs</em> (also called <em>applications</em>) you can open. We'll always
+        work in RStudio and not in the R application.
+        <xref ref="fig-R-vs-RStudio-2"/> shows what icon you should be clicking on your
+        computer.
+      </p>
+
+      <figure xml:id="fig-R-vs-RStudio-2">
+        <caption>Icons of R versus RStudio on your computer.</caption>
+        <image source="images/logos/R_vs_RStudio.png" width="90%">
+          <description>The R application icon on the left and the RStudio application icon on the right.</description>
+        </image>
+      </figure>
+
+      <p>
+        After you open RStudio, you should see something similar to
+        <xref ref="fig-RStudio-interface"/>. (Note that slight differences might exist if
+        the RStudio interface is updated to not be this by default.)
+      </p>
+
+      <figure xml:id="fig-RStudio-interface">
+        <caption>RStudio interface to R.</caption>
+        <image source="images/rstudio_screenshots/rstudio.png" width="93%">
+          <description>A screenshot of the RStudio interface showing the console pane, files pane, and environment pane.</description>
+        </image>
+      </figure>
+
+      <p>
+        Note the three <em>panes</em> which are three panels dividing the screen: the
+        <em>console pane</em>, the <em>files pane</em>, and the
+        <em>environment pane</em>. Over the course of this chapter, you'll come to learn
+        what purpose each of these panes serves.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-code">
+    <title>How do I code in R?</title>
+
+    <p>
+      Now that you're set up with R and RStudio, you are probably asking yourself,
+      <q>OK. Now how do I use R?</q> The first thing to note is that unlike other
+      statistical software programs like Excel, SPSS, or Minitab that provide
+      <url href="https://en.wikipedia.org/wiki/Point_and_click">point-and-click</url>
+      interfaces, R is an
+      <url href="https://en.wikipedia.org/wiki/Interpreted_language">interpreted language.</url>
+      This means you have to type in commands written in <em>R code</em>. In other words,
+      you have to code/program in R. Note that we'll use the terms <q>coding</q> and
+      <q>programming</q> interchangeably in this book.
+    </p>
+
+    <p>
+      While it is not required to be a seasoned coder/computer programmer to use R, there
+      is still a set of basic programming concepts that new R users need to understand.
+      Consequently, while this book is not a book on programming, you will still learn
+      just enough of these basic programming concepts needed to explore and analyze data
+      effectively.
+    </p>
+
+
+    <subsection xml:id="sec-programming-concepts">
+      <title>Basic programming concepts and terminology</title>
+
+      <p>
+        We now introduce some basic programming concepts and terminology. Instead of
+        asking you to memorize all these concepts and terminology right now, we'll guide
+        you so that you'll <q>learn by doing.</q> To help you learn, we will always use a
+        different font to distinguish regular text from <c>computer_code</c>. The best
+        way to master these topics is, in our opinions, through
+        <url href="https://jamesclear.com/deliberate-practice-theory">deliberate practice</url>
+        with R and lots of repetition.
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              Basics: <idx><h>programming language basics</h></idx>
+            </p>
+            <p>
+              <ul>
+                <li><p><em>Console pane</em>: where you enter in commands.
+                <idx><h>console</h></idx></p></li>
+                <li><p><em>Running code</em>: the act of telling R to perform an act by
+                giving it commands in the console.</p></li>
+                <li><p><em>Objects</em>: where values are saved in R. We'll show you how
+                to <em>assign</em> values to objects and how to display the contents of
+                objects. <idx><h>objects</h></idx></p></li>
+                <li><p><em>Data types</em>: integers, doubles/numerics, logicals, and
+                characters. <idx><h>data types</h></idx> Integers are values like -1, 0,
+                2, 4092. Doubles or numerics are a larger set of values containing both
+                the integers but also fractions and decimal values like -24.932 and 0.8.
+                Logicals are either <c>TRUE</c> or <c>FALSE</c> while characters are text
+                such as <q>cabbage,</q> <q>Hamilton,</q>
+                <q>The Wire is the greatest TV show ever,</q> and
+                <q>This ramen is delicious.</q> Note that characters are often denoted
+                with the quotation marks around them.</p></li>
+              </ul>
+            </p>
+          </li>
+          <li>
+            <p>
+              <em>Vectors</em>: a series of values. These are created using the
+              <c>c()</c> function, where <c>c()</c> stands for <q>combine</q> or
+              <q>concatenate.</q> For example, <c>c(6, 11, 13, 31, 90, 92)</c> creates a
+              six element series of positive integer values <idx><h>vectors</h></idx>.
+            </p>
+          </li>
+          <li>
+            <p>
+              <em>Factors</em>: <em>categorical data</em> are commonly represented in R
+              as factors. <idx><h>factors</h></idx> Categorical data can also be
+              represented as <em>strings</em>. We'll study this difference as we progress
+              through the book.
+            </p>
+          </li>
+          <li>
+            <p>
+              <em>Data frames</em>: rectangular spreadsheets. They are representations
+              of datasets in R where the rows correspond to <em>observations</em> and the
+              columns correspond to <em>variables</em> that describe the observations.
+              <idx><h>data frame</h></idx> We'll cover data frames later in
+              <xref ref="sec-nycflights"/>.
+            </p>
+          </li>
+          <li>
+            <p>
+              <em>Conditionals</em>: <idx><h>conditionals</h></idx>
+            </p>
+            <p>
+              <ul>
+                <li><p>Testing for equality in R using <c>==</c> (and not <c>=</c>,
+                which is typically used for assignment). For example,
+                <c>2 + 1 == 3</c> compares <c>2 + 1</c> to <c>3</c> and is correct R
+                code, while <c>2 + 1 = 3</c> will return an error.</p></li>
+                <li><p>Boolean algebra: <c>TRUE/FALSE</c> statements and mathematical
+                operators such as <c>&lt;</c> (less than), <c>&lt;=</c> (less than or
+                equal), and <c>!=</c> (not equal to). <idx><h>Boolean algebra</h></idx>
+                For example, <c>4 + 2 &gt;= 3</c> will return <c>TRUE</c>, but
+                <c>3 + 5 &lt;= 1</c> will return <c>FALSE</c>.</p></li>
+                <li><p>Logical operators: <c>&amp;</c> representing <q>and</q> as well as
+                <c>|</c> representing <q>or.</q> For example,
+                <c>(2 + 1 == 3) &amp; (2 + 1 == 4)</c> returns <c>FALSE</c> since both
+                clauses are not <c>TRUE</c> (only the first clause is <c>TRUE</c>). On
+                the other hand, <c>(2 + 1 == 3) | (2 + 1 == 4)</c> returns <c>TRUE</c>
+                since at least one of the two clauses is <c>TRUE</c>.
+                <idx><h>operators</h><h>logical</h></idx></p></li>
+              </ul>
+            </p>
+          </li>
+          <li>
+            <p>
+              <em>Functions</em>, also called <em>commands</em>: Functions perform tasks
+              in R. They take in inputs called <em>arguments</em> and return outputs. You
+              can either manually specify a function's arguments or use the function's
+              <em>default values</em>. <idx><h>functions</h></idx>
+            </p>
+            <p>
+              <ul>
+                <li><p>For example, the function <c>seq()</c> in R generates a sequence
+                of numbers. If you just run <c>seq()</c> it will return the value 1. That
+                doesn't seem very useful! This is because the default arguments are set as
+                <c>seq(from = 1, to = 1)</c>. Thus, if you don't pass in different values
+                for <c>from</c> and <c>to</c> to change this behavior, R just assumes all
+                you want is the number 1. You can change the argument values by updating
+                the values after the <c>=</c> sign. If we try out
+                <c>seq(from = 2, to = 5)</c> we get the result <c>2 3 4 5</c> that we
+                might expect.</p></li>
+                <li><p>We'll work with functions a lot throughout this book and you'll get
+                lots of practice in understanding their behaviors. To further assist you
+                in understanding when a function is mentioned in the book, we'll also
+                include the <c>()</c> after them as we did with <c>seq()</c>
+                above.</p></li>
+              </ul>
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        This list is by no means an exhaustive list of all the programming concepts and
+        terminology needed to become a savvy R user; such a list would be so large it
+        wouldn't be very useful, especially for novices. Rather, we feel this is a
+        minimally viable list of programming concepts and terminology you need to know
+        before getting started. We feel that you can learn the rest as you go. Remember
+        that your mastery of all of these concepts and terminology will build as you
+        practice more and more.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-messages">
+      <title>Errors, warnings, and messages</title>
+
+      <p>
+        One thing that intimidates new R and RStudio users is how it reports
+        <em>errors</em>, <em>warnings</em>, and <em>messages</em>. R reports errors,
+        warnings, and messages in a glaring red font, which makes it seem like it is
+        scolding you. However, seeing red text in the console is not always bad.
+      </p>
+
+      <p>
+        R will show red text in the console pane in three different situations:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              <alert>Errors</alert>: <idx><h>R</h><h>errors</h></idx> when the red text
+              is a legitimate error, it will be prefaced with <q>Error in&#8230;</q> and
+              will try to explain what went wrong. Generally when there's an error, the
+              code will not run. For example, we'll see in
+              <xref ref="sec-package-use"/> if you see
+              <c>Error in ggplot(...) : could not find function "ggplot"</c>, it means
+              that the <c>ggplot()</c> function is not accessible because the package
+              that contains the function (<c>ggplot2</c>) was not loaded with
+              <c>library(ggplot2)</c>. Thus you cannot use the <c>ggplot()</c> function
+              without the <c>ggplot2</c> package being loaded first.
+            </p>
+          </li>
+          <li>
+            <p>
+              <alert>Warnings</alert>: <idx><h>R</h><h>warnings</h></idx> when the red
+              text is a warning, it will be prefaced with <q>Warning:</q> and R will try
+              to explain why there's a warning. Generally your code will still work, but
+              with some caveats. For example, you will see in Chapter on Data
+              Visualization if you create a scatterplot based on a dataset where two of
+              the rows of data have missing entries that would be needed to create points
+              in the scatterplot, you will see this warning:
+              <c>Warning: Removed 2 rows containing missing values (geom_point)</c>. R
+              will still produce the scatterplot with all the remaining non-missing
+              values, but it is warning you that two of the points aren't there.
+            </p>
+          </li>
+          <li>
+            <p>
+              <alert>Messages</alert>: <idx><h>R</h><h>messages</h></idx> when the red
+              text doesn't start with either <q>Error</q> or <q>Warning,</q> it's
+              <em>just a friendly message</em>. You'll see these messages when you load
+              <em>R packages</em> in the upcoming
+              <xref ref="sec-package-loading"/> or when you read data saved in
+              spreadsheet files with the <c>read_csv()</c> function as you'll see in the
+              chapter on Importing Data. These are helpful diagnostic messages and they
+              don't stop your code from working. Additionally, you'll see these messages
+              when you install packages too using <c>install.packages()</c> as discussed
+              in <xref ref="sec-package-installation"/>.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Remember, when you see red text in the console, <em>don't panic</em>. It doesn't
+        necessarily mean anything is wrong. Rather:
+      </p>
+
+      <p>
+        <ul>
+          <li><p>If the text starts with <q>Error,</q> figure out what's causing it.
+          Think of errors as a red traffic light: something is wrong!</p></li>
+          <li><p>If the text starts with <q>Warning,</q> figure out if it's something to
+          worry about. For instance, if you get a warning about missing values in a
+          scatterplot and you know there are missing values, you're fine. If that's
+          surprising, look at your data and see what's missing. Think of warnings as a
+          yellow traffic light: everything is working fine, but watch out/pay
+          attention.</p></li>
+          <li><p>Otherwise, the text is just a message. Read it, wave back at R, and
+          thank it for talking to you. Think of messages as a green traffic light:
+          everything is working fine and keep on going!</p></li>
+        </ul>
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-tips-code">
+      <title>Tips on learning to code</title>
+
+      <p>
+        Learning to code/program is quite similar to learning a foreign language. It can
+        be daunting and frustrating at first. Such frustrations are common and it is
+        normal to feel discouraged as you learn. However, just as with learning a foreign
+        language, if you put in the effort and are not afraid to make mistakes, anybody
+        can learn and improve.
+      </p>
+
+      <p>
+        Here are a few useful tips to keep in mind as you learn to program:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              <alert>Remember that computers are not actually that smart</alert>: You may
+              think your computer or smartphone is <q>smart,</q> but really people spent
+              a lot of time and energy designing them to appear <q>smart.</q> In reality,
+              you have to tell a computer everything it needs to do. Furthermore, the
+              instructions you give your computer can't have any mistakes in them, nor can
+              they be ambiguous in any way.
+            </p>
+          </li>
+          <li>
+            <p>
+              <alert>Take the <q>copy, paste, and tweak</q> approach</alert>: Especially
+              when you learn your first programming language or you need to understand
+              particularly complicated code, it is often much easier to take existing code
+              that you know works and modify it to suit your ends. This is as opposed to
+              trying to type out the code from scratch. We call this the
+              <em><q>copy, paste, and tweak</q></em> approach. So early on, we suggest
+              not trying to write code from memory, but rather take existing examples we
+              have provided you, then copy, paste, and tweak them to suit your goals.
+              After you start feeling more confident, you can slowly move away from this
+              approach and write code from scratch. Think of the <q>copy, paste, and
+              tweak</q> approach as training wheels for a child learning to ride a bike.
+              After getting comfortable, they won't need them anymore.
+            </p>
+          </li>
+          <li>
+            <p>
+              <alert>The best way to learn to code is by doing</alert>: Rather than
+              learning to code for its own sake, we find that learning to code goes much
+              smoother when you have a goal in mind or when you are working on a
+              particular project, like analyzing data that you are interested in and that
+              is important to you.
+            </p>
+          </li>
+          <li>
+            <p>
+              <alert>Practice is key</alert>: Just as the only method to improve your
+              foreign language skills is through lots of practice and speaking, the only
+              method to improving your coding skills is through lots of practice. Don't
+              worry, however, we'll give you plenty of opportunities to do so!
+            </p>
+          </li>
+        </ul>
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-packages">
+    <title>What are R packages?</title>
+
+    <p>
+      Another point of confusion with many new R users is the idea of an R package.
+      R packages <idx><h>R</h><h>packages</h></idx> extend the functionality of R by
+      providing additional functions, data, and documentation. They are written by a
+      worldwide community of R users and can be downloaded for free from the internet.
+    </p>
+
+    <p>
+      For example, among the many packages we will use in this book are the
+      <c>ggplot2</c> package for data visualization,
+      <idx><h>R packages</h><h>ggplot2</h></idx> the <c>dplyr</c> package for data
+      wrangling, <idx><h>R packages</h><h>dplyr</h></idx> the <c>moderndive</c> package
+      that accompanies this book, <idx><h>R packages</h><h>moderndive</h></idx> and the
+      <c>infer</c> package for <q>tidy</q> and transparent statistical inference in later
+      chapters. <idx><h>R packages</h><h>infer</h></idx>
+    </p>
+
+    <p>
+      A good analogy for R packages <idx><h>R packages</h></idx> is they are like apps
+      you can download onto a mobile phone like in
+      <xref ref="fig-R-vs-R-packages"/>:
+    </p>
+
+    <figure xml:id="fig-R-vs-R-packages">
+      <caption>Analogy of R versus R packages.</caption>
+      <image source="images/shutterstock/R_vs_R_packages.png" width="70%">
+        <description>Two images side by side: a new smartphone representing R, and a collection of mobile apps representing R packages.</description>
+      </image>
+    </figure>
+
+    <p>
+      So R is like a new mobile phone: while it has a certain amount of features when you
+      use it for the first time, it doesn't have everything. R packages are like the apps
+      you can download onto your phone from Apple's App Store or Android's Google Play.
+    </p>
+
+    <p>
+      Let's continue this analogy by considering the Instagram app for editing and sharing
+      pictures. Say you have purchased a new phone and you would like to share a photo you
+      have just taken with friends on Instagram. You need to:
+    </p>
+
+    <p>
+      <ol>
+        <li><p><em>Install the app</em>: Since your phone is new and does not include the
+        Instagram app, you need to download the app from either the App Store or Google
+        Play. You do this once and you're set for the time being. You might need to do
+        this again in the future when there is an update to the app.</p></li>
+        <li><p><em>Open the app</em>: After you've installed Instagram, you need to open
+        it.</p></li>
+      </ol>
+    </p>
+
+    <p>
+      Once Instagram is open on your phone, you can then proceed to share your photo with
+      your friends and family. The process is very similar for using an R package. You
+      need to:
+    </p>
+
+    <p>
+      <ol>
+        <li><p><em>Install the package</em>: This is like installing an app on your phone.
+        Most packages are not installed by default when you install R and RStudio. Thus if
+        you want to use a package for the first time, you need to install it first. Once
+        you've installed a package, you likely won't install it again unless you want to
+        update it to a newer version.</p></li>
+        <li><p><em><q>Load</q> the package</em>: <q>Loading</q> a package is like opening
+        an app on your phone. Packages are not <q>loaded</q> by default when you start
+        RStudio on your computer; you need to <q>load</q> each package you want to use
+        every time you start RStudio.</p></li>
+      </ol>
+    </p>
+
+    <p>
+      Let's perform these two steps for the <c>ggplot2</c> package for data visualization.
+    </p>
+
+
+    <subsection xml:id="sec-package-installation">
+      <title>Package installation</title>
+
+      <note>
+        <title>Note about RStudio Server or Posit Cloud</title>
+        <p>
+          If your instructor has provided you with a link and access to RStudio Server or
+          Posit Cloud, you might not need to install packages, as they might be
+          preinstalled for you by your instructor. That being said, it is still a good
+          idea to know this process for later on when you are not using RStudio Server or
+          Posit Cloud, but rather RStudio Desktop on your own computer.
+        </p>
+      </note>
+
+      <p>
+        There are two ways to install an R package: an easy way and a more advanced way.
+        <idx><h>R packages</h><h>installation</h></idx> Let's install the <c>ggplot2</c>
+        package the easy way first as shown in <xref ref="fig-easy-way-install"/>. In the
+        Files pane of RStudio:
+      </p>
+
+      <p>
+        <ol marker="a">
+          <li><p>Click on the <q>Packages</q> tab.</p></li>
+          <li><p>Click on <q>Install</q> next to Update.</p></li>
+          <li><p>Type the name of the package under <q>Packages (separate multiple with
+          space or comma):</q> In this case, type <c>ggplot2</c>.</p></li>
+          <li><p>Click <q>Install.</q></p></li>
+        </ol>
+      </p>
+
+      <figure xml:id="fig-easy-way-install">
+        <caption>Installing packages in R the easy way.</caption>
+        <image source="images/rstudio_screenshots/install_packages_easy_way.png" width="49%">
+          <description>A screenshot of the RStudio Packages pane with the Install button highlighted.</description>
+        </image>
+      </figure>
+
+      <p>
+        An alternative but slightly less convenient way to install a package is by typing
+        <c>install.packages("ggplot2")</c> in the console pane of RStudio and pressing
+        Return/Enter on your keyboard. Note you must include the quotation marks around
+        the name of the package.
+      </p>
+
+      <p>
+        Much like an app on your phone, you only have to install a package once. However,
+        if you want to update a previously installed package to a newer version, you need
+        to re-install it by repeating the earlier steps.
+      </p>
+
+      <exercise xml:id="lc1-1">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.1) Repeat the earlier installation steps, but for the <c>dplyr</c>,
+            <c>nycflights23</c>, and <c>knitr</c> packages. This will install the earlier
+            mentioned <c>dplyr</c> package for data wrangling, the <c>nycflights23</c>
+            package containing data on all domestic flights leaving a New York City airport
+            in 2023, and the <c>knitr</c> package for generating easy-to-read tables in R.
+            We'll use these packages in the next section.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-package-loading">
+      <title>Package loading</title>
+
+      <p>
+        Recall that after you've installed a package, you need to <q>load it.</q> In other
+        words, you need to <q>open it.</q> We do this by using the <c>library()</c>
+        command. <idx><h>R packages</h><h>loading</h></idx>
+      </p>
+
+      <p>
+        For example, to load the <c>ggplot2</c> package, run the following code in the
+        console pane. What do we mean by <q>run the following code</q>? Either type or
+        copy-and-paste the following code into the console pane and then hit the Enter key.
+      </p>
+
+      <program language="r">
+        <input>
+library(ggplot2)
+        </input>
+      </program>
+
+      <p>
+        If after running the earlier code, a blinking cursor returns next to the <c>&gt;</c>
+        <q>prompt</q> sign, it means you were successful and the <c>ggplot2</c> package is
+        now loaded and ready to use. If, however, you get a red <q>error message</q> that
+        reads <idx><h>R packages</h><h>loading error</h></idx>
+      </p>
+
+      <pre>
+Error in library(ggplot2) : there is no package called 'ggplot2'
+      </pre>
+
+      <p>
+        &#8230; it means that you didn't successfully install it. This is an example of an
+        <q>error message</q> we discussed in <xref ref="sec-messages"/>. If you get this
+        error message, go back to <xref ref="sec-package-installation"/> on R package
+        installation and make sure to install the <c>ggplot2</c> package before proceeding.
+      </p>
+
+      <exercise xml:id="lc1-2">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.2) <q>Load</q> the <c>dplyr</c>, <c>nycflights23</c>, and <c>knitr</c>
+            packages as well by repeating the earlier steps.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-package-use">
+      <title>Package use</title>
+
+      <p>
+        One very common mistake new R users make when wanting to use particular packages is
+        they forget to <q>load</q> them first by using the <c>library()</c> command we just
+        saw. Remember: <em>you have to load each package you want to use every time you
+        start RStudio.</em> If you don't first <q>load</q> a package, but attempt to use
+        one of its features, you'll see an error message similar to:
+      </p>
+
+      <pre>
+Error: could not find function
+      </pre>
+
+      <p>
+        This is a different error message than the one you just saw on a package not having
+        been installed yet. R is telling you that you are trying to use a function in a
+        package that has not yet been <q>loaded.</q> R doesn't know where to find the
+        function you are using. Almost all new users forget to do this when starting out,
+        and it is a little annoying to get used to doing it. However, you'll remember with
+        practice and after some time it will become second nature for you.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-nycflights">
+    <title>Explore your first datasets</title>
+
+    <p>
+      Let's put everything we've learned so far into practice and start exploring some
+      real data! Data comes to us in a variety of formats, from pictures to text to
+      numbers. Throughout this book, we'll focus on datasets that are saved in
+      <q>spreadsheet</q>-type format. This is probably the most common way data are
+      collected and saved in many fields. Remember from
+      <xref ref="sec-programming-concepts"/> that these
+      <q>spreadsheet</q>-type datasets are called <em>data frames</em> in R.
+      <idx><h>data frame</h></idx> We'll focus on working with data saved as data frames
+      throughout this book.
+    </p>
+
+    <p>
+      Let's first load all the packages needed for this chapter, assuming you've already
+      installed them. Read <xref ref="sec-packages"/> for information on how to install and
+      load R packages if you haven't already.
+    </p>
+
+    <program language="r">
+      <input>
+library(nycflights23)
+library(dplyr)
+library(knitr)
+      </input>
+    </program>
+
+    <p>
+      At the beginning of all subsequent chapters in this book, we'll always have a list
+      of packages that you should have installed and loaded in order to work with that
+      chapter's R code.
+    </p>
+
+
+    <subsection xml:id="subsec-nycflights23-package">
+      <title><c>nycflights23</c> package</title>
+
+      <p>
+        Many of us have flown on airplanes or know someone who has. Air travel has become
+        an ever-present aspect of many people's lives. If you look at the Departures
+        flight information board at an airport, you will frequently see that some flights
+        are delayed for a variety of reasons. Are there ways that we can understand the
+        reasons that cause flight delays?
+      </p>
+
+      <p>
+        We'd all like to arrive at our destinations on time whenever possible. (Unless you
+        secretly love hanging out at airports. If you are one of these people, pretend for
+        a moment that you are very much anticipating being at your final destination.)
+        Throughout this book, we're going to analyze data related to all domestic flights
+        departing from one of New York City's three main airports in 2023: Newark Liberty
+        International (EWR), John F. Kennedy International (JFK), and LaGuardia Airport
+        (LGA). We'll access this data using the <c>nycflights23</c>
+        <idx><h>R packages</h><h>nycflights23</h></idx> R package, which contains five
+        datasets saved in five data frames:
+      </p>
+
+      <p>
+        <ul>
+          <li><p><c>flights</c>: Information on all flights.</p></li>
+          <li><p><c>airlines</c>: A table matching airline names and their two-letter
+          International Air Transport Association (IATA) airline codes (also known as
+          carrier codes) for 16 airline companies. For example, <q>DL</q> is the
+          two-letter code for Delta.</p></li>
+          <li><p><c>planes</c>: Information about each of the physical aircraft
+          used.</p></li>
+          <li><p><c>weather</c>: Hourly meteorological data for each of the three NYC
+          airports. This data frame has rows roughly corresponding to the
+          <m>365 \times 24 \times 3 = 26{,}280</m> possible hourly measurements one can
+          observe at three locations over the course of a year.</p></li>
+          <li><p><c>airports</c>: Names, codes, and locations of the domestic
+          destinations.</p></li>
+        </ul>
+      </p>
+
+      <p>
+        The <c>nycflights23</c> package is an updated version of
+        <url href="https://nycflights13.tidyverse.org/">the classic <c>nycflights13</c> R
+        package</url>. <c>nycflights23</c> was authored by ModernDive co-author Chester
+        Ismay using the
+        <url href="https://anyflights.netlify.app/"><c>anyflights</c> R package</url>
+        developed by
+        <url href="https://www.simonpcouch.com/">Simon Couch</url>. Simon granted
+        permission to the ModernDive team to create <c>nycflights23</c> and submit the
+        package to CRAN.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="subsec-flights-data-frame">
+      <title><c>flights</c> data frame</title>
+
+      <p>
+        We'll begin by exploring the <c>flights</c> data frame and get an idea of its
+        structure. Run the following code in your console, either by typing it or by
+        cutting-and-pasting it. It displays the contents of the <c>flights</c> data frame
+        in your console. Note that depending on the size of your monitor, the output may
+        vary slightly.
+      </p>
+
+      <program language="r">
+        <input>
+flights
+        </input>
+      </program>
+
+      <p>
+        Let's unpack this output:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              <c># A tibble: [rows] x [cols]</c>: A <c>tibble</c> is a specific kind of
+              data frame in R. <idx><h>tibble</h></idx> This particular data frame has
+            </p>
+            <p>
+              <ul>
+                <li><p>rows corresponding to different <em>observations</em>. Here, each
+                observation is a flight.</p></li>
+                <li><p>columns corresponding to <em>variables</em> describing each
+                observation.</p></li>
+              </ul>
+            </p>
+          </li>
+          <li><p><c>year</c>, <c>month</c>, <c>day</c>, <c>dep_time</c>,
+          <c>sched_dep_time</c>, <c>dep_delay</c>, and <c>arr_time</c> are the different
+          columns, in other words, the different variables of this
+          dataset.</p></li>
+          <li><p>We then have a preview of the first 10 rows of observations
+          corresponding to the first 10 flights. R is only showing the first 10 rows,
+          because if it showed all rows, it would overwhelm your screen.</p></li>
+          <li><p><c>... with [more rows] more rows and [more variables] more
+          variables:</c> indicating to us that more rows of data and more variables could
+          not fit in this screen.</p></li>
+        </ul>
+      </p>
+
+      <p>
+        Unfortunately, this output does not allow us to explore the data very well, but it
+        does give a nice preview. Let's look at some different ways to explore data frames.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="subsec-exploredataframes">
+      <title>Exploring data frames</title>
+
+      <p>
+        There are many ways to get a feel for the data contained in a data frame such as
+        <c>flights</c>. We present three functions that take as their <q>argument</q>
+        (their input) a data frame and a fourth method for exploring one column of a data
+        frame:
+      </p>
+
+      <p>
+        <ol>
+          <li><p>Using the <c>View()</c> function, which brings up RStudio's built-in data
+          viewer.</p></li>
+          <li><p>Using the <c>glimpse()</c> function, which is included in the
+          <c>dplyr</c> package.</p></li>
+          <li><p>Using the <c>kable()</c> function, which is included in the <c>knitr</c>
+          package.</p></li>
+          <li><p>Using the <c>$</c> <q>extraction operator,</q> which is used to view a
+          single variable.</p></li>
+        </ol>
+      </p>
+
+      <p>
+        <alert>1. <c>View()</c></alert>:
+      </p>
+
+      <p>
+        Run <c>View(flights)</c> <idx><h>R packages</h><h>utils</h><h>View()</h></idx> in
+        your console in RStudio, either by typing it or cutting-and-pasting it into the
+        console pane. Explore this data frame in the resulting pop up viewer. You should
+        get into the habit of viewing any data frames you encounter. Note the uppercase
+        <c>V</c> in <c>View()</c>. R is case-sensitive, so you'll get an error message if
+        you run <c>view(flights)</c> instead of <c>View(flights)</c>.
+      </p>
+
+      <exercise xml:id="lc1-3">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.3) What does any <em>ONE</em> row in this <c>flights</c> dataset refer
+            to?
+          </p>
+          <p>
+            <ul>
+              <li><p>A. Data on an airline</p></li>
+              <li><p>B. Data on a flight</p></li>
+              <li><p>C. Data on an airport</p></li>
+              <li><p>D. Data on multiple flights</p></li>
+            </ul>
+          </p>
+        </statement>
+      </exercise>
+
+      <p>
+        By running <c>View(flights)</c>, we can explore the different <em>variables</em>
+        listed in the columns. Observe that there are many different types of variables.
+        Some of the variables like <c>distance</c>, <c>day</c>, and <c>arr_delay</c> are
+        what we will call <em>quantitative</em> variables.
+        <idx><h>quantitative</h></idx> These variables are numerical in nature. Other
+        variables here are <idx><h>categorical</h></idx> <em>categorical</em>.
+      </p>
+
+      <p>
+        If you look in the leftmost column of the <c>View(flights)</c> output, you'll see
+        a column of numbers. These are the row numbers of the dataset. Glancing across a
+        row with the same number, say row 5, you can get an idea of what each row
+        represents. This allows you to identify what object is being described in a given
+        row by taking note of the values of the columns in that specific row. This is
+        often called the <em>observational unit</em>.
+        <idx><h>observational unit</h></idx> The observational unit in this example is an
+        individual flight departing from New York City in 2023. You can identify the
+        observational unit by determining what <q>thing</q> is being measured or described
+        by each of the variables. We'll talk more about observational units in
+        <xref ref="subsec-identification-vs-measurement-variables"/> on
+        <em>identification</em> and <em>measurement</em> variables.
+      </p>
+
+      <p>
+        <alert>2. <c>glimpse()</c></alert>:
+      </p>
+
+      <p>
+        The second way we'll cover to explore a data frame is using the <c>glimpse()</c>
+        function <idx><h>R packages</h><h>dplyr</h><h>glimpse()</h></idx> included in the
+        <idx><h>R packages</h><h>dplyr</h></idx> <c>dplyr</c> package. Thus, you can only
+        use the <c>glimpse()</c> function after you've loaded the <c>dplyr</c> package by
+        running <c>library(dplyr)</c>. This function provides us with an alternative
+        perspective for exploring a data frame than the <c>View()</c> function:
+      </p>
+
+      <program language="r">
+        <input>
+glimpse(flights)
+        </input>
+      </program>
+
+      <p>
+        Observe that <c>glimpse()</c> will give you the first few entries of each variable
+        in a row after the variable name. In addition, the <em>data type</em> (see
+        <xref ref="sec-programming-concepts"/>) of the variable is given immediately after
+        each variable's name inside <c>&lt; &gt;</c>. Here, <c>int</c> and <c>dbl</c>
+        refer to <q>integer</q> and <q>double,</q> which are computer coding terminology
+        for quantitative/numerical variables. <q>Doubles</q> take up twice the size to
+        store on a computer compared to integers.
+      </p>
+
+      <p>
+        In contrast, <c>chr</c> refers to <q>character,</q> which is computer terminology
+        for text data. In most forms, text data, such as the <c>carrier</c> or
+        <c>origin</c> of a flight, are categorical variables. The <c>time_hour</c>
+        variable is another data type: <c>dttm</c>. These types of variables represent
+        date and time combinations. However, we won't work with dates and times in this
+        book; we leave this topic for other data science books like
+        <url href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em>
+        by Tiffany-Anne Timbers, Melissa Lee, and Trevor Campbell</url> or
+        <url href="https://r4ds.had.co.nz/dates-and-times.html"><em>R for Data
+        Science</em></url>.
+      </p>
+
+      <exercise xml:id="lc1-4">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.4) What are some other examples in this dataset of <em>categorical</em>
+            variables? What makes them different than <em>quantitative</em> variables?
+          </p>
+        </statement>
+      </exercise>
+
+      <p>
+        <alert>3. <c>kable()</c></alert>:
+      </p>
+
+      <p>
+        The final way to explore the entirety of a data frame is using the <c>kable()</c>
+        <idx><h>R packages</h><h>knitr</h><h>kable()</h></idx> function from the
+        <idx><h>knitr</h></idx> <c>knitr</c> package. Let's explore the different carrier
+        codes for all the airlines in our dataset two ways. Run both of these lines of
+        code in the console:
+      </p>
+
+      <program language="r">
+        <input>
+airlines
+kable(airlines)
+        </input>
+      </program>
+
+      <p>
+        At first glance, it may not appear that there is much difference in the outputs.
+        However, when using tools for producing reproducible reports such as R Markdown,
+        the latter code produces output that is much more legible and reader-friendly.
+        You'll see us use this reader-friendly style in many places in the book when we
+        want to print a data frame as a nice table.
+      </p>
+
+      <p>
+        <alert>4. <c>$</c> operator</alert>
+      </p>
+
+      <p>
+        Lastly, the <c>$</c> operator <idx><h>operators</h><h>dollar sign</h></idx> allows
+        us to extract and then explore a single variable within a data frame. For example,
+        run the following in your console:
+      </p>
+
+      <program language="r">
+        <input>
+airlines$name
+        </input>
+      </program>
+
+      <p>
+        We used the <c>$</c> operator to extract only the <c>name</c> variable and return
+        it as a vector of length 16. <idx><h>vectors</h></idx> We'll only be occasionally
+        exploring data frames using the <c>$</c> operator, instead favoring the
+        <c>View()</c> and <c>glimpse()</c> functions.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="subsec-identification-vs-measurement-variables">
+      <title>Identification and measurement variables</title>
+
+      <p>
+        There is a subtle difference between the kinds of variables that you will encounter
+        in data frames. There are <em>identification variables</em> and
+        <em>measurement variables</em>. For example, let's explore the <c>airports</c>
+        data frame by showing the output of <c>glimpse(airports)</c>:
+      </p>
+
+      <program language="r">
+        <input>
+glimpse(airports)
+        </input>
+      </program>
+
+      <p>
+        The variables <c>faa</c> and <c>name</c> are <em>identification variables</em>
+        that uniquely identify each airport. <c>faa</c> provides the airport's unique FAA
+        code, while <c>name</c> gives its official name. These variables are used to
+        uniquely identify each row in a data frame. The remaining variables
+        (<c>lat</c>, <c>lon</c>, <c>alt</c>, <c>tz</c>, <c>dst</c>, <c>tzone</c>) are
+        often called <em>measurement</em> or <em>characteristic</em> variables: variables
+        that describe properties of each observational unit. For example, <c>lat</c> and
+        <c>long</c> describe the latitude and longitude of each airport.
+      </p>
+
+      <p>
+        Furthermore, sometimes a single variable might not be enough to uniquely identify
+        each observational unit: combinations of variables might be needed. While it is
+        not an absolute rule, for organizational purposes it is considered good practice
+        to have your identification variables in the leftmost columns of your data frame.
+      </p>
+
+      <exercise xml:id="lc1-5">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.5) What properties of each airport do the variables <c>lat</c>,
+            <c>lon</c>, <c>alt</c>, <c>tz</c>, <c>dst</c>, and <c>tzone</c> describe in
+            the <c>airports</c> data frame? Take your best guess.
+          </p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc1-6">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.6) Provide the names of variables in a data frame with at least three
+            variables where one of them is an identification variable and the other two
+            are not.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="subsec-help-files">
+      <title>Help files</title>
+
+      <p>
+        Another nice feature of R are help files, which provide documentation for various
+        functions and datasets. You can bring up help files by adding a <c>?</c>
+        <idx><h>operators</h><h>?</h></idx> before the name of a function or data frame
+        and then run this in the console. You will then be presented with a page showing
+        the corresponding documentation if it exists. For example, let's look at the help
+        file for the <c>flights</c> data frame.
+      </p>
+
+      <program language="r">
+        <input>
+?flights
+        </input>
+      </program>
+
+      <p>
+        The help file should pop up in the Help pane of RStudio. If you have questions
+        about a function or data frame included in an R package, you should get in the
+        habit of consulting the help file right away.
+      </p>
+
+      <exercise xml:id="lc1-7">
+        <title>Learning Check</title>
+        <statement>
+          <p>
+            (LC1.7) Look at the help file for the <c>airports</c> data frame. Revise your
+            earlier guesses about what the variables <c>lat</c>, <c>lon</c>, <c>alt</c>,
+            <c>tz</c>, <c>dst</c>, and <c>tzone</c> each describe.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-conclusion-ch1">
+    <title>Conclusion</title>
+
+    <p>
+      This chapter provides a small set of tools to explore data in R, but it's far from
+      exhaustive. Including everything would overwhelm rather than help. The best way to
+      add to your toolbox is running and writing code in RStudio as much as possible.
+    </p>
+
+
+    <subsection xml:id="subsec-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        If you are new to the world of coding, R, and RStudio and feel you could benefit
+        from a more detailed introduction, we suggest the short book,
+        <url href="https://rbasics.netlify.app/"><em>Getting Used to R, RStudio, and R
+        Markdown</em></url>, previewed in <xref ref="fig-ismay-book"/>. It includes
+        screencasts that you can follow along and pause as you learn. This book also
+        contains an introduction to R Markdown, a tool used for reproducible research.
+      </p>
+
+      <figure xml:id="fig-ismay-book">
+        <caption>Preview of <em>Getting Used to R, RStudio, and R Markdown</em>.</caption>
+        <image source="images/copyright/getting_used_to_r.png" width="82%">
+          <description>A preview of the book cover for Getting Used to R, RStudio, and R Markdown.</description>
+        </image>
+      </figure>
+    </subsection>
+
+
+    <subsection xml:id="subsec-whats-to-come">
+      <title>What's to come?</title>
+
+      <p>
+        We're next heading into the <q>Data Science with <c>tidyverse</c></q> portion in
+        the chapter on Data Visualization as shown in
+        <xref ref="fig-moderndive-flowchart"/> with what we feel is the most important
+        tool in a data scientist's toolbox: data visualization. We'll continue to explore
+        the data included in the <c>moderndive</c> and <c>nycflights23</c> packages using
+        the <c>ggplot2</c> package for data visualization. Data visualization is a
+        powerful tool to add to your toolbox for data exploration that provides additional
+        insight to what the <c>View()</c> and <c>glimpse()</c> functions can provide.
+      </p>
+
+      <figure xml:id="fig-moderndive-flowchart">
+        <caption><em>ModernDive</em> flowchart &#8211; on to Part I!</caption>
+        <image source="images/flowcharts/flowchart/flowchart.004.png" width="70%">
+          <description>A flowchart showing the structure of the ModernDive book, with Chapter 1 completed and an arrow pointing to Part I: Data Science with tidyverse.</description>
+        </image>
+      </figure>
+    </subsection>
+  </section>
+
+</chapter>

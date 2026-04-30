@@ -12,10 +12,10 @@
 
   <!-- The <book> tags wrap all the content.  Change the @xml:id   -->
   <!-- to some short (non-spaced) description of your book         -->
-  <book xml:id="book-id-here">
+  <book xml:id="moderndive">
     <!-- The book needs a title and can have a subtitle  -->
-    <title>Title</title>
-    <subtitle>Subtitle</subtitle>
+    <title>Statistical Inference via Data Science</title>
+    <subtitle>A ModernDive into R and the Tidyverse (Second Edition)</subtitle>
 
     <!-- Now we include files containing each main devision.       -->
 
@@ -23,8 +23,8 @@
     <!-- out for now and write this when the book is more complete -->
     <xi:include href="./meta_frontmatter.ptx" />
 
-    <!-- Introduction chapter -->
-    <xi:include href="./ch_intro.ptx" />
+    <!-- Chapter 1: Getting Started with Data in R -->
+    <xi:include href="./ch_getting_started.ptx" />
 
     <!-- Chapter 2: Data Visualization -->
     <xi:include href="./ch_visualization.ptx" />

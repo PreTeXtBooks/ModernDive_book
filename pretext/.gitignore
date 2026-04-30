@@ -8,6 +8,11 @@ output
 # don't track assets generated from source
 generated-assets
 
+# don't track images copied by copy_images.py (build artifacts)
+# these are generated from the top-level images/ directory
+assets/images/
+!assets/images/placeholder.jpeg
+
 # don't track node packages
 node_modules
 

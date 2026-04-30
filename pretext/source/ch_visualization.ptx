@@ -1,9 +1,2150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter xml:id="viz" xmlns:xi="http://www.w3.org/2001/XInclude">
+<chapter xml:id="ch-visualization" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Data Visualization</title>
 
   <p>
-    This chapter will cover data visualization using the <c>ggplot2</c> package.
+    We begin the development of your data science toolbox with data visualization. By
+    visualizing data, we gain valuable insights we couldn't initially obtain from just
+    looking at the raw data values. We'll use the <c>ggplot2</c> package, as it provides
+    an easy way to customize your plots. <c>ggplot2</c> is rooted in the data
+    visualization theory known as <em>the grammar of graphics</em>, developed by Leland
+    Wilkinson. <idx><h>Wilkinson, Leland</h></idx>
   </p>
+  <p>
+    At their most basic, graphics/plots/charts (we use these terms interchangeably in
+    this book) provide a nice way to explore the patterns in data, such as the presence
+    of <em>outliers</em>, <em>distributions</em> of individual variables, and
+    <em>relationships</em> between groups of variables. Graphics are designed to
+    emphasize the findings and insights you want your audience to understand. This does,
+    however, require a balancing act. On the one hand, you want to highlight as many
+    interesting findings as possible. On the other hand, you don't want to include so
+    much information that it overwhelms your audience.
+  </p>
+  <p>
+    As we will see, plots <idx><h>plots</h></idx> also help us to identify patterns and
+    outliers in our data. We'll see that a common extension of these ideas is to compare
+    the <em>distribution</em> <idx><h>distribution</h></idx> of one numerical variable,
+    such as what are the center and spread of the values, as we go across the levels of a
+    different categorical variable.
+  </p>
+
+  <assemblage>
+    <title>Needed packages</title>
+    <p>
+      Let's load all the packages needed for this chapter (this assumes you've already
+      installed them). Read <xref ref="sec-packages"/> for information on how to install
+      and load R packages.
+    </p>
+    <program language="r">
+      <input>
+library(nycflights23)
+library(ggplot2)
+library(moderndive)
+library(tibble)
+      </input>
+    </program>
+  </assemblage>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-grammar-of-graphics">
+    <title>The grammar of graphics</title>
+
+    <p>
+      We start with a discussion of a theoretical framework for data visualization known
+      as <q>the grammar of graphics.</q> This framework serves as the foundation for the
+      <c>ggplot2</c> package <idx><h>R packages</h><h>ggplot2</h></idx> which we'll use
+      extensively in this chapter. <idx><h>Grammar of Graphics, The</h></idx> Think of
+      how we construct and form sentences in English by combining different elements, like
+      nouns, verbs, articles, subjects, objects, etc. We can't just combine these
+      elements in any arbitrary order; we must do so following a set of rules known as a
+      linguistic grammar. Similarly to a linguistic grammar, <q>the grammar of
+      graphics</q> defines a set of rules for constructing <em>statistical graphics</em>
+      by combining different types of <em>layers</em>. This grammar was created by Leland
+      Wilkinson and has been implemented in a variety of data visualization software
+      platforms like R, but also <url href="https://plot.ly/">Plotly</url> and
+      <url href="https://www.tableau.com/">Tableau</url>.
+    </p>
+
+
+    <subsection xml:id="sec-grammar-components">
+      <title>Components of the grammar</title>
+
+      <p>
+        In short, the grammar tells us that:
+      </p>
+      <blockquote>
+        <p>
+          A statistical graphic is a <c>mapping</c> of <c>data</c> variables to
+          <c>aes</c>thetic attributes of <c>geom</c>etric objects.
+        </p>
+      </blockquote>
+      <p>
+        Specifically, we can break a graphic into the following three essential
+        components:
+      </p>
+      <p>
+        <ol>
+          <li><p><c>data</c>: the dataset containing the variables of interest.</p></li>
+          <li><p><c>geom</c>: the geometric object in question. This refers to the type
+          of object we can observe in a plot. For example: points, lines, and
+          bars.</p></li>
+          <li><p><c>aes</c>: aesthetic attributes of the geometric object. For example,
+          x/y position, color, shape, and size. Aesthetic attributes are <em>mapped</em>
+          to variables in the dataset.</p></li>
+        </ol>
+      </p>
+      <p>
+        You might be wondering why we wrote the terms <c>data</c>, <c>geom</c>, and
+        <c>aes</c> in a computer code type font. We'll see very shortly that we'll
+        specify the elements of the grammar in R using these terms. However, let's first
+        break down the grammar with an example.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-gapminder">
+      <title>Gapminder data</title>
+
+      <p>
+        In February 2006, a Swedish physician and data advocate named Hans Rosling gave a
+        TED talk titled
+        <url href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen"><q>The best stats you've ever seen</q></url>
+        where he presented global economic, health, and development data from the website
+        <url href="http://www.gapminder.org/tools/#_locale_id=en;&amp;chart-type=bubbles">gapminder.org</url>.
+        For example, for data on 142 countries in 2007, let's consider only a few
+        countries as a peek into the data (see <xref ref="tab-gapminder-2007"/>).
+      </p>
+
+      <table xml:id="tab-gapminder-2007">
+        <title>Gapminder 2007 Data: First 3 of 142 countries</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>Country</cell>
+            <cell>Continent</cell>
+            <cell>Life Expectancy</cell>
+            <cell>Population</cell>
+            <cell>GDP per Capita</cell>
+          </row>
+          <row>
+            <cell>Afghanistan</cell><cell>Asia</cell><cell>43.83</cell>
+            <cell>31889923</cell><cell>974.58</cell>
+          </row>
+          <row>
+            <cell>Albania</cell><cell>Europe</cell><cell>76.42</cell>
+            <cell>3600523</cell><cell>5937.03</cell>
+          </row>
+          <row>
+            <cell>Algeria</cell><cell>Africa</cell><cell>72.30</cell>
+            <cell>33333216</cell><cell>6223.37</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        Each row in this table corresponds to a country in 2007. For each row, we have
+        5 columns:
+      </p>
+      <p>
+        <ol>
+          <li><p><alert>Country</alert>: Name of country.</p></li>
+          <li><p><alert>Continent</alert>: Which of the five continents the country is
+          part of. Note that <q>Americas</q> includes countries in both North and South
+          America and that Antarctica is excluded.</p></li>
+          <li><p><alert>Life Expectancy</alert>: Life expectancy in years.</p></li>
+          <li><p><alert>Population</alert>: Number of people living in the
+          country.</p></li>
+          <li><p><alert>GDP per Capita</alert>: Gross domestic product (in US
+          dollars).</p></li>
+        </ol>
+      </p>
+      <p>
+        Now consider <xref ref="fig-gapminder"/>, which plots this for all 142 of the
+        data's countries.
+      </p>
+
+      <figure xml:id="fig-gapminder">
+        <caption>Life expectancy over GDP per capita in 2007.</caption>
+        <image source="images/fig-gapminder.png" width="90%">
+          <description>Scatterplot of life expectancy (y-axis) versus GDP per capita (x-axis) for 142 countries in 2007, with point size representing population and color representing continent.</description>
+        </image>
+      </figure>
+
+      <p>
+        Let's view this plot through the grammar of graphics:
+      </p>
+      <p>
+        <ol>
+          <li><p>The <c>data</c> variable <alert>GDP per Capita</alert> gets mapped to
+          the <c>x</c>-position <c>aes</c>thetic <idx><h>R packages</h><h>ggplot2</h><h>aes()</h></idx>
+          of the points.</p></li>
+          <li><p>The <c>data</c> <idx><h>R packages</h><h>ggplot2</h><h>data</h></idx>
+          variable <alert>Life Expectancy</alert> gets mapped to the <c>y</c>-position
+          <c>aes</c>thetic of the points.</p></li>
+          <li><p>The <c>data</c> variable <alert>Population</alert> gets mapped to the
+          <c>size</c> <c>aes</c>thetic of the points.</p></li>
+          <li><p>The <c>data</c> variable <alert>Continent</alert> gets mapped to the
+          <c>color</c> <c>aes</c>thetic of the points.</p></li>
+        </ol>
+      </p>
+      <p>
+        We'll see shortly that <c>data</c> corresponds to the particular data frame where
+        our data is saved and that <q>data variables</q> correspond to particular columns
+        in the data frame. Furthermore, the type of <c>geom</c>etric object
+        <idx><h>R packages</h><h>ggplot2</h><h>geom</h></idx> considered in this plot are
+        points. That being said, while in this example we are considering points, graphics
+        are not limited to just points. We can also use lines, bars, and other geometric
+        objects.
+      </p>
+      <p>
+        Let's summarize the three essential components of the grammar in
+        <xref ref="tab-summary-gapminder"/>.
+      </p>
+
+      <table xml:id="tab-summary-gapminder">
+        <title>Summary of the grammar of graphics for this plot</title>
+        <tabular halign="center">
+          <row header="yes" bottom="minor">
+            <cell>data variable</cell>
+            <cell>aes</cell>
+            <cell>geom</cell>
+          </row>
+          <row><cell>GDP per Capita</cell><cell>x</cell><cell>point</cell></row>
+          <row><cell>Life Expectancy</cell><cell>y</cell><cell>point</cell></row>
+          <row><cell>Population</cell><cell>size</cell><cell>point</cell></row>
+          <row><cell>Continent</cell><cell>color</cell><cell>point</cell></row>
+        </tabular>
+      </table>
+    </subsection>
+
+
+    <subsection xml:id="sec-other-components">
+      <title>Other components</title>
+
+      <p>
+        There are other components of the grammar of graphics we can control as well. As
+        you start to delve deeper into the grammar of graphics, you'll start to encounter
+        these topics more frequently. In this book, we'll keep things simple and only
+        work with these two additional components:
+      </p>
+      <p>
+        <ul>
+          <li><p><c>facet</c>ing breaks up a plot into several plots split by the values
+          of another variable (<xref ref="sec-facets"/>)
+          <idx><h>R packages</h><h>ggplot2</h><h>facet</h></idx></p></li>
+          <li><p><c>position</c> adjustments for barplots (<xref ref="sec-barplots"/>)
+          <idx><h>R packages</h><h>ggplot2</h><h>position</h></idx></p></li>
+        </ul>
+      </p>
+      <p>
+        Other more complex components like <c>scales</c> and <c>coord</c>inate systems
+        are left for a more advanced text such as
+        <url href="http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings"><em>R for Data Science</em></url>.
+        Generally speaking, the grammar of graphics allows for a high degree of
+        customization of plots and also a consistent framework for easily updating and
+        modifying them.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-ggplot2-package">
+      <title>ggplot2 package</title>
+
+      <p>
+        In this book, we will use the <c>ggplot2</c> package for data visualization,
+        which is an implementation of the <em>g</em>rammar of <em>g</em>raphics for R.
+        As we noted earlier, a lot of the previous section was written in a computer code
+        type font. This is because the various components of the grammar of graphics are
+        specified in the <c>ggplot()</c>
+        <idx><h>R packages</h><h>ggplot2</h><h>ggplot()</h></idx> function included in
+        the <c>ggplot2</c> package. For the purposes of this book, we'll always provide
+        the <c>ggplot()</c> function with the following arguments (i.e., inputs) at a
+        minimum:
+      </p>
+      <p>
+        <ul>
+          <li><p>The data frame where the variables exist: the <c>data</c>
+          argument.</p></li>
+          <li><p>The mapping of the variables to aesthetic attributes: the
+          <c>mapping</c> argument which specifies the <c>aes</c>thetic attributes
+          involved.</p></li>
+        </ul>
+      </p>
+      <p>
+        After we've specified these components, we then add <em>layers</em> to the plot
+        using the <c>+</c> sign. The most essential layer to add to a plot is the layer
+        that specifies which type of <c>geom</c>etric object we want the plot to involve:
+        points, lines, bars, and others. Other layers we can add to a plot include the
+        plot title, axes labels, visual themes for the plots, and facets (which we'll see
+        in <xref ref="sec-facets"/>).
+      </p>
+      <p>
+        Let's now put the theory of the grammar of graphics into practice.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-five-ng">
+    <title>Five named graphs &#x2013; the 5NG</title>
+
+    <p>
+      In order to keep things simple in this book, we will only focus on five different
+      types of graphics, each with a commonly given name. We term these <q>five named
+      graphs</q> or in abbreviated form, the <alert>5NG</alert>:
+      <idx><h>five named graphs</h></idx>
+    </p>
+    <p>
+      <ol>
+        <li><p>scatterplots</p></li>
+        <li><p>linegraphs</p></li>
+        <li><p>histograms</p></li>
+        <li><p>boxplots</p></li>
+        <li><p>barplots</p></li>
+      </ol>
+    </p>
+    <p>
+      We'll also present some variations of these plots, but with this basic repertoire
+      of five graphics in your toolbox, you can visualize a wide array of different
+      variable types. Note that certain plots are only appropriate for categorical
+      variables, while others are only appropriate for numerical variables.
+    </p>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-scatterplots">
+    <title>5NG#1: Scatterplots</title>
+
+    <p>
+      The simplest of the 5NG are <em>scatterplots</em>,
+      <idx><h>scatterplots</h></idx> also called <em>bivariate plots</em>. They allow you
+      to visualize the <em>relationship</em> between two numerical variables. While you
+      may already be familiar with scatterplots, let's view them through the lens of the
+      grammar of graphics we presented in <xref ref="sec-grammar-of-graphics"/>.
+      Specifically, we will visualize the relationship between the following two numerical
+      variables in the <c>envoy_flights</c> data frame included in the
+      <idx><h>R packages</h><h>moderndive</h></idx> <c>moderndive</c> package:
+    </p>
+    <p>
+      <ol>
+        <li><p><c>dep_delay</c>: departure delay on the horizontal <q>x</q> axis
+        and</p></li>
+        <li><p><c>arr_delay</c>: arrival delay on the vertical <q>y</q> axis</p></li>
+      </ol>
+    </p>
+    <p>
+      for Envoy Airlines flights leaving NYC in 2023. In other words,
+      <c>envoy_flights</c> does not consist of <em>all</em> flights that left NYC in
+      2023, but rather only those flights where <c>carrier</c> is <c>MQ</c> (which is
+      Envoy Airlines' carrier code).
+    </p>
+
+    <exercise xml:id="lc2-1">
+      <title>Learning Check 2.1</title>
+      <statement>
+        <p>
+          Take a look at both the <c>flights</c> data frame from the
+          <c>nycflights23</c> package and the <c>envoy_flights</c> data frame from the
+          <c>moderndive</c> package by running <c>View(flights)</c> and
+          <c>View(envoy_flights)</c>. In what respect do these data frames differ? For
+          example, think about the number of rows in each dataset.
+        </p>
+      </statement>
+    </exercise>
+
+
+    <subsection xml:id="sec-geom-point">
+      <title>Scatterplots via <c>geom_point</c></title>
+
+      <p>
+        Let's now go over the code that will create the desired scatterplot, while keeping
+        in mind the grammar of graphics framework we introduced in
+        <xref ref="sec-grammar-of-graphics"/>. Let's take a look at the code and break it
+        down piece-by-piece.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay)) + 
+  geom_point()
+        </input>
+      </program>
+
+      <p>
+        Within the <c>ggplot()</c>
+        <idx><h>R packages</h><h>ggplot2</h><h>ggplot()</h></idx> function, we specify
+        two of the components of the grammar of graphics as arguments (i.e., inputs):
+      </p>
+      <p>
+        <ol>
+          <li><p>The <c>data</c> as the <c>envoy_flights</c> data frame via
+          <c>data = envoy_flights</c>.</p></li>
+          <li><p>The <c>aes</c>thetic
+          <idx><h>R packages</h><h>ggplot2</h><h>mapping</h></idx>
+          <c>mapping</c> by setting
+          <c>mapping = aes(x = dep_delay, y = arr_delay)</c>. Specifically, the variable
+          <c>dep_delay</c> maps to the <c>x</c> position aesthetic, while the variable
+          <c>arr_delay</c> maps to the <c>y</c> position.</p></li>
+        </ol>
+      </p>
+      <p>
+        We then add a layer to the <c>ggplot()</c> function call using the <c>+</c>
+        sign. The added layer in question specifies the third component of the grammar:
+        the <c>geom</c>etric object. In this case, the geometric object is set to be
+        points by specifying <c>geom_point()</c>. After running these two lines of code
+        in your console, you'll notice two outputs: a warning message and the graphic
+        shown in <xref ref="fig-noalpha"/>.
+      </p>
+
+      <figure xml:id="fig-noalpha">
+        <caption>Arrival delays versus departure delays for Envoy Air flights from NYC in 2023.</caption>
+        <image source="images/fig-noalpha.png" width="90%">
+          <description>Scatterplot showing arrival delay (y-axis) versus departure delay (x-axis) for Envoy Air flights from NYC in 2023. A dense cluster of points is visible near (0, 0) with a positive linear trend.</description>
+        </image>
+      </figure>
+
+      <pre>
+Warning: Removed 3 rows containing missing values or values outside the scale range 
+(`geom_point()`).
+      </pre>
+
+      <p>
+        Let's first unpack the graphic in <xref ref="fig-noalpha"/>. Observe that a
+        <em>positive relationship</em> exists between <c>dep_delay</c> and
+        <c>arr_delay</c>: as departure delays increase, arrival delays tend to also
+        increase. Observe also the large mass of points clustered near (0, 0), the point
+        indicating flights that neither departed nor arrived late.
+      </p>
+      <p>
+        Let's turn our attention to the warning message. R is alerting us to the fact
+        that three rows were ignored due to them being missing. For these three rows,
+        either the value for <c>dep_delay</c> or <c>arr_delay</c> or both were missing
+        (recorded in R as <c>NA</c>), and thus these rows were ignored in our plot.
+      </p>
+      <p>
+        Before we continue, let's make a few more observations about this code that
+        created the scatterplot. Note that the <c>+</c> sign comes at the end of lines,
+        and not at the beginning. You'll get an error in R if you put it at the beginning
+        of a line. <idx><h>R packages</h><h>ggplot2</h><h>+</h></idx> When adding layers
+        to a plot, you are encouraged to start a new line after the <c>+</c> (by pressing
+        the Return/Enter button on your keyboard) so that the code for each layer is on a
+        new line. As we add more and more layers to plots, you'll see this will greatly
+        improve the legibility of your code.
+      </p>
+      <p>
+        To stress the importance of adding the layer specifying the <c>geom</c>etric
+        object, consider <xref ref="fig-nolayers"/> where no layers are added. Because
+        the <c>geom</c>etric object was not specified, we have a blank plot that is not
+        very useful!
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay))
+        </input>
+      </program>
+
+      <figure xml:id="fig-nolayers">
+        <caption>A plot with no layers.</caption>
+        <image source="images/fig-nolayers.png" width="90%">
+          <description>An empty ggplot canvas with x-axis labeled dep_delay and y-axis labeled arr_delay but no data points or geometric objects shown.</description>
+        </image>
+      </figure>
+
+      <exercise xml:id="lc2-2">
+        <title>Learning Check 2.2</title>
+        <statement>
+          <p>What are practical reasons why <c>dep_delay</c> and <c>arr_delay</c> have
+          a positive relationship?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-3">
+        <title>Learning Check 2.3</title>
+        <statement>
+          <p>What variables in the <c>weather</c> data frame would you expect to have a
+          negative correlation (i.e., a negative relationship) with <c>dep_delay</c>?
+          Why? Remember that we are focusing on numerical variables here. Hint: Explore
+          the <c>weather</c> dataset by using the <c>View()</c> function.</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-4">
+        <title>Learning Check 2.4</title>
+        <statement>
+          <p>Why do you believe there is a cluster of points near (0, 0)? What does (0,
+          0) correspond to in terms of the Envoy Air flights?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-5">
+        <title>Learning Check 2.5</title>
+        <statement>
+          <p>What are some other features of the plot that stand out to you?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-6">
+        <title>Learning Check 2.6</title>
+        <statement>
+          <p>Create a new scatterplot using different variables in the
+          <c>envoy_flights</c> data frame by modifying the example given.</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-overplotting">
+      <title>Overplotting</title>
+
+      <p>
+        The large mass of points near (0, 0) in <xref ref="fig-noalpha"/> can cause some
+        confusion since it is hard to tell the true number of points that are plotted.
+        This is the result of a phenomenon called
+        <idx><h>overplotting</h></idx> <em>overplotting</em>. As one may guess, this
+        corresponds to points being plotted on top of each other over and over again. When
+        overplotting occurs, it is difficult to know the number of points being plotted.
+        There are two methods to address the issue of overplotting. Either by
+      </p>
+      <p>
+        <ol>
+          <li><p>Adjusting the transparency of the points or</p></li>
+          <li><p>Adding a little random <q>jitter</q> (or random <q>nudges</q>) to each
+          of the points.</p></li>
+        </ol>
+      </p>
+
+      <p>
+        <alert>Method 1: Changing the transparency</alert>
+      </p>
+      <p>
+        The first way of addressing overplotting is to change the transparency/opacity of
+        the points by setting the <c>alpha</c> argument in <c>geom_point()</c>. We can
+        change the <c>alpha</c> argument to be any value between <c>0</c> and <c>1</c>,
+        where <c>0</c> sets the points to be 100% transparent and <c>1</c> sets the
+        points to be 100% opaque. By default, <c>alpha</c> is set to <c>1</c>. In other
+        words, if we don't explicitly set an <c>alpha</c> value, R will use
+        <c>alpha = 1</c>.
+      </p>
+      <p>
+        Note how the following code is identical to the code in
+        <xref ref="sec-scatterplots"/> that created the scatterplot with overplotting,
+        but with <c>alpha = 0.2</c> added to the <c>geom_point()</c> function:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay)) + 
+  geom_point(alpha = 0.2)
+        </input>
+      </program>
+
+      <figure xml:id="fig-alpha">
+        <caption>Arrival vs. departure delays scatterplot with alpha = 0.2.</caption>
+        <image source="images/fig-alpha.png" width="90%">
+          <description>Scatterplot of arrival delay versus departure delay with alpha transparency set to 0.2. Areas with more overplotting appear darker, revealing the density of points clustered near (0, 0).</description>
+        </image>
+      </figure>
+
+      <p>
+        The key feature to note in <xref ref="fig-alpha"/> is that the transparency
+        <idx><h>R packages</h><h>ggplot2</h><h>alpha</h></idx>
+        <idx><h>adding transparency to plots</h></idx> of the points is cumulative: areas
+        with a high-degree of overplotting are darker, whereas areas with a lower degree
+        are less dark. Note, furthermore, that there is no <c>aes()</c> surrounding
+        <c>alpha = 0.2</c>. This is because we are not mapping a variable to an aesthetic
+        attribute, but rather merely changing the default setting of <c>alpha</c>. In
+        fact, you'll receive an error if you try to change the second line to read
+        <c>geom_point(aes(alpha = 0.2))</c>.
+      </p>
+
+      <p>
+        <alert>Method 2: Jittering the points</alert>
+      </p>
+      <p>
+        The second way of addressing overplotting is by <em>jittering</em> all the
+        points. This means giving each point a small <q>nudge</q> in a random direction.
+        You can think of <q>jittering</q> as shaking the points around a bit on the plot.
+        Let's illustrate using a simple example first. Say we have a data frame with 4
+        identical rows of x and y values: (0,0), (0,0), (0,0), and (0,0). In
+        <xref ref="fig-jitter-example-plot-1"/>, we present both the regular scatterplot
+        of these 4 points (on the left) and its jittered counterpart (on the right).
+      </p>
+
+      <figure xml:id="fig-jitter-example-plot-1">
+        <caption>Regular and jittered scatterplot.</caption>
+        <image source="images/fig-jitter-example-plot-1.png" width="90%">
+          <description>Two side-by-side plots. The left shows a regular scatterplot where 4 identical points are stacked on top of each other at (0,0). The right shows a jittered scatterplot where the same 4 points are slightly offset in random directions.</description>
+        </image>
+      </figure>
+
+      <p>
+        In the left-hand regular scatterplot, observe that the 4 points are superimposed
+        on top of each other. While we know there are 4 values being plotted, this fact
+        might not be apparent to others. In the right-hand jittered scatterplot, it is
+        now plainly evident that this plot involves four points since each point is given
+        a random <q>nudge.</q>
+      </p>
+      <p>
+        Keep in mind, however, that jittering is strictly a visualization tool; even
+        after creating a jittered scatterplot, the original values saved in the data frame
+        remain unchanged.
+        <idx><h>R packages</h><h>ggplot2</h><h>geom_jitter()</h></idx>
+      </p>
+      <p>
+        To create a jittered scatterplot, instead of using <c>geom_point()</c>, we use
+        <c>geom_jitter()</c>. Observe how the following code is very similar to the code
+        that created the scatterplot with overplotting in
+        <xref ref="sec-geom-point"/>, but with
+        <c>geom_point()</c>
+        <idx><h>R packages</h><h>ggplot2</h><h>geom_point()</h></idx> replaced with
+        <c>geom_jitter()</c>.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay)) + 
+  geom_jitter(width = 30, height = 30)
+        </input>
+      </program>
+
+      <figure xml:id="fig-jitter">
+        <caption>Arrival versus departure delays jittered scatterplot.</caption>
+        <image source="images/fig-jitter.png" width="90%">
+          <description>Jittered scatterplot of arrival delay versus departure delay for Envoy Air flights, with width and height jitter of 30 minutes applied to reveal the distribution of overlapping points.</description>
+        </image>
+      </figure>
+
+      <p>
+        In order to specify how much jitter to add, we adjusted the <c>width</c> and
+        <c>height</c> arguments to <c>geom_jitter()</c>. This corresponds to how hard
+        you'd like to shake the plot in horizontal x-axis units and vertical y-axis
+        units, respectively. In this case, both axes are in minutes. How much jitter
+        should we add using the <c>width</c> and <c>height</c> arguments? On the one
+        hand, it is important to add just enough jitter to break any overlap in points,
+        but on the other hand, not so much that we completely alter the original pattern
+        in points.
+      </p>
+      <p>
+        As can be seen in the resulting <xref ref="fig-jitter"/>, in this case jittering
+        doesn't really provide much new insight. In this particular case, it can be argued
+        that changing the transparency of the points by setting <c>alpha</c> proved more
+        effective. When would it be better to use a jittered scatterplot? When would it
+        be better to alter the points' transparency? There is no single right answer that
+        applies to all situations. You need to make a subjective choice and own that
+        choice. At the very least when confronted with overplotting, however, we suggest
+        you make both types of plots and see which one better emphasizes the point you are
+        trying to make.
+      </p>
+
+      <exercise xml:id="lc2-7">
+        <title>Learning Check 2.7</title>
+        <statement>
+          <p>Why is setting the <c>alpha</c> argument value useful with scatterplots?
+          What further information does it give you that a regular scatterplot
+          cannot?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-8">
+        <title>Learning Check 2.8</title>
+        <statement>
+          <p>After viewing <xref ref="fig-alpha"/>, give an approximate range of arrival
+          delays and departure delays that occur most frequently. How has that region
+          changed compared to when you observed the same plot without <c>alpha = 0.2</c>
+          set in <xref ref="fig-noalpha"/>?</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-scatter-summary">
+      <title>Summary</title>
+
+      <p>
+        Scatterplots display the relationship between two numerical variables. They are
+        among the most commonly used plots because they can provide an immediate way to
+        see the trend in one numerical variable versus another. However, if you try to
+        create a scatterplot where either one of the two variables is not numerical, you
+        might get strange results. Be careful!
+      </p>
+      <p>
+        With medium to large datasets, you may need to play around with the different
+        modifications to scatterplots we saw such as changing the transparency/opacity
+        of the points or by jittering the points. This tweaking is often a fun part of
+        data visualization, since you'll have the chance to see different relationships
+        emerge as you tinker with your plots.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-linegraphs">
+    <title>5NG#2: Linegraphs</title>
+
+    <p>
+      The next of the five named graphs are linegraphs. Linegraphs
+      <idx><h>linegraphs</h></idx> show the relationship between two numerical variables
+      when the variable on the x-axis, also called the <em>explanatory</em>
+      variable<idx><h>explanatory variable</h></idx>, is of a sequential nature. In other
+      words, there is an inherent ordering to the variable.
+    </p>
+    <p>
+      The most common examples of linegraphs have some notion of time on the x-axis:
+      hours, days, weeks, years, etc. Since time is sequential, we connect consecutive
+      observations of the variable on the y-axis with a line. Linegraphs that have some
+      notion of time on the x-axis are also called <em>time series</em> plots
+      <idx><h>time series plots</h></idx>. Let's illustrate linegraphs using another
+      dataset in the <c>nycflights23</c>
+      <idx><h>R packages</h><h>nycflights23</h></idx> package: the <c>weather</c> data
+      frame.
+    </p>
+    <p>
+      Let's explore the <c>weather</c> data frame from the <c>nycflights23</c> package
+      by running <c>View(weather)</c> and <c>glimpse(weather)</c>. Furthermore, let's
+      read the associated help file by running <c>?weather</c> to bring up the help
+      file.
+    </p>
+    <p>
+      Observe that there is a variable called <c>wind_speed</c> of hourly wind speed
+      recordings in miles per hour at weather stations near all three major airports in
+      New York City: Newark (<c>origin</c> code <c>EWR</c>), John F. Kennedy
+      International (<c>JFK</c>), and LaGuardia (<c>LGA</c>).
+    </p>
+    <p>
+      However, instead of considering hourly wind speeds for all days in 2023 for all
+      three airports, for simplicity let's only consider hourly wind speeds at Newark
+      airport for the first 15 days in January. This data is accessible in the
+      <c>early_january_2023_weather</c> data frame included in the <c>moderndive</c>
+      package. In other words, <c>early_january_2023_weather</c> contains hourly weather
+      observations for <c>origin</c> equal to <c>EWR</c> (Newark's airport code),
+      <c>month</c> equal to <c>1</c>, and <c>day</c> less than or equal to <c>15</c>.
+    </p>
+
+    <exercise xml:id="lc2-9">
+      <title>Learning Check 2.9</title>
+      <statement>
+        <p>Take a look at both the <c>weather</c> data frame from the
+        <c>nycflights23</c> package and the <c>early_january_2023_weather</c> data frame
+        from the <c>moderndive</c> package by running <c>View(weather)</c> and
+        <c>View(early_january_2023_weather)</c>. In what respect do these data frames
+        differ?</p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="lc2-10">
+      <title>Learning Check 2.10</title>
+      <statement>
+        <p><c>View()</c> the <c>flights</c> data frame again. Why does the
+        <c>time_hour</c> variable uniquely identify the hour of the measurement, whereas
+        the <c>hour</c> variable does not?</p>
+      </statement>
+    </exercise>
+
+
+    <subsection xml:id="sec-geom-line">
+      <title>Linegraphs via <c>geom_line</c></title>
+
+      <p>
+        Let's create a time series plot (as seen in <xref ref="fig-hourlytemp"/>) of the
+        hourly wind speeds saved in the <c>early_january_2023_weather</c> data frame by
+        using <c>geom_line()</c> to create a linegraph
+        <idx><h>R packages</h><h>ggplot2</h><h>geom_line()</h></idx>, instead of using
+        <c>geom_point()</c> like we used previously to create scatterplots:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = early_january_2023_weather, 
+       mapping = aes(x = time_hour, y = wind_speed)) +
+  geom_line()
+        </input>
+      </program>
+
+      <figure xml:id="fig-hourlytemp">
+        <caption>Hourly wind speed in Newark for January 1&#x2013;15, 2023.</caption>
+        <image source="images/fig-hourlytemp.png" width="90%">
+          <description>Line graph showing hourly wind speed (y-axis, in mph) over time (x-axis, from January 1 to 15, 2023) at Newark airport. Wind speed fluctuates throughout the period with several peaks.</description>
+        </image>
+      </figure>
+
+      <p>
+        Much as with the <c>ggplot()</c> code that created the scatterplot of departure
+        and arrival delays for Envoy Air flights in <xref ref="fig-noalpha"/>, let's
+        break down this code piece-by-piece in terms of the grammar of graphics:
+      </p>
+      <p>
+        Within the <c>ggplot()</c> function call, we specify two of the components of
+        the grammar of graphics as arguments:
+      </p>
+      <p>
+        <ol>
+          <li><p>The <c>data</c> to be the <c>early_january_2023_weather</c> data frame
+          by setting <c>data = early_january_2023_weather</c>.</p></li>
+          <li><p>The <c>aes</c>thetic <c>mapping</c> by setting
+          <c>mapping = aes(x = time_hour, y = wind_speed)</c>. Specifically, the variable
+          <c>time_hour</c> maps to the <c>x</c> position aesthetic, while the variable
+          <c>wind_speed</c> maps to the <c>y</c> position aesthetic.</p></li>
+        </ol>
+      </p>
+      <p>
+        We add a layer to the <c>ggplot()</c> function call using the <c>+</c> sign. The
+        layer in question specifies the third component of the grammar: the
+        <c>geom</c>etric object in question. In this case, the geometric object is a
+        <c>line</c> set by specifying <c>geom_line()</c>.
+      </p>
+
+      <exercise xml:id="lc2-11">
+        <title>Learning Check 2.11</title>
+        <statement>
+          <p>Why should linegraphs be avoided when there is not a clear ordering of the
+          horizontal axis?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-12">
+        <title>Learning Check 2.12</title>
+        <statement>
+          <p>Why are linegraphs frequently used when time is the explanatory variable on
+          the x-axis?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-13">
+        <title>Learning Check 2.13</title>
+        <statement>
+          <p>Plot a time series of a variable other than <c>wind_speed</c> for Newark
+          Airport in the first 15 days of January 2023. Try to select a variable that
+          doesn't have a lot of missing (<c>NA</c>) values.</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-linegraph-summary">
+      <title>Summary</title>
+
+      <p>
+        Linegraphs, just like scatterplots, display the relationship between two
+        numerical variables. However, it is preferred to use linegraphs over scatterplots
+        when the variable on the x-axis (i.e., the explanatory variable) has an inherent
+        ordering, such as some notion of time.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-histograms">
+    <title>5NG#3: Histograms</title>
+
+    <p>
+      Let's consider the <c>wind_speed</c> variable in the <c>weather</c> data frame
+      once again, but unlike with the linegraphs in <xref ref="sec-linegraphs"/>, let's
+      say we don't care about its relationship with time, but rather we only care about
+      how the values of <c>wind_speed</c> <em>distribute</em>. In other words:
+    </p>
+    <p>
+      <ol>
+        <li><p>What are the smallest and largest values?</p></li>
+        <li><p>What is the <q>center</q> or <q>most typical</q> value?</p></li>
+        <li><p>How do the values spread out?</p></li>
+        <li><p>What are frequent and infrequent values?</p></li>
+      </ol>
+    </p>
+    <p>
+      One way to visualize this <em>distribution</em>
+      <idx><h>distribution</h></idx> of this single variable <c>wind_speed</c> is to
+      plot them on a horizontal line as we do in <xref ref="fig-windspeed-on-line"/>:
+    </p>
+
+    <figure xml:id="fig-windspeed-on-line">
+      <caption>Plot of hourly wind speed recordings from NYC in 2023.</caption>
+      <image source="images/fig-windspeed-on-line.png" width="90%">
+        <description>A dot plot showing all hourly wind speed values from the NYC weather dataset plotted along a single horizontal axis, illustrating overplotting of the many values between 0 and 40 mph.</description>
+      </image>
+    </figure>
+
+    <p>
+      This gives us a general idea of how the values of <c>wind_speed</c> distribute:
+      observe that wind speeds vary from around 0 miles per hour up to around 61 miles
+      per hour (approximately 61 kilometers per hour). There appear to be more recorded
+      wind speeds between 0 and 20 miles per hour (mph) than outside this range.
+      However, because of the high degree of overplotting in the points, it's hard to get
+      a sense of exactly how many values are between, say, 10 mph and 15 mph.
+    </p>
+    <p>
+      What is commonly produced instead of <xref ref="fig-windspeed-on-line"/> is known
+      as a <idx><h>histograms</h></idx> <em>histogram</em>. A histogram is a plot that
+      visualizes the <em>distribution</em> of a numerical value as follows:
+    </p>
+    <p>
+      <ol>
+        <li><p>We first cut up the x-axis into a series of
+        <idx><h>histograms</h><h>bins</h></idx> <em>bins</em>, where each bin represents
+        a range of values.</p></li>
+        <li><p>For each bin, we count the number of observations that fall in the range
+        corresponding to that bin.</p></li>
+        <li><p>Then for each bin, we draw a bar whose height marks the corresponding
+        count.</p></li>
+      </ol>
+    </p>
+    <p>
+      Let's drill-down on an example of a histogram, shown in
+      <xref ref="fig-histogramexample"/>.
+    </p>
+
+    <figure xml:id="fig-histogramexample">
+      <caption>Example histogram.</caption>
+      <image source="images/fig-histogramexample.png" width="90%">
+        <description>Histogram of hourly wind speeds with binwidth of 5 mph and white borders between bars, showing the distribution is right-skewed with most recordings between 0 and 20 mph.</description>
+      </image>
+    </figure>
+
+    <p>
+      Let's focus only on wind speeds between 10 mph and 25 mph for now. Observe that
+      there are three bins of equal width between 10 mph and 25 mph. Thus we have three
+      bins of width 5 mph each: one bin for the 10&#x2013;15 mph range, another bin for
+      the 15&#x2013;20 mph range, and another bin for the 20&#x2013;25 mph range. Since:
+    </p>
+    <p>
+      <ol>
+        <li><p>The bin for the 10&#x2013;15 mph range has a height of around 8000. In
+        other words, around 8000 of the hourly wind speed recordings are between 10 mph
+        and 15 mph.</p></li>
+        <li><p>The bin for the 15&#x2013;20 mph range has a height of around 2400. In
+        other words, around 2400 of the hourly wind speed recordings are between 15 mph
+        and 20 mph.</p></li>
+        <li><p>The bin for the 20&#x2013;25 mph range has a height of around 700. In
+        other words, around 700 of the hourly wind speed recordings are between 20 mph
+        and 25 mph.</p></li>
+      </ol>
+    </p>
+    <p>
+      All eight bins spanning 0 mph to 40 mph on the x-axis have this interpretation.
+    </p>
+
+
+    <subsection xml:id="sec-geom-histogram">
+      <title>Histograms via <c>geom_histogram</c></title>
+
+      <p>
+        Let's now present the <c>ggplot()</c> code to plot your first histogram! Unlike
+        with scatterplots and linegraphs, there is now only one variable being mapped in
+        <c>aes()</c>: the single numerical variable <c>wind_speed</c>. The y-aesthetic
+        of a histogram, the count of the observations in each bin, gets computed for you
+        automatically. Furthermore, the geometric object layer is now a
+        <c>geom_histogram()</c>.
+        <idx><h>R packages</h><h>ggplot2</h><h>geom_histogram()</h></idx> After running
+        the following code, you'll see the histogram in
+        <xref ref="fig-weather-histogram"/> as well as warning messages. We'll discuss
+        the warning messages first.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram()
+        </input>
+      </program>
+
+      <figure xml:id="fig-weather-histogram">
+        <caption>Histogram of hourly wind speeds at three NYC airports.</caption>
+        <image source="images/fig-weather-histogram.png" width="90%">
+          <description>Histogram of hourly wind speed values from the NYC weather dataset using 30 bins (the default). The distribution is right-skewed.</description>
+        </image>
+      </figure>
+
+      <pre>
+`stat_bin()` using `bins=30`. Pick better value with `binwidth`.
+      </pre>
+      <pre>
+Warning: Removed 1033 rows containing non-finite outside the scale range (`stat_bin()`).
+      </pre>
+
+      <p>
+        The first message is telling us that the histogram was constructed using
+        <c>bins = 30</c> for 30 equally spaced bins. This is known in computer
+        programming as a default value; unless you override this default number of bins
+        with a number you specify, R will choose 30 by default. We'll see in the next
+        section how to change the number of bins to another value than the default.
+      </p>
+      <p>
+        The second warning message is telling us something similar to the warning message
+        we received when we ran the code to create a scatterplot of departure and arrival
+        delays for Envoy Air flights in <xref ref="fig-noalpha"/>: that because some rows
+        have missing <c>NA</c> value for <c>wind_speed</c>, they were omitted from the
+        histogram. R is just giving us a friendly heads-up that this was the case.
+      </p>
+      <p>
+        Now let's unpack the resulting histogram in <xref ref="fig-weather-histogram"/>.
+        Observe that values above 30 mph are rather rare. However, because of the large
+        number of bins, it's hard to get a sense for which range of wind speeds is spanned
+        by each bin; everything is one giant amorphous blob. So let's add white vertical
+        borders demarcating the bins by adding a <c>color = "white"</c> argument to
+        <c>geom_histogram()</c> and ignore the warning about setting the number of bins
+        to a better value:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram(color = "white")
+        </input>
+      </program>
+
+      <figure xml:id="fig-weather-histogram-2">
+        <caption>Histogram of hourly wind speeds at three NYC airports with white borders.</caption>
+        <image source="images/fig-weather-histogram-2.png" width="90%">
+          <description>Histogram of hourly wind speeds with white borders between the bars, making it easier to see the boundaries of individual bins. The distribution is right-skewed.</description>
+        </image>
+      </figure>
+
+      <p>
+        We now have an easier time associating ranges of wind speeds to each of the bins
+        in <xref ref="fig-weather-histogram-2"/>. We can also vary the color of the bars
+        by setting the <idx><h>R packages</h><h>ggplot2</h><h>fill</h></idx>
+        <c>fill</c> argument. For example, you can set the bin colors to be
+        <q>blue steel</q> by setting <c>fill = "steelblue"</c>:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram(color = "white", fill = "steelblue")
+        </input>
+      </program>
+
+      <p>
+        If you're curious, run <c>colors()</c>
+        <idx><h>colors()</h></idx> to see all possible choices of colors in R!
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-adjust-bins">
+      <title>Adjusting the bins</title>
+
+      <p>
+        Observe in <xref ref="fig-weather-histogram-2"/> that in the 10&#x2013;20 mph
+        range there appear to be roughly 8 bins. Thus each bin has width 10 divided by 8,
+        or 1.125 mph, which is not a very easily interpretable range to work with. Let's
+        improve this by adjusting the number of bins in our histogram in one of two ways:
+      </p>
+      <p>
+        <ol>
+          <li><p>By adjusting the number of bins via the
+          <idx><h>R packages</h><h>ggplot2</h><h>geom_histogram()!bins</h></idx>
+          <c>bins</c> argument to <c>geom_histogram()</c>.</p></li>
+          <li><p>By adjusting the width of the bins via the
+          <idx><h>R packages</h><h>ggplot2</h><h>geom_histogram()!binwidth</h></idx>
+          <c>binwidth</c> argument to <c>geom_histogram()</c>.</p></li>
+        </ol>
+      </p>
+      <p>
+        Using the first method, we have the power to specify how many bins we would like
+        to cut the x-axis up in. As mentioned in the previous section, the default number
+        of bins is 20. We can override this default, to say 20 bins, as follows:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram(bins = 20, color = "white")
+        </input>
+      </program>
+
+      <p>
+        Using the second method, instead of specifying the number of bins, we specify the
+        width of the bins by using the <c>binwidth</c> argument in the
+        <c>geom_histogram()</c> layer. For example, let's set the width of each bin to
+        be five mph.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram(binwidth = 5, color = "white")
+        </input>
+      </program>
+
+      <p>
+        We compare both resulting histograms side-by-side in
+        <xref ref="fig-hist-bins"/>.
+      </p>
+
+      <figure xml:id="fig-hist-bins">
+        <caption>Setting histogram bins in two ways.</caption>
+        <image source="images/fig-hist-bins.png" width="90%">
+          <description>Two side-by-side histograms of hourly wind speed. The left uses 20 bins, the right uses a binwidth of 5 mph. Both show a right-skewed distribution.</description>
+        </image>
+      </figure>
+
+      <exercise xml:id="lc2-14">
+        <title>Learning Check 2.14</title>
+        <statement>
+          <p>What does changing the number of bins from 30 to 20 tell us about the
+          distribution of wind speeds?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-15">
+        <title>Learning Check 2.15</title>
+        <statement>
+          <p>Would you classify the distribution of wind speeds as symmetric or skewed
+          in one direction or another?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-16">
+        <title>Learning Check 2.16</title>
+        <statement>
+          <p>What would you guess is the <q>center</q> value in this distribution? Why
+          did you make that choice?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-17">
+        <title>Learning Check 2.17</title>
+        <statement>
+          <p>Is this data spread out greatly from the center or is it close?
+          Why?</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-histogram-summary">
+      <title>Summary</title>
+
+      <p>
+        Histograms, unlike scatterplots and linegraphs, present information on only a
+        single numerical variable. Specifically, they are visualizations of the
+        distribution of the numerical variable in question.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-facets">
+    <title>Facets</title>
+
+    <p>
+      Before continuing with the next of the 5NG, let's briefly introduce a new concept
+      called <em>faceting</em>. Faceting is used when we'd like to split a particular
+      visualization by the values of another variable. This will create multiple copies
+      of the same type of plot with matching x and y axes, but whose content will differ.
+    </p>
+    <p>
+      For example, suppose we were interested in looking at how the histogram of hourly
+      wind speed recordings at the three NYC airports we saw in
+      <xref ref="fig-histogramexample"/> differed in each month. We could <q>split</q>
+      this histogram by the 12 possible months in a given year. In other words, we would
+      plot histograms of <c>wind_speed</c> for each <c>month</c> separately. We do this
+      by adding <c>facet_wrap(~ month)</c> layer. Note the <c>~</c> is a
+      <q>tilde</q> and can generally be found on the key next to the <q>1</q> key on US
+      keyboards. The tilde is required and you'll receive the error
+      <c>Error in as.quoted(facets) : object 'month' not found</c> if you don't include
+      it here.
+    </p>
+
+    <program language="r">
+      <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  facet_wrap(~ month)
+      </input>
+    </program>
+
+    <figure xml:id="fig-facethistogram">
+      <caption>Faceted histogram of hourly wind speeds by month.</caption>
+      <image source="images/fig-facethistogram.png" width="90%">
+        <description>A 3-by-4 grid of histograms showing the distribution of hourly wind speed for each of the 12 months. Each histogram uses a binwidth of 5 mph. All months show a similar right-skewed shape.</description>
+      </image>
+    </figure>
+
+    <p>
+      We can also specify the number of rows and columns in the grid by using the
+      <c>nrow</c> and <c>ncol</c> arguments inside of
+      <idx><h>R packages</h><h>ggplot2</h><h>facet_wrap()</h></idx>
+      <c>facet_wrap()</c>. For example, say we would like our faceted histogram to have
+      4 rows instead of 3. We simply add an <c>nrow = 4</c> argument to
+      <c>facet_wrap(~ month)</c>.
+    </p>
+
+    <program language="r">
+      <input>
+ggplot(data = weather, mapping = aes(x = wind_speed)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  facet_wrap(~ month, nrow = 4)
+      </input>
+    </program>
+
+    <figure xml:id="fig-facethistogram2">
+      <caption>Faceted histogram with 4 instead of 3 rows.</caption>
+      <image source="images/fig-facethistogram2.png" width="90%">
+        <description>A 4-row grid of histograms showing the distribution of hourly wind speed for each of the 12 months, now arranged in 4 rows of 3 instead of 3 rows of 4.</description>
+      </image>
+    </figure>
+
+    <p>
+      Observe in both <xref ref="fig-facethistogram"/> and
+      <xref ref="fig-facethistogram2"/> the majority of wind speed observations for all
+      months are clustered between 0 and 20 mph, with very few observations exceeding 30
+      mph. The histograms show a similar shape across months, with most distributions
+      having a similar largest count and a few larger speed outliers, indicating that
+      lower wind speeds are more common than higher wind speeds.
+    </p>
+
+    <exercise xml:id="lc2-18">
+      <title>Learning Check 2.18</title>
+      <statement>
+        <p>What other things do you notice about this faceted plot? How does a faceted
+        plot help us see relationships between two variables?</p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="lc2-19">
+      <title>Learning Check 2.19</title>
+      <statement>
+        <p>What do the numbers 1&#x2013;12 correspond to in the plot? What about 10, 20,
+        and 30?</p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="lc2-20">
+      <title>Learning Check 2.20</title>
+      <statement>
+        <p>For which types of datasets would faceted plots not work well in comparing
+        relationships between variables? Give an example describing the nature of these
+        variables and other important characteristics.</p>
+      </statement>
+    </exercise>
+
+    <exercise xml:id="lc2-21">
+      <title>Learning Check 2.21</title>
+      <statement>
+        <p>Does the <c>wind_speed</c> variable in the <c>weather</c> dataset have a lot
+        of variability? Why do you say that?</p>
+      </statement>
+    </exercise>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-boxplots">
+    <title>5NG#4: Boxplots</title>
+
+    <p>
+      While faceted histograms are one type of visualization used to compare the
+      distribution of a numerical variable split by the values of another variable,
+      another type of visualization that achieves this same goal is a <em>side-by-side
+      boxplot</em>. A boxplot <idx><h>boxplots</h></idx> is constructed from the
+      information provided in the <em>five-number summary</em> of a numerical variable.
+      To keep things simple for now, let's only consider the recorded hourly wind speed
+      recordings for the month of April, each represented as a jittered point in
+      <xref ref="fig-apr1"/>.
+    </p>
+
+    <figure xml:id="fig-apr1">
+      <caption>April wind speeds represented as jittered points.</caption>
+      <image source="images/fig-apr1.png" width="90%">
+        <description>Jittered dot plot of hourly wind speed values for April at NYC airports, with all points displayed along a single vertical strip.</description>
+      </image>
+    </figure>
+
+    <p>
+      These observations have the following <em>five-number summary</em>:
+    </p>
+    <p>
+      <ol>
+        <li><p>Minimum</p></li>
+        <li><p>First quartile (25th percentile)</p></li>
+        <li><p>Median (second quartile, 50th percentile)</p></li>
+        <li><p>Third quartile (75th percentile)</p></li>
+        <li><p>Maximum</p></li>
+      </ol>
+    </p>
+    <p>
+      In <xref ref="fig-apr2"/>, the leftmost plot marks these 5 values with dashed
+      horizontal lines on top of the points. The middle plot adds the <em>boxplot</em>.
+      The rightmost plot removes the points and the dashed horizontal lines for
+      clarity's sake.
+    </p>
+
+    <figure xml:id="fig-apr2">
+      <caption>Building up a boxplot of April wind speeds.</caption>
+      <image source="images/patchwork_boxplot.png" width="90%">
+        <description>Three side-by-side plots illustrating how a boxplot is constructed from April wind speed data: the first shows jittered points with dashed lines at the five-number summary values, the second overlays a boxplot, and the third shows the boxplot alone.</description>
+      </image>
+    </figure>
+
+    <p>
+      What the boxplot does is visually summarize the points by cutting the wind speed
+      recordings into <em>quartiles</em> at the dashed lines, where each quartile
+      contains roughly an equal number of observations. Thus
+    </p>
+    <p>
+      <ol>
+        <li><p>25% of points fall below the bottom edge of the box, which is the first
+        quartile. In other words, 25% of observations were below the first quartile
+        value.</p></li>
+        <li><p>25% of points fall between the bottom edge of the box and the solid
+        middle line, which is the median. Thus, 25% of observations were between the
+        first quartile and the median, and 50% of observations were below the
+        median.</p></li>
+        <li><p>25% of points fall between the solid middle line and the top edge of the
+        box, which is the third quartile. It follows that 25% of observations were
+        between the median and the third quartile, and 75% of observations were below the
+        third quartile.</p></li>
+        <li><p>25% of points fall above the top edge of the box. In other words, 25% of
+        observations were above the third quartile.</p></li>
+        <li><p>The middle 50% of points lie within the <em>interquartile range
+        (IQR)</em> <idx><h>interquartile range (IQR)</h></idx> between the first and
+        third quartile. The interquartile range measures a numerical variable's
+        <em>spread</em>.</p></li>
+      </ol>
+    </p>
+    <p>
+      Furthermore, in the rightmost plot of <xref ref="fig-apr2"/>, we see the
+      <em>whiskers</em> <idx><h>boxplots</h><h>whiskers</h></idx> of the boxplot. The
+      whiskers stick out from either end of the box all the way to the minimum and maximum
+      observed wind speeds. However, the whiskers don't always extend to the smallest and
+      largest observed values. They in fact extend no more than
+      1.5 <m>	imes</m> the interquartile range from either end of the box. Any observed
+      values outside this range get marked with points called <em>outliers</em>, which
+      we'll discuss further in the next section.
+    </p>
+
+
+    <subsection xml:id="sec-geom-boxplot">
+      <title>Boxplots via <c>geom_boxplot</c></title>
+
+      <p>
+        Let's now create a side-by-side boxplot
+        <idx><h>boxplots</h><h>side-by-side</h></idx> of hourly wind speeds split by the
+        12 months as we did previously with the faceted histograms. We do this by mapping
+        the <c>month</c> variable to the x-position aesthetic, the <c>wind_speed</c>
+        variable to the y-position aesthetic, and by adding a <c>geom_boxplot()</c>
+        layer:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = month, y = wind_speed)) +
+  geom_boxplot()
+        </input>
+      </program>
+
+      <figure xml:id="fig-badbox">
+        <caption>Invalid boxplot specification.</caption>
+        <image source="images/fig-badbox.png" width="90%">
+          <description>An incorrectly specified boxplot where month is treated as a continuous variable, resulting in a single wide box rather than 12 separate boxes.</description>
+        </image>
+      </figure>
+
+      <pre>
+Warning message:
+1: Continuous x aesthetic -- did you forget aes(group=...)?
+      </pre>
+
+      <p>
+        Observe in <xref ref="fig-badbox"/> that this plot does not provide information
+        about wind speed separated by month. The first warning message tells us why. It
+        says that we have a <q>continuous</q> (or numerical variable) on the x-position
+        aesthetic. Boxplots, however, require a categorical variable to be mapped to the
+        x-position aesthetic.
+      </p>
+      <p>
+        We can convert the numerical variable <c>month</c> into a <c>factor</c>
+        categorical variable by using the <c>factor()</c>
+        <idx><h>factors</h></idx> function. After applying <c>factor(month)</c>,
+        <c>month</c> goes from having just the numerical values 1, 2, ..., and 12 to
+        having an associated ordering. With this ordering, <c>ggplot()</c> now knows how
+        to work with this variable to produce the plot.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = weather, mapping = aes(x = factor(month), y = wind_speed)) +
+  geom_boxplot()
+        </input>
+      </program>
+
+      <figure xml:id="fig-monthtempbox">
+        <caption>Side-by-side boxplot of wind speed split by month.</caption>
+        <image source="images/fig-monthtempbox.png" width="90%">
+          <description>Twelve side-by-side boxplots showing the distribution of hourly wind speed for each month (January through December). February and March appear to have higher median wind speeds.</description>
+        </image>
+      </figure>
+
+      <p>
+        The resulting <xref ref="fig-monthtempbox"/> shows 12 separate
+        <q>box and whiskers</q> plots similar to the rightmost plot of
+        <xref ref="fig-apr2"/> of only April wind speeds. Thus the different boxplots are
+        shown <q>side-by-side.</q>
+      </p>
+      <p>
+        <ul>
+          <li><p>The <q>box</q> portions of the visualization represent the 1st quartile,
+          the median (the 2nd quartile), and the 3rd quartile.</p></li>
+          <li><p>The height of each box (the value of the 3rd quartile minus the value
+          of the 1st quartile) is the interquartile range (IQR). It is a measure of the
+          spread of the middle 50% of values, with longer boxes indicating more
+          variability.</p></li>
+          <li><p>The <q>whisker</q> portions of these plots extend out from the bottoms
+          and tops of the boxes and represent points less than the 25th percentile and
+          greater than the 75th percentiles, respectively. They're set to extend out no
+          more than <m>1.5 	imes IQR</m> units away from either end of the boxes. We
+          say <q>no more than</q> because the ends of the whiskers have to correspond to
+          observed wind speeds. The length of these whiskers shows how the data outside
+          the middle 50% of values vary, with longer whiskers indicating more
+          variability.</p></li>
+          <li><p>The dots representing values falling outside the whiskers are called
+          <idx><h>outliers</h></idx> <em>outliers</em>. These can be thought of as
+          anomalous (<q>out-of-the-ordinary</q>) values.</p></li>
+        </ul>
+      </p>
+      <p>
+        It is important to keep in mind that the definition of an outlier is somewhat
+        arbitrary and not absolute. In this case, they are defined by the length of the
+        whiskers, which are no more than <m>1.5 	imes IQR</m> units long for each
+        boxplot. Looking at this side-by-side plot we can see that the months of February
+        and March have higher median wind speeds as evidenced by the higher solid lines in
+        the middle of the boxes. We can easily compare wind speeds across months by
+        drawing imaginary horizontal lines across the plot. Furthermore, the heights of
+        the 12 boxes as quantified by the interquartile ranges are informative too; they
+        tell us about variability, or spread, of wind speeds recorded in a given month.
+      </p>
+
+      <exercise xml:id="lc2-22">
+        <title>Learning Check 2.22</title>
+        <statement>
+          <p>What do the dots at the top of the plot for January correspond to? Explain
+          what might have occurred in January to produce these points.</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-23">
+        <title>Learning Check 2.23</title>
+        <statement>
+          <p>Which months seem to have the highest variability in wind speed? What
+          reasons can you give for this?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-24">
+        <title>Learning Check 2.24</title>
+        <statement>
+          <p>We looked at the distribution of the numerical variable <c>wind_speed</c>
+          split by the numerical variable <c>month</c> that we converted using the
+          <c>factor()</c> function in order to make a side-by-side boxplot. Why would a
+          boxplot of <c>wind_speed</c> split by the numerical variable <c>pressure</c>
+          similarly converted to a categorical variable using the <c>factor()</c> not be
+          informative?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-25">
+        <title>Learning Check 2.25</title>
+        <statement>
+          <p>Boxplots provide a simple way to identify outliers. Why may outliers be
+          easier to identify when looking at a boxplot instead of a faceted
+          histogram?</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-boxplot-summary">
+      <title>Summary</title>
+
+      <p>
+        Side-by-side boxplots provide us with a way to compare the distribution of a
+        numerical variable across multiple values of another variable. One can see where
+        the median falls across the different groups by comparing the solid lines in the
+        center of the boxes.
+      </p>
+      <p>
+        To study the spread of a numerical variable within one of the boxes, look at both
+        the length of the box and also how far the whiskers extend from either end of the
+        box. Outliers are even more easily identified when looking at a boxplot than when
+        looking at a histogram as they are marked with distinct points.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-barplots">
+    <title>5NG#5: Barplots</title>
+
+    <p>
+      Both histograms and boxplots are tools to visualize the distribution of numerical
+      variables. Another commonly desired task is to visualize the distribution of a
+      categorical variable. This is a simpler task, as we are simply counting different
+      categories within a categorical variable, also known as the
+      <idx><h>levels</h></idx> <em>levels</em> of the categorical variable. Often the
+      best way to visualize these different counts, also known as
+      <idx><h>frequencies</h></idx> <em>frequencies</em>, is with barplots (also called
+      barcharts).
+    </p>
+    <p>
+      One complication, however, is how your data is represented. Is the categorical
+      variable of interest <q>pre-counted</q> or not? For example, run the following code
+      that manually creates two data frames representing a collection of fruit: 3 apples
+      and 2 oranges.
+    </p>
+
+    <program language="r">
+      <input>
+fruits &lt;- tibble(fruit = c("apple", "apple", "orange", "apple", "orange"))
+fruits_counted &lt;- tibble(
+  fruit = c("apple", "orange"),
+  number = c(3, 2))
+      </input>
+    </program>
+
+    <p>
+      We see both the <c>fruits</c> and <c>fruits_counted</c> data frames represent the
+      same collection of fruit. Whereas <c>fruits</c> just lists the fruit individually,
+      <c>fruits_counted</c> has a variable <c>count</c> which represents the
+      <q>pre-counted</q> values of each fruit. Depending on how your categorical data is
+      represented, you'll need to add a different <c>geom</c>etric layer type to your
+      <c>ggplot()</c> to create a barplot, as we now explore.
+    </p>
+
+
+    <subsection xml:id="sec-geom-bar-col">
+      <title>Barplots via <c>geom_bar</c> or <c>geom_col</c></title>
+
+      <p>
+        Let's generate barplots using these two different representations of the same
+        basket of fruit: 3 apples and 2 oranges. Using the <c>fruits</c> data frame where
+        all 5 fruits are listed individually in 5 rows, we map the <c>fruit</c> variable
+        to the x-position aesthetic and add a
+        <idx><h>R packages</h><h>ggplot2</h><h>geom_bar()</h></idx>
+        <c>geom_bar()</c> layer:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = fruits, mapping = aes(x = fruit)) +
+  geom_bar()
+        </input>
+      </program>
+
+      <figure xml:id="fig-geombar">
+        <caption>Barplot when counts are not pre-counted.</caption>
+        <image source="images/fig-geombar.png" width="70%">
+          <description>Barplot showing a count of 3 for apple and a count of 2 for orange, generated from the fruits data frame where each fruit is listed as a separate row.</description>
+        </image>
+      </figure>
+
+      <p>
+        However, using the <c>fruits_counted</c> data frame where the fruits have been
+        <q>pre-counted,</q> we once again map the <c>fruit</c> variable to the x-position
+        aesthetic. Here, we also map the <c>count</c> variable to the y-position
+        aesthetic, and add a
+        <idx><h>R packages</h><h>ggplot2</h><h>geom_col()</h></idx>
+        <c>geom_col()</c> layer instead.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = fruits_counted, mapping = aes(x = fruit, y = number)) +
+  geom_col()
+        </input>
+      </program>
+
+      <figure xml:id="fig-geomcol">
+        <caption>Barplot when counts are pre-counted.</caption>
+        <image source="images/fig-geomcol.png" width="70%">
+          <description>Barplot showing a count of 3 for apple and a count of 2 for orange, generated from the fruits_counted data frame where counts are stored in a number column.</description>
+        </image>
+      </figure>
+
+      <p>
+        Compare the barplots in <xref ref="fig-geombar"/> and
+        <xref ref="fig-geomcol"/>. They are identical because they reflect counts of the
+        same five fruits. However, depending on how our categorical data is represented,
+        either <q>pre-counted</q> or not, we must add a different <c>geom</c> layer. When
+        the categorical variable whose distribution you want to visualize
+      </p>
+      <p>
+        <ul>
+          <li><p>Is <em>not</em> pre-counted in your data frame, we use
+          <c>geom_bar()</c>.</p></li>
+          <li><p>Is pre-counted in your data frame, we use <c>geom_col()</c> with the
+          y-position aesthetic mapped to the variable that has the counts.</p></li>
+        </ul>
+      </p>
+      <p>
+        Let's now go back to the <c>flights</c> data frame in the <c>nycflights23</c>
+        package and visualize the distribution of the categorical variable
+        <c>carrier</c>. In other words, let's visualize the number of domestic flights
+        out of New York City each airline company flew in 2023. Recall from
+        <xref ref="subsec-exploredataframes"/> when you first explored the <c>flights</c>
+        data frame, you saw that each row corresponds to a flight. In other words, the
+        <c>flights</c> data frame is more like the <c>fruits</c> data frame than the
+        <c>fruits_counted</c> data frame because the flights have not been pre-counted by
+        <c>carrier</c>. Thus we should use <c>geom_bar()</c> instead of
+        <c>geom_col()</c> to create a barplot. Much like a <c>geom_histogram()</c>,
+        there is only one variable in the <c>aes()</c> aesthetic mapping: the variable
+        <c>carrier</c> gets mapped to the <c>x</c>-position. As a difference though,
+        histograms have bars that touch whereas bar graphs have white space between the
+        bars going from left to right.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier)) +
+  geom_bar()
+        </input>
+      </program>
+
+      <figure xml:id="fig-flightsbar">
+        <caption>Number of flights departing NYC in 2023 by airline using <c>geom_bar()</c>.</caption>
+        <image source="images/fig-flightsbar.png" width="90%">
+          <description>Barplot showing the number of flights departing New York City in 2023 for each airline carrier code. Republic Airline (YX), United Airlines (UA), and JetBlue Airways (B6) have the most flights.</description>
+        </image>
+      </figure>
+
+      <p>
+        Observe in <xref ref="fig-flightsbar"/> that Republic Airline (YX), United
+        Airlines (UA), and JetBlue Airways (B6) had the most flights depart NYC in 2023.
+        If you don't know which airlines correspond to which carrier codes, then run
+        <c>View(airlines)</c> to see a directory of airlines. For example, AA is American
+        Airlines Inc.
+      </p>
+
+      <exercise xml:id="lc2-26">
+        <title>Learning Check 2.26</title>
+        <statement>
+          <p>Why are histograms inappropriate for categorical variables?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-27">
+        <title>Learning Check 2.27</title>
+        <statement>
+          <p>What is the difference between histograms and barplots?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-28">
+        <title>Learning Check 2.28</title>
+        <statement>
+          <p>How many Alaska Air flights departed NYC in 2023?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-29">
+        <title>Learning Check 2.29</title>
+        <statement>
+          <p>What was the 7th highest airline for departed flights from NYC in 2023? How
+          could we better present the table to get this answer quickly?</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-avoid-pie-charts">
+      <title>Must avoid pie charts!</title>
+
+      <p>
+        One of the most common plots used to visualize the distribution of categorical
+        data is the <idx><h>pie charts</h></idx> pie chart. While they may seem harmless
+        enough, pie charts actually present a problem in that humans are unable to judge
+        angles well.
+      </p>
+      <p>
+        As Naomi Robbins describes in her book, <em>Creating More Effective Graphs</em>,
+        we overestimate angles greater than 90 degrees and we underestimate angles less
+        than 90 degrees. In other words, it is difficult for us to determine the relative
+        size of one piece of the pie compared to another.
+      </p>
+      <p>
+        Let's examine the same data used in our previous barplot of the number of flights
+        departing NYC by airline in <xref ref="fig-flightsbar"/>, but this time we will
+        use a pie chart in <xref ref="fig-carrierpie"/>. Try to answer the following
+        questions:
+      </p>
+      <p>
+        <ul>
+          <li><p>How much smaller is the portion of the pie for Hawaiian Airlines Inc.
+          (<c>HA</c>) compared to United Airlines (<c>UA</c>)?</p></li>
+          <li><p>What is the third largest carrier in terms of departing
+          flights?</p></li>
+          <li><p>How many carriers have fewer flights than Delta Air Lines Inc.
+          (<c>DL</c>)?</p></li>
+        </ul>
+      </p>
+
+      <figure xml:id="fig-carrierpie">
+        <caption>The dreaded pie chart.</caption>
+        <image source="images/fig-carrierpie.png" width="90%">
+          <description>Pie chart showing the distribution of flights departing NYC in 2023 by carrier. The many similarly-sized slices make it difficult to compare carriers.</description>
+        </image>
+      </figure>
+
+      <p>
+        While it is quite difficult to answer these questions when looking at the pie
+        chart in <xref ref="fig-carrierpie"/>, we can much more easily answer these
+        questions using the barchart in <xref ref="fig-flightsbar"/>. This is true since
+        barplots present the information in a way such that comparisons between categories
+        can be made with single horizontal lines, whereas pie charts present the
+        information in a way such that comparisons must be made by
+        <idx><h>pie charts</h><h>problems with</h></idx> comparing angles.
+      </p>
+
+      <exercise xml:id="lc2-30">
+        <title>Learning Check 2.30</title>
+        <statement>
+          <p>Why should pie charts be avoided and replaced by barplots?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-31">
+        <title>Learning Check 2.31</title>
+        <statement>
+          <p>Why do you think people continue to use pie charts?</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-two-categ-barplot">
+      <title>Two categorical variables</title>
+
+      <p>
+        Barplots are a very common way to visualize the frequency of different categories,
+        or levels, of a single categorical variable. Another use of barplots is to
+        visualize the <em>joint</em> distribution of two categorical variables at the same
+        time.
+      </p>
+      <p>
+        Let's examine the <em>joint</em> distribution of outgoing domestic flights from
+        NYC by <c>carrier</c> as well as <c>origin</c>, in other words, the number of
+        flights for each <c>carrier</c> and <c>origin</c> combination. This corresponds
+        to the number of American Airlines flights from <c>JFK</c>, the number of
+        American Airlines flights from <c>LGA</c>, the number of American Airlines flights
+        from <c>EWR</c>, the number of Endeavor Air flights from <c>JFK</c>, and so on.
+        Recall the <c>ggplot()</c> code that created the barplot of <c>carrier</c>
+        frequency in <xref ref="fig-flightsbar"/>:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier)) + 
+  geom_bar()
+        </input>
+      </program>
+
+      <p>
+        We can now map the additional variable <c>origin</c> by adding a
+        <c>fill = origin</c> inside the <c>aes()</c> aesthetic mapping.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier, fill = origin)) +
+  geom_bar()
+        </input>
+      </program>
+
+      <figure xml:id="fig-flights-stacked-bar">
+        <caption>Stacked barplot of flight amount by carrier and origin.</caption>
+        <image source="images/fig-flights-stacked-bar.png" width="90%">
+          <description>Stacked barplot showing the number of flights departing NYC in 2023 by carrier, with each bar divided into colored segments representing the three origin airports (EWR, JFK, LGA).</description>
+        </image>
+      </figure>
+
+      <p>
+        <xref ref="fig-flights-stacked-bar"/> is an example of a
+        <idx><h>barplot</h><h>stacked</h></idx> <em>stacked barplot</em>. While simple
+        to make, in certain aspects it is not ideal. For example, it is difficult to
+        compare the heights of the different colors between the bars, corresponding to
+        comparing the number of flights from each <c>origin</c> airport between the
+        carriers.
+      </p>
+      <p>
+        Before we continue, let's address some common points of confusion among new R
+        users. First, the <c>fill</c> aesthetic corresponds to the color used to fill the
+        bars, while the <c>color</c> aesthetic corresponds to the color of the outline of
+        the bars. This is identical to how we added color to our histogram in
+        <xref ref="sec-geom-histogram"/>: we set the outline of the bars to white by
+        setting <c>color = "white"</c> and the colors of the bars to blue steel by
+        setting <c>fill = "steelblue"</c>. Observe in
+        <xref ref="fig-flights-stacked-bar-color"/> that mapping <c>origin</c> to
+        <c>color</c> and not <c>fill</c> yields grey bars with different colored outlines.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier, color = origin)) +
+  geom_bar()
+        </input>
+      </program>
+
+      <figure xml:id="fig-flights-stacked-bar-color">
+        <caption>Stacked barplot with color aesthetic used instead of fill.</caption>
+        <image source="images/fig-flights-stacked-bar-color.png" width="90%">
+          <description>Stacked barplot with carrier on the x-axis and origin mapped to the color (outline) aesthetic instead of fill. The bars appear grey with different colored outlines for each origin airport.</description>
+        </image>
+      </figure>
+
+      <p>
+        Second, note that <c>fill</c> is another aesthetic mapping much like
+        <c>x</c>-position; thus we were careful to include it within the parentheses of
+        the <c>aes()</c> mapping. The following code, where the <c>fill</c> aesthetic is
+        specified outside the <c>aes()</c> mapping will yield an error. This is a fairly
+        common error that new <c>ggplot</c> users make:
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier), fill = origin) +
+  geom_bar()
+        </input>
+      </program>
+
+      <p>
+        An alternative to stacked barplots are
+        <idx><h>barplot</h><h>side-by-side</h></idx> <em>side-by-side barplots</em>,
+        also known as <em>dodged barplots</em>, as seen in
+        <xref ref="fig-flights-dodged-bar-color"/>. The code to create a side-by-side
+        barplot is identical to the code to create a stacked barplot, but with a
+        <idx><h>R packages</h><h>ggplot2</h><h>position</h></idx>
+        <c>position = "dodge"</c> argument added to <c>geom_bar()</c>. In other words,
+        we are overriding the default barplot type, which is a <em>stacked</em> barplot,
+        and specifying it to be a side-by-side barplot instead.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier, fill = origin)) +
+  geom_bar(position = "dodge")
+        </input>
+      </program>
+
+      <figure xml:id="fig-flights-dodged-bar-color">
+        <caption>Side-by-side barplot comparing number of flights by carrier and origin.</caption>
+        <image source="images/fig-flights-dodged-bar-color.png" width="90%">
+          <description>Dodged barplot with carrier on the x-axis and three side-by-side bars for each carrier representing the three origin airports (EWR, JFK, LGA).</description>
+        </image>
+      </figure>
+
+      <p>
+        Lastly, another type of barplot is a
+        <idx><h>barplot</h><h>faceted</h></idx> <em>faceted barplot</em>. Recall in
+        <xref ref="sec-facets"/> we visualized the distribution of hourly wind speeds at
+        the 3 NYC airports <em>split</em> by month using facets. We apply the same
+        principle to our barplot visualizing the frequency of <c>carrier</c> split by
+        <c>origin</c>. Instead of mapping <c>origin</c> to <c>fill</c> we include it as
+        the variable to create small multiples of the plot across the levels of
+        <c>origin</c> in <xref ref="fig-facet-bar-vert"/>.
+      </p>
+
+      <program language="r">
+        <input>
+ggplot(data = flights, mapping = aes(x = carrier)) +
+  geom_bar() +
+  facet_wrap(~ origin, ncol = 1)
+        </input>
+      </program>
+
+      <figure xml:id="fig-facet-bar-vert">
+        <caption>Faceted barplot comparing the number of flights by carrier and origin.</caption>
+        <image source="images/fig-facet-bar-vert.png" width="90%">
+          <description>Three stacked barplots (one per origin airport: EWR, JFK, LGA) each showing the number of flights by carrier at that airport, arranged in a single column.</description>
+        </image>
+      </figure>
+
+      <exercise xml:id="lc2-32">
+        <title>Learning Check 2.32</title>
+        <statement>
+          <p>What kinds of questions are not easily answered by looking at
+          <xref ref="fig-flights-stacked-bar"/>?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-33">
+        <title>Learning Check 2.33</title>
+        <statement>
+          <p>What can you say, if anything, about the relationship between airline and
+          airport in NYC in 2023 in regard to the number of departing flights?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-34">
+        <title>Learning Check 2.34</title>
+        <statement>
+          <p>Why might the side-by-side barplot be preferable to a stacked barplot in
+          this case?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-35">
+        <title>Learning Check 2.35</title>
+        <statement>
+          <p>What are the disadvantages of using a dodged barplot, in general?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-36">
+        <title>Learning Check 2.36</title>
+        <statement>
+          <p>Why is the faceted barplot preferred to the side-by-side and stacked
+          barplots in this case?</p>
+        </statement>
+      </exercise>
+
+      <exercise xml:id="lc2-37">
+        <title>Learning Check 2.37</title>
+        <statement>
+          <p>What information about the different carriers at different airports is more
+          easily seen in the faceted barplot?</p>
+        </statement>
+      </exercise>
+    </subsection>
+
+
+    <subsection xml:id="sec-barplot-summary">
+      <title>Summary</title>
+
+      <p>
+        Barplots are a common way of displaying the distribution of a categorical
+        variable, or in other words the frequency with which the different categories
+        (also called <em>levels</em>) occur. They are easy to understand and make it easy
+        to make comparisons across levels. Furthermore, when trying to visualize the
+        relationship of two categorical variables, you have many options: stacked
+        barplots, side-by-side barplots, and faceted barplots. Depending on what aspect
+        of the relationship you are trying to emphasize, you will need to make a choice
+        between these three types of barplots and own that choice.
+      </p>
+    </subsection>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <section xml:id="sec-data-vis-conclusion">
+    <title>Conclusion</title>
+
+
+    <subsection xml:id="sec-viz-summary-table">
+      <title>Summary table</title>
+
+      <p>
+        Let's recap all five of the five named graphs (5NG)
+        <idx><h>five named graphs</h></idx> in <xref ref="tab-viz-summary"/> summarizing
+        their differences. Using these 5NG, you'll be able to visualize the distributions
+        and relationships of variables contained in a wide array of datasets. This will be
+        even more the case as we start to map more variables to more of each
+        <c>geom</c>etric object's <c>aes</c>thetic attribute options, further unlocking
+        the awesome power of the <c>ggplot2</c> package.
+      </p>
+
+      <table xml:id="tab-viz-summary">
+        <title>Summary of Five Named Graphs</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>Named graph</cell>
+            <cell>Geometric object</cell>
+            <cell>Number of variables</cell>
+            <cell>Variable types</cell>
+            <cell>Notes</cell>
+          </row>
+          <row>
+            <cell>Scatterplot</cell>
+            <cell><c>geom_point()</c></cell>
+            <cell>2</cell>
+            <cell>2 numerical</cell>
+            <cell></cell>
+          </row>
+          <row>
+            <cell>Linegraph</cell>
+            <cell><c>geom_line()</c></cell>
+            <cell>2</cell>
+            <cell>2 numerical</cell>
+            <cell>Used when there is a sequential order to x-variable, e.g., time</cell>
+          </row>
+          <row>
+            <cell>Histogram</cell>
+            <cell><c>geom_histogram()</c></cell>
+            <cell>1</cell>
+            <cell>1 numerical</cell>
+            <cell></cell>
+          </row>
+          <row>
+            <cell>Boxplot</cell>
+            <cell><c>geom_boxplot()</c></cell>
+            <cell>2</cell>
+            <cell>1 numerical, 1 categorical</cell>
+            <cell></cell>
+          </row>
+          <row>
+            <cell>Barplot</cell>
+            <cell><c>geom_bar()</c> or <c>geom_col()</c></cell>
+            <cell>1</cell>
+            <cell>1 categorical</cell>
+            <cell></cell>
+          </row>
+        </tabular>
+      </table>
+    </subsection>
+
+
+    <subsection xml:id="sec-function-args">
+      <title>Function argument specification</title>
+
+      <p>
+        Let's go over some important points about specifying the arguments (i.e., inputs)
+        to functions. Run the following two segments of code:
+      </p>
+
+      <program language="r">
+        <input>
+# Segment 1:
+ggplot(data = flights, mapping = aes(x = carrier)) +
+  geom_bar()
+
+# Segment 2:
+ggplot(flights, aes(x = carrier)) +
+  geom_bar()
+        </input>
+      </program>
+
+      <p>
+        You'll notice that both code segments create the same barplot, even though in the
+        second segment we omitted the <c>data = </c> and <c>mapping = </c> code argument
+        names. This is because the <c>ggplot()</c> function by default assumes that the
+        <c>data</c> argument comes first and the <c>mapping</c> argument comes second.
+        <idx><h>functions</h><h>argument order</h></idx> As long as you specify the data
+        frame in question first and the <c>aes()</c> mapping second, you can omit the
+        explicit statement of the argument names <c>data = </c> and <c>mapping = </c>.
+      </p>
+      <p>
+        Going forward for the rest of this book, all <c>ggplot()</c> code will be like
+        the second segment: with the <c>data = </c> and <c>mapping = </c> explicit naming
+        of the argument omitted with the default ordering of arguments respected. We'll do
+        this for brevity's sake; it's common to see this style when reviewing other R
+        users' code.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sec-viz-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        If you want to further unlock the power of the <c>ggplot2</c> package for data
+        visualization, we suggest that you check out RStudio's <q>Data Visualization with
+        ggplot2</q> cheatsheet. This cheatsheet summarizes much more than what we've
+        discussed in this chapter. In particular, it presents many more than the 5
+        <c>geom</c>etric objects we covered in this chapter while providing quick and
+        easy-to-read visual descriptions. For all the <c>geom</c>etric objects, it also
+        lists all the possible aesthetic attributes one can tweak. In the current version
+        of RStudio in mid-2025, you can access this cheatsheet by going to the RStudio
+        Menu Bar <m>	o</m> Help <m>	o</m> Cheatsheets <m>	o</m> <q>Data Visualization
+        with ggplot2.</q> Alternatively, you can download the cheat sheet by going to the
+        <url href="https://rstudio.github.io/cheatsheets/">Posit Cheatsheets page</url>.
+      </p>
+
+      <figure xml:id="fig-ggplot-cheatsheet">
+        <caption>Data Visualization with ggplot2 cheatsheet (first page).</caption>
+        <image source="images/cheatsheets/ggplot_cheatsheet-1.png" width="100%">
+          <description>The first page of the ggplot2 Data Visualization cheatsheet, showing a reference grid of geometric objects, aesthetic mappings, and other key ggplot2 features.</description>
+        </image>
+      </figure>
+    </subsection>
+
+
+    <subsection xml:id="sec-whats-to-come-viz">
+      <title>What's to come</title>
+
+      <p>
+        Recall in <xref ref="fig-noalpha"/> in <xref ref="sec-scatterplots"/> we
+        visualized the relationship between departure delay and arrival delay for Envoy
+        Air flights only, rather than <em>all</em> flights. This data is saved in the
+        <c>envoy_flights</c> data frame from the <c>moderndive</c> package.
+      </p>
+      <p>
+        In reality, the <c>envoy_flights</c> data frame is merely a subset of the
+        <c>flights</c> data frame from the <c>nycflights23</c> package consisting of
+        <em>all</em> flights that left NYC in 2023. We created <c>envoy_flights</c> using
+        the following code that uses the <c>dplyr</c> package for data wrangling:
+      </p>
+
+      <program language="r">
+        <input>
+library(dplyr)
+
+envoy_flights &lt;- flights |> 
+  filter(carrier == "MQ")
+
+ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay)) + 
+  geom_point()
+        </input>
+      </program>
+
+      <p>
+        This code takes the <c>flights</c> data frame and <c>filter()</c>s it to only
+        return the rows where <c>carrier</c> is equal to <c>"MQ"</c>, Envoy Air's carrier
+        code. (Recall from <xref ref="sec-code"/> that testing for equality is specified
+        with <idx><h>using == instead of =</h></idx> <c>==</c> and not <c>=</c>.) The
+        code then cycles back to save the output in a new data frame called
+        <c>envoy_flights</c> using the <c>&lt;-</c> <em>assignment</em>
+        operator<idx><h>operators</h><h>assignment (&lt;-)</h></idx>.
+      </p>
+      <p>
+        Similarly, recall in <xref ref="fig-hourlytemp"/> in
+        <xref ref="sec-linegraphs"/> we visualized hourly wind speed recordings at Newark
+        airport only for the first 15 days of January 2023. This data is saved in the
+        <c>early_january_2023_weather</c> data frame from the <c>moderndive</c> package.
+      </p>
+      <p>
+        In reality, the <c>early_january_2023_weather</c> data frame is merely a subset
+        of the <c>weather</c> data frame from the <c>nycflights23</c> package consisting
+        of <em>all</em> hourly weather observations in 2023 for <em>all</em> three NYC
+        airports. We created <c>early_january_2023_weather</c> using the following
+        <c>dplyr</c> code:
+      </p>
+
+      <program language="r">
+        <input>
+early_january_2023_weather &lt;- weather |> 
+  filter(origin == "EWR" &amp; month == 1 &amp; day &lt;= 15)
+
+ggplot(data = early_january_2023_weather, mapping = aes(x = time_hour, y = temp)) +
+  geom_line()
+        </input>
+      </program>
+
+      <p>
+        This code pares down the <c>weather</c> data frame to a new data frame
+        <c>early_january_2023_weather</c> consisting of hourly wind speed recordings only
+        for <c>origin == "EWR"</c>, <c>month == 1</c>, and day less than or equal to
+        <c>15</c>.
+      </p>
+      <p>
+        These two code segments are a preview of the next chapter on data wrangling using
+        the <c>dplyr</c> package. Data wrangling is the process of transforming and
+        modifying existing data with the intent of making it more appropriate for analysis
+        purposes. For example, these two code segments used the <c>filter()</c> function
+        to create new data frames (<c>envoy_flights</c> and
+        <c>early_january_2023_weather</c>) by choosing only a subset of rows of existing
+        data frames (<c>flights</c> and <c>weather</c>). In the next chapter, we'll
+        formally introduce the <c>filter()</c> and other data-wrangling functions as well
+        as the <em>pipe operator</em> <c>|&gt;</c> which allows you to combine multiple
+        data-wrangling actions into a single sequential <em>chain</em> of actions. On to
+        the next chapter on data wrangling!
+      </p>
+    </subsection>
+  </section>
 
 </chapter>
