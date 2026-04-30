@@ -38,4 +38,5 @@
   <xi:include href="./preface_ptx_version.ptx" />
   <xi:include href="./preface_foreword.ptx" />
   <xi:include href="./preface_main.ptx" />
+  <xi:include href="./about_authors.ptx" />
 </frontmatter>
