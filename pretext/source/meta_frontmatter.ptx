@@ -34,4 +34,8 @@
       or data science.
     </p>
   </abstract>
+
+  <xi:include href="./preface_ptx_version.ptx" />
+  <xi:include href="./preface_foreword.ptx" />
+  <xi:include href="./preface_main.ptx" />
 </frontmatter>
