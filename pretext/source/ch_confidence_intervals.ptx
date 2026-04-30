@@ -84,7 +84,7 @@
     <title>Needed packages</title>
 
     <p>
-      If needed, read <xref ref="packages"/> for information on how to install and load R packages.
+      If needed, read <xref ref="sec-packages"/> for information on how to install and load R packages.
     </p>
 
     <program language="r">
@@ -97,7 +97,7 @@ library(infer)
 
     <p>
       Recall that loading the <c>tidyverse</c> package loads many packages that we have encountered
-      earlier. For details refer to <xref ref="packages"/>. The packages
+      earlier. For details refer to <xref ref="sec-packages"/>. The packages
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used in
       this chapter.
     </p>
@@ -1549,7 +1549,7 @@ almonds_sample_100 |&gt;
       <p>
         The <c>infer</c> package<idx><h>R packages</h><h>infer</h></idx> is an R package for
         statistical inference. It makes efficient use of the <c>|&gt;</c> pipe operator we
-        introduced in <xref ref="wrangling"/> to spell out the sequence of steps necessary to perform
+        introduced in <xref ref="ch-wrangling"/> to spell out the sequence of steps necessary to perform
         statistical inference in a <q>tidy</q> and transparent fashion. Just as the <c>dplyr</c>
         package provides functions with verb-like names to perform data wrangling, the <c>infer</c>
         package provides functions with intuitive verb-like names to perform statistical inference,
@@ -1636,7 +1636,7 @@ almonds_sample_100 |&gt;
           Notice how the data itself does not change, but the <c>Response: weight (numeric)</c>
           <em>meta-data</em> does. This is similar to how the <c>group_by()</c> verb from
           <c>dplyr</c> doesn't change the data, but only adds <q>grouping</q> meta-data, as we saw
-          in <xref ref="wrangling"/>.
+          in <xref ref="ch-wrangling"/>.
         </p>
         <p>
           We can also specify which variables are the focus of the study by introducing a

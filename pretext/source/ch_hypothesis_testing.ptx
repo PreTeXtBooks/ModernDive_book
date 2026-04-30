@@ -68,7 +68,7 @@
     <title>Needed packages</title>
 
     <p>
-      If needed, read <xref ref="packages"/> for information on how to install and load R
+      If needed, read <xref ref="sec-packages"/> for information on how to install and load R
       packages.
     </p>
 
@@ -84,7 +84,7 @@ library(ggplot2movies)
 
     <p>
       Recall that loading the <c>tidyverse</c> package loads many packages that we have
-      encountered earlier. For details refer to <xref ref="packages"/>. The packages
+      encountered earlier. For details refer to <xref ref="sec-packages"/>. The packages
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used
       in this chapter.
     </p>
@@ -715,7 +715,7 @@ spotify_metal_deephouse |&gt;
       <p>
         Let's perform an exploratory data analysis of the relationship between the two
         categorical variables <c>track_genre</c> and <c>popular_or_not</c>. Recall that we saw
-        in <xref ref="viz"/> that one way we can visualize such a relationship is
+        in <xref ref="ch-visualization"/> that one way we can visualize such a relationship is
         by using a stacked barplot.
       </p>
 
@@ -1072,7 +1072,7 @@ spotify_52_shuffled |&gt;
       <idx><h>hypothesis testing</h><h>test statistic</h></idx> is a
       <em>point estimate/sample statistic</em> formula used for hypothesis testing. Note that a
       sample statistic is merely a summary statistic based on a sample of observations. Recall
-      we saw in <xref ref="wrangling"/> that a summary statistic takes in many values and
+      we saw in <xref ref="ch-wrangling"/> that a summary statistic takes in many values and
       returns only one. Here, the samples would be the <m>n_m = 1000</m> metal songs and the
       <m>n_d = 1000</m> deep house songs. Hence, the point estimate of interest is the
       difference in sample proportions <m>\widehat{p}_{m} - \widehat{p}_{d}</m>.
@@ -1229,7 +1229,7 @@ spotify_metal_deephouse |&gt;
           but the <c>Response: popular_or_not (factor)</c> and
           <c>Explanatory: track_genre (factor)</c> <em>meta-data</em> do. This is similar to
           how the <c>group_by()</c> verb from <c>dplyr</c> does not change the data, but only
-          adds "grouping" meta-data, as we saw in <xref ref="wrangling"/>. We also now focus on
+          adds "grouping" meta-data, as we saw in <xref ref="ch-wrangling"/>. We also now focus on
           only the two columns of interest in the data for our problem at hand with
           <c>popular_or_not</c> and <c>track_genre</c>.
         </p>
@@ -2080,9 +2080,9 @@ movies_sample
 
       <p>
         Let's perform an exploratory data analysis of this data. Recall from
-        <xref ref="viz"/> that a boxplot is a visualization we can use to show the
+        <xref ref="ch-visualization"/> that a boxplot is a visualization we can use to show the
         relationship between a numerical and a categorical variable. Another option you saw in
-        <xref ref="viz"/> would be to use a faceted histogram. However, in the interest of
+        <xref ref="ch-visualization"/> would be to use a faceted histogram. However, in the interest of
         brevity, let's only present the boxplot in <xref ref="action-romance-boxplot"/>.
       </p>
 
