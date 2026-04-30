@@ -993,7 +993,7 @@ coef(life_exp_model)
       </p>
 
       <p>
-        You might be asking at this point why was Africa chosen as the <q>baseline for comparison</q> group. This is the case for no other reason than it comes first alphabetically of the six continents; by default R arranges factors/categorical variables in alphanumeric order. You can change this baseline group to be another continent if you manipulate the variable <c>continent</c>'s factor <q>levels</q> using the <c>forcats</c> package. See <url href="https://r4ds.had.co.nz/factors.html">Chapter 15</url> of <em>R for Data Science</em> for examples.
+        You might be asking at this point why was Africa chosen as the <q>baseline for comparison</q> group. This is the case for no other reason than it comes first alphabetically of the six continents; by default R arranges factors/categorical variables in alphanumeric order. You can change this baseline group to be another continent if you manipulate the variable <c>continent</c>'s factor <q>levels</q> using the <c>forcats</c> package. See <url href="https://r4ds.had.co.nz/factors.html">Chapter 15</url> of <em>R for Data Science</em> <xref ref="bib-rds2016"/> for examples.
       </p>
 
       <p>

@@ -247,7 +247,7 @@ glimpse(house_prices)
 
       <p>
         Let's now perform the second step in an EDA: computing summary statistics. Recall
-        from <xref ref="ch-wrangling"/> that <em>summary statistics</em> are single numerical
+        from <xref ref="sec-summarize"/> that <em>summary statistics</em> are single numerical
         values that summarize a large number of values. Examples of summary statistics
         include the mean, the median, the standard deviation, and various percentiles.
       </p>
@@ -289,9 +289,9 @@ house_prices |&gt;
         visualizations. These are plots focusing on a single variable at a time. Since
         <c>price</c> and <c>sqft_living</c> are numerical variables, we can visualize
         their distributions using a <c>geom_histogram()</c> as seen in
-        <xref ref="ch-visualization"/> on histograms. On the other hand, since <c>condition</c>
+        <xref ref="sec-histograms"/> on histograms. On the other hand, since <c>condition</c>
         is categorical, we can visualize its distribution using a <c>geom_bar()</c>.
-        Recall from <xref ref="ch-visualization"/> on barplots that since <c>condition</c> is not
+        Recall from <xref ref="sec-barplots"/> on barplots that since <c>condition</c> is not
         <q>pre-counted,</q> we use a <c>geom_bar()</c> and not a <c>geom_col()</c>.
       </p>
       <program language="r">
@@ -370,7 +370,7 @@ ggplot(house_prices, aes(x = condition)) +
       <p>
         Let's create new log10 transformed versions of the right-skewed variable
         <c>price</c> and <c>sqft_living</c> using the <c>mutate()</c> function from
-        <xref ref="ch-wrangling"/>, but we'll give the latter the name <c>log10_size</c>, which
+        <xref ref="sec-mutate"/>, but we'll give the latter the name <c>log10_size</c>, which
         is shorter and easier to understand than the name <c>log10_sqft_living</c>.
       </p>
       <program language="r">
@@ -638,18 +638,21 @@ house_prices |&gt;
         for the interaction model? We can get these values from the regression table.
         Recall our two-step process for getting the regression table:
       </p>
+      <listing xml:id="tab-seattle-interaction">
+        <caption>Regression table for interaction model.</caption>
       <program language="r">
         <input>
 price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
 get_regression_table(price_interaction)
         </input>
       </program>
+      </listing>
 
       <p>
         Recall we saw in <xref ref="model4interactiontable"/> how to interpret a regression
         table when there are both numerical and categorical explanatory variables. Let's
-        now do the same for all 10 values in the <c>estimate</c> column of the regression
-        table output above.
+        now do the same for all 10 values in the <c>estimate</c> column of
+        <xref ref="tab-seattle-interaction"/>.
       </p>
 
       <p>
@@ -1092,7 +1095,7 @@ glimpse(US_births_1994_2003)
 
       <p>
         We'll focus on the number of <c>births</c> for each <c>date</c>, but only for
-        births that occurred in 1999. Recall from <xref ref="ch-wrangling"/> we can do this
+        births that occurred in 1999. Recall from <xref ref="sec-filter"/> we can do this
         using the <c>filter()</c> function from the <c>dplyr</c> package:
       </p>
       <program language="r">
@@ -1103,7 +1106,7 @@ US_births_1999 &lt;- US_births_1994_2003 |&gt;
       </program>
 
       <p>
-        As discussed in <xref ref="ch-visualization"/>, since <c>date</c> is a notion of time
+        As discussed in <xref ref="sec-linegraphs"/>, since <c>date</c> is a notion of time
         and thus has sequential ordering to it, a linegraph would be a more appropriate
         visualization to use than a scatterplot. In other words, we should use a
         <c>geom_line()</c> instead of <c>geom_point()</c>. Recall that such plots are
@@ -1135,7 +1138,7 @@ ggplot(US_births_1999, aes(x = date, y = births)) +
 
       <p>
         Let's sort the rows of <c>US_births_1999</c> in descending order of the number of
-        births. Recall from <xref ref="ch-wrangling"/> that we can use the <c>arrange()</c>
+        births. Recall from <xref ref="sec-arrange"/> that we can use the <c>arrange()</c>
         function from the <c>dplyr</c> function to do this, making sure to sort
         <c>births</c> in descending order:
       </p>
