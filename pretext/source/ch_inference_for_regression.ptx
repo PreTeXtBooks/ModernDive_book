@@ -94,12 +94,16 @@ UN_data_ch10 &lt;- un_member_states_2024 |>
         squared residuals. To do this in R, we use the <c>lm()</c> function with the formula
         <c>fert_rate ~ life_exp</c> and save the solution in <c>simple_model</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 simple_model &lt;- lm(fert_rate ~ life_exp, data = UN_data_ch10)
 coef(simple_model)
         </input>
-      </program>
+        <output>
+(Intercept)    life_exp 
+ 12.6130315  -0.1374889
+        </output>
+      </console>
       <p>
         The regression line is <m>\widehat{y}_i = b_0 + b_1 \cdot x_i</m>, where <m>x_i</m>
         is the life expectancy for the <m>i</m>th country and <m>\widehat{y}_i</m> is the
@@ -136,35 +140,60 @@ ggplot(UN_data_ch10, aes(x = life_exp, y = fert_rate)) +
         of the UN member states. We can find its row number using <c>rowid_to_column()</c>
         and <c>filter()</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 UN_data_ch10 |>
   rowid_to_column() |>
   filter(country == "France") |>
   pull(rowid)
         </input>
-      </program>
+        <output>
+[1] 57
+        </output>
+      </console>
       <p>
         We can determine France's fitted fertility rate from the regression line and compare
         it to the observed value. Using R we are not required to manually calculate the
         fitted values and residuals. We do this directly using <c>get_regression_points()</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 simple_model |>
   get_regression_points() |>
   filter(ID == 57)
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 5
+     ID fert_rate life_exp fert_rate_hat residual
+  &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+1    57       1.8     82.6          1.26    0.542
+        </output>
+      </console>
       <p>
         We can retrieve this information for all observations:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 simple_model |>
   get_regression_points()
         </input>
-      </program>
+        <output>
+# A tibble: 183 × 5
+      ID fert_rate life_exp fert_rate_hat residual
+   &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1       4.3     53.6          5.24   -0.937
+ 2     2       1.4     79.5          1.69   -0.287
+ 3     3       2.7     78.0          1.88    0.815
+ 4     4       5       62.1          4.07    0.926
+ 5     5       1.6     77.8          1.92   -0.316
+ 6     6       1.9     78.3          1.85    0.054
+ 7     7       1.6     76.1          2.15   -0.546
+ 8     8       1.6     83.1          1.19    0.411
+ 9     9       1.5     82.3          1.30    0.198
+10    10       1.6     74.2          2.42   -0.818
+# ℹ 173 more rows
+        </output>
+      </console>
       <p>
         This concludes our review of material covered in <xref ref="model1"/>. We now explain
         how to use this information for statistical inference.
@@ -230,23 +259,46 @@ simple_model |>
         <c>waiting</c> time to the next eruption in minutes. These data are stored in the
         <c>old_faithful_2024</c> data frame in the <c>moderndive</c> package.
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 old_faithful_2024
         </input>
-      </program>
+        <output>
+# A tibble: 114 × 6
+   eruption_id date        time waiting webcam duration
+         &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+ 1     1473854 2024-08-19   538     180 Yes         235
+ 2     1473352 2024-08-15  1541     184 Yes         259
+ 3     1473337 2024-08-15  1425     116 Yes         137
+ 4     1473334 2024-08-15  1237     188 Yes         222
+ 5     1473331 2024-08-15  1131     106 Yes         105
+ 6     1473328 2024-08-15   944     187 Yes         180
+ 7     1473207 2024-08-14  1231     182 Yes         244
+ 8     1473201 2024-08-14  1041     190 Yes         278
+ 9     1473137 2024-08-13  1810     138 Yes         249
+10     1473108 2024-08-13  1624     186 Yes         262
+# ℹ 104 more rows
+        </output>
+      </console>
       <p>
         By looking at the first row we can tell, for example, that an eruption on August 19,
         2024, at 5:38 AM lasted 235 seconds, and the waiting time for the next eruption was
         180 minutes. We next display the summary for these two variables:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 old_faithful_2024 |>
   select(duration, waiting) |>
   tidy_summary()
         </input>
-      </program>
+        <output>
+# A tibble: 2 × 11
+  column       n group type      min    Q1  mean median    Q3   max    sd
+  &lt;chr&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 duration   114 &lt;NA&gt;  numeric    99  180   217.   240.  259    300  59.0
+2 waiting    114 &lt;NA&gt;  numeric   102  139.  160.   176.  184.   201  29.9
+        </output>
+      </console>
       <p>
         We have a sample of eruptions, lasting between 99 seconds and 300 seconds, and the
         waiting time to the next eruption was between 102 minutes and 201 minutes. Observe
@@ -326,7 +378,7 @@ ggplot(old_faithful_2024, aes(x = duration, y = waiting)) +
         These or equivalent calculations are done in R when using the <c>lm()</c> function.
         For <c>old_faithful_2024</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 # Fit regression model:
 model_1 &lt;- lm(waiting ~ duration, data = old_faithful_2024)
@@ -335,7 +387,10 @@ model_1 &lt;- lm(waiting ~ duration, data = old_faithful_2024)
 coef(model_1)
 sigma(model_1)
         </input>
-      </program>
+        <output>
+[1] 20.3701
+        </output>
+      </console>
       <p>
         Based on these data and assuming the linear model is appropriate, we can say that for
         every additional second that an eruption lasts, the waiting time to the next eruption
@@ -411,12 +466,19 @@ sigma(model_1)
           <q>Action</q> versus <q>Romance</q> using <c>lm()</c> with a dummy variable for
           the genre:
         </p>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 mod_diff_means &lt;- lm(rating ~ genre, data = movies_sample)
 get_regression_table(mod_diff_means)
           </input>
-        </program>
+          <output>
+# A tibble: 2 × 7
+  term          estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept         5.28     0.265     19.9    0        4.75      5.80
+2 genre-Romance     1.05     0.364      2.88   0.005    0.321     1.77
+          </output>
+        </console>
         <p>
           The <c>p_value</c> for the <c>genre: Romance</c> row is the <m>p</m>-value for the
           hypothesis test:
@@ -450,12 +512,22 @@ spotify_for_anova &lt;- spotify_by_genre |>
   filter(track_genre %in% c("country", "hip-hop", "rock"))
           </input>
         </program>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 spotify_for_anova |>
   slice_sample(n = 5)
           </input>
-        </program>
+          <output>
+# A tibble: 5 × 4
+  artists           track_name                            popularity track_genre
+  &lt;chr&gt;             &lt;chr&gt;                                      &lt;dbl&gt; &lt;chr&gt;      
+1 Mustafa Zahid     Toh Phir Aao                                  60 hip-hop    
+2 Steve Miller Band Abracadabra                                    0 country    
+3 Michael Ray       Time Marches On (The Bootlegger Sess…          0 country    
+4 Vilen             Aankhein                                      63 hip-hop    
+5 Alan Jackson      Good Time                                     71 country
+          </output>
+        </console>
 
         <figure xml:id="fig-pop-by-genre-plot">
           <caption>Boxplot of popularity by genre.</caption>
@@ -471,20 +543,36 @@ ggplot(spotify_for_anova, aes(x = track_genre, y = popularity)) +
   labs(x = "Genre", y = "Popularity")
           </input>
         </program>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 mean_popularities_by_genre &lt;- spotify_for_anova |>
   group_by(track_genre) |>
   summarize(mean_popularity = mean(popularity))
 mean_popularities_by_genre
           </input>
-        </program>
-        <program language="r">
+          <output>
+# A tibble: 3 × 2
+  track_genre mean_popularity
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 country                17.0
+2 hip-hop                37.8
+3 rock                   19.0
+          </output>
+        </console>
+        <console prompt="&gt; ">
           <input>
 mod_anova &lt;- lm(popularity ~ track_genre, data = spotify_for_anova)
 get_regression_table(mod_anova)
           </input>
-        </program>
+          <output>
+# A tibble: 3 × 7
+  term                estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept              17.0      0.976     17.4    0       15.1      18.9 
+2 track_genre-hip-hop    20.7      1.38      15.0    0       18.0      23.4 
+3 track_genre-rock        1.97     1.38       1.43   0.153   -0.733     4.68
+          </output>
+        </console>
         <p>
           The <c>estimate</c> for the <c>track_genre: hip-hop</c> and <c>track_genre: rock</c>
           rows are the differences in means compared to the <q>country</q> genre (the reference
@@ -496,12 +584,22 @@ get_regression_table(mod_anova)
           The traditional ANOVA doesn't give this level of granularity. It can be performed
           using the <c>aov()</c> function:
         </p>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 aov(popularity ~ track_genre, data = spotify_for_anova) |>
   anova()
           </input>
-        </program>
+          <output>
+Analysis of Variance Table
+
+Response: popularity
+              Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+track_genre    2  261843  130922  137.43 &lt; 2.2e-16 ***
+Residuals   2997 2855039     953                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+          </output>
+        </console>
         <p>
           The small <m>p</m>-value leads us to reject the null hypothesis that the mean
           popularities are equal across the three genres, consistent with the linear model
@@ -597,12 +695,19 @@ aov(popularity ~ track_genre, data = spotify_for_anova) |>
         <c>old_faithful_2024</c>. We select the 49th and 51st observations using
         <c>slice()</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 old_faithful_2024 |>
   slice(c(49, 51))
         </input>
-      </program>
+        <output>
+# A tibble: 2 × 6
+  eruption_id date        time waiting webcam duration
+        &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
+1     1469584 2024-07-18  1117     139 Yes         236
+2     1469437 2024-07-17  1157     176 Yes         236
+        </output>
+      </console>
       <p>
         Observe that the <c>duration</c> time is the same for both observations, but the
         response <c>waiting</c> time is different. Assuming that the linear model is
@@ -901,11 +1006,18 @@ old_faithful_2024 |>
         <idx><h>get_regression_table()</h></idx> from the <c>moderndive</c> package. For
         <c>model_1</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 get_regression_table(model_1)
         </input>
-      </program>
+        <output>
+# A tibble: 2 × 7
+  term      estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept   79.5       7.31       10.9       0   65.0     93.9  
+2 duration     0.371     0.032      11.4       0    0.307    0.435
+        </output>
+      </console>
       <p>
         The first row in the regression table addresses inferences for the intercept
         <m>\beta_0</m>, and the second row deals with inference for the slope <m>\beta_1</m>.
@@ -1015,7 +1127,7 @@ get_regression_table(model_1)
           We can calculate all residuals by applying the <c>get_regression_points()</c>
           function to the regression model <c>model_1</c>:
         </p>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 # Fit regression model:
 model_1 &lt;- lm(waiting ~ duration, data = old_faithful_2024)
@@ -1023,7 +1135,23 @@ model_1 &lt;- lm(waiting ~ duration, data = old_faithful_2024)
 fitted_and_residuals &lt;- get_regression_points(model_1)
 fitted_and_residuals
           </input>
-        </program>
+          <output>
+# A tibble: 114 × 5
+      ID waiting duration waiting_hat residual
+   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1     180      235        167.    13.3 
+ 2     2     184      259        176.     8.43
+ 3     3     116      137        130.   -14.3 
+ 4     4     188      222        162.    26.2 
+ 5     5     106      105        118.   -12.4 
+ 6     6     187      180        146.    40.7 
+ 7     7     182      244        170.    12.0 
+ 8     8     190      278        183.     7.38
+ 9     9     138      249        172.   -33.9 
+10    10     186      262        177.     9.31
+# ℹ 104 more rows
+          </output>
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="residual-diagnostics">
@@ -1227,7 +1355,7 @@ ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
             <p>
               Fit the model and obtain residuals using:
             </p>
-            <program language="r">
+            <console prompt="&gt; ">
               <input>
 un_hdi &lt;- un_member_states_2024 |>
   select(fert_rate = fertility_rate_2022,
@@ -1236,7 +1364,23 @@ un_hdi &lt;- un_member_states_2024 |>
 model_hdi &lt;- lm(fert_rate ~ hdi, data = un_hdi)
 get_regression_points(model_hdi)
               </input>
-            </program>
+              <output>
+# A tibble: 184 × 5
+      ID fert_rate   hdi fert_rate_hat residual
+   &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1       4.3 0.462          4.17    0.13 
+ 2     2       1.4 0.789          2.07   -0.667
+ 3     3       2.7 0.745          2.35    0.35 
+ 4     4       5   0.591          3.34    1.66 
+ 5     5       1.6 0.826          1.83   -0.229
+ 6     6       1.9 0.849          1.68    0.219
+ 7     7       1.6 0.786          2.09   -0.486
+ 8     8       1.6 0.946          1.06    0.543
+ 9     9       1.5 0.926          1.19    0.314
+10    10       1.6 0.76           2.25   -0.654
+# ℹ 174 more rows
+              </output>
+            </console>
             <p>
               The residual plot may show some non-random patterns (e.g., non-linearity or
               non-constant variance) suggesting that a simple linear model may not fully
@@ -1680,12 +1824,25 @@ coffee_data &lt;- coffee_quality |>
       <p>
         We display the summary for these variables:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 coffee_data |>
   tidy_summary()
         </input>
-      </program>
+        <output>
+# A tibble: 8 × 11
+  column               n group type    min    Q1  mean median    Q3   max     sd
+  &lt;chr&gt;            &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1 aroma              207 &lt;NA&gt;  nume…  6.5   7.58  7.72   7.67  7.92  8.58  0.288
+2 flavor             207 &lt;NA&gt;  nume…  6.75  7.58  7.74   7.75  7.92  8.5   0.280
+3 moisture_percen…   207 &lt;NA&gt;  nume…  0    10.1  10.7   10.8  11.5  13.5   1.25 
+4 total_cup_points   207 &lt;NA&gt;  nume… 78    82.6  83.7   83.8  84.8  89.3   1.73 
+5 continent_of_or…    23 Afri… fact… NA    NA    NA     NA    NA    NA    NA    
+6 continent_of_or…    84 Asia  fact… NA    NA    NA     NA    NA    NA    NA    
+7 continent_of_or…    67 Nort… fact… NA    NA    NA     NA    NA    NA    NA    
+8 continent_of_or…    33 Sout… fact… NA    NA    NA     NA    NA    NA    NA
+        </output>
+      </console>
       <p>
         When performing multiple regression it is useful to construct a
         <term>scatterplot matrix</term><idx><h>scatterplot matrix</h></idx>, a matrix that
@@ -1771,7 +1928,7 @@ coffee_data |>
       <p>
         In R, all these calculations are done when using the <c>lm()</c> function:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 # Fit regression model:
 mod_mult &lt;- lm(
@@ -1783,7 +1940,10 @@ mod_mult &lt;- lm(
 coef(mod_mult)
 sigma(mod_mult)
         </input>
-      </program>
+        <output>
+[1] 0.5066865
+        </output>
+      </console>
       <p>
         Recall that the numerical regressors' coefficients (<m>b_1</m>, <m>b_2</m>, and
         <m>b_3</m>) are partial slopes, each representing the extra effect of increasing the
@@ -1895,11 +2055,23 @@ sigma(mod_mult)
       <m>SE(b_j)</m>. The regression table produced by
       <c>get_regression_table()</c> contains these standard errors:
     </p>
-    <program language="r">
+    <console prompt="&gt; ">
       <input>
 get_regression_table(mod_mult)
       </input>
-    </program>
+      <output>
+# A tibble: 7 × 7
+  term                    estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept                 37.3       1.12      33.4    0       35.1     39.5  
+2 aroma                      1.73      0.222      7.80   0        1.29     2.17 
+3 flavor                     4.32      0.226     19.1    0        3.87     4.76 
+4 moisture_percentage       -0.008     0.03      -0.27   0.787   -0.067    0.051
+5 continent_of_origin-As…   -0.393     0.121     -3.24   0.001   -0.632   -0.154
+6 continent_of_origin-No…   -0.273     0.127     -2.15   0.033   -0.524   -0.023
+7 continent_of_origin-So…   -0.478     0.142     -3.38   0.001   -0.757   -0.199
+      </output>
+    </console>
 
 
     <subsection xml:id="model-dependency">
@@ -1917,7 +2089,7 @@ get_regression_table(mod_mult)
         Using the <c>coffee_data</c> example, suppose we consider a model with only three
         numerical regressors (dropping <c>continent_of_origin</c>):
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 # Model with three numerical regressors:
 mod_mult_1 &lt;- lm(
@@ -1926,11 +2098,14 @@ mod_mult_1 &lt;- lm(
 coef(mod_mult_1)
 sigma(mod_mult_1)
         </input>
-      </program>
+        <output>
+[1] 0.5208255
+        </output>
+      </console>
       <p>
         Now consider a further reduced model without the regressor <c>flavor</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 # Model without flavor:
 mod_mult_2 &lt;- lm(
@@ -1938,7 +2113,10 @@ mod_mult_2 &lt;- lm(
 coef(mod_mult_2)
 sigma(mod_mult_2)
         </input>
-      </program>
+        <output>
+[1] 0.8571982
+        </output>
+      </console>
       <p>
         The partial slope for <c>aroma</c> in <c>mod_mult_1</c> differs from the partial
         slope for <c>aroma</c> in <c>mod_mult_2</c> because the models are different.
@@ -1971,11 +2149,23 @@ sigma(mod_mult_2)
         We can compute 98% confidence intervals for all coefficients by passing
         <c>conf.level = 0.98</c> to <c>get_regression_table()</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 get_regression_table(mod_mult, conf.level = 0.98)
         </input>
-      </program>
+        <output>
+# A tibble: 7 × 7
+  term                    estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept                 37.3       1.12      33.4    0       34.7     39.9  
+2 aroma                      1.73      0.222      7.80   0        1.21     2.25 
+3 flavor                     4.32      0.226     19.1    0        3.79     4.85 
+4 moisture_percentage       -0.008     0.03      -0.27   0.787   -0.078    0.062
+5 continent_of_origin-As…   -0.393     0.121     -3.24   0.001   -0.678   -0.108
+6 continent_of_origin-No…   -0.273     0.127     -2.15   0.033   -0.571    0.025
+7 continent_of_origin-So…   -0.478     0.142     -3.38   0.001   -0.81    -0.146
+        </output>
+      </console>
       <p>
         The interpretation for the <c>flavor</c> coefficient, for example, is: <q>We are 98%
         confident that the value of <m>\beta_2</m> (the population partial slope for
@@ -2005,11 +2195,20 @@ get_regression_table(mod_mult, conf.level = 0.98)
         For example, using model <c>mod_mult_1</c> and testing <m>\beta_2 = 0</m>
         (the partial slope for <c>flavor</c>):
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 get_regression_table(mod_mult_1)
         </input>
-      </program>
+        <output>
+# A tibble: 4 × 7
+  term                estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept             36.8       1.10     33.6     0       34.6     38.9  
+2 aroma                  1.8       0.223     8.09    0        1.36     2.24 
+3 flavor                 4.28      0.229    18.7     0        3.83     4.74 
+4 moisture_percentage   -0.015     0.029    -0.499   0.618   -0.072    0.043
+        </output>
+      </console>
       <p>
         The <m>t</m>-test statistic is <m>t = b_2 / SE(b_2)</m>; the associated
         <m>p</m>-value is near zero, so we reject <m>H_0</m> and conclude that
@@ -2039,11 +2238,22 @@ get_regression_table(mod_mult_1)
         <mrow>H_0&amp;: \text{the reduced model is adequate}</mrow>
         <mrow>H_A&amp;: \text{the full model is needed.}</mrow>
       </md>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 anova(mod_mult_2, mod_mult_1)
         </input>
-      </program>
+        <output>
+Analysis of Variance Table
+
+Model 1: total_cup_points ~ aroma + moisture_percentage
+Model 2: total_cup_points ~ aroma + flavor + moisture_percentage
+  Res.Df     RSS Df Sum of Sq     F    Pr(&gt;F)    
+1    204 149.897                                 
+2    203  55.066  1    94.831 349.6 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+        </output>
+      </console>
       <p>
         The small <m>p</m>-value leads us to reject the null hypothesis and conclude that the
         full model (including <c>flavor</c>) was needed.
@@ -2053,11 +2263,22 @@ anova(mod_mult_2, mod_mult_1)
         for factors. To test whether <c>continent_of_origin</c> should be included, compare
         <c>mod_mult_1</c> (without the factor) to <c>mod_mult</c> (with the factor):
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 anova(mod_mult_1, mod_mult)
         </input>
-      </program>
+        <output>
+Analysis of Variance Table
+
+Model 1: total_cup_points ~ aroma + flavor + moisture_percentage
+Model 2: total_cup_points ~ aroma + flavor + moisture_percentage + continent_of_origin
+  Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)   
+1    203 55.066                                
+2    200 51.346  3    3.7194 4.8292 0.002876 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+        </output>
+      </console>
       <p>
         We reject the null hypothesis and conclude that it is appropriate to add
         <c>continent_of_origin</c> to a model that already has <c>aroma</c>, <c>flavor</c>,
