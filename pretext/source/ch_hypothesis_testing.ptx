@@ -135,11 +135,28 @@ library(ggplot2movies)
         <c>moderndive</c> package, and the first 10 lines are shown:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100
         </input>
-      </program>
+        <output>
+# A tibble: 100 × 3
+# Groups:   replicate [1]
+   replicate    ID weight
+       &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1         1   166    4.2
+ 2         1  1215    4.2
+ 3         1  1899    3.9
+ 4         1  1912    3.8
+ 5         1  4637    3.3
+ 6         1   511    3.5
+ 7         1   127    4  
+ 8         1  4419    3.5
+ 9         1  4729    4.2
+10         1  2574    4.1
+# ℹ 90 more rows
+        </output>
+      </console>
 
       <p>
         The goal of hypothesis testing is to answer the question: "Assuming that this claim is
@@ -232,13 +249,19 @@ almonds_sample_100
           first calculate the sample mean and sample standard deviation from this sample:
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 almonds_sample_100 |>
   summarize(sample_mean = mean(weight),
             sample_sd = sd(weight))
           </input>
-        </program>
+          <output>
+# A tibble: 1 × 3
+  replicate sample_mean sample_sd
+      &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+1         1        3.68     0.362
+          </output>
+        </console>
 
         <p>
           We recall that due to the Central Limit Theorem described in
@@ -261,7 +284,7 @@ almonds_sample_100 |>
           The output presents these values.
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 almonds_sample_100 |>
   summarize(x_bar = mean(weight),
@@ -269,7 +292,13 @@ almonds_sample_100 |>
             n = length(weight),
             t = (x_bar - 3.6)/(s/sqrt(n)))
           </input>
-        </program>
+          <output>
+# A tibble: 1 × 5
+  replicate x_bar     s     n     t
+      &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+1         1  3.68 0.362   100  2.26
+          </output>
+        </console>
 
         <p>
           The value of <m>t</m> is the sample mean standardized such that the claim
@@ -311,11 +340,14 @@ almonds_sample_100 |>
           the results by 2:
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 2 * pt(q = -2.26, df = 100 - 1)
           </input>
-        </program>
+          <output>
+[1] 0.02601195
+          </output>
+        </console>
 
         <p>
           We have determined that, assuming that the null hypothesis is true, the probability of
@@ -566,13 +598,19 @@ null_dist |&gt;
 
       <p>and the 95% confidence interval is:</p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100 |&gt;
   summarize(lower_bound = mean(weight) - 1.98*sd(weight)/sqrt(length(weight)),
             upper_bound = mean(weight) + 1.98*sd(weight)/sqrt(length(weight)))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 3
+  replicate lower_bound upper_bound
+      &lt;int&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1         1        3.61        3.75
+        </output>
+      </console>
 
       <p>
         Using the simulation-based approach via the bootstrap percentile method, the 95%
@@ -689,7 +727,7 @@ bootstrap_means |&gt;
         <c>popular_or_not</c> are selected.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 spotify_metal_deephouse &lt;- spotify_by_genre |&gt;
   filter(track_genre %in% c("metal", "deep-house")) |&gt;
@@ -698,7 +736,25 @@ spotify_metal_deephouse |&gt;
   group_by(track_genre, popular_or_not) |&gt;
   sample_n(size = 3)
         </input>
-      </program>
+        <output>
+# A tibble: 12 × 5
+# Groups:   track_genre, popular_or_not [4]
+   track_genre artists                      track_name popularity popular_or_not
+   &lt;chr&gt;       &lt;chr&gt;                        &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;         
+ 1 deep-house  Kideko                       Free                5 not popular   
+ 2 deep-house  The Avener;Phoebe Killdeer   Fade Out …          0 not popular   
+ 3 deep-house  Deep Chills;Coral Reef;Biki… Talkin' B…         41 not popular   
+ 4 deep-house  CID                          Carnaval …         51 popular       
+ 5 deep-house  Sunmoon                      Just the …         52 popular       
+ 6 deep-house  Autograf;Tiina               Love Runs…         60 popular       
+ 7 metal       Marilyn Manson               Sweet Dre…          0 not popular   
+ 8 metal       DragonForce                  Fury Of T…          0 not popular   
+ 9 metal       Ghost                        Dance Mac…          0 not popular   
+10 metal       Bon Jovi                     It's My L…         80 popular       
+11 metal       Scorpions                    Rock You …         64 popular       
+12 metal       Sick Puppies                 You're Go…         66 popular
+        </output>
+      </console>
 
       <p>
         The <c>track_genre</c> variable indicates what genre the song is classified under, the
@@ -743,13 +799,23 @@ ggplot(spotify_metal_deephouse, aes(x = track_genre, fill = popular_or_not)) +
         shortcut for <c>summarize(n = n())</c> to get counts.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 spotify_metal_deephouse |&gt;
   group_by(track_genre, popular_or_not) |&gt;
   tally() # Same as summarize(n = n())
         </input>
-      </program>
+        <output>
+# A tibble: 4 × 3
+# Groups:   track_genre [2]
+  track_genre popular_or_not     n
+  &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;
+1 deep-house  not popular      471
+2 deep-house  popular          529
+3 metal       not popular      437
+4 metal       popular          563
+        </output>
+      </console>
 
       <p>
         So of the 1000 metal songs, some were popular and some were not, for a proportion
@@ -793,13 +859,28 @@ spotify_metal_deephouse |&gt;
         the output below.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 spotify_52_original |&gt;
   select(-track_id) |&gt;
   head(10)
         </input>
-      </program>
+        <output>
+# A tibble: 10 × 5
+   track_genre artists                  track_name     popularity popular_or_not
+   &lt;chr&gt;       &lt;chr&gt;                    &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;         
+ 1 deep-house  Jess Bays;Poppy Baskcomb Temptation (f…         63 popular       
+ 2 metal       Whitesnake               Here I Go Aga…         69 popular       
+ 3 metal       Blind Melon              No Rain                 1 not popular   
+ 4 metal       Avenged Sevenfold        Shepherd of F…         70 popular       
+ 5 deep-house  Nora Van Elken           I Wanna Dance…         56 popular       
+ 6 metal       Breaking Benjamin        Ashes of Eden          61 popular       
+ 7 metal       Bon Jovi                 Thank You For…         67 popular       
+ 8 deep-house  Starley;Bad Paris        Arms Around M…         55 popular       
+ 9 deep-house  The Him;LissA            I Wonder               43 not popular   
+10 metal       Deftones                 Ohms                    0 not popular
+        </output>
+      </console>
 
       <p>
         In our hypothesized universe of no difference in genre popularity, popularity is
@@ -809,13 +890,28 @@ spotify_52_original |&gt;
         possible random shuffling.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 spotify_52_shuffled |&gt;
   select(-track_id) |&gt;
   head(10)
         </input>
-      </program>
+        <output>
+# A tibble: 10 × 5
+   track_genre artists                  track_name     popularity popular_or_not
+   &lt;chr&gt;       &lt;chr&gt;                    &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;         
+ 1 deep-house  Jess Bays;Poppy Baskcomb Temptation (f…         63 popular       
+ 2 metal       Whitesnake               Here I Go Aga…         69 not popular   
+ 3 metal       Blind Melon              No Rain                 1 popular       
+ 4 metal       Avenged Sevenfold        Shepherd of F…         70 not popular   
+ 5 deep-house  Nora Van Elken           I Wanna Dance…         56 popular       
+ 6 metal       Breaking Benjamin        Ashes of Eden          61 not popular   
+ 7 metal       Bon Jovi                 Thank You For…         67 not popular   
+ 8 deep-house  Starley;Bad Paris        Arms Around M…         55 not popular   
+ 9 deep-house  The Him;LissA            I Wonder               43 not popular   
+10 metal       Deftones                 Ohms                    0 not popular
+        </output>
+      </console>
 
       <p>
         Observe that the <c>popular_or_not</c> column shows how the <c>popular</c> and
@@ -891,13 +987,23 @@ ggplot(spotify_52_shuffled, aes(x = track_genre, fill = popular_or_not)) +
         <c>popular_or_not</c> column for each genre:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 spotify_52_shuffled |&gt;
   group_by(track_genre, popular_or_not) |&gt;
   tally()
         </input>
-      </program>
+        <output>
+# A tibble: 4 × 3
+# Groups:   track_genre [2]
+  track_genre popular_or_not     n
+  &lt;chr&gt;       &lt;chr&gt;          &lt;int&gt;
+1 deep-house  not popular       10
+2 deep-house  popular           16
+3 metal       not popular       13
+4 metal       popular           13
+        </output>
+      </console>
 
       <p>
         So in this one sample of a hypothetical universe of no difference in genre popularity,
@@ -2064,11 +2170,27 @@ movies
         in the <c>movies_sample</c> data frame included in the <c>moderndive</c> package.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 movies_sample
         </input>
-      </program>
+        <output>
+# A tibble: 68 × 4
+   title                     year rating genre  
+   &lt;chr&gt;                    &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  
+ 1 Underworld                1985    3.1 Action 
+ 2 Love Affair               1932    6.3 Romance
+ 3 Junglee                   1961    6.8 Romance
+ 4 Eversmile, New Jersey     1989    5   Romance
+ 5 Search and Destroy        1979    4   Action 
+ 6 Secreto de Romelia, El    1988    4.9 Romance
+ 7 Amants du Pont-Neuf, Les  1991    7.4 Romance
+ 8 Illicit Dreams            1995    3.5 Action 
+ 9 Kabhi Kabhie              1976    7.7 Romance
+10 Electric Horseman, The    1979    5.8 Romance
+# ℹ 58 more rows
+        </output>
+      </console>
 
       <p>
         The variables include the <c>title</c> and <c>year</c> the movie was filmed.
@@ -2119,13 +2241,20 @@ ggplot(data = movies_sample, aes(x = genre, y = rating)) +
         function.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 movies_sample |&gt;
   group_by(genre) |&gt;
   summarize(n = n(), mean_rating = mean(rating), std_dev = sd(rating))
         </input>
-      </program>
+        <output>
+# A tibble: 2 × 4
+  genre       n mean_rating std_dev
+  &lt;chr&gt;   &lt;int&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+1 Action     32        5.28    1.36
+2 Romance    36        6.32    1.61
+        </output>
+      </console>
 
       <p>
         Observe that romance movies have a higher mean rating than action movies. The difference
@@ -2661,13 +2790,20 @@ null_distribution_movies |&gt;
           during our exploratory data analysis in <xref ref="imdb-data"/>.
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 movies_sample |&gt;
   group_by(genre) |&gt;
   summarize(n = n(), mean_rating = mean(rating), std_dev = sd(rating))
           </input>
-        </program>
+          <output>
+# A tibble: 2 × 4
+  genre       n mean_rating std_dev
+  &lt;chr&gt;   &lt;int&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+1 Action     32        5.28    1.36
+2 Romance    36        6.32    1.61
+          </output>
+        </console>
 
         <p>
           Using these values, the observed two-sample <m>t</m>-test statistic is
@@ -2833,13 +2969,27 @@ ggplot(data = flights_sample, mapping = aes(x = carrier, y = air_time)) +
         summary statistics: the number of observations using <c>n()</c> and the mean airtime:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 flights_sample |&gt;
   group_by(carrier, dest) |&gt;
   summarize(n = n(), mean_time = mean(air_time, na.rm = TRUE), .groups = "keep")
         </input>
-      </program>
+        <output>
+# A tibble: 8 × 4
+# Groups:   carrier, dest [8]
+  carrier dest      n mean_time
+  &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;     &lt;dbl&gt;
+1 AS      LAS       1      299 
+2 AS      LAX     980      324.
+3 AS      PDX     710      326.
+4 AS      PSP      18      310.
+5 AS      SAN    1034      325.
+6 AS      SEA    2417      325.
+7 AS      SFO    2683      344.
+8 HA      HNL     366      623.
+        </output>
+      </console>
 
       <p>
         It turns out that from New York City in 2023 Alaska flew to seven different airports on
