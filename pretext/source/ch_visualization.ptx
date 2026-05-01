@@ -1619,7 +1619,40 @@ ggplot(data = flights, mapping = aes(x = carrier)) +
         Airlines (UA), and JetBlue Airways (B6) had the most flights depart NYC in 2023.
         If you don't know which airlines correspond to which carrier codes, then run
         <c>View(airlines)</c> to see a directory of airlines. For example, AA is American
-        Airlines Inc.
+        Airlines Inc. Alternatively, say you had a data frame where the number of flights
+        for each <c>carrier</c> was pre-counted as in <xref ref="tab-flights-counted"/>.
+      </p>
+
+      <table xml:id="tab-flights-counted">
+        <title>Number of flights pre-counted for each carrier</title>
+        <tabular halign="left">
+          <row header="yes" bottom="minor">
+            <cell>carrier</cell>
+            <cell>number</cell>
+          </row>
+          <row><cell>9E</cell><cell>54141</cell></row>
+          <row><cell>AA</cell><cell>40525</cell></row>
+          <row><cell>AS</cell><cell>7843</cell></row>
+          <row><cell>B6</cell><cell>66169</cell></row>
+          <row><cell>DL</cell><cell>61562</cell></row>
+          <row><cell>F9</cell><cell>1286</cell></row>
+          <row><cell>G4</cell><cell>671</cell></row>
+          <row><cell>HA</cell><cell>366</cell></row>
+          <row><cell>MQ</cell><cell>357</cell></row>
+          <row><cell>NK</cell><cell>15189</cell></row>
+          <row><cell>OO</cell><cell>6432</cell></row>
+          <row><cell>UA</cell><cell>79641</cell></row>
+          <row><cell>WN</cell><cell>12385</cell></row>
+          <row><cell>YX</cell><cell>88785</cell></row>
+        </tabular>
+      </table>
+
+      <p>
+        In order to create a barplot visualizing the distribution of the categorical
+        variable <c>carrier</c> in this case, we would now use <c>geom_col()</c> instead
+        of <c>geom_bar()</c>, with an additional <c>y = number</c> in the aesthetic
+        mapping on top of the <c>x = carrier</c>. The resulting barplot would be identical
+        to <xref ref="fig-flightsbar"/>.
       </p>
 
       <exercise xml:id="lc2-26">
@@ -1953,46 +1986,46 @@ ggplot(data = flights, mapping = aes(x = carrier)) +
         <title>Summary of Five Named Graphs</title>
         <tabular halign="left">
           <row header="yes" bottom="minor">
+            <cell></cell>
             <cell>Named graph</cell>
+            <cell>Shows</cell>
             <cell>Geometric object</cell>
-            <cell>Number of variables</cell>
-            <cell>Variable types</cell>
             <cell>Notes</cell>
           </row>
           <row>
+            <cell>1</cell>
             <cell>Scatterplot</cell>
+            <cell>Relationship between 2 numerical variables</cell>
             <cell><c>geom_point()</c></cell>
-            <cell>2</cell>
-            <cell>2 numerical</cell>
             <cell></cell>
           </row>
           <row>
-            <cell>Linegraph</cell>
-            <cell><c>geom_line()</c></cell>
             <cell>2</cell>
-            <cell>2 numerical</cell>
+            <cell>Linegraph</cell>
+            <cell>Relationship between 2 numerical variables</cell>
+            <cell><c>geom_line()</c></cell>
             <cell>Used when there is a sequential order to x-variable, e.g., time</cell>
           </row>
           <row>
+            <cell>3</cell>
             <cell>Histogram</cell>
+            <cell>Distribution of 1 numerical variable</cell>
             <cell><c>geom_histogram()</c></cell>
-            <cell>1</cell>
-            <cell>1 numerical</cell>
-            <cell></cell>
+            <cell>Facetted histograms show the distribution of 1 numerical variable split by the values of another variable</cell>
           </row>
           <row>
+            <cell>4</cell>
             <cell>Boxplot</cell>
+            <cell>Distribution of 1 numerical variable split by the values of another variable</cell>
             <cell><c>geom_boxplot()</c></cell>
-            <cell>2</cell>
-            <cell>1 numerical, 1 categorical</cell>
             <cell></cell>
           </row>
           <row>
+            <cell>5</cell>
             <cell>Barplot</cell>
-            <cell><c>geom_bar()</c> or <c>geom_col()</c></cell>
-            <cell>1</cell>
-            <cell>1 categorical</cell>
-            <cell></cell>
+            <cell>Distribution of 1 categorical variable</cell>
+            <cell><c>geom_bar()</c> when counts are not pre-counted, <c>geom_col()</c> when counts are pre-counted</cell>
+            <cell>Stacked, side-by-side, and faceted barplots show the joint distribution of 2 categorical variables</cell>
           </row>
         </tabular>
       </table>
@@ -2040,6 +2073,11 @@ ggplot(flights, aes(x = carrier)) +
 
     <subsection xml:id="sec-viz-additional-resources">
       <title>Additional resources</title>
+
+      <p>
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/02-visualization.R">here</url>.
+      </p>
 
       <p>
         If you want to further unlock the power of the <c>ggplot2</c> package for data
