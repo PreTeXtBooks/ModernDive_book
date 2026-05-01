@@ -423,7 +423,7 @@ drinks_smaller_tidy
         has a clear English meaning of <q>organized,</q> the word
         <q>tidy</q> in data science using R means that your data follows a
         standardized format. We will follow Hadley
-        Wickham's<idx><h>Wickham, Hadley</h></idx> definition of
+        Wickham's<idx><h>Wickham, Hadley</h></idx> British English definition of
         <term>tidy data</term><idx><h>tidy data</h></idx> <xref ref="bib-tidy"/> shown also in
         <xref ref="fig-tidyfig"/>:
       </p>
