@@ -41,3 +41,4 @@ pretext/output/
 /[a-z]*.html
 lunr-pretext-search-index.js
 /lunr-pretext-search-index.js
+Rplots.pdf
