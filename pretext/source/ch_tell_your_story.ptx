@@ -676,12 +676,14 @@ house_prices |&gt;
         for the interaction model? We can get these values from the regression table.
         Recall our two-step process for getting the regression table:
       </p>
-      <console prompt="&gt; ">
-        <input>
+      <listing xml:id="tab-seattle-interaction">
+        <caption>Regression table for interaction model.</caption>
+        <console prompt="&gt; ">
+          <input>
 price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
 get_regression_table(price_interaction)
-        </input>
-        <output>
+          </input>
+          <output>
 # A tibble: 10 × 7
    term                   estimate std_error statistic p_value lower_ci upper_ci
    &lt;chr&gt;                     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
@@ -695,8 +697,9 @@ get_regression_table(price_interaction)
  8 log10_size:condition-3    0.133     0.148     0.893   0.372   -0.158    0.424
  9 log10_size:condition-4    0.146     0.149     0.979   0.328   -0.146    0.437
 10 log10_size:condition-5    0.31      0.15      2.07    0.039    0.016    0.604
-        </output>
-      </console>
+          </output>
+        </console>
+      </listing>
 
       <p>
         Recall we saw in <xref ref="model4interactiontable"/> how to interpret a regression
