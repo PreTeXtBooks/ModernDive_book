@@ -1159,6 +1159,15 @@ bowl |&gt;
         </program>
 
         <p>
+          Observe that <c>p</c> is the estimated expected value and <c>SE_Xbar</c> is the
+          estimated standard error based on the simulation of taking sample proportions for
+          random samples of size <m>n = 100</m>. Compare this value with the standard deviation
+          for the entire bowl, discovered earlier. It is one-tenth the size! This is not a
+          coincidence: the standard error of <m>\overline{X}</m> is equal to the standard
+          deviation of the population (the bowl) divided by the square root of the sample size.
+        </p>
+
+        <p>
           There is also a theoretical formula for the standard error of the sample proportion:
           <me>
             SE(\overline{X}) = \sqrt{\frac{p(1-p)}{n}}
@@ -1204,7 +1213,12 @@ sqrt(p * (1 - p) / 50)
 
         <p>
           In each case, the empirical standard deviation of the 1000 simulated sample proportions
-          closely matches the theoretical standard error from the formula. For more details, see
+          closely matches the theoretical standard error from the formula. The simulations are
+          used to check that in fact the results achieved agree with the theory. Observe also
+          that the theoretical results are constructed based on the knowledge of the population
+          proportion, <m>p</m>; by contrast, the simulations produce samples based on the
+          population of interest but produce results only based on information found from samples
+          and sample proportions. For more details, see
           <url href="http://onlinestatbook.com/2/sampling_distributions/samp_dist_p.html">
             Online Statistics Education: A Multimedia Course of Study
           </url>.

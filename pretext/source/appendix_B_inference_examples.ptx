@@ -208,7 +208,8 @@ boot_distn_one_mean |>
         </input>
       </program>
       <p>
-        We see that 23 is not contained in this confidence interval. This matches with
+        We see that 23 is not contained in this confidence interval and the entire
+        interval is larger than 23. This matches with
         our hypothesis test results of rejecting the null hypothesis.
       </p>
       <p>
@@ -279,6 +280,19 @@ t_test_results
       </console>
     </subsection>
 
+    <subsection xml:id="appendixB-one-mean-comparing">
+      <title>Comparing results</title>
+      <p>
+        Observing the bootstrap distribution that was created, it makes quite a bit of sense
+        that the results are so similar for traditional and non-traditional methods in terms
+        of the <m>p</m>-value and the confidence interval since these distributions look very
+        similar to normal distributions. The conditions also being met (the large sample size
+        was the driver here) leads us to better guess that using any of the methods whether
+        they are traditional (formula-based) or non-traditional (computational-based) will
+        lead to similar results.
+      </p>
+    </subsection>
+
   </section><!-- end One mean -->
 
 
@@ -294,7 +308,8 @@ t_test_results
         local newspaper surveyed 100 customers, using simple random sampling. 73 were
         satisfied and the remaining were unsatisfied. Based on these findings from the
         sample, can we reject the CEO's hypothesis that 80% of the customers are
-        satisfied?
+        satisfied? (Tweaked a bit from
+        <url href="http://stattrek.com/hypothesis-test/proportion.aspx?Tutorial=AP">http://stattrek.com/hypothesis-test/proportion.aspx?Tutorial=AP</url>.)
       </p>
     </subsection>
 
@@ -435,6 +450,19 @@ sample estimates:
         We do not have sufficient evidence to reject the null hypothesis. Based on this
         sample, we do not have evidence that the proportion of all satisfied customers
         differs from 0.80.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-one-prop-comparing">
+      <title>Comparing results</title>
+      <p>
+        Observing the bootstrap distribution and the null distribution that were created,
+        it makes quite a bit of sense that the results are so similar for traditional and
+        non-traditional methods in terms of the <m>p</m>-value and the confidence interval
+        since these distributions look very similar to normal distributions. The conditions
+        also being met leads us to better guess that using any of the methods whether they
+        are traditional (formula-based) or non-traditional (computational-based) will lead
+        to similar results.
       </p>
     </subsection>
 
@@ -598,6 +626,19 @@ z_hat
       </p>
     </subsection>
 
+    <subsection xml:id="appendixB-two-prop-comparing">
+      <title>Comparing results</title>
+      <p>
+        Observing the bootstrap distribution and the null distribution that were created,
+        it makes quite a bit of sense that the results are so similar for traditional and
+        non-traditional methods in terms of the <m>p</m>-value and the confidence interval
+        since these distributions look very similar to normal distributions. The conditions
+        were not met since the number of pairs was small, but the sample data was not highly
+        skewed. Using any of the methods whether they are traditional (formula-based) or
+        non-traditional (computational-based) lead to similar results.
+      </p>
+    </subsection>
+
   </section><!-- end Two proportions -->
 
 
@@ -757,6 +798,19 @@ cle_sac |>
       </p>
     </subsection>
 
+    <subsection xml:id="appendixB-two-means-ind-comparing">
+      <title>Comparing results</title>
+      <p>
+        Observing the bootstrap distribution and the null distribution that were created,
+        it makes quite a bit of sense that the results are so similar for traditional and
+        non-traditional methods in terms of the <m>p</m>-value and the confidence interval
+        since these distributions look very similar to normal distributions. The conditions
+        also being met leads us to better guess that using any of the methods whether they
+        are traditional (formula-based) or non-traditional (computational-based) will lead
+        to similar results.
+      </p>
+    </subsection>
+
   </section><!-- end Two means (independent) -->
 
 
@@ -888,6 +942,19 @@ pt(-4.8638, df = nrow(zinc_diff) - 1, lower.tail = TRUE)
         We have sufficient evidence to reject the null hypothesis. Based on this sample,
         we have evidence that the mean concentration in the bottom water is greater than
         that of the surface water at different paired locations.
+      </p>
+    </subsection>
+
+    <subsection xml:id="appendixB-two-means-paired-comparing">
+      <title>Comparing results</title>
+      <p>
+        Observing the bootstrap distribution and the null distribution that were created,
+        it makes quite a bit of sense that the results are so similar for traditional and
+        non-traditional methods in terms of the <m>p</m>-value and the confidence interval
+        since these distributions look very similar to normal distributions. The conditions
+        were not met since the number of pairs was small, but the sample data was not highly
+        skewed. Using any of the methods whether they are traditional (formula-based) or
+        non-traditional (computational-based) lead to similar results here.
       </p>
     </subsection>
 

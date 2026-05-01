@@ -2184,6 +2184,8 @@ movies
         that we can assign all 200 movies into either category. Furthermore, since the original
         <c>movies</c> dataset was a little messy, we provide a pre-wrangled version of our data
         in the <c>movies_sample</c> data frame included in the <c>moderndive</c> package.
+        If you are curious, you can look at the necessary data-wrangling code to do this on
+        <url href="https://github.com/moderndive/moderndive/blob/master/data-raw/process_data_sets.R">GitHub</url>.
       </p>
 
       <console prompt="&gt; ">

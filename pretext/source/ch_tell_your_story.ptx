@@ -768,7 +768,8 @@ get_regression_table(price_interaction)
         <xref ref="fig-house-price-interaction-2"/>. For homes of all five condition types,
         as the size of the house increases, the price increases. This is what most would
         expect. However, the rate of increase of price with size is fastest for the homes
-        with conditions 3, 4, and 5. These are the three largest slopes out of the five.
+        with conditions 3, 4, and 5 of 0.823, 0.836, and 1, respectively. These are the
+        three largest slopes out of the five.
       </p>
 
     </subsection><!-- end Regression modeling -->
@@ -1126,7 +1127,7 @@ null_distribution_housing |&gt;
         <em>ModernDive</em> co-authors Chester Ismay and Albert Y. Kim along with Jennifer
         Chunn went one step further by creating the <c>fivethirtyeight</c> package which
         provides access to these datasets more easily in R. For a complete list of all
-        datasets included in the <c>fivethirtyeight</c> package, check out the package
+        128 datasets included in the <c>fivethirtyeight</c> package, check out the package
         webpage at
         <url href="https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html">https://fivethirtyeight-r.netlify.app/articles/fivethirtyeight.html</url>.
         <idx><h>R packages</h><h>fivethirtyeight</h></idx>
