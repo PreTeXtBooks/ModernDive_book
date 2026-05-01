@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preface xml:id="foreword" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Foreword</title>
+
+  <p>
+    These are exciting times in statistics and data science education.
+    (I am predicting this statement will continue to be true regardless of whether you are
+    reading this foreword in 2025 or 2050.)
+    But (isn't there always a but?), as a statistics and data science educator, it can also
+    feel a bit overwhelming to stay on top of all the new statistical, technological, and
+    pedagogical innovations.
+    I find myself constantly asking, <q>Am I teaching my students the correct content, with
+    the relevant software, and in the most effective way?</q>
+    Before I make all of us feel lost at sea, let me point out how great a life raft I have
+    found in <em>ModernDive</em>.
+    In a sea of intro stats and data science textbooks, <em>ModernDive</em> floats to the
+    top of my list, and let me tell you why.
+    (Note my use of <em>ModernDive</em> here refers to the book in its shortened title
+    version.
+    This also matches up nicely with the
+    <url href="https://moderndive.com/images/logos/hex_blue_text.png" visual="moderndive.com/images/logos/hex_blue_text.png">neat hex sticker</url>
+    Drs. Ismay, Kim, and Valdivia created for the cover of <em>ModernDive</em>, too.)
+  </p>
+
+  <figure xml:id="fig-moderndive-heart">
+    <caption><em>ModernDive</em> logo with heart.</caption>
+    <image source="images/ModernDive_heart.png" width="70%">
+      <description>The ModernDive hex logo with a heart symbol.</description>
+    </image>
+  </figure>
+
+  <p>
+    My favorite aspect of <em>ModernDive</em>, if I must pick a favorite, is that students
+    gain experience with the whole data analysis pipeline.
+    In particular, <em>ModernDive</em> is one of the few intro stats and data science
+    textbooks that teaches students how to wrangle data.
+    And, while data cleaning may not be as groovy as model building, it's often a
+    prerequisite step!
+    The world is full of messy data and <em>ModernDive</em> equips students to transform
+    their data via the <c>dplyr</c> package.
+  </p>
+
+  <p>
+    Speaking of <c>dplyr</c>, students of <em>ModernDive</em> are exposed to the
+    <c>tidyverse</c> suite of R packages.
+    Designed with a common structure, <c>tidyverse</c> functions are written to be easy to
+    learn and use.
+    And, since most intro stats and data science students are programming newbies,
+    <em>ModernDive</em> carefully walks the students through each new function it presents
+    and provides frequent reinforcement through the many <em>Learning checks</em> dispersed
+    throughout the chapters.
+  </p>
+
+  <p>
+    Overall, <em>ModernDive</em> includes wise choices for the placement of topics.
+    Starting with data visualization, <em>ModernDive</em> gets students building
+    <c>ggplot2</c> graphs early on and then continues to reinforce important concepts
+    graphically throughout the book.
+    After moving through data wrangling and data importing, modeling plays a prominent role,
+    with two chapters devoted to building regression models and a later chapter on inference
+    for regression.
+    Lastly, statistical inference is presented first through a computational lens and then
+    using a theory-based approach.
+    The <c>infer</c> package is used for both approaches and allows for easy comparisons
+    between simulation-based and theory-based methods.
+  </p>
+
+  <p>
+    I first met two of the authors, Drs. Ismay and Kim, while attending their
+    <url href="https://www.causeweb.org/cause/uscots/uscots17/workshop/3" visual="causeweb.org/cause/uscots/uscots17/workshop/3">workshop at the 2017 US Conference on Teaching Statistics</url>.
+    They pushed us as participants to put data first and to use computers, instead of math,
+    as the engine for statistical inference.
+    That experience helped me add more data science concepts into my own intro stats course
+    and introduced me to two really forward-thinking statistics and data science educators.
+    With the addition of Dr. Valdivia on the second edition, it is exciting to see
+    <em>ModernDive</em> continue to develop and grow into such a wonderful, timely textbook.
+    The new edition includes even more engaging datasets, code updates that include the
+    fancy base-pipe, more insights into inference, and materials that leverage newer
+    functions from <c>infer</c> (make sure you check out the magical <c>fit()</c>
+    function!).
+    With this refresh, <em>ModernDive</em> continues to lead the pack as a truly
+    contemporary approach to learning introductory statistics and data science.
+  </p>
+
+  <p>
+    I hope you have decided to dive on in!
+  </p>
+
+  <attribution>
+    <line><em>Kelly S. McConville, Bucknell University</em></line>
+  </attribution>
+</preface>

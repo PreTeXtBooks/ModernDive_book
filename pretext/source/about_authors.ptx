@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preface xml:id="about-the-authors" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>About the Authors</title>
+
+  <sidebyside widths="33% 33% 33%" valign="top">
+    <image source="images/ismay2024.jpg" width="100%">
+      <description>Photo of Chester Ismay.</description>
+    </image>
+    <image source="images/kim.png" width="100%">
+      <description>Photo of Albert Y. Kim.</description>
+    </image>
+    <image source="images/valdivia.png" width="100%">
+      <description>Photo of Arturo Valdivia.</description>
+    </image>
+  </sidebyside>
+
+  <p>
+    <alert>Chester Ismay</alert> is a freelance data scientist, consultant, and educator.
+    He also teaches in the Center for Executive and Professional Education at Portland
+    State University. He completed his PhD in statistics from Arizona State University in
+    2013. He has previously worked in a variety of roles including as an actuary at
+    Scottsdale Insurance Company (now Nationwide E&amp;S/Specialty) and at Ripon College,
+    Reed College, and Pacific University. He has experience working in online education and
+    was previously a Data Science Evangelist at DataRobot, where he led data science,
+    machine learning, and data engineering in-person and virtual workshops for DataRobot
+    University. In addition to his work for <em>ModernDive</em>, he also contributed as
+    initial developer of the
+    <url href="https://cran.r-project.org/package=infer" visual="cran.r-project.org/package=infer"><c>infer</c></url>
+    R package and is author and maintainer of the
+    <url href="https://github.com/ismayc/thesisdown" visual="github.com/ismayc/thesisdown"><c>thesisdown</c></url>
+    R package.
+  </p>
+  <p>
+    <ul>
+      <li><p>Webpage: <url href="https://chester.rbind.io/" visual="chester.rbind.io">chester.rbind.io</url></p></li>
+      <li><p>GitHub: <url href="https://github.com/ismayc" visual="github.com/ismayc">github.com/ismayc</url></p></li>
+    </ul>
+  </p>
+
+  <p>
+    <alert>Albert Y. Kim</alert> is an Associate Professor of Statistical &amp; Data
+    Sciences at Smith College in Northampton, MA, USA. He completed his PhD in statistics
+    at the University of Washington in 2011. Previously he worked in the Search Ads
+    Metrics Team at Google Inc. as well as at Reed, Middlebury, and Amherst Colleges.
+    In addition to his work for <em>ModernDive</em>, he is a co-author of the
+    <url href="https://cran.r-project.org/package=resampledata" visual="cran.r-project.org/package=resampledata"><c>resampledata</c></url>
+    and
+    <url href="https://cran.r-project.org/package=SpatialEpi" visual="cran.r-project.org/package=SpatialEpi"><c>SpatialEpi</c></url>
+    R packages. Both Dr. Kim and Dr. Ismay, along with
+    <url href="https://github.com/jchunn" visual="github.com/jchunn">Jennifer Chunn</url>,
+    are co-authors of the
+    <url href="https://fivethirtyeight-r.netlify.app/" visual="fivethirtyeight-r.netlify.app"><c>fivethirtyeight</c></url>
+    package of code and datasets published by the data journalism website
+    <url href="https://fivethirtyeight.com/" visual="fivethirtyeight.com">FiveThirtyEight.com</url>.
+  </p>
+  <p>
+    <ul>
+      <li><p>Webpage: <url href="http://rudeboybert.rbind.io/" visual="rudeboybert.rbind.io">rudeboybert.rbind.io</url></p></li>
+      <li><p>GitHub: <url href="https://github.com/rudeboybert" visual="github.com/rudeboybert">github.com/rudeboybert</url></p></li>
+    </ul>
+  </p>
+
+  <p>
+    <alert>Arturo Valdivia</alert> is a Senior Lecturer in the Department of Statistics
+    at Indiana University, Bloomington. He earned his PhD in Statistics from Arizona State
+    University in 2013. His research interests focus on statistical education, exploring
+    innovative approaches to help students grasp complex ideas with clarity. Over his
+    career, he has taught a wide range of statistics courses, from introductory to advanced
+    levels, to more than 1,800 undergraduate students and over 900 graduate students
+    pursuing master's and Ph.D. programs in statistics, data science, and other
+    disciplines. In recognition of his teaching excellence, he received Indiana
+    University's Trustees Teaching Award in 2023.
+  </p>
+  <p>
+    <ul>
+      <li><p>Webpage: <url href="https://avaldivi6.github.io" visual="avaldivi6.github.io">avaldivi6.github.io</url></p></li>
+      <li><p>GitHub: <url href="https://github.com/avaldivi6" visual="github.com/avaldivi6">github.com/avaldivi6</url></p></li>
+    </ul>
+  </p>
+
+</preface>
