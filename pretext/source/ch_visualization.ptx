@@ -1258,22 +1258,22 @@ ggplot(data = weather, mapping = aes(x = wind_speed)) +
     </figure>
 
     <p>
-      These observations have the following <em>five-number summary</em>:
+      These 2057 observations have the following <em>five-number summary</em>:
     </p>
     <p>
       <ol>
-        <li><p>Minimum</p></li>
-        <li><p>First quartile (25th percentile)</p></li>
-        <li><p>Median (second quartile, 50th percentile)</p></li>
-        <li><p>Third quartile (75th percentile)</p></li>
-        <li><p>Maximum</p></li>
+        <li><p>Minimum: 0mph</p></li>
+        <li><p>First quartile (25th percentile): 5.8 mph</p></li>
+        <li><p>Median (second quartile, 50th percentile): 9.2 mph</p></li>
+        <li><p>Third quartile (75th percentile): 12.7 mph</p></li>
+        <li><p>Maximum: 29.92 mph</p></li>
       </ol>
     </p>
     <p>
       In <xref ref="fig-apr2"/>, the leftmost plot marks these 5 values with dashed
-      horizontal lines on top of the points. The middle plot adds the <em>boxplot</em>.
-      The rightmost plot removes the points and the dashed horizontal lines for
-      clarity's sake.
+      horizontal lines on top of the 2057 points. In the middle plot of <xref ref="fig-apr2"/>
+      let’s add the boxplot. In the rightmost plot of <xref ref="fig-apr2"/>, let’s remove the
+      points and the dashed horizontal lines for clarity’s sake.
     </p>
 
     <figure xml:id="fig-apr2">
@@ -1284,9 +1284,9 @@ ggplot(data = weather, mapping = aes(x = wind_speed)) +
     </figure>
 
     <p>
-      What the boxplot does is visually summarize the points by cutting the wind speed
+      What the boxplot does is visually summarize the 2057 points by cutting the wind speed
       recordings into <em>quartiles</em> at the dashed lines, where each quartile
-      contains roughly an equal number of observations. Thus
+      contains roughly <m>2057/4 \approx 514</m> an equal number of observations. Thus
     </p>
     <p>
       <ol>
@@ -1313,11 +1313,12 @@ ggplot(data = weather, mapping = aes(x = wind_speed)) +
       Furthermore, in the rightmost plot of <xref ref="fig-apr2"/>, we see the
       <em>whiskers</em> <idx><h>boxplots</h><h>whiskers</h></idx> of the boxplot. The
       whiskers stick out from either end of the box all the way to the minimum and maximum
-      observed wind speeds. However, the whiskers don't always extend to the smallest and
-      largest observed values. They in fact extend no more than
-      1.5 <m>	imes</m> the interquartile range from either end of the box. Any observed
-      values outside this range get marked with points called <em>outliers</em>, which
-      we'll discuss further in the next section.
+      observed wind speeds of 0 mph and 29.92 mph, respectively. However, the whiskers don't
+      always extend to the smallest and largest observed values. They in fact extend no more than
+      1.5 <m>\times</m> the interquartile range from either end of the box, in this case of the
+      April wind speeds, no more than 1.5 <m>\times</m> 6.905 mph = 10.357 mph from either end
+      of the box. Any observed values outside this range get marked with points called <em>outliers</em>,
+      which we'll discuss further in the next section.
     </p>
 
 
@@ -1399,7 +1400,7 @@ ggplot(data = weather, mapping = aes(x = factor(month), y = wind_speed)) +
           <li><p>The <q>whisker</q> portions of these plots extend out from the bottoms
           and tops of the boxes and represent points less than the 25th percentile and
           greater than the 75th percentiles, respectively. They're set to extend out no
-          more than <m>1.5 	imes IQR</m> units away from either end of the boxes. We
+          more than <m>1.5 	\times IQR</m> units away from either end of the boxes. We
           say <q>no more than</q> because the ends of the whiskers have to correspond to
           observed wind speeds. The length of these whiskers shows how the data outside
           the middle 50% of values vary, with longer whiskers indicating more
@@ -1412,7 +1413,7 @@ ggplot(data = weather, mapping = aes(x = factor(month), y = wind_speed)) +
       <p>
         It is important to keep in mind that the definition of an outlier is somewhat
         arbitrary and not absolute. In this case, they are defined by the length of the
-        whiskers, which are no more than <m>1.5 	imes IQR</m> units long for each
+        whiskers, which are no more than <m>1.5 \times IQR</m> units long for each
         boxplot. Looking at this side-by-side plot we can see that the months of February
         and March have higher median wind speeds as evidenced by the higher solid lines in
         the middle of the boxes. We can easily compare wind speeds across months by
