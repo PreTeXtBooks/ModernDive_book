@@ -750,7 +750,7 @@ library(knitr)
           <li><p><c>flights</c>: Information on all flights.</p></li>
           <li><p><c>airlines</c>: A table matching airline names and their two-letter
           International Air Transport Association (IATA) airline codes (also known as
-          carrier codes) for 16 airline companies. For example, <q>DL</q> is the
+          carrier codes) for 14 airline companies. For example, <q>DL</q> is the
           two-letter code for Delta.</p></li>
           <li><p><c>planes</c>: Information about each of the physical aircraft
           used.</p></li>
@@ -788,11 +788,30 @@ library(knitr)
         vary slightly.
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 flights
         </input>
-      </program>
+        <output>
+# A tibble: 435,352 × 19
+    year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+ 1  2023     1     1        1           2038       203      328              3
+ 2  2023     1     1       18           2300        78      228            135
+ 3  2023     1     1       31           2344        47      500            426
+ 4  2023     1     1       33           2140       173      238           2352
+ 5  2023     1     1       36           2048       228      223           2252
+ 6  2023     1     1      503            500         3      808            815
+ 7  2023     1     1      520            510        10      948            949
+ 8  2023     1     1      524            530        -6      645            710
+ 9  2023     1     1      537            520        17      926            818
+10  2023     1     1      547            545         2      845            852
+# ℹ 435,342 more rows
+# ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+#   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;
+        </output>
+      </console>
 
       <p>
         Let's unpack this output:
@@ -802,14 +821,14 @@ flights
         <ul>
           <li>
             <p>
-              <c># A tibble: [rows] x [cols]</c>: A <c>tibble</c> is a specific kind of
+              <c># A tibble: 435,352 × 19</c>: A <c>tibble</c> is a specific kind of
               data frame in R. <idx><h>tibble</h></idx> This particular data frame has
             </p>
             <p>
               <ul>
-                <li><p>rows corresponding to different <em>observations</em>. Here, each
-                observation is a flight.</p></li>
-                <li><p>columns corresponding to <em>variables</em> describing each
+                <li><p>435,352 rows corresponding to different <em>observations</em>. Here,
+                each observation is a flight.</p></li>
+                <li><p>19 columns corresponding to <em>variables</em> describing each
                 observation.</p></li>
               </ul>
             </p>
@@ -820,10 +839,10 @@ flights
           dataset.</p></li>
           <li><p>We then have a preview of the first 10 rows of observations
           corresponding to the first 10 flights. R is only showing the first 10 rows,
-          because if it showed all rows, it would overwhelm your screen.</p></li>
-          <li><p><c>... with [more rows] more rows and [more variables] more
-          variables:</c> indicating to us that more rows of data and more variables could
-          not fit in this screen.</p></li>
+          because if it showed all 435,352 rows, it would overwhelm your screen.</p></li>
+          <li><p><c>... with 435,342 more rows and 11 more variables:</c> indicating to
+          us that 435,342 more rows of data and 11 more variables could not fit in this
+          screen.</p></li>
         </ul>
       </p>
 
@@ -925,11 +944,34 @@ flights
         perspective for exploring a data frame than the <c>View()</c> function:
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 glimpse(flights)
         </input>
-      </program>
+        <output>
+Rows: 435,352
+Columns: 19
+$ year           &lt;int&gt; 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2…
+$ month          &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ day            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ dep_time       &lt;int&gt; 1, 18, 31, 33, 36, 503, 520, 524, 537, 547, 549, 551, 5…
+$ sched_dep_time &lt;int&gt; 2038, 2300, 2344, 2140, 2048, 500, 510, 530, 520, 545, …
+$ dep_delay      &lt;dbl&gt; 203, 78, 47, 173, 228, 3, 10, -6, 17, 2, -10, -9, -7, -…
+$ arr_time       &lt;int&gt; 328, 228, 500, 238, 223, 808, 948, 645, 926, 845, 905, …
+$ sched_arr_time &lt;int&gt; 3, 135, 426, 2352, 2252, 815, 949, 710, 818, 852, 901, …
+$ arr_delay      &lt;dbl&gt; 205, 53, 34, 166, 211, -7, -1, -25, 68, -7, 4, -13, -14…
+$ carrier        &lt;chr&gt; "UA", "DL", "B6", "B6", "UA", "AA", "B6", "AA", "UA", "…
+$ flight         &lt;int&gt; 628, 393, 371, 1053, 219, 499, 996, 981, 206, 225, 800,…
+$ tailnum        &lt;chr&gt; "N25201", "N830DN", "N807JB", "N265JB", "N17730", "N925…
+$ origin         &lt;chr&gt; "EWR", "JFK", "JFK", "JFK", "EWR", "EWR", "JFK", "EWR",…
+$ dest           &lt;chr&gt; "SMF", "ATL", "BQN", "CHS", "DTW", "MIA", "BQN", "ORD",…
+$ air_time       &lt;dbl&gt; 367, 108, 190, 108, 80, 154, 192, 119, 258, 157, 164, 1…
+$ distance       &lt;dbl&gt; 2500, 760, 1576, 636, 488, 1085, 1576, 719, 1400, 1065,…
+$ hour           &lt;dbl&gt; 20, 23, 23, 21, 20, 5, 5, 5, 5, 5, 5, 6, 5, 6, 6, 6, 6,…
+$ minute         &lt;dbl&gt; 38, 0, 44, 40, 48, 0, 10, 30, 20, 45, 59, 0, 59, 0, 0, …
+$ time_hour      &lt;dttm&gt; 2023-01-01 20:00:00, 2023-01-01 23:00:00, 2023-01-01 2…
+        </output>
+      </console>
 
       <p>
         Observe that <c>glimpse()</c> will give you the first few entries of each variable
@@ -976,12 +1018,51 @@ glimpse(flights)
         code in the console:
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 airlines
+        </input>
+        <output>
+# A tibble: 14 × 2
+   carrier name                  
+   &lt;chr&gt;   &lt;chr&gt;                 
+ 1 9E      Endeavor Air Inc.     
+ 2 AA      American Airlines Inc.
+ 3 AS      Alaska Airlines Inc.  
+ 4 B6      JetBlue Airways       
+ 5 DL      Delta Air Lines Inc.  
+ 6 F9      Frontier Airlines Inc.
+ 7 G4      Allegiant Air         
+ 8 HA      Hawaiian Airlines Inc.
+ 9 MQ      Envoy Air             
+10 NK      Spirit Air Lines      
+11 OO      SkyWest Airlines Inc. 
+12 UA      United Air Lines Inc. 
+13 WN      Southwest Airlines Co.
+14 YX      Republic Airline      
+        </output>
+        <input>
 kable(airlines)
         </input>
-      </program>
+        <output>
+|carrier |name                   |
+|:-------|:----------------------|
+|9E      |Endeavor Air Inc.      |
+|AA      |American Airlines Inc. |
+|AS      |Alaska Airlines Inc.   |
+|B6      |JetBlue Airways        |
+|DL      |Delta Air Lines Inc.   |
+|F9      |Frontier Airlines Inc. |
+|G4      |Allegiant Air          |
+|HA      |Hawaiian Airlines Inc. |
+|MQ      |Envoy Air              |
+|NK      |Spirit Air Lines       |
+|OO      |SkyWest Airlines Inc.  |
+|UA      |United Air Lines Inc.  |
+|WN      |Southwest Airlines Co. |
+|YX      |Republic Airline       |
+        </output>
+      </console>
 
       <p>
         At first glance, it may not appear that there is much difference in the outputs.
@@ -1001,15 +1082,22 @@ kable(airlines)
         run the following in your console:
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 airlines$name
         </input>
-      </program>
+        <output>
+ [1] "Endeavor Air Inc."      "American Airlines Inc." "Alaska Airlines Inc."  
+ [4] "JetBlue Airways"        "Delta Air Lines Inc."   "Frontier Airlines Inc."
+ [7] "Allegiant Air"          "Hawaiian Airlines Inc." "Envoy Air"             
+[10] "Spirit Air Lines"       "SkyWest Airlines Inc."  "United Air Lines Inc." 
+[13] "Southwest Airlines Co." "Republic Airline"      
+        </output>
+      </console>
 
       <p>
         We used the <c>$</c> operator to extract only the <c>name</c> variable and return
-        it as a vector of length 16. <idx><h>vectors</h></idx> We'll only be occasionally
+        it as a vector of length 14. <idx><h>vectors</h></idx> We'll only be occasionally
         exploring data frames using the <c>$</c> operator, instead favoring the
         <c>View()</c> and <c>glimpse()</c> functions.
       </p>
@@ -1026,11 +1114,23 @@ airlines$name
         data frame by showing the output of <c>glimpse(airports)</c>:
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 glimpse(airports)
         </input>
-      </program>
+        <output>
+Rows: 1,255
+Columns: 8
+$ faa   &lt;chr&gt; "AAF", "AAP", "ABE", "ABI", "ABL", "ABQ", "ABR", "ABY", "ACK", "…
+$ name  &lt;chr&gt; "Apalachicola Regional Airport", "Andrau Airpark", "Lehigh Valle…
+$ lat   &lt;dbl&gt; 29.72750, 29.72250, 40.65210, 32.41130, 67.10630, 35.04020, 45.4…
+$ lon   &lt;dbl&gt; -85.02750, -95.58830, -75.44080, -99.68190, -157.85699, -106.609…
+$ alt   &lt;dbl&gt; 20, 79, 393, 1791, 334, 5355, 1302, 197, 47, 516, 221, 75, 18, 7…
+$ tz    &lt;dbl&gt; -5, -6, -5, -6, -9, -7, -6, -5, -5, -6, -8, -5, -10, -6, -9, -6,…
+$ dst   &lt;chr&gt; "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",…
+$ tzone &lt;chr&gt; "America/New_York", "America/Chicago", "America/New_York", "Amer…
+        </output>
+      </console>
 
       <p>
         The variables <c>faa</c> and <c>name</c> are <em>identification variables</em>

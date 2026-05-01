@@ -85,11 +85,19 @@ UN_data_ch6 &lt;- un_member_states_2024 |&gt;
         We first look at the raw data values by either looking at <c>UN_data_ch6</c> using RStudio's spreadsheet viewer or by using the <c>glimpse()</c> function from the <c>dplyr</c> package:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 glimpse(UN_data_ch6)
         </input>
-      </program>
+        <output>
+Rows: 182
+Columns: 4
+$ country   &lt;chr&gt; "Afghanistan", "Albania", "Algeria", "Angola", "Antigua and …
+$ life_exp  &lt;dbl&gt; 53.65, 79.47, 78.03, 62.11, 77.80, 78.31, 76.13, 83.09, 82.2…
+$ fert_rate &lt;dbl&gt; 4.3, 1.4, 2.7, 5.0, 1.6, 1.9, 1.6, 1.6, 1.5, 1.6, 1.4, 1.8, …
+$ income    &lt;fct&gt; Low income, Upper middle income, Lower middle income, Lower …
+        </output>
+      </console>
 
       <p>
         The variable <c>country</c> contains all the UN member states. R reads this variable as character, <c>&lt;chr&gt;</c>, and beyond the country identification it will not be needed for the analysis. The variables life expectancy, <c>life_exp</c>, and fertility rate, <c>fert_rate</c>, are numerical, and the variable income, <c>income</c>, is categorical. In R, categorical variables are called factors and the categories are factor levels.
@@ -99,23 +107,49 @@ glimpse(UN_data_ch6)
         We also display a random sample of 10 rows of the 182 rows corresponding to different countries. Remember, due to the random nature of the sampling, you will likely end up with a different subset of 10 rows.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 UN_data_ch6 |&gt; sample_n(size = 10)
         </input>
-      </program>
+        <output>
+# A tibble: 10 × 4
+   country      life_exp fert_rate income             
+   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;              
+ 1 Guinea           63.9       4.1 Lower middle income
+ 2 Costa Rica       79.6       1.5 Upper middle income
+ 3 Dominica         78.2       1.6 Upper middle income
+ 4 Slovenia         81.8       1.6 High income        
+ 5 Mongolia         71.4       2.7 Lower middle income
+ 6 Tajikistan       69.4       3.1 Lower middle income
+ 7 Mauritius        74.9       1.4 Upper middle income
+ 8 Oman             76.9       2.5 High income        
+ 9 Cambodia         70.6       2.3 Lower middle income
+10 Bahamas, The     76.1       1.4 High income
+        </output>
+      </console>
 
       <p>
         Life expectancy, <c>life_exp</c>, is an estimate of how many years, on average, a person in a given country is expected to live. Fertility rate, <c>fert_rate</c>, is the average number of live births per woman of childbearing age in a country. As we did in our exploratory data analyses in <xref ref="model1EDA"/> and <xref ref="model2EDA"/> from <xref ref="regression"/>, we find summary statistics:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 UN_data_ch6 |&gt;
   select(life_exp, fert_rate, income) |&gt;
   tidy_summary()
         </input>
-      </program>
+        <output>
+# A tibble: 6 × 11
+  column        n group         type    min    Q1  mean median    Q3   max    sd
+  &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;         &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 life_exp    182 &lt;NA&gt;          nume…  53.6  69.4 73.7    75.2  78.4  86.4  6.86
+2 fert_rate   182 &lt;NA&gt;          nume…   0.9   1.6  2.49    2     3.2   6.6  1.16
+3 income       25 Low income    fact…  NA    NA   NA      NA    NA    NA   NA   
+4 income       52 Lower middle… fact…  NA    NA   NA      NA    NA    NA   NA   
+5 income       49 Upper middle… fact…  NA    NA   NA      NA    NA    NA   NA   
+6 income       56 High income   fact…  NA    NA   NA      NA    NA    NA   NA
+        </output>
+      </console>
 
       <p>
         Recall that each row in <c>UN_data_ch6</c> represents a particular country or UN member state. The <c>tidy_summary()</c> function shows a summary for the numerical variables life expectancy (<c>life_exp</c>), fertility rate (<c>fert_rate</c>), and the categorical variable income group (<c>income</c>). When the variable is numerical, the <c>tidy_summary()</c> function provides the total number of observations in the data frame, the five-number summary, the mean, and the standard deviation.
@@ -129,12 +163,18 @@ UN_data_ch6 |&gt;
         Furthermore, we can compute the correlation coefficient between our two numerical variables: <c>life_exp</c> and <c>fert_rate</c>. Recall from <xref ref="model1EDA"/> that correlation coefficients only exist between numerical variables. We observe that they are <q>strongly negatively</q> correlated.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 UN_data_ch6 |&gt;
   get_correlation(formula = fert_rate ~ life_exp)
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 1
+     cor
+   &lt;dbl&gt;
+1 -0.815
+        </output>
+      </console>
 
       <p>
         We are ready to create data visualizations, the last of our exploratory data analysis. Given that the outcome variable <c>fert_rate</c> and explanatory variable <c>life_exp</c> are both numerical, we can create a scatterplot to display their relationship, as we did in <xref ref="fig-numxplot1"/>. But this time, we incorporate the categorical variable <c>income</c> by <em>mapping</em> this variable to the <c>color</c> aesthetic, thereby creating a <em>colored</em> scatterplot.
@@ -247,12 +287,18 @@ D_4 = \left\{
         We calculate the regression coefficients using the <c>lm()</c> function and the command <c>coef()</c> to retrieve the coefficients of the linear regression:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 one_factor_model &lt;- lm(fert_rate ~ income, data = UN_data_ch6)
 coef(one_factor_model)
         </input>
-      </program>
+        <output>
+(Intercept) incomeLower middle income incomeUpper middle income 
+                 4.280000                 -1.299231                 -2.247347 
+        incomeHigh income 
+                -2.653214
+        </output>
+      </console>
 
       <p>
         The first level, <c>Low income</c>, is the <q>baseline</q> group. The average fertility rate for <c>Low income</c> UN member states is <m>b_0</m>. Similarly, the average fertility rate for <c>Upper middle income</c> member states is <m>b_0 + b_3</m>.
@@ -298,13 +344,23 @@ coef(one_factor_model)
         Observe how the intercept and the slope are different for a <c>High income</c> member state when compared to the baseline <c>Low income</c> member state. As an illustration, we construct this multiple linear regression for the UN member state dataset in R. We first <q>fit</q> the model using the <c>lm()</c> <q>linear model</q> function and then find the coefficients using the function <c>coef()</c>. In R, the formula used is <c>y ~ x1 + x2 + x1:x2</c> where <c>x1</c> and <c>x2</c> are the variable names in the dataset and represent the main effects while <c>x1:x2</c> is the interaction term. For simplicity, we can also write <c>y ~ x1 * x2</c> as the <c>*</c> sign accounts for both main effects and interaction effects. R would let both <c>x1</c> and <c>x2</c> be either explanatory or numerical, and we need to make sure the dataset format is appropriate for the regression we want to run. Here is the code for our example:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 # Fit regression model and get the coefficients of the model
 model_int &lt;- lm(fert_rate ~ life_exp * income, data = UN_data_ch6)
 coef(model_int)
         </input>
-      </program>
+        <output>
+(Intercept)                           life_exp 
+                       11.91826460                        -0.11848075 
+         incomeLower middle income          incomeUpper middle income 
+                       -1.50420617                        -1.89291757 
+                 incomeHigh income life_exp:incomeLower middle income 
+                       -6.57953685                         0.01265027 
+life_exp:incomeUpper middle income         life_exp:incomeHigh income 
+                        0.01117481                         0.07221696
+        </output>
+      </console>
 
       <p>
         We can match the coefficients with the values computed in the output above: the fitted fertility rate <m>\widehat{y} = \widehat{\text{fert rate}}</m> for <c>Low income</c> countries is
@@ -435,7 +491,7 @@ ggplot(UN_data_ch6, aes(x = life_exp, y = fert_rate, color = income)) +
         To find the coefficients for this regression in R, the formula used is <c>y ~ x1 + x2</c> where <c>x1</c> and <c>x2</c> are the variable names in the dataset and represent the main effects. Observe that the term <c>x1:x2</c> representing the interaction is no longer included. R would let both <c>x1</c> and <c>x2</c> to be either explanatory or numerical; therefore, we should always check that the variable format is appropriate for the regression we want to run. Here is the code for the UN data example:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 # Fit regression model:
 model_no_int &lt;- lm(fert_rate ~ life_exp + income, data = UN_data_ch6)
@@ -443,7 +499,13 @@ model_no_int &lt;- lm(fert_rate ~ life_exp + income, data = UN_data_ch6)
 # Get the coefficients of the model
 coef(model_no_int)
         </input>
-      </program>
+        <output>
+(Intercept)                  life_exp incomeLower middle income 
+               10.7676024                -0.1006323                -0.7186537 
+incomeUpper middle income         incomeHigh income 
+               -1.2393433                -1.0666572
+        </output>
+      </console>
 
       <p>
         In this model without interactions, the slope is the same for all the regression lines, <m>b_1</m>. Assuming that this model is correct, for any UN member state, every additional year of life expectancy reduces the average fertility rate by <m>|b_1|</m> units, regardless of the income level of the member state. The intercept of the regression line for <c>Low income</c> member states is <m>b_0</m> while for <c>High income</c> member states is <m>b_0 + b_{04}</m>. The intercepts for other income levels can be determined similarly. We compare the visualizations for both models side-by-side in <xref ref="fig-numxcatx-comparison"/>.
@@ -506,12 +568,28 @@ coef(model_no_int)
         We can generalize the study of fitted values and residuals for all the countries in the <c>UN_data_ch6</c> dataset, as shown in the output of the following code:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 regression_points &lt;- get_regression_points(model_int)
 regression_points
         </input>
-      </program>
+        <output>
+# A tibble: 182 × 6
+      ID fert_rate life_exp income              fert_rate_hat residual
+   &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;                       &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1       4.3     53.6 Low income                   5.56   -1.26 
+ 2     2       1.4     79.5 Upper middle income          1.50   -0.098
+ 3     3       2.7     78.0 Lower middle income          2.16    0.544
+ 4     4       5       62.1 Lower middle income          3.84    1.16 
+ 5     5       1.6     77.8 High income                  1.74   -0.139
+ 6     6       1.9     78.3 Upper middle income          1.62    0.278
+ 7     7       1.6     76.1 Upper middle income          1.86   -0.256
+ 8     8       1.6     83.1 High income                  1.50    0.105
+ 9     9       1.5     82.3 High income                  1.53   -0.033
+10    10       1.6     74.2 Upper middle income          2.07   -0.469
+# ℹ 172 more rows
+        </output>
+      </console>
 
       <exercises>
         <exercise xml:id="lc6-5">
@@ -520,14 +598,25 @@ regression_points
           </statement>
           <answer>
             <p>Use the fitted no-interaction model and generate regression points:</p>
-            <program language="r">
+            <console prompt="&gt; ">
               <input>
 model_no_int &lt;- lm(fert_rate ~ life_exp + income, data = UN_data_ch6)
 pts_no_int &lt;- get_regression_points(model_no_int)
 # Columns include fert_rate (observed y), fert_rate_hat (fitted y-hat), and residual = y - y-hat
 head(pts_no_int)
               </input>
-            </program>
+              <output>
+# A tibble: 6 × 6
+     ID fert_rate life_exp income              fert_rate_hat residual
+  &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;                       &lt;dbl&gt;    &lt;dbl&gt;
+1     1       4.3     53.6 Low income                   5.37   -1.07 
+2     2       1.4     79.5 Upper middle income          1.53   -0.131
+3     3       2.7     78.0 Lower middle income          2.20    0.503
+4     4       5       62.1 Lower middle income          3.80    1.20 
+5     5       1.6     77.8 High income                  1.87   -0.272
+6     6       1.9     78.3 Upper middle income          1.65    0.252
+              </output>
+            </console>
             <p>Interpretation: for each row, compare <c>fert_rate</c> to <c>fert_rate_hat</c>; the residual is their difference.</p>
           </answer>
         </exercise>

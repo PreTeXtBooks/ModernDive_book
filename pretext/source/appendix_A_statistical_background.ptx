@@ -263,11 +263,14 @@
         <m>\sigma = 1</m>. For example, the probability of observing a value that is less
         than or equal to 1 in the standard normal curve is given by:
       </p>
-      <program language="r">
+      <console prompt="> ">
         <input>
 pnorm(1)
         </input>
-      </program>
+        <output>
+[1] 0.8413447
+        </output>
+      </console>
       <p>
         or 84%. This is the probability of observing a value that is less than or equal
         to one standard deviation above the mean.
@@ -277,22 +280,28 @@ pnorm(1)
         <m>1</m> is given by subtracting the area to the left of <m>-1</m> from the area
         to the left of <m>1</m>. In R, we obtain this probability as follows:
       </p>
-      <program language="r">
+      <console prompt="> ">
         <input>
 pnorm(1) - pnorm(-1)
         </input>
-      </program>
+        <output>
+[1] 0.6826895
+        </output>
+      </console>
       <p>
         The probability of getting a standard value between <m>-1</m> and <m>1</m>, or
         equivalently, the probability of observing a value within one standard deviation
         from the mean is about 68%. Similarly, the probability of getting a value within
         2 standard deviations from the mean is given by:
       </p>
-      <program language="r">
+      <console prompt="> ">
         <input>
 pnorm(2) - pnorm(-2)
         </input>
-      </program>
+        <output>
+[1] 0.9544997
+        </output>
+      </console>
       <p>
         or about 95%.
       </p>
@@ -310,11 +319,14 @@ pnorm(2) - pnorm(-2)
         to find the standard value that corresponds to exactly an area of 84% under the
         curve to the left of this value, we can use the following syntax:
       </p>
-      <program language="r">
+      <console prompt="> ">
         <input>
 qnorm(0.84)
         </input>
-      </program>
+        <output>
+[1] 0.9944579
+        </output>
+      </console>
       <p>
         In other words, there is exactly an 84% chance that the observed standard value
         is less than or equal to 0.994.
@@ -331,12 +343,15 @@ qnorm(0.84)
         left tail or <m>0.95 + 0.025 = 0.975</m>. We can now obtain the standard value
         <c>q</c> by using <c>qnorm()</c>:
       </p>
-      <program language="r">
+      <console prompt="> ">
         <input>
 q &lt;- qnorm(0.975)
 q
         </input>
-      </program>
+        <output>
+[1] 1.959964
+        </output>
+      </console>
       <p>
         The probability of observing a value within 1.96 standard deviations from the
         mean is exactly 95%.
@@ -349,11 +364,14 @@ q
         <m>0.02/2 = 0.01</m> on each tail, the area under the curve to the left of the
         desired <c>q</c> value would be <m>0.98 + 0.01 = 0.99</m> so:
       </p>
-      <program language="r">
+      <console prompt="> ">
         <input>
 qnorm(0.99)
         </input>
-      </program>
+        <output>
+[1] 2.326348
+        </output>
+      </console>
       <p>
         The area within 2.33 standard deviations from the mean is 98%.
       </p>
@@ -386,7 +404,7 @@ qnorm(0.99)
       We start by obtaining the sample statistics (assuming a dataset <c>almonds_sample_100</c>
       with a variable <c>weight</c>):
     </p>
-    <program language="r">
+    <console prompt="> ">
       <input>
 almonds_sample_100 |>
   summarize(
@@ -395,7 +413,13 @@ almonds_sample_100 |>
     sample_size = n()
   )
       </input>
-    </program>
+      <output>
+# A tibble: 1 × 4
+  replicate mean_weight sd_weight sample_size
+      &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;       &lt;int&gt;
+1         1        3.68     0.362         100
+      </output>
+    </console>
 
     <p>
       To obtain the number of standard deviations on the <m>t</m> distribution to
@@ -406,11 +430,14 @@ almonds_sample_100 |>
       that the area under the <m>t</m> curve to the left of <m>q</m> is exactly
       <m>0.975</m>. Using R we get:
     </p>
-    <program language="r">
+    <console prompt="> ">
       <input>
 qt(0.975, df = 100 - 1)
       </input>
-    </program>
+      <output>
+[1] 1.984217
+      </output>
+    </console>
     <p>
       So, in order to account for 95% of the observations around the mean, we need to
       take into account all the values within 1.98 standard deviations from the mean.
@@ -418,7 +445,7 @@ qt(0.975, df = 100 - 1)
       is due to the fact that the <m>t</m> curve has thicker tails than the standard
       normal. We can now construct the 95% confidence interval:
     </p>
-    <program language="r">
+    <console prompt="> ">
       <input>
 xbar &lt;- 3.682
 se_xbar &lt;- 0.362 / sqrt(100)
@@ -426,7 +453,10 @@ lower_bound &lt;- xbar - 1.98 * se_xbar
 upper_bound &lt;- xbar + 1.98 * se_xbar
 c(lower_bound, upper_bound)
       </input>
-    </program>
+      <output>
+[1] 3.610324 3.753676
+      </output>
+    </console>
     <p>
       We are 95% confident that the population mean weight of almonds is a number between
       3.61 and 3.75 grams.

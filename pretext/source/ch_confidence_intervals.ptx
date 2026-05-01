@@ -146,20 +146,43 @@ library(infer)
       We took a random sample of 100 almonds' weights such as the one shown here and stored it in
       the <c>moderndive</c> package with the same name:
     </p>
-    <program language="r">
+    <console prompt="&gt; ">
       <input>
 almonds_sample_100
       </input>
-    </program>
+      <output>
+# A tibble: 100 × 3
+# Groups:   replicate [1]
+   replicate    ID weight
+       &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1         1   166    4.2
+ 2         1  1215    4.2
+ 3         1  1899    3.9
+ 4         1  1912    3.8
+ 5         1  4637    3.3
+ 6         1   511    3.5
+ 7         1   127    4  
+ 8         1  4419    3.5
+ 9         1  4729    4.2
+10         1  2574    4.1
+# ℹ 90 more rows
+      </output>
+    </console>
     <p>
       We can use it to calculate the sample mean weight:
     </p>
-    <program language="r">
+    <console prompt="&gt; ">
       <input>
 almonds_sample_100 |&gt;
   summarize(sample_mean = mean(weight))
       </input>
-    </program>
+      <output>
+# A tibble: 1 × 2
+  replicate sample_mean
+      &lt;int&gt;       &lt;dbl&gt;
+1         1        3.68
+      </output>
+    </console>
     <p>
       Then <m>\overline{x} = 3.68</m> grams is an <term>estimate</term> of the population mean
       weight. In summary, the <term>estimator</term> is the procedure, equation, or method that
@@ -239,13 +262,19 @@ almonds_sample_100 |&gt;
         100 from a bowl of 5,000 chocolate-covered almonds. Since we have access to the contents
         of the entire bowl, we can compute the population parameters:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_bowl |&gt;
   summarize(population_mean = mean(weight),
             population_sd = pop_sd(weight))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 2
+  population_mean population_sd
+            &lt;dbl&gt;         &lt;dbl&gt;
+1            3.64         0.392
+        </output>
+      </console>
       <p>
         The total number of almonds in the bowl is 5,000. The population mean is
       </p>
@@ -265,14 +294,20 @@ almonds_bowl |&gt;
         the almond chosen from the bowl and its corresponding <c>weight</c>. Using this sample we
         calculate some sample statistics:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100 |&gt;
   summarize(mean_weight = mean(weight),
             sd_weight = sd(weight),
             sample_size = n())
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 4
+  replicate mean_weight sd_weight sample_size
+      &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;       &lt;int&gt;
+1         1        3.68     0.362         100
+        </output>
+      </console>
       <p>
         In one of the activities performed in <xref ref="sampling"/> we took many random samples,
         calculated their sample means, constructed a histogram using these sample means, and showed
@@ -763,12 +798,18 @@ almonds_sample_100 |&gt;
         sample information and using the sample mean and sample standard deviation. We calculate
         those values again for <c>almonds_sample_100</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100 |&gt;
   summarize(sample_mean = mean(weight), sample_sd = sd(weight))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 3
+  replicate sample_mean sample_sd
+      &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+1         1        3.68     0.362
+        </output>
+      </console>
       <p>
         Observe that the sample standard deviation is <m>s = 0.137</m> which is not that different
         from the population standard deviation of <m>\sigma = 0.139</m>. We again center the
@@ -783,14 +824,20 @@ almonds_sample_100 |&gt;
       <p>
         We can also compute these lower and upper bounds:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100 |&gt;
   summarize(sample_mean = mean(weight), sample_sd = sd(weight),
             lower_bound = mean(weight) - 1.98*sd(weight)/sqrt(length(weight)),
             upper_bound = mean(weight) + 1.98*sd(weight)/sqrt(length(weight)))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 5
+  replicate sample_mean sample_sd lower_bound upper_bound
+      &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1         1        3.68     0.362        3.61        3.75
+        </output>
+      </console>
       <p>
         The confidence interval computed here, using the sample standard deviation and a
         <m>t</m> distribution, is almost the same as the one attained using the population standard
@@ -1007,21 +1054,27 @@ almonds_sample_100 |&gt;
             curve to the left of this value <m>q</m> is given. In our example the area to the left
             of <m>-q</m> is <m>\alpha/2 = 0.05/2 = 0.025</m>, so
           </p>
-          <program language="r">
+          <console prompt="&gt; ">
             <input>
 qnorm(0.025)
             </input>
-          </program>
+            <output>
+[1] -1.959964
+            </output>
+          </console>
           <p>
             or 1.96 standard deviation below the mean. Similarly, the total area under the curve
             to the left of <m>q</m> is the total shaded area, 0.95, plus the small white area on
             the left tail, 0.025, and <m>0.95 + 0.025 = 0.975</m>, so
           </p>
-          <program language="r">
+          <console prompt="&gt; ">
             <input>
 qnorm(0.975)
             </input>
-          </program>
+            <output>
+[1] 1.959964
+            </output>
+          </console>
           <p>
             That is the reason we use 1.96 standard deviation when calculating 95% confidence
             intervals. What if we want to retrieve a 90% confidence interval? We follow the same
@@ -1035,11 +1088,14 @@ qnorm(0.975)
               <li>The area needed to find <m>q</m> is <m>0.90 + 0.05 = 0.95</m>.</li>
             </ul>
           </p>
-          <program language="r">
+          <console prompt="&gt; ">
             <input>
 qnorm(0.95)
             </input>
-          </program>
+            <output>
+[1] 1.644854
+            </output>
+          </console>
           <p>
             If we want to determine a 90% confidence interval, we need to use 1.645 standard errors
             in our calculations. We can update the R code to calculate the lower and upper bounds
@@ -1057,11 +1113,14 @@ almonds_sample_100 |&gt;
             Let's do one more. If we want an 80% confidence interval,
             <m>1 - 0.8 = 0.2</m>, <m>0.2/2 = 0.1</m>, and <m>0.8 + 0.1 = 0.9</m>, so
           </p>
-          <program language="r">
+          <console prompt="&gt; ">
             <input>
 qnorm(0.9)
             </input>
-          </program>
+            <output>
+[1] 1.281552
+            </output>
+          </console>
           <p>
             When you want to calculate an 80%, 90%, or 95% confidence interval, you need to
             construct your interval using 1.282, 1.645, or 1.960 standard errors, respectively.
@@ -1213,14 +1272,30 @@ qnorm(0.9)
         virtually. The data frame <c>almonds_sample_100</c> contains the random sample of almonds
         taken from the population. We show selected rows from this sample.
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100 &lt;- almonds_sample_100 |&gt;
   ungroup() |&gt;
   select(-replicate)
 almonds_sample_100
         </input>
-      </program>
+        <output>
+# A tibble: 100 × 2
+      ID weight
+   &lt;int&gt;  &lt;dbl&gt;
+ 1   166    4.2
+ 2  1215    4.2
+ 3  1899    3.9
+ 4  1912    3.8
+ 5  4637    3.3
+ 6   511    3.5
+ 7   127    4  
+ 8  4419    3.5
+ 9  4729    4.2
+10  2574    4.1
+# ℹ 90 more rows
+        </output>
+      </console>
       <p>
         We use <c>ungroup()</c> and <c>select</c> to eliminate the variable <c>replicate</c> from
         the <c>almonds_sample_100</c> as this variable may create clutter when resampling. We can
@@ -1563,12 +1638,18 @@ almonds_sample_100 |&gt;
         estimate from a sample, such as the sample mean, when using <c>dplyr</c> we use
         <c>summarize()</c> and <c>mean()</c>:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample_100 |&gt;
   summarize(stat = mean(weight))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  3.68
+        </output>
+      </console>
       <p>
         If we want to use <c>infer</c> instead, we use the functions <c>specify()</c> and
         <c>calculate()</c> as shown:
@@ -2367,11 +2448,27 @@ visualize(bootstrap_means) +
         <c>mythbusters_yawn</c><idx><h>R packages</h><h>moderndive</h><h>mythbusters_yawn</h></idx>
         included in the <c>moderndive</c> package:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 mythbusters_yawn
         </input>
-      </program>
+        <output>
+# A tibble: 50 × 3
+    subj group   yawn 
+   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;
+ 1     1 seed    yes  
+ 2     2 control yes  
+ 3     3 seed    no   
+ 4     4 seed    yes  
+ 5     5 seed    no   
+ 6     6 control no   
+ 7     7 seed    yes  
+ 8     8 control no   
+ 9     9 control no   
+10    10 seed    no   
+# ℹ 40 more rows
+        </output>
+      </console>
 
       <p>
         The variables are:
@@ -2399,13 +2496,23 @@ mythbusters_yawn
       <p>
         Let's use some data wrangling to calculate counts of the four possible outcomes:
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 mythbusters_yawn |&gt;
   group_by(group, yawn) |&gt;
   summarize(count = n(), .groups = "keep")
         </input>
-      </program>
+        <output>
+# A tibble: 4 × 3
+# Groups:   group, yawn [4]
+  group   yawn  count
+  &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;
+1 control no       12
+2 control yes       4
+3 seed    no       24
+4 seed    yes      10
+        </output>
+      </console>
 
       <p>
         Let's first focus on the <c>"control"</c> group participants who were not exposed to
@@ -2612,12 +2719,23 @@ mythbusters_yawn |&gt;
           <em>row</em> is potentially resampled. Let's investigate this by focusing only on
           the first six rows of <c>mythbusters_yawn</c>:
         </p>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 first_six_rows &lt;- head(mythbusters_yawn)
 first_six_rows
           </input>
-        </program>
+          <output>
+# A tibble: 6 × 3
+   subj group   yawn 
+  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;
+1     1 seed    yes  
+2     2 control yes  
+3     3 seed    no   
+4     4 seed    yes  
+5     5 seed    no   
+6     6 control no
+          </output>
+        </console>
         <p>
           When we bootstrap this data, we are potentially pulling the subject's readings
           multiple times. Thus, we could see the entries of <c>"seed"</c> for <c>group</c>
@@ -2628,12 +2746,23 @@ first_six_rows
           to the <c>rep_sample_n()</c> function in <c>infer</c>, except that it is not
           repeated, but rather only performs one sample with or without replacement.
         </p>
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 first_six_rows |&gt;
   sample_n(size = 6, replace = TRUE)
           </input>
-        </program>
+          <output>
+# A tibble: 6 × 3
+   subj group   yawn 
+  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;
+1     2 control yes  
+2     5 seed    no   
+3     5 seed    no   
+4     4 seed    yes  
+5     1 seed    yes  
+6     5 seed    no
+          </output>
+        </console>
         <p>
           We can see that in this bootstrap sample generated from the first six rows of
           <c>mythbusters_yawn</c>, we have some rows repeated. The same is true when we

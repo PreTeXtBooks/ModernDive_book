@@ -88,22 +88,49 @@ library(janitor)
 age_at_marriage &lt;- read_csv("https://moderndive.com/data/ageAtMar.csv")
         </input>
       </program>
-      <program language="r">
+      <console prompt="> ">
+
         <input>
-age_summ &lt;- age_at_marriage |>
-  summarize(
-    sample_size = n(),
-    mean = mean(age),
-    sd = sd(age),
-    minimum = min(age),
-    lower_quartile = quantile(age, 0.25),
-    median = median(age),
-    upper_quartile = quantile(age, 0.75),
-    max = max(age)
-  )
-age_summ
+
+      age_summ &lt;- age_at_marriage |>
+
+        summarize(
+
+          sample_size = n(),
+
+          mean = mean(age),
+
+          sd = sd(age),
+
+          minimum = min(age),
+
+          lower_quartile = quantile(age, 0.25),
+
+          median = median(age),
+
+          upper_quartile = quantile(age, 0.75),
+
+          max = max(age)
+
+        )
+
+      age_summ
+
         </input>
-      </program>
+
+        <output>
+
+      # A tibble: 1 × 5
+
+        sample_size  mean    sd   min   max
+
+              &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+
+      1        5534  23.4  4.72    10    43
+
+        </output>
+
+      </console>
       <program language="r">
         <input>
 ggplot(data = age_at_marriage, mapping = aes(x = age)) +
@@ -222,15 +249,33 @@ t_test_results
         this sample, we have evidence that the mean age of first marriage for all US
         women from 2006 to 2010 is greater than 23 years.
       </p>
-      <program language="r">
+      <console prompt="> ">
+
         <input>
-t.test(
-  x = age_at_marriage$age,
-  alternative = "two.sided",
-  mu = 23
-)$conf
+
+      t.test(
+
+        x = age_at_marriage$age,
+
+        alternative = "two.sided",
+
+        mu = 23
+
+      )$conf
+
         </input>
-      </program>
+
+        <output>
+
+      [1] 23.31577 23.56461
+
+      attr(,"conf.level")
+
+      [1] 0.95
+
+        </output>
+
+      </console>
     </subsection>
 
   </section><!-- end One mean -->
@@ -348,7 +393,7 @@ boot_distn_one_prop |>
       <me>
         Z = \frac{\hat{P} - p_0}{\sqrt{\dfrac{p_0(1-p_0)}{n}}} \sim N(0,1)
       </me>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 p_hat_val &lt;- 0.73
 p0 &lt;- 0.8
@@ -358,8 +403,11 @@ z_obs
 
 2 * pnorm(z_obs)
         </input>
-      </program>
-      <program language="r">
+        <output>
+[1] 0.08011831
+        </output>
+      </console>
+      <console prompt="&gt; ">
         <input>
 prop.test(
   x = table(elec$satisfy),
@@ -369,7 +417,19 @@ prop.test(
   correct = FALSE
 )
         </input>
-      </program>
+        <output>
+1-sample proportions test without continuity correction
+
+data:  table(elec$satisfy), null probability 0.8
+X-squared = 3.0625, df = 1, p-value = 0.08012
+alternative hypothesis: true p is not equal to 0.8
+95 percent confidence interval:
+ 0.6356788 0.8073042
+sample estimates:
+   p 
+0.73
+        </output>
+      </console>
       <p>
         We do not have sufficient evidence to reject the null hypothesis. Based on this
         sample, we do not have evidence that the proportion of all satisfied customers
@@ -411,14 +471,31 @@ prop.test(
 
     <subsection xml:id="appendixB-two-props-eda">
       <title>Exploring the sample data</title>
-      <program language="r">
-        <input>
-offshore &lt;- read_csv("https://moderndive.com/data/offshore.csv")
+      <console prompt="> ">
 
-counts &lt;- offshore |> tabyl(college_grad, response)
-counts
+        <input>
+
+      offshore &lt;- read_csv("https://moderndive.com/data/offshore.csv")
+
+      
+
+      counts &lt;- offshore |> tabyl(college_grad, response)
+
+      counts
+
         </input>
-      </program>
+
+        <output>
+
+       college_grad no opinion opinion
+
+                 no        131     258
+
+                yes        104     334
+
+        </output>
+
+      </console>
       <program language="r">
         <input>
 offshore &lt;- offshore |>
