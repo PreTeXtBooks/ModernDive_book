@@ -348,7 +348,7 @@ boot_distn_one_prop |>
       <me>
         Z = \frac{\hat{P} - p_0}{\sqrt{\dfrac{p_0(1-p_0)}{n}}} \sim N(0,1)
       </me>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 p_hat_val &lt;- 0.73
 p0 &lt;- 0.8
@@ -358,8 +358,11 @@ z_obs
 
 2 * pnorm(z_obs)
         </input>
-      </program>
-      <program language="r">
+        <output>
+[1] 0.08011831
+        </output>
+      </console>
+      <console prompt="&gt; ">
         <input>
 prop.test(
   x = table(elec$satisfy),
@@ -369,7 +372,19 @@ prop.test(
   correct = FALSE
 )
         </input>
-      </program>
+        <output>
+1-sample proportions test without continuity correction
+
+data:  table(elec$satisfy), null probability 0.8
+X-squared = 3.0625, df = 1, p-value = 0.08012
+alternative hypothesis: true p is not equal to 0.8
+95 percent confidence interval:
+ 0.6356788 0.8073042
+sample estimates:
+   p 
+0.73
+        </output>
+      </console>
       <p>
         We do not have sufficient evidence to reject the null hypothesis. Based on this
         sample, we do not have evidence that the proportion of all satisfied customers

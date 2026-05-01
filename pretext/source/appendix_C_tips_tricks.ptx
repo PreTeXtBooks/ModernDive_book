@@ -423,25 +423,31 @@ rating_by_type_millions |>
         numerical values? Using the <c>parse_number()</c> function from the
         <c>readr</c> package inside a <c>mutate()</c>!
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 library(readr)
 parse_number("10.5%")
 parse_number("145,897")
 parse_number("$1,234.5")
         </input>
-      </program>
+        <output>
+[1] 1234.5
+        </output>
+      </console>
       <p>
         What about the other way around? Use the <c>scales</c> package!
       </p>
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 library(scales)
 percent(0.105)
 comma(145897)
 dollar(1234.5)
         </input>
-      </program>
+        <output>
+[1] "$1,234.50"
+        </output>
+      </console>
     </subsection>
 
   </section><!-- end Data wrangling -->
