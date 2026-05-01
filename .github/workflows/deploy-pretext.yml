@@ -40,7 +40,29 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y imagemagick
-      
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.4'
+          use-public-rspm: true
+
+      - name: Install R dependencies for figure generation
+        run: |
+          Rscript --no-init-file -e '
+            pkgs <- c("ggplot2", "dplyr", "tibble", "tidyr", "readr",
+                      "patchwork", "scales", "gapminder",
+                      "nycflights23", "moderndive")
+            missing <- pkgs[!pkgs %in% rownames(installed.packages())]
+            if (length(missing) > 0) {
+              install.packages(missing, quiet = TRUE)
+            }
+          '
+
+      - name: Generate R figures for PreTeXt book
+        run: |
+          IMAGES_DIR="$(pwd)/images" Rscript --no-init-file pretext/generate_images.R
+
       - name: Copy and convert images for PreTeXt
         run: |
           python3 copy_images.py
