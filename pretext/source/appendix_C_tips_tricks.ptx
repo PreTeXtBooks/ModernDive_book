@@ -80,12 +80,29 @@ movies_ex |>
         You may see the revenue in <c>million</c>s value for some movies is <c>NA</c>
         (missing). So the following occurs when computing the median revenue:
       </p>
-      <program language="r">
+      <console prompt="> ">
+
         <input>
-movies_ex |>
-  summarize(mean_profit = median(millions))
+
+      movies_ex |>
+
+        summarize(mean_profit = median(millions))
+
         </input>
-      </program>
+
+        <output>
+
+      # A tibble: 1 × 1
+
+        mean_profit
+
+              &lt;dbl&gt;
+
+      1          NA
+
+        </output>
+
+      </console>
       <p>
         You should always think about why a data value might be missing and what that
         missingness may mean. For example, imagine you are conducting a study on the
@@ -102,25 +119,80 @@ movies_ex |>
       <p>
         You can do this with a <c>na.rm = TRUE</c> argument like so:
       </p>
-      <program language="r">
+      <console prompt="> ">
+
         <input>
-movies_ex |>
-  summarize(mean_profit = median(millions, na.rm = TRUE))
+
+      movies_ex |>
+
+        summarize(mean_profit = median(millions, na.rm = TRUE))
+
         </input>
-      </program>
+
+        <output>
+
+      # A tibble: 1 × 1
+
+        mean_profit
+
+              &lt;dbl&gt;
+
+      1        43.4
+
+        </output>
+
+      </console>
       <p>
         If you decide you want to remove the row with the missing data, you can use the
         filter function like so:
       </p>
-      <program language="r">
-        <input>
-movies_no_missing &lt;- movies_ex |>
-  filter(!is.na(millions))
+      <console prompt="> ">
 
-movies_no_missing |>
-  slice(1:10)
+        <input>
+
+      movies_no_missing &lt;- movies_ex |>
+
+        filter(!is.na(millions))
+
+      
+
+      movies_no_missing |>
+
+        slice(1:10)
+
         </input>
-      </program>
+
+        <output>
+
+      # A tibble: 10 × 6
+
+         name             score rating type       millions over200
+
+         &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+
+       1 A Guy Thing       39.5 PG-13  rom comedy    15.5        0
+
+       2 A Man Apart       42.9 R      action        26.2        0
+
+       3 A Mighty Wind     79.9 PG-13  comedy        17.8        0
+
+       4 Agent Cody Banks  57.9 PG     action        47.8        0
+
+       5 Alex &amp; Emma       35.1 PG-13  rom comedy    14.2        0
+
+       6 American Wedding  50.7 R      comedy       104.         0
+
+       7 Anger Management  62.6 PG-13  comedy       134.         0
+
+       8 Anything Else     63.3 R      rom comedy     3.21       0
+
+       9 Bad Boys II       38.1 R      action       138.         0
+
+      10 Bad Santa         75.8 R      comedy        59.5        0
+
+        </output>
+
+      </console>
     </subsection>
 
 
@@ -249,25 +321,77 @@ ggplot(data = movies_ex, aes(x = rating, y = revenue)) +
           whatever was originally in <c>type</c>. Save everything in a new variable
           <c>type_new</c>:
         </p>
-        <program language="r">
+        <console prompt="> ">
+
           <input>
-movies_ex |>
-  mutate(type_new = if_else(type == "rom comedy", "romantic comedy", type)) |>
-  slice(1:10)
+
+        movies_ex |>
+
+          mutate(type_new = if_else(type == "rom comedy", "romantic comedy", type)) |>
+
+          slice(1:10)
+
           </input>
-        </program>
+
+          <output>
+
+        # A tibble: 5 × 7
+
+          name             score rating type       millions over200 type_new       
+
+          &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          
+
+        1 2 Fast 2 Furious  48.9 PG-13  action         NA         0 action         
+
+        2 A Guy Thing       39.5 PG-13  rom comedy     15.5       0 romantic comedy
+
+        3 A Man Apart       42.9 R      action         26.2       0 action         
+
+        4 A Mighty Wind     79.9 PG-13  comedy         17.8       0 comedy         
+
+        5 Agent Cody Banks  57.9 PG     action         47.8       0 action         
+
+          </output>
+
+        </console>
         <p>
           Do the same here, but return <c>"not romantic comedy"</c> if <c>type</c> is
           not <c>"rom comedy"</c> and this time overwrite the original <c>type</c>
           variable:
         </p>
-        <program language="r">
+        <console prompt="> ">
+
           <input>
-movies_ex |>
-  mutate(type = if_else(type == "rom comedy", "romantic comedy", "not romantic comedy")) |>
-  slice(1:10)
+
+        movies_ex |>
+
+          mutate(type = if_else(type == "rom comedy", "romantic comedy", "not romantic comedy")) |>
+
+          slice(1:10)
+
           </input>
-        </program>
+
+          <output>
+
+        # A tibble: 5 × 7
+
+          name             score rating type       millions over200 type       
+
+          &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;      
+
+        1 2 Fast 2 Furious  48.9 PG-13  action         NA         0 not romantic comedy
+
+        2 A Guy Thing       39.5 PG-13  rom comedy     15.5       0 romantic comedy
+
+        3 A Man Apart       42.9 R      action         26.2       0 not romantic comedy
+
+        4 A Mighty Wind     79.9 PG-13  comedy         17.8       0 not romantic comedy
+
+        5 Agent Cody Banks  57.9 PG     action         47.8       0 not romantic comedy
+
+          </output>
+
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="appendixC-recode">
@@ -276,20 +400,53 @@ movies_ex |>
           <c>if_else()</c> is rather limited. What if we want to <q>rename</q> all
           <c>type</c> so that they start with uppercase? Use <c>recode()</c>:
         </p>
-        <program language="r">
+        <console prompt="> ">
+
           <input>
-movies_ex |>
-  mutate(type_new = recode(type,
-    "action" = "Action",
-    "animated" = "Animated",
-    "comedy" = "Comedy",
-    "drama" = "Drama",
-    "fantasy" = "Fantasy",
-    "rom comedy" = "Romantic Comedy"
-  )) |>
-  slice(1:10)
+
+        movies_ex |>
+
+          mutate(type_new = recode(type,
+
+            "action" = "Action",
+
+            "animated" = "Animated",
+
+            "comedy" = "Comedy",
+
+            "drama" = "Drama",
+
+            "fantasy" = "Fantasy",
+
+            "rom comedy" = "Romantic Comedy"
+
+          )) |>
+
+          slice(1:10)
+
           </input>
-        </program>
+
+          <output>
+
+        # A tibble: 5 × 7
+
+          name             score rating type       millions over200 type_new       
+
+          &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          
+
+        1 2 Fast 2 Furious  48.9 PG-13  action         NA         0 Action         
+
+        2 A Guy Thing       39.5 PG-13  rom comedy     15.5       0 Romantic Comedy
+
+        3 A Man Apart       42.9 R      action         26.2       0 Action         
+
+        4 A Mighty Wind     79.9 PG-13  comedy         17.8       0 Comedy         
+
+        5 Agent Cody Banks  57.9 PG     action         47.8       0 Action         
+
+          </output>
+
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="appendixC-case-when">
@@ -299,18 +456,49 @@ movies_ex |>
           operations using <c>==</c>, <c>&gt;</c>, <c>&gt;=</c>, <c>&amp;</c>,
           <c>|</c>, etc:
         </p>
-        <program language="r">
+        <console prompt="> ">
+
           <input>
-movies_ex |>
-  mutate(
-    type_new = case_when(
-      type == "action" &amp; millions > 40 ~ "Big budget action",
-      type == "rom comedy" &amp; millions &lt; 40 ~ "Small budget romcom",
-      TRUE ~ "Rest"
-    )
-  )
+
+        movies_ex |>
+
+          mutate(
+
+            type_new = case_when(
+
+              type == "action" &amp; millions > 40 ~ "Big budget action",
+
+              type == "rom comedy" &amp; millions &lt; 40 ~ "Small budget romcom",
+
+              TRUE ~ "Rest"
+
+            )
+
+          )
+
           </input>
-        </program>
+
+          <output>
+
+        # A tibble: 5 × 4
+
+          name             type       millions type_new         
+
+          &lt;chr&gt;            &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;            
+
+        1 2 Fast 2 Furious action         NA   Action           
+
+        2 A Guy Thing      rom comedy     15.5 Not action       
+
+        3 A Man Apart      action         26.2 Action           
+
+        4 A Mighty Wind    comedy         17.8 Not action       
+
+        5 Agent Cody Banks action         47.8 Big budget action
+
+          </output>
+
+        </console>
       </subsubsection>
 
     </subsection>
@@ -325,13 +513,49 @@ movies_ex |>
         movie made one hundred million dollars or more. We can create a binary variable
         using the <c>mutate()</c> function:
       </p>
-      <program language="r">
+      <console prompt="> ">
+
         <input>
-movies_ex |>
-  mutate(big_budget = millions > 100) |>
-  slice(1:10)
+
+      movies_ex |>
+
+        mutate(big_budget = millions > 100) |>
+
+        slice(1:10)
+
         </input>
-      </program>
+
+        <output>
+
+      # A tibble: 10 × 7
+
+         name             score rating type       millions over200 big_budget
+
+         &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;lgl&gt;     
+
+       1 2 Fast 2 Furious  48.9 PG-13  action        NA          0 NA        
+
+       2 A Guy Thing       39.5 PG-13  rom comedy    15.5        0 FALSE     
+
+       3 A Man Apart       42.9 R      action        26.2        0 FALSE     
+
+       4 A Mighty Wind     79.9 PG-13  comedy        17.8        0 FALSE     
+
+       5 Agent Cody Banks  57.9 PG     action        47.8        0 FALSE     
+
+       6 Alex &amp; Emma       35.1 PG-13  rom comedy    14.2        0 FALSE     
+
+       7 American Wedding  50.7 R      comedy       104.         0 TRUE      
+
+       8 Anger Management  62.6 PG-13  comedy       134.         0 TRUE      
+
+       9 Anything Else     63.3 R      rom comedy     3.21       0 FALSE     
+
+      10 Bad Boys II       38.1 R      action       138.         0 TRUE      
+
+        </output>
+
+      </console>
       <p>
         What if you want to convert a numerical variable into a categorical variable with
         more than 2 levels? One way is to use the <c>cut()</c> command. For instance,
@@ -343,16 +567,45 @@ movies_ex |>
         <li><p>60.1 – 80 = good</p></li>
         <li><p>80.1+ = great</p></li>
       </ol>
-      <program language="r">
+      <console prompt="> ">
+
         <input>
-movies_ex |>
-  mutate(score_categ = cut(score,
-    breaks = c(0, 40, 60, 80, 100),
-    labels = c("bad", "so-so", "good", "great")
-  )) |>
-  slice(1:10)
+
+      movies_ex |>
+
+        mutate(score_categ = cut(score,
+
+          breaks = c(0, 40, 60, 80, 100),
+
+          labels = c("bad", "so-so", "good", "great")
+
+        )) |>
+
+        slice(1:10)
+
         </input>
-      </program>
+
+        <output>
+
+      # A tibble: 5 × 7
+
+        name             score rating type       millions over200 score_categ
+
+        &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;      
+
+      1 2 Fast 2 Furious  48.9 PG-13  action         NA         0 mediocre   
+
+      2 A Guy Thing       39.5 PG-13  rom comedy     15.5       0 bad        
+
+      3 A Man Apart       42.9 R      action         26.2       0 mediocre   
+
+      4 A Mighty Wind     79.9 PG-13  comedy         17.8       0 good       
+
+      5 Agent Cody Banks  57.9 PG     action         47.8       0 mediocre   
+
+        </output>
+
+      </console>
       <p>
         Other options with the <c>cut</c> function:
       </p>
