@@ -3,15 +3,13 @@
   <title>Preface</title>
 
   <!-- ============================================================ -->
-  <p><alert>Introduction for students</alert></p>
-
   <p>
     <alert>Help! I'm completely new to coding and I need to learn R and RStudio! What do I do?</alert>
   </p>
 
   <p>
     If you're asking yourself this question, then you've come to the right place!
-    Start with the rest of this section.
+    Start with the "Introduction for students" section.
   </p>
 
   <p>
@@ -47,6 +45,9 @@
     <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
   </p>
 
+  <p>
+    <alert>Introduction for students</alert>
+  </p>
   <p>
     This book assumes no prerequisites: no algebra, no calculus, and no prior
     programming/coding experience. This is intended to be a gentle introduction to the
@@ -329,6 +330,10 @@
     way to conduct efficient and effective scientific research. It's much more important
     for time to be spent on data collection and data analysis and not on copying and
     pasting plots back and forth across a variety of programs.
+  </p>
+
+  <p>
+    In traditional analyses, if an error was made with the original data, we’d need to step through the entire process again: recreate the plots and copy-and-paste all of the new plots and our statistical analysis into our document. This is error prone and a frustrating use of time. We want to help you to get away from this tedious activity so that we can spend more time doing science.
   </p>
 
   <blockquote>
