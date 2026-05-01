@@ -45,7 +45,7 @@
   </p>
 
   <!-- ============================================================ -->
-  <subsection xml:id="preface-intro-students">
+  <section xml:id="preface-intro-students">
     <title>Introduction for students</title>
 
     <p>
@@ -174,7 +174,7 @@
     </p>
 
 
-    <subsubsection xml:id="preface-what-you-will-learn">
+    <subsection xml:id="preface-what-you-will-learn">
       <title>What we hope you will learn from this book</title>
 
       <p>
@@ -242,10 +242,10 @@
         particular on the internet on various forums and websites such as
         <url href="https://stackoverflow.com/" visual="stackoverflow.com">stackoverflow.com</url>.
       </p>
-    </subsubsection>
+    </subsection>
 
 
-    <subsubsection xml:id="preface-data-science-pipeline">
+    <subsection xml:id="preface-data-science-pipeline">
       <title>Data/science pipeline</title>
 
       <p>
@@ -309,10 +309,10 @@
         paired with computation, you'll see how reproducible research in the sciences
         particularly increases scientific knowledge.
       </p>
-    </subsubsection>
+    </subsection>
 
 
-    <subsubsection xml:id="preface-reproducible-research">
+    <subsection xml:id="preface-reproducible-research">
       <title>Reproducible research</title>
 
       <blockquote>
@@ -353,10 +353,10 @@
         of starting from scratch or following a list of steps that may be different from
         machine to machine.
       </p>
-    </subsubsection>
+    </subsection>
 
 
-    <subsubsection xml:id="preface-final-note-students">
+    <subsection xml:id="preface-final-note-students">
       <title>Final note for students</title>
 
       <p>
@@ -365,15 +365,15 @@
         and publishing, then continue with the rest of the chapter. Otherwise, let's get
         started with R and RStudio in <xref ref="ch-getting-started"/>!
       </p>
-    </subsubsection>
-  </subsection>
+    </subsection>
+  </section>
 
 
   <!-- ============================================================ -->
-  <subsection xml:id="preface-intro-instructors">
+  <section xml:id="preface-intro-instructors">
     <title>Introduction for instructors</title>
 
-    <subsubsection xml:id="preface-resources">
+    <subsection xml:id="preface-resources">
       <title>Resources</title>
 
       <p>
@@ -418,10 +418,10 @@
           </li>
         </ol>
       </p>
-    </subsubsection>
+    </subsection>
 
 
-    <subsubsection xml:id="preface-why-write-this-book">
+    <subsection xml:id="preface-why-write-this-book">
       <title>Why did we write this book?</title>
 
       <p>
@@ -462,10 +462,10 @@
         could develop theory via computational techniques and help novices master the R
         language in doing so.
       </p>
-    </subsubsection>
+    </subsection>
 
 
-    <subsubsection xml:id="preface-who-is-this-book-for">
+    <subsection xml:id="preface-who-is-this-book-for">
       <title>Who is this book for?</title>
 
       <p>
@@ -556,12 +556,12 @@
           </li>
         </ol>
       </p>
-    </subsubsection>
-  </subsection>
+    </subsection>
+  </section>
 
 
   <!-- ============================================================ -->
-  <subsection xml:id="preface-connect-contribute">
+  <section xml:id="preface-connect-contribute">
     <title>Connect and contribute</title>
 
     <p>
@@ -595,11 +595,11 @@
       page. If you are familiar with GitHub and would like to contribute, see the
       <q>About this book</q> section.
     </p>
-  </subsection>
+  </section>
 
 
   <!-- ============================================================ -->
-  <subsection xml:id="preface-acknowledgements">
+  <section xml:id="preface-acknowledgements">
     <title>Acknowledgements</title>
 
     <p>
@@ -649,11 +649,11 @@
       Pacific University, Reed College, Middlebury College, Amherst College, Smith College,
       or Indiana University. We couldn't have made this book without you!
     </p>
-  </subsection>
+  </section>
 
 
   <!-- ============================================================ -->
-  <subsection xml:id="preface-about-this-book">
+  <section xml:id="preface-about-this-book">
     <title>About this book</title>
 
     <p>
@@ -712,7 +712,7 @@
       please list the authors at the top of <c>index.Rmd</c> as: <q>Chester Ismay, Albert
       Y. Kim, Arturo Valdivia, and YOU!</q>
     </p>
-  </subsection>
+  </section>
   <!-- ============================================================ -->
   <references xml:id="preface-references">
     <title>References</title>
