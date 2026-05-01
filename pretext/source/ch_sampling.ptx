@@ -61,61 +61,111 @@ library(infer)
         Let's explore it:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 bowl
         </input>
-      </program>
+        <output>
+# A tibble: 2,400 × 2
+   ball_ID color
+     &lt;int&gt; &lt;chr&gt;
+ 1       1 white
+ 2       2 white
+ 3       3 white
+ 4       4 red  
+ 5       5 white
+ 6       6 white
+ 7       7 red  
+ 8       8 white
+ 9       9 red  
+10      10 white
+# ℹ 2,390 more rows
+        </output>
+      </console>
 
       <p>
         To compute the proportion of red balls, we can first create an indicator variable that
         is <c>TRUE</c> if a ball is red and <c>FALSE</c> otherwise:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 bowl |&gt;
   mutate(is_red = (color == "red"))
         </input>
-      </program>
+        <output>
+# A tibble: 2,400 × 3
+   ball_ID color is_red
+     &lt;int&gt; &lt;chr&gt; &lt;lgl&gt; 
+ 1       1 white FALSE 
+ 2       2 white FALSE 
+ 3       3 white FALSE 
+ 4       4 red   TRUE  
+ 5       5 white FALSE 
+ 6       6 white FALSE 
+ 7       7 red   TRUE  
+ 8       8 white FALSE 
+ 9       9 red   TRUE  
+10      10 white FALSE 
+# ℹ 2,390 more rows
+        </output>
+      </console>
 
       <p>
         Next, we can count the number of red balls by summing the indicator variable (since
         <c>TRUE</c> counts as 1 and <c>FALSE</c> as 0):
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 bowl |&gt;
   mutate(is_red = (color == "red")) |&gt;
   summarize(num_red = sum(is_red))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 1
+  num_red
+    &lt;int&gt;
+1     900
+        </output>
+      </console>
 
       <p>
         The <c>sum()</c> function effectively counts red balls. There are 375 red balls in the
         bowl. We can compute the proportion by using <c>mean()</c> instead of <c>sum()</c>:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 bowl |&gt;
   mutate(is_red = (color == "red")) |&gt;
   summarize(prop_red = mean(is_red))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 1
+  prop_red
+     &lt;dbl&gt;
+1    0.375
+        </output>
+      </console>
 
       <p>
         Using <c>mean()</c> on a <c>TRUE</c>/<c>FALSE</c> variable gives the proportion directly
         because it computes the fraction of <c>TRUE</c> values. We can write this more concisely as:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 bowl |&gt;
   summarize(prop_red = mean(color == "red"))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 1
+  prop_red
+     &lt;dbl&gt;
+1    0.375
+        </output>
+      </console>
 
       <p>
         The proportion of red balls is 375/2400 = 0.375, or approximately 37.5% of all balls in
@@ -209,11 +259,27 @@ bowl |&gt;
           frame in the <c>moderndive</c> package:
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 tactile_prop_red
           </input>
-        </program>
+          <output>
+# A tibble: 33 × 4
+   group            replicate red_balls prop_red
+   &lt;chr&gt;                &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt;
+ 1 Ilyas, Yohan             1        21     0.42
+ 2 Morgan, Terrance         2        17     0.34
+ 3 Martin, Thomas           3        21     0.42
+ 4 Clark, Frank             4        21     0.42
+ 5 Riddhi, Karina           5        18     0.36
+ 6 Andrew, Tyler            6        19     0.38
+ 7 Julia                    7        19     0.38
+ 8 Rachel, Lauren           8        11     0.22
+ 9 Daniel, Caroline         9        15     0.3 
+10 Josh, Maeve             10        17     0.34
+# ℹ 23 more rows
+          </output>
+        </console>
 
         <p>
           Let's visualize the distribution of sample proportions with a histogram:
@@ -1026,13 +1092,19 @@ virtual_prop_red_100 |&gt;
           <m>0/1</m> indicator of <q>red ball</q>:
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 bowl |&gt;
   mutate(is_red = color == "red") |&gt;
   summarize(p = mean(is_red), st_dev = sd(is_red))
           </input>
-        </program>
+          <output>
+# A tibble: 1 × 2
+      p st_dev
+  &lt;dbl&gt;  &lt;dbl&gt;
+1 0.375  0.484
+          </output>
+        </console>
 
         <p>
           The result is <m>p = 0.375</m> and <m>SD \approx 0.484</m>.<fn>The <c>sd()</c>
@@ -1048,12 +1120,15 @@ bowl |&gt;
           closed-form formula: <m>SD = \sqrt{p(1-p)}</m>. We can verify this:
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 p &lt;- 0.375
 sqrt(p * (1 - p))
           </input>
-        </program>
+          <output>
+[1] 0.4841229
+          </output>
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="standard-error">
@@ -1094,12 +1169,15 @@ bowl |&gt;
           </me>
         </p>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 p &lt;- 0.375
 sqrt(p * (1 - p) / 100)
           </input>
-        </program>
+          <output>
+[1] 0.04841229
+          </output>
+        </console>
 
         <p>
           We can repeat this for <m>n = 25</m> and <m>n = 50</m> using our simulated data:
@@ -1114,12 +1192,15 @@ virtual_prop_red_50 |&gt;
           </input>
         </program>
 
-        <program language="r">
+        <console prompt="&gt; ">
           <input>
 sqrt(p * (1 - p) / 25)
 sqrt(p * (1 - p) / 50)
           </input>
-        </program>
+          <output>
+[1] 0.06846532
+          </output>
+        </console>
 
         <p>
           In each case, the empirical standard deviation of the 1000 simulated sample proportions
@@ -1287,20 +1368,42 @@ sqrt(p * (1 - p) / 50)
         (in grams) of all 5000 almonds in a bowl:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_bowl
         </input>
-      </program>
+        <output>
+# A tibble: 5,000 × 2
+      ID weight
+   &lt;int&gt;  &lt;dbl&gt;
+ 1     1    3.8
+ 2     2    4.2
+ 3     3    3.2
+ 4     4    3.1
+ 5     5    4.1
+ 6     6    3.9
+ 7     7    3.4
+ 8     8    4.2
+ 9     9    3.5
+10    10    3.4
+# ℹ 4,990 more rows
+        </output>
+      </console>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_bowl |&gt;
   summarize(mean_weight = mean(weight),
             sd_weight = sd(weight),
             length = n())
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 3
+  mean_weight sd_weight length
+        &lt;dbl&gt;     &lt;dbl&gt;  &lt;int&gt;
+1        3.64     0.392   5000
+        </output>
+      </console>
 
       <p>
         The bowl contains 5000 almonds with a population mean weight of
@@ -1383,11 +1486,28 @@ ggplot(almonds_bowl, aes(x = weight)) +
         of 25 almonds:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample
         </input>
-      </program>
+        <output>
+# A tibble: 25 × 3
+# Groups:   replicate [1]
+   replicate    ID weight
+       &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1         1  4645    3  
+ 2         1  3629    3.9
+ 3         1  4796    4  
+ 4         1  2669    3.8
+ 5         1  3488    4.3
+ 6         1   105    4.1
+ 7         1  1762    3.6
+ 8         1  1035    4.2
+ 9         1  4880    3.2
+10         1   398    4  
+# ℹ 15 more rows
+        </output>
+      </console>
 
       <p>
         The total weight of the 25 almonds in this sample was 88.6 grams, giving a sample mean
@@ -1410,11 +1530,17 @@ ggplot(almonds_sample, aes(x = weight)) +
         </image>
       </figure>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample |&gt; summarize(sample_mean_weight = mean(weight))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 2
+  replicate sample_mean_weight
+      &lt;int&gt;              &lt;dbl&gt;
+1         1               3.67
+        </output>
+      </console>
 
       <p>
         The sample mean is not too far from the true population mean of 3.64 grams. The
@@ -1504,11 +1630,28 @@ ggplot(virtual_mean_weight, aes(x = mean_weight)) +
         Bernoulli 0/1, the sample mean equals the sample proportion.
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample
         </input>
-      </program>
+        <output>
+# A tibble: 25 × 3
+# Groups:   replicate [1]
+   replicate    ID weight
+       &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1         1  4645    3  
+ 2         1  3629    3.9
+ 3         1  4796    4  
+ 4         1  2669    3.8
+ 5         1  3488    4.3
+ 6         1   105    4.1
+ 7         1  1762    3.6
+ 8         1  1035    4.2
+ 9         1  4880    3.2
+10         1   398    4  
+# ℹ 15 more rows
+        </output>
+      </console>
 
       <p>
         For our observed sample, the first three almonds weighed approximately 3.0 g, 3.9 g,
@@ -1519,12 +1662,18 @@ almonds_sample
         </me>
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_sample |&gt;
   summarize(sample_mean_weight = mean(weight))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 2
+  replicate sample_mean_weight
+      &lt;int&gt;              &lt;dbl&gt;
+1         1               3.67
+        </output>
+      </console>
 
       <p>
         After observing the sample, the realized value of the sample mean is
@@ -1591,12 +1740,18 @@ ggplot(virtual_mean_weight_100, aes(x = mean_weight)) +
         We can compute the population parameters and compare them to the simulation results:
       </p>
 
-      <program language="r">
+      <console prompt="&gt; ">
         <input>
 almonds_bowl |&gt;
   summarize(mu = mean(weight), sigma = sd(weight))
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 2
+     mu sigma
+  &lt;dbl&gt; &lt;dbl&gt;
+1  3.64 0.392
+        </output>
+      </console>
 
       <program language="r">
         <input>
