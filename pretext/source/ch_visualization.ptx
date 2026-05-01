@@ -252,7 +252,7 @@ library(tibble)
 
       <p>
         In this book, we will use the <c>ggplot2</c> package for data visualization,
-        which is an implementation of the <em>g</em>rammar of <em>g</em>raphics for R.
+        which is an implementation of the <em>g</em>rammar of <em>g</em>raphics for R <xref ref="bib-R-ggplot2"/>.
         As we noted earlier, a lot of the previous section was written in a computer code
         type font. This is because the various components of the grammar of graphics are
         specified in the <c>ggplot()</c>

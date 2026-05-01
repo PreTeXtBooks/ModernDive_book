@@ -57,7 +57,7 @@
     <ol>
       <li>
         <p>
-          The <c>tidyverse</c> <q>umbrella</q> package. Recall from our earlier discussion that loading the <c>tidyverse</c> package by running <c>library(tidyverse)</c> loads the following commonly used data science packages all at once:
+          The <c>tidyverse</c> <q>umbrella</q> package <xref ref="bib-R-tidyverse"/>. Recall from our earlier discussion that loading the <c>tidyverse</c> package by running <c>library(tidyverse)</c> loads the following commonly used data science packages all at once:
           <ul>
             <li><p><c>ggplot2</c> for data visualization</p></li>
             <li><p><c>dplyr</c> for data wrangling</p></li>
@@ -2085,7 +2085,7 @@ regression_points |&gt;
       </p>
 
       <p>
-        The <c>get_regression_points()</c> function is a wrapper function, returning information about the individual points involved in a regression model like the fitted values, observed values, and the residuals. <c>get_regression_points()</c><idx><h>R packages</h><h>moderndive</h><h>get_regression_points()</h></idx> uses the <c>augment()</c><idx><h>R packages</h><h>broom</h><h>augment()</h></idx> function in the <url href="https://broom.tidyverse.org/"><c>broom</c> package</url> to produce its data. Additionally, it uses <c>clean_names()</c><idx><h>R packages</h><h>janitor</h><h>clean_names()</h></idx> from the <url href="https://github.com/sfirke/janitor"><c>janitor</c> package</url> to clean up the variable names.
+        The <c>get_regression_points()</c> function is a wrapper function, returning information about the individual points involved in a regression model like the fitted values, observed values, and the residuals. <c>get_regression_points()</c><idx><h>R packages</h><h>moderndive</h><h>get_regression_points()</h></idx> uses the <c>augment()</c><idx><h>R packages</h><h>broom</h><h>augment()</h></idx> function in the <url href="https://broom.tidyverse.org/"><c>broom</c> package</url> to produce its data. Additionally, it uses <c>clean_names()</c><idx><h>R packages</h><h>janitor</h><h>clean_names()</h></idx> from the <url href="https://github.com/sfirke/janitor"><c>janitor</c> package</url> <xref ref="bib-R-janitor"/> to clean up the variable names.
       </p>
 
       <console prompt="> ">

@@ -60,5 +60,49 @@
       Chernick, M. R., and LaBudde, R. A. (2011). <em>An Introduction to Bootstrap Methods with Applications to R</em>. Wiley.
     </biblio>
 
+    <biblio type="raw" xml:id="bib-R-ggplot2">
+      Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., Woo, K., Yutani, H., Dunnington, D., and van den Brand, T. (2025). <em>ggplot2: Elegant Graphics for Data Analysis</em>. R package version 3.5.2. <url href="https://ggplot2.tidyverse.org"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-dplyr">
+      Wickham, H., François, R., Henry, L., Müller, K., and Vaughan, D. (2023). <em>dplyr: A Grammar of Data Manipulation</em>. R package version 1.1.4. <url href="https://dplyr.tidyverse.org"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-moderndive">
+      Ismay, C., Kim, A. Y., and Valdivia, A. (2025). <em>moderndive: Tidyverse-Friendly Introductory Linear Regression</em>. R package version 0.6.1. <url href="https://moderndive.github.io/moderndive/"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-infer">
+      Couch, S., Bray, A., Ismay, C., Chasnovski, E., Baumer, B., and Çetinkaya-Rundel, M. (2024). <em>infer: An R Package for Tidyverse-Friendly Statistical Inference</em>. R package version 1.0.7. <url href="https://infer.tidymodels.org/"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-tidyverse">
+      Wickham, H., Averick, M., Bryan, J., Chang, W., D'Agostino McGowan, L., François, R., Grolemund, G., Hayes, A., Henry, L., Hester, J., Kuhn, M., Pedersen, T. L., Miller, E., Bache, S. M., Müller, K., Ooms, J., Robinson, D., Seidel, D. P., Spinu, V., Takahashi, K., Vaughan, D., Wilke, C., Woo, K., and Yutani, H. (2019). Welcome to the tidyverse. <em>Journal of Open Source Software</em>, 4(43), 1686. <url href="https://doi.org/10.21105/joss.01686"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-nycflights23">
+      Wickham, H. (2024). <em>nycflights23: Flights that Departed NYC in 2023</em>. R package version 0.2.0. <url href="https://github.com/tidyverse/nycflights23"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-readr">
+      Wickham, H., Hester, J., and Bryan, J. (2024). <em>readr: Read Rectangular Text Data</em>. R package version 2.1.5. <url href="https://readr.tidyverse.org"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-tidyr">
+      Wickham, H., Vaughan, D., and Girlich, M. (2024). <em>tidyr: Tidy Messy Data</em>. R package version 1.3.1. <url href="https://tidyr.tidyverse.org"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-fivethirtyeight">
+      Kim, A. Y., Ismay, C., and Chunn, J. (2024). <em>fivethirtyeight: Data and Code Behind the Stories and Interactives at 'FiveThirtyEight'</em>. R package version 0.6.2. <url href="https://github.com/rudeboybert/fivethirtyeight"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-janitor">
+      Firke, S. (2023). <em>janitor: Simple Tools for Examining and Cleaning Dirty Data</em>. R package version 2.2.0. <url href="https://sfirke.github.io/janitor/"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-R-bookdown">
+      Xie, Y. (2024). <em>bookdown: Authoring Books and Technical Documents with R Markdown</em>. R package version 0.40. <url href="https://pkgs.rstudio.com/bookdown/"/>
+    </biblio>
+
   </references>
 </backmatter>
