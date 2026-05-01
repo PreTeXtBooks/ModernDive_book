@@ -141,7 +141,7 @@ library(fivethirtyeight)
         <url href="https://moderndive.com/data/dem_score.csv">https://moderndive.com/data/dem_score.csv</url>.
         Let's use the <c>read_csv()</c>
         <idx><h>R packages</h><h>readr</h><h>read_csv()</h></idx> function
-        from the <c>readr</c> package to read it off the web, import it into
+        from the <c>readr</c> package <xref ref="bib-R-readr"/> to read it off the web, import it into
         R, and save it in a data frame called <c>dem_score</c>.
       </p>
 
@@ -247,7 +247,7 @@ dem_score
       Let's now switch gears and learn about the concept of <q>tidy</q> data
       format with a motivating example from the <c>fivethirtyeight</c>
       package. The <c>fivethirtyeight</c>
-      <idx><h>R packages</h><h>fivethirtyeight</h></idx> package provides
+      <idx><h>R packages</h><h>fivethirtyeight</h></idx> package <xref ref="bib-R-fivethirtyeight"/> provides
       access to the datasets used in many articles published by the data
       journalism website,
       <url href="https://fivethirtyeight.com/">FiveThirtyEight.com</url>. For
@@ -619,7 +619,7 @@ drinks_smaller_tidy
         recommend using the
         <idx><h>R packages</h><h>tidyr</h><h>pivot_longer()</h></idx>
         <c>pivot_longer()</c> function in the <c>tidyr</c>
-        <idx><h>R packages</h><h>tidyr</h></idx> package.
+        <idx><h>R packages</h><h>tidyr</h></idx> package <xref ref="bib-R-tidyr"/>.
       </p>
 
       <p>Going back to our <c>drinks_smaller</c> data frame from earlier:</p>
@@ -971,7 +971,7 @@ airline_safety_smaller |>
         observational unit for the <c>flights</c> data frame is an individual
         flight. In other words, the rows of the <c>flights</c> data frame
         refer to characteristics/measurements of individual flights. Also
-        included in the <c>nycflights23</c> package are other data frames with
+        included in the <c>nycflights23</c> package <xref ref="bib-R-nycflights23"/> are other data frames with
         their rows representing different observational units:
       </p>
       <ul>

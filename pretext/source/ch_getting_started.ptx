@@ -472,11 +472,11 @@
 
     <p>
       For example, among the many packages we will use in this book are the
-      <c>ggplot2</c> package for data visualization in <xref ref="ch-visualization"/>,
-      <idx><h>R packages</h><h>ggplot2</h></idx> the <c>dplyr</c> package for data
-      wrangling in <xref ref="ch-wrangling"/>, <idx><h>R packages</h><h>dplyr</h></idx> the <c>moderndive</c> package
+      <c>ggplot2</c> package <xref ref="bib-R-ggplot2"/> for data visualization in <xref ref="ch-visualization"/>,
+      <idx><h>R packages</h><h>ggplot2</h></idx> the <c>dplyr</c> package <xref ref="bib-R-dplyr"/> for data
+      wrangling in <xref ref="ch-wrangling"/>, <idx><h>R packages</h><h>dplyr</h></idx> the <c>moderndive</c> package <xref ref="bib-R-moderndive"/>
       that accompanies this book, <idx><h>R packages</h><h>moderndive</h></idx> and the
-      <c>infer</c> package for <q>tidy</q> and transparent statistical inference in <xref ref="confidence-intervals"/>, <xref ref="hypothesis-testing"/>, and <xref ref="inference-for-regression"/>. <idx><h>R packages</h><h>infer</h></idx>
+      <c>infer</c> package <xref ref="bib-R-infer"/> for <q>tidy</q> and transparent statistical inference in <xref ref="confidence-intervals"/>, <xref ref="hypothesis-testing"/>, and <xref ref="inference-for-regression"/>. <idx><h>R packages</h><h>infer</h></idx>
     </p>
 
     <p>

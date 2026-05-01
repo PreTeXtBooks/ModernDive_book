@@ -681,7 +681,7 @@
   <p>
     This book was originally written using the
     <url href="https://bookdown.org/" visual="bookdown.org">bookdown</url>
-    package by Yihui Xie. The R Markdown source code of ModernDive is available on
+    package <xref ref="bib-R-bookdown"/> by Yihui Xie. The R Markdown source code of ModernDive is available on
     GitHub:
   </p>
 
