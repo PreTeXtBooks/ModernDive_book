@@ -14,6 +14,10 @@ suppressPackageStartupMessages({
   library(tidyr)
   library(readr)
   library(scales)
+  library(infer)
+  library(gridExtra)
+  library(GGally)
+  library(fivethirtyeight)
 })
 
 # Resolve the images output directory relative to this script's location
@@ -397,5 +401,520 @@ p_rot <- ggplot(df_norm, aes(x = x, y = y)) +
   annotate("text", x = 0, y = 0.04, label = "99.7%", size = 4) +
   labs(x = "Standard deviations from mean", y = "Density")
 save_fig(p_rot, "fig-normal-rule-of-thumb.png", width = 6, height = 4)
+
+# ============================================================
+# Chapter 5: Regression
+# ============================================================
+
+## Data setup ---------------------------------------------------
+un_data_ch5 <- un_member_states_2024 |>
+  select(iso,
+         life_exp = life_expectancy_2022,
+         fert_rate = fertility_rate_2022,
+         obes_rate = obesity_rate_2016) |>
+  na.omit()
+
+gapminder2022 <- un_member_states_2024 |>
+  select(country, life_exp = life_expectancy_2022, continent, gdp_per_capita) |>
+  na.omit()
+
+## 5.1 Scatterplot: fertility vs life expectancy ----------------
+p_numxplot1 <- ggplot(un_data_ch5,
+                      aes(x = life_exp, y = fert_rate)) +
+  geom_point(alpha = 0.1) +
+  labs(x = "Life Expectancy", y = "Fertility Rate")
+save_fig(p_numxplot1, "fig-numxplot1.png")
+
+## 5.2 Scatterplot with regression line -------------------------
+p_numxplot3 <- ggplot(un_data_ch5, aes(x = life_exp, y = fert_rate)) +
+  geom_point(alpha = 0.1) +
+  labs(x = "Life Expectancy",
+       y = "Fertility Rate",
+       title = "Relationship of life expectancy and fertility rate") +
+  geom_smooth(method = "lm", se = FALSE)
+suppressMessages(save_fig(p_numxplot3, "fig-numxplot3.png"))
+
+## 5.3 Scatterplot with annotated residual (Bosnia) -------------
+demographics_model <- lm(fert_rate ~ life_exp, data = un_data_ch5)
+bih_index <- which(un_data_ch5$iso == "BIH")
+bih_pt    <- get_regression_points(demographics_model) |> slice(bih_index)
+x_bih     <- bih_pt$life_exp
+y_bih     <- bih_pt$fert_rate
+yhat_bih  <- bih_pt$fert_rate_hat
+
+p_numxplot4 <- ggplot(un_data_ch5, aes(x = life_exp, y = fert_rate)) +
+  geom_point(color = "grey") +
+  labs(x = "Life Expectancy", y = "Fertility Rate",
+       title = "Relationship of Fertility Rate and Life Expectancy") +
+  geom_smooth(method = "lm", se = FALSE) +
+  annotate("point", x = x_bih, y = yhat_bih, col = "red", shape = 15, size = 4) +
+  annotate("segment",
+           x = x_bih, xend = x_bih, y = y_bih, yend = yhat_bih,
+           color = "blue",
+           arrow = arrow(type = "closed", length = unit(0.04, "npc"))) +
+  annotate("point", x = x_bih, y = y_bih, col = "red", size = 4)
+suppressMessages(save_fig(p_numxplot4, "fig-numxplot4.png"))
+
+## 5.4 Life expectancy histogram --------------------------------
+p_lifeexp2022hist <- ggplot(gapminder2022, aes(x = life_exp)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  labs(x = "Life expectancy", y = "Number of countries",
+       title = "Histogram of distribution of worldwide life expectancies")
+suppressMessages(save_fig(p_lifeexp2022hist, "fig-lifeexp2022hist.png"))
+
+## 5.5 Faceted histogram by continent ---------------------------
+p_catxplot0b <- ggplot(gapminder2022, aes(x = life_exp)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  labs(x = "Life expectancy", y = "Number of countries",
+       title = "Histogram of distribution of worldwide life expectancies") +
+  facet_wrap(~continent, nrow = 2)
+suppressMessages(save_fig(p_catxplot0b, "fig-catxplot0b.png", width = 8, height = 5))
+
+## 5.6 Boxplot by continent -------------------------------------
+p_catxplot1 <- ggplot(gapminder2022, aes(x = continent, y = life_exp)) +
+  geom_boxplot() +
+  labs(x = "Continent", y = "Life expectancy",
+       title = "Life expectancy by continent")
+save_fig(p_catxplot1, "fig-catxplot1.png", width = 7, height = 4)
+
+## 5.7 Best-fitting line: 4-panel residuals figure --------------
+add_residual <- function(p, x, y, y_hat) {
+  p +
+    annotate("point", x = x, y = y, col = "red", size = 2) +
+    annotate("point", x = x, y = y_hat, col = "red", shape = 15, size = 2) +
+    annotate("segment",
+             x = x, xend = x, y = y, yend = y_hat, color = "blue",
+             arrow = arrow(type = "closed", length = unit(0.02, "npc")))
+}
+
+tcd_pt   <- get_regression_points(demographics_model) |>
+  slice(which(un_data_ch5$iso == "TCD"))
+ind_pt   <- get_regression_points(demographics_model) |>
+  slice(which(un_data_ch5$iso == "IND"))
+slb_pt   <- get_regression_points(demographics_model) |>
+  slice(which(un_data_ch5$iso == "SLB"))
+
+base_p <- ggplot(un_data_ch5, aes(x = life_exp, y = fert_rate)) +
+  geom_point(size = 0.8, color = "grey") +
+  labs(x = "Life Expectancy", y = "Fertility Rate") +
+  geom_smooth(method = "lm", se = FALSE)
+
+p5a <- add_residual(base_p, x_bih, y_bih, yhat_bih) +
+  labs(title = "Bosnia and Herzegovina's residual") +
+  theme(plot.title = element_text(size = 10))
+p5b <- add_residual(
+         add_residual(base_p, x_bih, y_bih, yhat_bih),
+         tcd_pt$life_exp, tcd_pt$fert_rate, tcd_pt$fert_rate_hat) +
+  labs(title = "Chad's residual added") +
+  theme(plot.title = element_text(size = 10))
+p5c <- add_residual(
+         add_residual(
+           add_residual(base_p, x_bih, y_bih, yhat_bih),
+           tcd_pt$life_exp, tcd_pt$fert_rate, tcd_pt$fert_rate_hat),
+         ind_pt$life_exp, ind_pt$fert_rate, ind_pt$fert_rate_hat) +
+  labs(title = "India's residual added") +
+  theme(plot.title = element_text(size = 10))
+p5d_base <- add_residual(
+              add_residual(
+                add_residual(base_p, x_bih, y_bih, yhat_bih),
+                tcd_pt$life_exp, tcd_pt$fert_rate, tcd_pt$fert_rate_hat),
+              ind_pt$life_exp, ind_pt$fert_rate, ind_pt$fert_rate_hat)
+p5d <- add_residual(p5d_base,
+                    slb_pt$life_exp, slb_pt$fert_rate, slb_pt$fert_rate_hat) +
+  labs(title = "Solomon Islands' residual added") +
+  theme(plot.title = element_text(size = 10))
+
+suppressMessages(
+  save_fig(p5a + p5b + p5c + p5d + plot_layout(nrow = 2),
+           "fig-best-fitting-line.png", width = 9, height = 6)
+)
+
+## 5.8 Three lines example --------------------------------------
+example_data <- tibble(x = c(0, 0.5, 1), y = c(2, 1, 3))
+p_three_lines <- ggplot(example_data, aes(x = x, y = y)) +
+  geom_smooth(method = "lm", se = FALSE, fullrange = TRUE) +
+  geom_hline(yintercept = 2.5, col = "red", linetype = "dotted", linewidth = 1) +
+  geom_abline(intercept = 2, slope = -1, col = "forestgreen",
+              linetype = "dashed", linewidth = 1) +
+  geom_point(size = 4)
+suppressMessages(save_fig(p_three_lines, "fig-three-lines.png", width = 5, height = 4))
+
+# ============================================================
+# Chapter 10: Inference for Regression
+# ============================================================
+
+## Data setup ---------------------------------------------------
+un_data_ch10 <- un_member_states_2024 |>
+  select(country,
+         life_exp = life_expectancy_2022,
+         fert_rate = fertility_rate_2022) |>
+  na.omit()
+
+## 10.1 UN fertility vs life expectancy with regression line ----
+p_regline_ch10 <- ggplot(un_data_ch10, aes(x = life_exp, y = fert_rate)) +
+  geom_point() +
+  labs(x = "Life Expectancy (x)",
+       y = "Fertility Rate (y)",
+       title = "Relationship between fertility rate and life expectancy") +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.5)
+suppressMessages(save_fig(p_regline_ch10, "fig-regline-ch10.png"))
+
+## 10.2 Old Faithful scatterplot --------------------------------
+p_geyserplot1 <- ggplot(old_faithful_2024,
+                        aes(x = duration, y = waiting)) +
+  geom_point(alpha = 0.3) +
+  labs(x = "duration", y = "waiting")
+save_fig(p_geyserplot1, "fig-geyserplot1.png")
+
+## 10.3 Spotify popularity by genre boxplot --------------------
+set.seed(6)
+spotify_for_anova <- spotify_by_genre |>
+  select(artists, track_name, popularity, track_genre) |>
+  filter(track_genre %in% c("country", "hip-hop", "rock"))
+
+p_pop_by_genre <- ggplot(spotify_for_anova,
+                          aes(x = track_genre, y = popularity)) +
+  geom_boxplot() +
+  labs(x = "Genre", y = "Popularity")
+save_fig(p_pop_by_genre, "fig-pop-by-genre-plot.png")
+
+## 10.4 t-distribution p-value figure --------------------------
+n_of <- nrow(old_faithful_2024)
+shade_fn <- function(t, a, b) {
+  z <- dt(t, df = n_of - 2)
+  z[abs(t) < b & -abs(t) > a] <- NA
+  z
+}
+p_pvalue1 <- ggplot(data.frame(x = c(-4, 4)), aes(x = x)) +
+  stat_function(fun = dt, args = list(df = n_of - 2)) +
+  stat_function(fun = shade_fn, args = list(a = -2, b = 2),
+                geom = "area", fill = "blue", alpha = 0.2) +
+  scale_x_continuous(name = "t", breaks = seq(-4, 4, 2)) +
+  scale_y_continuous(labels = NULL) +
+  theme(axis.title.y = element_blank(), axis.ticks.y = element_blank())
+save_fig(p_pvalue1, "fig-pvalue1.png")
+
+## 10.5 Annotated residual for one eruption ---------------------
+model_ch10 <- lm(waiting ~ duration, data = old_faithful_2024)
+reg_pts_ch10 <- get_regression_points(model_ch10)
+
+# Use the first available point if the exact row doesn't exist
+of_index <- which(old_faithful_2024$duration == 211 &
+                    old_faithful_2024$waiting == 178)
+if (length(of_index) == 0) of_index <- 1L
+of_pt   <- reg_pts_ch10 |> slice(of_index)
+x_of    <- of_pt$duration
+y_of    <- of_pt$waiting
+yhat_of <- of_pt$waiting_hat
+
+p_residual_example <- ggplot(old_faithful_2024, aes(x = duration, y = waiting)) +
+  geom_point() +
+  labs(x = "duration", y = "waiting",
+       title = "Relationship of duration and waiting times") +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
+  annotate("point", x = x_of, y = y_of,    col = "red", size = 4) +
+  annotate("point", x = x_of, y = yhat_of, col = "red", shape = 15, size = 4) +
+  annotate("segment",
+           x = x_of, xend = x_of, y = y_of, yend = yhat_of,
+           color = "blue",
+           arrow = arrow(type = "closed", length = unit(0.02, "npc")))
+suppressMessages(save_fig(p_residual_example, "fig-residual-example.png"))
+
+## 10.6 Side-by-side scatter + residual plot --------------------
+g_scatter <- ggplot(old_faithful_2024, aes(x = duration, y = waiting)) +
+  geom_point(alpha = 0.6) +
+  labs(x = "duration", y = "waiting") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE, linewidth = 0.5)
+g_resid <- reg_pts_ch10 |>
+  ggplot(aes(x = waiting_hat, y = residual)) +
+  geom_point(alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "blue")
+suppressMessages(
+  save_fig(g_scatter + g_resid, "fig-scatt-and-residual.png", width = 8, height = 4)
+)
+
+## 10.7 Non-linear residual example ----------------------------
+set.seed(76)
+x_range <- range(old_faithful_2024$duration)
+data_nonlin <- old_faithful_2024 |>
+  mutate(
+    x = duration,
+    y = 150 + (((x / 2 - x_range[1]) * (x / 2 - x_range[2])) /
+                 (x_range[2] - x_range[1])) * (-1 / 2) +
+      rnorm(n(), 0, 1.5)
+  )
+nonlin_model <- lm(y ~ x, data = data_nonlin)
+nonlin_pts   <- get_regression_points(nonlin_model)
+
+g_nl1 <- ggplot(data_nonlin, aes(x = x, y = y)) +
+  geom_point(alpha = 0.6) +
+  labs(x = "duration", y = "waiting") +
+  geom_smooth(method = "lm", color = "blue", alpha = 0.3,
+              se = FALSE, linewidth = 0.5)
+g_nl2 <- ggplot(nonlin_pts, aes(x = y_hat, y = residual)) +
+  geom_point(alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "blue")
+suppressMessages(
+  save_fig(g_nl1 + g_nl2, "fig-non-linear.png", width = 8, height = 4)
+)
+
+## 10.8 Time-series residual plot ------------------------------
+# old_faithful_2024 has a date column
+p_timeplot <- old_faithful_2024 |>
+  mutate(residual = resid(model_ch10)) |>
+  ggplot(aes(y = residual, x = date)) +
+  geom_point()
+save_fig(p_timeplot, "fig-time-plot.png", width = 7, height = 4)
+
+## 10.9 Histogram + QQ plot of residuals ----------------------
+s_ch10 <- sigma(model_ch10)
+g_hist_resid <- ggplot(reg_pts_ch10, aes(x = residual)) +
+  geom_histogram(aes(y = after_stat(density)),
+                 binwidth = 10, color = "white") +
+  stat_function(fun = dnorm,
+                args = list(mean = 0, sd = s_ch10),
+                col = "blue") +
+  xlim(-50, 50) +
+  labs(x = "residual")
+g_qq_resid <- ggplot(reg_pts_ch10, aes(sample = residual)) +
+  geom_qq() +
+  geom_qq_line(col = "blue", linewidth = 0.5)
+p_model1hist <- gridExtra::grid.arrange(g_hist_resid, g_qq_resid, ncol = 2)
+ggsave(file.path(images_dir, "fig-model1residualshist.png"),
+       plot = p_model1hist, width = 8, height = 4, dpi = 150)
+message("Saved: fig-model1residualshist.png")
+
+## 10.10 Not-normal residuals example --------------------------
+set.seed(3)
+skewed_resids <- reg_pts_ch10 |>
+  mutate(`Not normal` = rnorm(n = n(), mean = 0, sd = s_ch10)^2 / 40 -
+           mean(rnorm(n = n(), 0, sd = s_ch10)) - 10)
+g_nn1 <- ggplot(skewed_resids, aes(x = `Not normal`)) +
+  geom_histogram(aes(y = after_stat(density)),
+                 binwidth = 10, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = s_ch10),
+                col = "blue") +
+  xlim(-50, 50) +
+  labs(x = "residual")
+g_nn2 <- ggplot(skewed_resids, aes(sample = `Not normal`)) +
+  geom_qq() +
+  geom_qq_line(col = "blue", linewidth = 0.5)
+p_not_normal <- gridExtra::grid.arrange(g_nn1, g_nn2, ncol = 2)
+ggsave(file.path(images_dir, "fig-not-normal-residuals.png"),
+       plot = p_not_normal, width = 8, height = 4, dpi = 150)
+message("Saved: fig-not-normal-residuals.png")
+
+## 10.11 Residual plot (duration vs residual) ------------------
+p_resid_plot_ch10 <- ggplot(reg_pts_ch10,
+                              aes(x = duration, y = residual)) +
+  geom_point(alpha = 0.6) +
+  labs(x = "duration", y = "residual") +
+  geom_hline(yintercept = 0)
+save_fig(p_resid_plot_ch10, "fig-residual-plot-ch10.png")
+
+## 10.12 Equal-variance / heteroscedastic residuals example ----
+p_eq_var <- old_faithful_2024 |>
+  mutate(eps = (rnorm(n(), 0, 0.075 * duration^2)) * 0.4) |>
+  ggplot(aes(x = duration, y = eps)) +
+  geom_point() +
+  labs(x = "duration", y = "residual") +
+  geom_hline(yintercept = 0, col = "blue", linewidth = 0.5)
+save_fig(p_eq_var, "fig-equal-variance-residuals.png")
+
+## 10.13 Bootstrap distribution of slope ----------------------
+set.seed(76)
+bootstrap_distn_slope <- old_faithful_2024 |>
+  specify(formula = waiting ~ duration) |>
+  generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "slope")
+p_boot_slope <- visualize(bootstrap_distn_slope)
+save_fig(p_boot_slope, "fig-bootstrap-distribution-slope.png")
+
+## 10.14 Null distribution of slope ----------------------------
+set.seed(76)
+null_distn_slope <- old_faithful_2024 |>
+  specify(waiting ~ duration) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "slope")
+p_null_slope <- visualize(null_distn_slope)
+save_fig(p_null_slope, "fig-null-distribution-slope.png")
+
+## 10.15 Null distribution with p-value shaded -----------------
+b1_ch10 <- coef(model_ch10)[["duration"]]
+p_pvalue_slope <- visualize(null_distn_slope) +
+  shade_p_value(obs_stat = b1_ch10, direction = "both")
+save_fig(p_pvalue_slope, "fig-p-value-slope.png")
+
+## 10.16 Coffee scatter matrix (GGally) -----------------------
+coffee_data <- coffee_quality |>
+  select(aroma, flavor, moisture_percentage,
+         continent_of_origin, total_cup_points) |>
+  mutate(continent_of_origin = as.factor(continent_of_origin))
+p_coffee_matrix <- suppressMessages(
+  GGally::ggpairs(coffee_data)
+)
+save_fig(p_coffee_matrix, "fig-coffee-scatter-matrix.png",
+         width = 9, height = 7)
+
+## 10.17 MLR bootstrap CI (coffee) ----------------------------
+set.seed(76)
+boot_distribution_mlr <- coffee_quality |>
+  specify(total_cup_points ~ continent_of_origin + aroma +
+            flavor + moisture_percentage) |>
+  generate(reps = 1000, type = "bootstrap") |>
+  fit()
+
+observed_fit_mlr <- coffee_quality |>
+  specify(total_cup_points ~ continent_of_origin + aroma +
+            flavor + moisture_percentage) |>
+  fit()
+
+confidence_intervals_mlr <- boot_distribution_mlr |>
+  get_confidence_interval(
+    level = 0.95,
+    type  = "percentile",
+    point_estimate = observed_fit_mlr
+  )
+p_ci_slopes <- visualize(boot_distribution_mlr) +
+  shade_confidence_interval(endpoints = confidence_intervals_mlr)
+save_fig(p_ci_slopes, "fig-ci-slopes-multiple.png",
+         width = 9, height = 7)
+
+## 10.18 Coffee residual diagnostics (grid.arrange) -----------
+mlr_model <- lm(
+  total_cup_points ~ continent_of_origin + aroma + flavor + moisture_percentage,
+  data = coffee_data
+)
+fit_and_res_mult <- get_regression_points(mlr_model)
+g_cof1 <- fit_and_res_mult |>
+  ggplot(aes(x = total_cup_points_hat, y = residual)) +
+  geom_point() +
+  labs(x = "fitted values (total cup points)", y = "residual") +
+  geom_hline(yintercept = 0, col = "blue")
+g_cof2 <- ggplot(fit_and_res_mult, aes(sample = residual)) +
+  geom_qq() +
+  geom_qq_line(col = "blue", linewidth = 0.5)
+p_coffee_diag <- gridExtra::grid.arrange(g_cof1, g_cof2, ncol = 2)
+ggsave(file.path(images_dir, "fig-grid-arrange-plot-check.png"),
+       plot = p_coffee_diag, width = 8, height = 4, dpi = 150)
+message("Saved: fig-grid-arrange-plot-check.png")
+
+# ============================================================
+# Chapter 11: Tell Your Story with Data
+# ============================================================
+
+## Data setup --------------------------------------------------
+house_prices <- house_prices |>
+  mutate(
+    log10_price = log10(price),
+    log10_size  = log10(sqft_living)
+  )
+
+## 11.1 EDA: price, size, condition histograms -----------------
+hp1 <- ggplot(house_prices, aes(x = price)) +
+  geom_histogram(color = "white") +
+  labs(x = "price (USD)", title = "House price") +
+  theme(plot.margin = margin(t = 10, r = 10, b = 20, l = 10))
+hp2 <- ggplot(house_prices, aes(x = sqft_living)) +
+  geom_histogram(color = "white") +
+  labs(x = "living space (square feet)", title = "House size") +
+  theme(plot.margin = margin(t = 10, r = 10, b = 20, l = 10))
+hp3 <- ggplot(house_prices, aes(x = condition)) +
+  geom_bar() +
+  labs(x = "condition", title = "House condition") +
+  theme(plot.margin = margin(t = 10, r = 10, b = 20, l = 10))
+suppressMessages(
+  save_fig(hp1 + hp2 + hp3 + plot_layout(ncol = 2),
+           "fig-house-prices-viz.png", width = 8, height = 6)
+)
+
+## 11.2 Before/after log10 transform for price -----------------
+hp_log1 <- ggplot(house_prices, aes(x = price)) +
+  geom_histogram(color = "white") +
+  labs(x = "price (USD)", title = "House price: Before")
+hp_log2 <- ggplot(house_prices, aes(x = log10_price)) +
+  geom_histogram(color = "white") +
+  labs(x = "log10 price (USD)", title = "House price: After")
+suppressMessages(
+  save_fig(hp_log1 + hp_log2, "fig-log10-price-viz.png", width = 8, height = 4)
+)
+
+## 11.3 Before/after log10 transform for size ------------------
+hp_sz1 <- ggplot(house_prices, aes(x = sqft_living)) +
+  geom_histogram(color = "white") +
+  labs(x = "living space (square feet)", title = "House size: Before")
+hp_sz2 <- ggplot(house_prices, aes(x = log10_size)) +
+  geom_histogram(color = "white") +
+  labs(x = "log10 living space (square feet)", title = "House size: After")
+suppressMessages(
+  save_fig(hp_sz1 + hp_sz2, "fig-log10-size-viz.png", width = 8, height = 4)
+)
+
+## 11.4 Parallel slopes model ----------------------------------
+p_hp_parallel <- ggplot(
+  house_prices,
+  aes(x = log10_size, y = log10_price, col = condition)
+) +
+  geom_point(alpha = 0.05) +
+  geom_parallel_slopes(se = FALSE) +
+  labs(y = "log10 price", x = "log10 size",
+       title = "House prices in Seattle")
+save_fig(p_hp_parallel, "fig-house-price-parallel-slopes.png",
+         width = 7, height = 5)
+
+## 11.5 Interaction model faceted ------------------------------
+p_hp_int2 <- ggplot(
+  house_prices,
+  aes(x = log10_size, y = log10_price, col = condition)
+) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(y = "log10 price", x = "log10 size",
+       title = "House prices in Seattle") +
+  facet_wrap(~condition)
+suppressMessages(
+  save_fig(p_hp_int2, "fig-house-price-interaction-2.png", width = 9, height = 6)
+)
+
+## 11.6 Interaction model with prediction ----------------------
+price_interaction <- lm(log10_price ~ log10_size * condition,
+                         data = house_prices)
+new_house_log_size <- log10(1900)
+# Build newdata matching the class/levels of condition in the training data
+if (is.factor(house_prices$condition)) {
+  new_cond <- factor(5, levels = levels(house_prices$condition))
+} else {
+  # integer or numeric condition
+  new_cond <- as(5, class(house_prices$condition))
+}
+new_house_df   <- data.frame(log10_size = new_house_log_size, condition = new_cond)
+new_house_pred <- predict(price_interaction, newdata = new_house_df)
+
+p_hp_int3 <- ggplot(
+  house_prices,
+  aes(x = log10_size, y = log10_price, col = condition)
+) +
+  geom_point(alpha = 0.05) +
+  labs(y = "log10 price", x = "log10 size",
+       title = "House prices in Seattle") +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_vline(xintercept = new_house_log_size,
+             linetype = "dashed", linewidth = 1) +
+  annotate("point", x = new_house_log_size, y = new_house_pred,
+           col = "black", size = 3)
+suppressMessages(
+  save_fig(p_hp_int3, "fig-house-price-interaction-3.png", width = 7, height = 5)
+)
+
+## 11.7 US births 1999 line plot -------------------------------
+US_births_1999 <- US_births_1994_2003 |>
+  filter(year == 1999)
+p_us_births <- ggplot(US_births_1999, aes(x = date, y = births)) +
+  geom_line() +
+  labs(x = "Date",
+       y = "Number of births",
+       title = "US Births in 1999")
+save_fig(p_us_births, "fig-us-births.png", width = 7, height = 4)
 
 message("\nAll figures generated successfully in: ", images_dir)

@@ -52,7 +52,8 @@ jobs:
           Rscript --no-init-file -e '
             pkgs <- c("ggplot2", "dplyr", "tibble", "tidyr", "readr",
                       "patchwork", "scales", "gapminder",
-                      "nycflights23", "moderndive")
+                      "nycflights23", "moderndive",
+                      "infer", "gridExtra", "GGally", "fivethirtyeight")
             missing <- pkgs[!pkgs %in% rownames(installed.packages())]
             if (length(missing) > 0) {
               install.packages(missing, quiet = TRUE)
