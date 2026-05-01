@@ -1222,6 +1222,20 @@ qnorm(0.9)
       samples are retrieved, similar to the simulations performed in <xref ref="sampling"/>, and
       this number is often large enough to provide useful results.
     </p>
+    <p>
+      Since Efron <xref ref="bib-Efron1979"/> proposed the bootstrap, the statistical community
+      embraced this method. During the 1980s and 1990s, many theoretical and empirical results
+      were presented showing the strength of bootstrap methods. As an illustration, Efron
+      <xref ref="bib-Efron1979"/>, Hall <xref ref="bib-Hall1986"/>, Efron and Tibshirani
+      <xref ref="bib-EfronTibshi1986"/>, and Hall <xref ref="bib-Hall1988"/> showed that
+      bootstrapping was at least as good if not better than existent methods, when the goal was
+      to estimate the standard error of an estimator or find the confidence intervals of a
+      parameter. Modifications were proposed to improve the algorithm in situations where the
+      basic method was not producing accurate results. With the continuous improvement of
+      computing power and speed, and the advantages of having ready-to-use statistical software
+      for its implementation, the use of the bootstrap has become more and more popular in many
+      fields.
+    </p>
 
 
     <subsection xml:id="revisit-almond-bootstrap">

@@ -1275,8 +1275,8 @@ spotify_52_shuffled |&gt;
       We then showed you how to perform the same task using the <c>infer</c> package workflow.
       While both workflows resulted in the same bootstrap distribution from which we can
       construct confidence intervals, the <c>infer</c> package workflow emphasizes each of the
-      steps in the overall process. It does so using function names that are intuitively named
-      with verbs:
+      steps in the overall process in <xref ref="infer-ci"/>. It does so using function names
+      that are intuitively named with verbs:
     </p>
 
     <ol>
@@ -1286,13 +1286,29 @@ spotify_52_shuffled |&gt;
       <li><p><c>visualize()</c> the resulting bootstrap distribution and confidence interval.</p></li>
     </ol>
 
+    <figure xml:id="infer-ci">
+      <caption>Confidence intervals with the <c>infer</c> package.</caption>
+      <image source="images/flowcharts/infer/visualize.png" width="90%">
+        <description>Flowchart showing the infer package workflow for confidence intervals:
+        specify, generate, calculate, and visualize.</description>
+      </image>
+    </figure>
+
     <p>
       In this section, we will now show you how to seamlessly modify the previously seen
       <c>infer</c> code for constructing confidence intervals to conduct hypothesis tests. You
       will notice that the basic outline of the workflow is almost identical, except for an
       additional <c>hypothesize()</c> step between the <c>specify()</c> and
-      <c>generate()</c> steps.
+      <c>generate()</c> steps, as can be seen in <xref ref="inferht"/>.
     </p>
+
+    <figure xml:id="inferht">
+      <caption>Hypothesis testing with the <c>infer</c> package.</caption>
+      <image source="images/flowcharts/infer/ht.png" width="90%">
+        <description>Flowchart showing the infer package workflow for hypothesis testing:
+        specify, hypothesize, generate, calculate, and visualize.</description>
+      </image>
+    </figure>
 
     <p>
       Furthermore, we will use a pre-specified significance level <m>\alpha = 0.1</m> for this

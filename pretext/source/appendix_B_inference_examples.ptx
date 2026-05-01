@@ -59,7 +59,8 @@ library(janitor)
         on this survey is the age at first marriage. 5,534 randomly sampled US women
         between 2006 and 2010 completed the survey. The women sampled here had been
         married at least once. Do we have evidence that the mean age of first marriage for
-        all US women from 2006 to 2010 is greater than 23 years?
+        all US women from 2006 to 2010 is greater than 23 years? (Tweaked a bit from
+        <xref ref="bib-isrs2014"/>, Chapter 4.)
       </p>
     </subsection>
 
@@ -452,7 +453,7 @@ sample estimates:
         California? Or do you not know enough to say?</q> Conduct a hypothesis test to
         determine if the data provide strong evidence that the proportion of college
         graduates who do not have an opinion on this issue is different than that of
-        non-college graduates.
+        non-college graduates. (Tweaked a bit from <xref ref="bib-isrs2014"/>, Chapter 6.)
       </p>
     </subsection>
 
@@ -612,7 +613,7 @@ z_hat
         considering a job in two locations, Cleveland, OH and Sacramento, CA, and he wants
         to see whether the average income in one of these cities is higher than the other.
         He would like to conduct a hypothesis test based on two randomly selected samples
-        from the 2000 Census.
+        from the 2000 Census. (Tweaked a bit from <xref ref="bib-isrs2014"/>, Chapter 5.)
       </p>
     </subsection>
 
