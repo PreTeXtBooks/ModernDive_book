@@ -2,51 +2,51 @@
 <preface xml:id="preface" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Preface</title>
 
-  <p>
-    <alert>Help! I'm completely new to coding and I need to learn R and RStudio! What do I do?</alert>
-  </p>
-
-  <p>
-    If you're asking yourself this question, then you've come to the right place!
-    Start with the <q>Introduction for students</q> section.
-  </p>
-
-  <p>
-    <ul>
-      <li>
-        <p>
-          <em>Are you an instructor hoping to use this book in your courses?</em>
-          We recommend reading the <q>Introduction for students</q> section first.
-          Then, read the <q>Introduction for instructors</q> section for more information
-          on how to teach with this book.
-        </p>
-      </li>
-      <li>
-        <p>
-          <em>Are you looking to connect with and contribute to ModernDive?</em>
-          Then, read the <q>Connect and contribute</q> section for information on how.
-        </p>
-      </li>
-      <li>
-        <p>
-          <em>Are you curious about the publishing of this book?</em>
-          Then, read the <q>About this book</q> section for more information on the
-          open-source technology, in particular R Markdown and the bookdown package.
-        </p>
-      </li>
-    </ul>
-  </p>
-
-  <p>
-    This is the <url href="https://pretextbook.org/" visual="pretextbook.org">PreTeXt</url>
-    version of <em>Statistical Inference via Data Science: A ModernDive into R and the
-    Tidyverse (Second Edition)</em>. The original online version is available at
-    <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
-  </p>
-
   <!-- ============================================================ -->
   <section xml:id="preface-intro-students">
     <title>Introduction for students</title>
+
+    <p>
+      <alert>Help! I'm completely new to coding and I need to learn R and RStudio! What do I do?</alert>
+    </p>
+
+    <p>
+      If you're asking yourself this question, then you've come to the right place!
+      Start with the rest of this section.
+    </p>
+
+    <p>
+      <ul>
+        <li>
+          <p>
+            <em>Are you an instructor hoping to use this book in your courses?</em>
+            We recommend reading this <q>Introduction for students</q> section first.
+            Then, read the <q>Introduction for instructors</q> section for more information
+            on how to teach with this book.
+          </p>
+        </li>
+        <li>
+          <p>
+            <em>Are you looking to connect with and contribute to ModernDive?</em>
+            Then, read the <q>Connect and contribute</q> section for information on how.
+          </p>
+        </li>
+        <li>
+          <p>
+            <em>Are you curious about the publishing of this book?</em>
+            Then, read the <q>About this book</q> section for more information on the
+            open-source technology, in particular R Markdown and the bookdown package.
+          </p>
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      This is the <url href="https://pretextbook.org/" visual="pretextbook.org">PreTeXt</url>
+      version of <em>Statistical Inference via Data Science: A ModernDive into R and the
+      Tidyverse (Second Edition)</em>. The original online version is available at
+      <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
+    </p>
 
     <p>
       This book assumes no prerequisites: no algebra, no calculus, and no prior
