@@ -598,7 +598,9 @@ save_fig(p_pvalue1, "fig-pvalue1.png")
 model_ch10 <- lm(waiting ~ duration, data = old_faithful_2024)
 reg_pts_ch10 <- get_regression_points(model_ch10)
 
-# Use the first available point if the exact row doesn't exist
+# The Rmd drills down on the observation where duration=211s and waiting=178min.
+# If that exact row is absent (different data vintage), fall back to row 1 so
+# the figure still renders with a valid annotated residual.
 of_index <- which(old_faithful_2024$duration == 211 &
                     old_faithful_2024$waiting == 178)
 if (length(of_index) == 0) of_index <- 1L
@@ -686,6 +688,8 @@ message("Saved: fig-model1residualshist.png")
 
 ## 10.10 Not-normal residuals example --------------------------
 set.seed(3)
+# Create a right-skewed distribution by squaring normal variates (/40 for scale,
+# -10 for centering) to contrast with normal residuals in the histogram + QQ pair.
 skewed_resids <- reg_pts_ch10 |>
   mutate(`Not normal` = rnorm(n = n(), mean = 0, sd = s_ch10)^2 / 40 -
            mean(rnorm(n = n(), 0, sd = s_ch10)) - 10)
@@ -881,12 +885,15 @@ suppressMessages(
 price_interaction <- lm(log10_price ~ log10_size * condition,
                          data = house_prices)
 new_house_log_size <- log10(1900)
-# Build newdata matching the class/levels of condition in the training data
+# Predict for a 1,900 sq-ft house in condition 5 (best condition),
+# matching the example in the Rmd (condition = factor(5)).
+# Build newdata matching the class/levels of condition in the training data.
+EXAMPLE_CONDITION <- 5L   # condition value used in the book's prediction example
 if (is.factor(house_prices$condition)) {
-  new_cond <- factor(5, levels = levels(house_prices$condition))
+  new_cond <- factor(EXAMPLE_CONDITION, levels = levels(house_prices$condition))
 } else {
   # integer or numeric condition
-  new_cond <- as(5, class(house_prices$condition))
+  new_cond <- as(EXAMPLE_CONDITION, class(house_prices$condition))
 }
 new_house_df   <- data.frame(log10_size = new_house_log_size, condition = new_cond)
 new_house_pred <- predict(price_interaction, newdata = new_house_df)
