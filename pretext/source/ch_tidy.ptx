@@ -3,11 +3,11 @@
   <title>Data Importing and Tidy Data</title>
 
   <p>
-    In <xref ref="ch-getting-started"/>, we introduced the concept of a
+    In <xref ref="sec-programming-concepts"/>, we introduced the concept of a
     <term>data frame</term><idx><h>data frame</h></idx> in R: a rectangular
     spreadsheet-like representation of data where the rows correspond to
     observations and the columns correspond to variables describing each
-    observation. In <xref ref="ch-getting-started"/>, we started exploring our first
+    observation. In <xref ref="sec-nycflights"/>, we started exploring our first
     data frame: the <c>flights</c> data frame included in the
     <c>nycflights23</c> package. In <xref ref="ch-visualization"/>, we created
     visualizations based on the data included in <c>flights</c> and other data
@@ -103,7 +103,7 @@ library(fivethirtyeight)
       Microsoft's proprietary Excel software. As opposed to bare-bones
       <c>.csv</c> files, <c>.xlsx</c> Excel files contain a lot of
       meta-data<idx><h>meta-data</h></idx> (data about data). Recall we saw a
-      previous example of meta-data in <xref ref="ch-wrangling"/> when adding
+      previous example of meta-data in <xref ref="sec-groupby"/> when adding
       <q>group structure</q> meta-data to a data frame by using the
       <c>group_by()</c> verb. Some examples of Excel spreadsheet meta-data
       include the use of bold and italic fonts, colored cells, different
@@ -323,7 +323,7 @@ drinks_smaller
       Let's now ask ourselves a question: <q>Using the <c>drinks_smaller</c>
       data frame, how would we create the side-by-side barplot in
       <xref ref="fig-drinks-smaller"/>?</q> Recall we saw barplots displaying
-      two categorical variables in <xref ref="ch-visualization"/>.
+      two categorical variables in <xref ref="sec-two-categ-barplot"/>.
     </p>
 
     <figure xml:id="fig-drinks-smaller">
@@ -335,7 +335,7 @@ drinks_smaller
 
     <p>
       Let's break down the grammar of graphics we introduced in
-      <xref ref="ch-visualization"/>:
+      <xref ref="sec-grammar-of-graphics"/>:
     </p>
     <ol>
       <li><p>The categorical variable <c>country</c> with four levels (China, Italy, Saudi Arabia, USA) would have to be mapped to the <c>x</c>-position of the bars.</p></li>
@@ -424,8 +424,8 @@ drinks_smaller_tidy
         <q>tidy</q> in data science using R means that your data follows a
         standardized format. We will follow Hadley
         Wickham's<idx><h>Wickham, Hadley</h></idx> definition of
-        <term>tidy data</term><idx><h>tidy data</h></idx> shown also in
-        <xref ref="fig-tidy-r4ds"/>:
+        <term>tidy data</term><idx><h>tidy data</h></idx> <xref ref="bib-tidy"/> shown also in
+        <xref ref="fig-tidyfig"/>:
       </p>
 
       <blockquote>
@@ -452,8 +452,8 @@ drinks_smaller_tidy
         </ol>
       </blockquote>
 
-      <figure xml:id="fig-tidy-r4ds">
-        <caption>Tidy data graphic from <em>R for Data Science</em>.</caption>
+      <figure xml:id="fig-tidyfig">
+        <caption>Tidy data graphic from <em>R for Data Science</em> <xref ref="bib-rds2016"/>.</caption>
         <image source="images/r4ds/tidy-1.png" width="80%">
           <description>Diagram illustrating the three rules of tidy data: variables in columns, observations in rows, and one observational unit per table.</description>
         </image>
@@ -461,10 +461,10 @@ drinks_smaller_tidy
 
       <p>
         For example, say you have the following table of stock prices in
-        <xref ref="table-non-tidy-stocks"/>:
+        <xref ref="tab-non-tidy-stocks"/>:
       </p>
 
-      <table xml:id="table-non-tidy-stocks">
+      <table xml:id="tab-non-tidy-stocks">
         <title>Stock prices (non-tidy format)</title>
         <tabular halign="left">
           <row header="yes" bottom="minor">
@@ -493,11 +493,11 @@ drinks_smaller_tidy
         <q>tidy.</q> There are three variables (date, stock name, and stock
         price), but not three separate columns. In tidy data, each variable
         should have its own column, as shown in
-        <xref ref="table-tidy-stocks"/>. Both tables present the same
+        <xref ref="tab-tidy-stocks"/>. Both tables present the same
         information, but in different formats.
       </p>
 
-      <table xml:id="table-tidy-stocks">
+      <table xml:id="tab-tidy-stocks">
         <title>Stock prices (tidy format)</title>
         <tabular halign="left">
           <row header="yes" bottom="minor">
@@ -540,10 +540,10 @@ drinks_smaller_tidy
 
       <p>
         On the other hand, consider the data in
-        <xref ref="table-tidy-stocks-2"/>.
+        <xref ref="tab-tidy-stocks-2"/>.
       </p>
 
-      <table xml:id="table-tidy-stocks-2">
+      <table xml:id="tab-tidy-stocks-2">
         <title>Example of tidy data</title>
         <tabular halign="left">
           <row header="yes" bottom="minor">
@@ -567,7 +567,7 @@ drinks_smaller_tidy
       <p>
         In this case, even though the variable <q>Boeing Price</q> occurs
         just like in our non-<q>tidy</q> data in
-        <xref ref="table-non-tidy-stocks"/>, the data <em>is</em>
+        <xref ref="tab-non-tidy-stocks"/>, the data <em>is</em>
         <q>tidy</q> since there are three variables for each of three unique
         pieces of information: Date, Boeing price, and the Weather that day.
       </p>
@@ -793,7 +793,7 @@ drinks_smaller |>
         we can now produce the barplot you saw in
         <xref ref="fig-drinks-smaller"/> using <c>geom_col()</c>. This is
         done in <xref ref="fig-drinks-smaller-tidy-barplot"/>. Recall from
-        <xref ref="ch-visualization"/> on barplots that we use <c>geom_col()</c> and
+        <xref ref="sec-barplots"/> on barplots that we use <c>geom_col()</c> and
         not <c>geom_bar()</c>, since we would like to map the
         <q>pre-counted</q> <c>servings</c> variable to the
         <c>y</c>-aesthetic of the bars.
@@ -953,7 +953,7 @@ airline_safety_smaller |>
 
       <p>
         Recall the <c>nycflights23</c> package we introduced in
-        <xref ref="ch-getting-started"/> with data about all domestic flights
+        <xref ref="sec-nycflights"/> with data about all domestic flights
         departing from New York City in 2023. Let's revisit the <c>flights</c>
         data frame by running <c>View(flights)</c>. We saw that <c>flights</c>
         has a rectangular shape, with each of its rows corresponding to a
@@ -967,7 +967,7 @@ airline_safety_smaller |>
       </p>
 
       <p>
-        Recall that we saw in <xref ref="ch-getting-started"/> that the
+        Recall that we saw in <xref ref="subsec-exploredataframes"/> that the
         observational unit for the <c>flights</c> data frame is an individual
         flight. In other words, the rows of the <c>flights</c> data frame
         refer to characteristics/measurements of individual flights. Also
@@ -1010,7 +1010,7 @@ airline_safety_smaller |>
       <c>dplyr</c> packages to produce a <em>time-series plot</em> showing
       how the democracy scores have changed over the 40 years from 1952 to
       1992 for Guatemala. Recall that we saw time-series plots in
-      <xref ref="ch-visualization"/> on creating linegraphs using
+      <xref ref="sec-linegraphs"/> on creating linegraphs using
       <c>geom_line()</c>.
     </p>
 
@@ -1035,7 +1035,7 @@ guat_dem
 
     <p>
       Let's lay out the grammar of graphics we saw in
-      <xref ref="ch-visualization"/>.
+      <xref ref="sec-grammar-of-graphics"/>.
     </p>
 
     <p>
@@ -1310,7 +1310,7 @@ library(forcats)
     <p>
       The <c>purrr</c>, <c>tibble</c>, <c>stringr</c>, and <c>forcats</c>
       are left for a more advanced book; check out
-      <url href="http://r4ds.had.co.nz/"><em>R for Data Science</em></url>
+      <url href="http://r4ds.had.co.nz/"><em>R for Data Science</em></url> <xref ref="bib-rds2016"/>
       to learn about these packages.
     </p>
 

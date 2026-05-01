@@ -8,7 +8,7 @@
     looking at the raw data values. We'll use the <c>ggplot2</c> package, as it provides
     an easy way to customize your plots. <c>ggplot2</c> is rooted in the data
     visualization theory known as <em>the grammar of graphics</em>, developed by Leland
-    Wilkinson. <idx><h>Wilkinson, Leland</h></idx>
+    Wilkinson <xref ref="bib-wilkinson2005"/>. <idx><h>Wilkinson, Leland</h></idx>
   </p>
   <p>
     At their most basic, graphics/plots/charts (we use these terms interchangeably in
@@ -61,7 +61,7 @@ library(tibble)
       linguistic grammar. Similarly to a linguistic grammar, <q>the grammar of
       graphics</q> defines a set of rules for constructing <em>statistical graphics</em>
       by combining different types of <em>layers</em>. This grammar was created by Leland
-      Wilkinson and has been implemented in a variety of data visualization software
+      Wilkinson <xref ref="bib-wilkinson2005"/> and has been implemented in a variety of data visualization software
       platforms like R, but also <url href="https://plot.ly/">Plotly</url> and
       <url href="https://www.tableau.com/">Tableau</url>.
     </p>
@@ -198,10 +198,10 @@ library(tibble)
       </p>
       <p>
         Let's summarize the three essential components of the grammar in
-        <xref ref="tab-summary-gapminder"/>.
+        <xref ref="tab-summary-table-gapminder"/>.
       </p>
 
-      <table xml:id="tab-summary-gapminder">
+      <table xml:id="tab-summary-table-gapminder">
         <title>Summary of the grammar of graphics for this plot</title>
         <tabular halign="center">
           <row header="yes" bottom="minor">
@@ -239,7 +239,7 @@ library(tibble)
       <p>
         Other more complex components like <c>scales</c> and <c>coord</c>inate systems
         are left for a more advanced text such as
-        <url href="http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings"><em>R for Data Science</em></url>.
+        <url href="http://r4ds.had.co.nz/data-visualisation.html#aesthetic-mappings"><em>R for Data Science</em></url> <xref ref="bib-rds2016"/>.
         Generally speaking, the grammar of graphics allows for a high degree of
         customization of plots and also a consistent framework for easily updating and
         modifying them.
@@ -1663,7 +1663,7 @@ ggplot(data = flights, mapping = aes(x = carrier)) +
         angles well.
       </p>
       <p>
-        As Naomi Robbins describes in her book, <em>Creating More Effective Graphs</em>,
+        As Naomi Robbins describes in her book, <em>Creating More Effective Graphs</em> <xref ref="bib-robbins2013"/>,
         we overestimate angles greater than 90 degrees and we underestimate angles less
         than 90 degrees. In other words, it is difficult for us to determine the relative
         size of one piece of the pie compared to another.
@@ -1941,7 +1941,7 @@ ggplot(data = flights, mapping = aes(x = carrier)) +
 
       <p>
         Let's recap all five of the five named graphs (5NG)
-        <idx><h>five named graphs</h></idx> in <xref ref="tab-viz-summary"/> summarizing
+        <idx><h>five named graphs</h></idx> in <xref ref="tab-viz-summary-table"/> summarizing
         their differences. Using these 5NG, you'll be able to visualize the distributions
         and relationships of variables contained in a wide array of datasets. This will be
         even more the case as we start to map more variables to more of each
@@ -1949,7 +1949,7 @@ ggplot(data = flights, mapping = aes(x = carrier)) +
         the awesome power of the <c>ggplot2</c> package.
       </p>
 
-      <table xml:id="tab-viz-summary">
+      <table xml:id="tab-viz-summary-table">
         <title>Summary of Five Named Graphs</title>
         <tabular halign="left">
           <row header="yes" bottom="minor">
@@ -2132,7 +2132,7 @@ ggplot(data = early_january_2023_weather, mapping = aes(x = time_hour, y = temp)
         <c>15</c>.
       </p>
       <p>
-        These two code segments are a preview of the next chapter on data wrangling using
+        These two code segments are a preview of <xref ref="ch-wrangling"/> on data wrangling using
         the <c>dplyr</c> package. Data wrangling is the process of transforming and
         modifying existing data with the intent of making it more appropriate for analysis
         purposes. For example, these two code segments used the <c>filter()</c> function
@@ -2142,7 +2142,7 @@ ggplot(data = early_january_2023_weather, mapping = aes(x = time_hour, y = temp)
         formally introduce the <c>filter()</c> and other data-wrangling functions as well
         as the <em>pipe operator</em> <c>|&gt;</c> which allows you to combine multiple
         data-wrangling actions into a single sequential <em>chain</em> of actions. On to
-        the next chapter on data wrangling!
+        <xref ref="ch-wrangling"/> on data wrangling!
       </p>
     </subsection>
   </section>

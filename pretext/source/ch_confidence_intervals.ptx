@@ -1188,7 +1188,7 @@ qnorm(0.9)
     <title>Estimation with the bootstrap</title>
 
     <p>
-      In 1979, Brad Efron published an article introducing a method called the
+      In 1979, Brad Efron published an article <xref ref="bib-Efron1979"/> introducing a method called the
       <term>bootstrap</term><idx><h>bootstrap</h><h>statistical reference</h></idx> that is next
       summarized. A random sample of size <m>n</m> is taken from the population. This sample is
       used to find another sample, with replacement, also of size <m>n</m>. This is called
@@ -2217,9 +2217,9 @@ visualize(bootstrap_means) +
       <title>The bootstrap and other resampling methods</title>
 
       <p>
-        The bootstrap is one of many resampling methods. Chernick and LaBudde noted that the
+        The bootstrap is one of many resampling methods. Chernick and LaBudde <xref ref="bib-Chernick2011"/> noted that the
         bootstrap's roots trace back to the development of similar techniques like permutations
-        and the jackknife (Chernick and LaBudde, 2011). The bootstrap was initially conceived
+        and the jackknife. The bootstrap was initially conceived
         as an approximation to another resampling method called
         <em>the jackknife</em><idx>jackknife</idx> but quickly gained recognition for its
         broader applicability and efficiency. Since then, it has been shown in multiple
@@ -2306,9 +2306,9 @@ visualize(bootstrap_means) +
         increasing <m>n</m> four times leads to a decrease of the difference of about two
         times. In the statistical literature, a method that has this rate of convergence is
         called <term>first-order correct</term><idx><h>Confidence interval</h><h>first-order-correct</h></idx>
-        (Hall, 1992) or
+        <xref ref="bib-Hall1992"/> or
         <term>first-order accurate</term><idx><h>Confidence interval</h><h>first-order-accurate</h></idx>
-        (Chernick and LaBudde, 2011).
+        <xref ref="bib-Chernick2011"/>.
       </p>
 
       <p>

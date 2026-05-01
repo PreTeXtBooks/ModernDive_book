@@ -4,4 +4,61 @@
     <title>Index</title>
     <index-list/>
   </index>
+
+  <references xml:id="references">
+    <title>References</title>
+
+    <biblio type="raw" xml:id="bib-rds2016">
+      Grolemund, G., and Wickham, H. (2017). <em>R for Data Science</em>. O'Reilly Media. <url href="https://r4ds.had.co.nz/"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-wilkinson2005">
+      Wilkinson, L. (2005). <em>The Grammar of Graphics</em> (2nd ed.). Springer-Verlag.
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-robbins2013">
+      Robbins, N. (2013). <em>Creating More Effective Graphs</em>. Chart House.
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-tidy">
+      Wickham, H. (2014). Tidy Data. <em>Journal of Statistical Software</em>, 59(10). <url href="https://www.jstatsoft.org/index.php/jss/article/view/v059i10/v59i10.pdf"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-usedtor2016">
+      Ismay, C., and Kennedy, P. C. (2024). <em>Getting Used to R, RStudio, and R Markdown</em>. <url href="https://rbasics.netlify.app/"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-hester2011">
+      Chihara, L. M., and Hesterberg, T. C. (2011). <em>Mathematical Statistics with Resampling and R</em>. John Wiley &amp; Sons.
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-isrs2014">
+      Diez, D. M., Barr, C. D., and Çetinkaya-Rundel, M. (2014). <em>Introductory Statistics with Randomization and Simulation</em>. OpenIntro. <url href="https://www.openintro.org/stat/textbook.php?stat_book=isrs"/>
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-Efron1979">
+      Efron, B. (1979). Bootstrap Methods: Another Look at the Jackknife. <em>The Annals of Statistics</em>, 7(1).
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-Hall1986">
+      Hall, P. (1986). On the Bootstrap and Confidence Intervals. <em>The Annals of Statistics</em>, 14(4).
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-EfronTibshi1986">
+      Efron, B., and Tibshirani, R. (1986). Bootstrap Methods for Standard Errors, Confidence Intervals, and Other Measures of Statistical Accuracy. <em>Statistical Science</em>, 1(1).
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-Hall1988">
+      Hall, P. (1988). Theoretical Comparison of Bootstrap Confidence Intervals. <em>The Annals of Statistics</em>, 16(3).
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-Hall1992">
+      Hall, P. (1992). <em>The Bootstrap and Edgeworth Expansion</em>. Springer-Verlag.
+    </biblio>
+
+    <biblio type="raw" xml:id="bib-Chernick2011">
+      Chernick, M. R., and LaBudde, R. A. (2011). <em>An Introduction to Bootstrap Methods with Applications to R</em>. Wiley.
+    </biblio>
+
+  </references>
 </backmatter>

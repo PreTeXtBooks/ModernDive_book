@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preface xml:id="preface-ptx-version" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>PreTeXt Version</title>
+
+  <p>
+    This is a <url href="https://pretextbook.org/" visual="pretextbook.org">PreTeXt</url>
+    conversion of <em>Statistical Inference via Data Science: A ModernDive into R and the
+    Tidyverse (Second Edition)</em>, originally written by
+    <url href="https://chester.rbind.io/" visual="chester.rbind.io">Chester Ismay</url>,
+    <url href="https://rudeboybert.rbind.io/" visual="rudeboybert.rbind.io">Albert Y. Kim</url>,
+    and Arturo Valdivia.
+    The original work is available online at
+    <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>
+    and was published by CRC Press.
+    The original GitHub repository for the book source is at
+    <url href="https://github.com/moderndive/ModernDive_book" visual="github.com/moderndive/ModernDive_book">github.com/moderndive/ModernDive_book</url>.
+  </p>
+
+  <p>
+    This PreTeXt edition was prepared by the
+    <url href="https://github.com/PreTeXtBooks" visual="github.com/PreTeXtBooks">PreTeXtBooks project</url>
+    to make the content available in the PreTeXt format, enabling accessible and structured
+    output in HTML, PDF, and other formats. All prose, code examples, figures, and
+    mathematical content are faithful reproductions of the original work.
+  </p>
+
+  <p>
+    The original work by Chester Ismay, Albert Y. Kim, and Arturo Valdivia is licensed
+    under a
+    <url href="https://creativecommons.org/licenses/by-nc-sa/4.0/" visual="creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</url>.
+  </p>
+</preface>

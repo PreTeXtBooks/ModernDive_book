@@ -346,8 +346,7 @@
               <alert>Warnings</alert>: <idx><h>R</h><h>warnings</h></idx> when the red
               text is a warning, it will be prefaced with <q>Warning:</q> and R will try
               to explain why there's a warning. Generally your code will still work, but
-              with some caveats. For example, you will see in Chapter on Data
-              Visualization if you create a scatterplot based on a dataset where two of
+              with some caveats. For example, you will see in <xref ref="ch-visualization"/> if you create a scatterplot based on a dataset where two of
               the rows of data have missing entries that would be needed to create points
               in the scatterplot, you will see this warning:
               <c>Warning: Removed 2 rows containing missing values (geom_point)</c>. R
@@ -362,8 +361,7 @@
               <em>just a friendly message</em>. You'll see these messages when you load
               <em>R packages</em> in the upcoming
               <xref ref="sec-package-loading"/> or when you read data saved in
-              spreadsheet files with the <c>read_csv()</c> function as you'll see in the
-              chapter on Importing Data. These are helpful diagnostic messages and they
+              spreadsheet files with the <c>read_csv()</c> function as you'll see in <xref ref="tidy"/>. These are helpful diagnostic messages and they
               don't stop your code from working. Additionally, you'll see these messages
               when you install packages too using <c>install.packages()</c> as discussed
               in <xref ref="sec-package-installation"/>.
@@ -474,12 +472,11 @@
 
     <p>
       For example, among the many packages we will use in this book are the
-      <c>ggplot2</c> package for data visualization,
+      <c>ggplot2</c> package for data visualization in <xref ref="ch-visualization"/>,
       <idx><h>R packages</h><h>ggplot2</h></idx> the <c>dplyr</c> package for data
-      wrangling, <idx><h>R packages</h><h>dplyr</h></idx> the <c>moderndive</c> package
+      wrangling in <xref ref="ch-wrangling"/>, <idx><h>R packages</h><h>dplyr</h></idx> the <c>moderndive</c> package
       that accompanies this book, <idx><h>R packages</h><h>moderndive</h></idx> and the
-      <c>infer</c> package for <q>tidy</q> and transparent statistical inference in later
-      chapters. <idx><h>R packages</h><h>infer</h></idx>
+      <c>infer</c> package for <q>tidy</q> and transparent statistical inference in <xref ref="confidence-intervals"/>, <xref ref="hypothesis-testing"/>, and <xref ref="inference-for-regression"/>. <idx><h>R packages</h><h>infer</h></idx>
     </p>
 
     <p>
@@ -996,7 +993,7 @@ $ time_hour      &lt;dttm&gt; 2023-01-01 20:00:00, 2023-01-01 23:00:00, 2023-01-
         <url href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em>
         by Tiffany-Anne Timbers, Melissa Lee, and Trevor Campbell</url> or
         <url href="https://r4ds.had.co.nz/dates-and-times.html"><em>R for Data
-        Science</em></url>.
+        Science</em></url> <xref ref="bib-rds2016"/>.
       </p>
 
       <exercise xml:id="lc1-4">
@@ -1233,7 +1230,7 @@ $ tzone &lt;chr&gt; "America/New_York", "America/Chicago", "America/New_York", "
         If you are new to the world of coding, R, and RStudio and feel you could benefit
         from a more detailed introduction, we suggest the short book,
         <url href="https://rbasics.netlify.app/"><em>Getting Used to R, RStudio, and R
-        Markdown</em></url>, previewed in <xref ref="fig-ismay-book"/>. It includes
+        Markdown</em></url> <xref ref="bib-usedtor2016"/>, previewed in <xref ref="fig-ismay-book"/>. It includes
         screencasts that you can follow along and pause as you learn. This book also
         contains an introduction to R Markdown, a tool used for reproducible research.
       </p>
@@ -1252,7 +1249,7 @@ $ tzone &lt;chr&gt; "America/New_York", "America/Chicago", "America/New_York", "
 
       <p>
         We're next heading into the <q>Data Science with <c>tidyverse</c></q> portion in
-        the chapter on Data Visualization as shown in
+        <xref ref="ch-visualization"/> as shown in
         <xref ref="fig-moderndive-flowchart"/> with what we feel is the most important
         tool in a data scientist's toolbox: data visualization. We'll continue to explore
         the data included in the <c>moderndive</c> and <c>nycflights23</c> packages using

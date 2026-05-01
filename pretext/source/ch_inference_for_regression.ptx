@@ -115,7 +115,7 @@ coef(simple_model)
       <p>
         We visualize the relationship by plotting the scatterplot of fertility rate against
         life expectancy for all the UN member states with complete data, and include the
-        regression line:
+        regression line (<xref ref="fig-regline-ch10"/>):
       </p>
       <program language="r">
         <input>
@@ -337,7 +337,7 @@ ggplot(old_faithful_2024, aes(x = duration, y = waiting)) +
 
       <p>
         If the association of these variables is linear or approximately linear, we can apply
-        the linear model to each observation in the sample:
+        the linear model described in <xref ref="simple-linear-model"/> to each observation in the sample:
       </p>
       <md>
         <mrow>y_1 &amp;= \beta_0 + \beta_1 \cdot x_1 + \epsilon_1</mrow>
@@ -459,7 +459,7 @@ sigma(model_1)
         <title>Two-sample difference in means</title>
         <p>
           The two-sample difference in means is a common statistical technique used to compare
-          the means of two groups, as seen in <xref ref="hypothesis-testing"/>. It can be
+          the means of two groups, as seen in <xref ref="ht-case-study"/>. It can be
           represented in the regression framework by using a dummy variable to represent the
           two groups. Let's consider the <c>movies_sample</c> data frame in the
           <c>moderndive</c> package. We compare the average rating for the genres
@@ -489,7 +489,7 @@ get_regression_table(mod_diff_means)
         </md>
         <p>
           This <m>p</m>-value result matches closely with what was found in
-          <xref ref="hypothesis-testing"/>, but here we are using a theory-based approach with a
+          <xref ref="ht-case-study"/>, but here we are using a theory-based approach with a
           linear model. The <c>estimate</c> for the <c>genre: Romance</c> row is the observed
           difference in means between the <q>Action</q> and <q>Romance</q> genres (with the
           sign switched since <q>Action</q> is the reference level).
@@ -503,7 +503,7 @@ get_regression_table(mod_diff_means)
           of three or more groups. ANOVA can be represented in the regression framework by
           using dummy variables to represent the groups. We compare the <c>popularity</c> values
           in the <c>spotify_by_genre</c> data frame from the <c>moderndive</c> package across
-          the genres <c>country</c>, <c>hip-hop</c>, and <c>rock</c>:
+          the genres <c>country</c>, <c>hip-hop</c>, and <c>rock</c> (see <xref ref="fig-pop-by-genre-plot"/>):
         </p>
         <program language="r">
           <input>
@@ -668,9 +668,9 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
     <title>Theory-based inference for simple linear regression</title>
 
     <p>
-      This section introduces the conceptual framework needed for theory-based inference for
+      This section introduces the conceptual framework (see <xref ref="framework-simple-lm"/> and <xref ref="se-simple-lm"/>) needed for theory-based inference for
       regression and discusses the two most prominent methods for inference: confidence
-      intervals and hypothesis tests. Some of this material is slightly more technical than
+      intervals (<xref ref="conf-intervals-b0-b1"/>) and hypothesis tests (<xref ref="hypo-test-simple-lm"/>). Some of this material is slightly more technical than
       other sections in this chapter, but most of the material is illustrated by working with
       a real example and interpretations and explanations complement the theory.
       <xref ref="regression-table"/> presents the R code needed to calculate relevant
@@ -920,7 +920,7 @@ old_faithful_2024 |>
         one observed, <em>assuming the null hypothesis</em> <m>H_0</m> is true. For a
         two-sided test, if the test statistic is <m>t = 2</m> for example, the <m>p</m>-value
         is the area under the <m>t</m>-curve to the left of <m>-2</m> and to the right of
-        <m>2</m>.
+        <m>2</m>, as shown in <xref ref="fig-pvalue1"/>.
       </p>
 
       <figure xml:id="fig-pvalue1">
@@ -1000,7 +1000,7 @@ old_faithful_2024 |>
 
       <p>
         The least-square estimates, standard errors, test statistics, <m>p</m>-values, and
-        confidence interval bounds discussed in <xref ref="theory-simple-regression"/> can be
+        confidence interval bounds discussed in <xref ref="theory-simple-regression"/>, <xref ref="framework-simple-lm"/>, <xref ref="se-simple-lm"/>, <xref ref="conf-intervals-b0-b1"/>, and <xref ref="hypo-test-simple-lm"/> can be
         calculated all at once using the R wrapper function
         <c>get_regression_table()</c>
         <idx><h>get_regression_table()</h></idx> from the <c>moderndive</c> package. For
@@ -1525,7 +1525,7 @@ bootstrap_distn_slope
       </program>
       <p>
         Observe how we have 1000 values of the bootstrapped slope <m>b_1</m> in the
-        <c>stat</c> column. We visualize these bootstrapped values:
+        <c>stat</c> column. We visualize these bootstrapped values in <xref ref="fig-bootstrap-distribution-slope"/>:
       </p>
       <program language="r">
         <input>
@@ -1541,7 +1541,7 @@ visualize(bootstrap_distn_slope)
       </figure>
 
       <p>
-        Observe how the bootstrap distribution is roughly bell-shaped. Recall that the shape
+        Observe how the bootstrap distribution is roughly bell-shaped. Recall from <xref ref="revisit-almond-bootstrap"/> that the shape
         of the bootstrap distribution of <m>b_1</m> closely approximates the shape of the
         sampling distribution of <m>b_1</m>.
       </p>
@@ -1638,7 +1638,7 @@ null_distn_slope &lt;- old_faithful_2024 |>
       </figure>
 
       <p>
-        Notice how it is centered at <m>b_1 = 0</m>. This is because in our hypothesized
+        Notice from <xref ref="fig-null-distribution-slope"/> how it is centered at <m>b_1 = 0</m>. This is because in our hypothesized
         universe, there is no relationship between <c>waiting</c> and <c>duration</c> and
         so <m>\beta_1 = 0</m>. We obtain the observed slope:
       </p>
@@ -1651,7 +1651,7 @@ b1
         </input>
       </program>
       <p>
-        We visualize the <m>p</m>-value by shading the null distribution and comparing to
+        We visualize the <m>p</m>-value in <xref ref="fig-p-value-slope"/> by shading the null distribution and comparing to
         the observed test statistic:
       </p>
       <program language="r">
@@ -1847,7 +1847,7 @@ coffee_data |>
         When performing multiple regression it is useful to construct a
         <term>scatterplot matrix</term><idx><h>scatterplot matrix</h></idx>, a matrix that
         contains scatterplots for all variable pair combinations. In R, we use
-        <c>ggpairs()</c> from the <c>GGally</c> package:
+        <c>ggpairs()</c> from the <c>GGally</c> package (<xref ref="fig-coffee-scatter-matrix"/>):
       </p>
       <program language="r">
         <input>
@@ -2335,7 +2335,7 @@ grid.arrange(g1, g2, ncol = 2)
       </figure>
 
       <p>
-        The plot of residuals against fitted values (left) appears to be close to a null
+        The plot of residuals against fitted values (left) in <xref ref="fig-grid-arrange-plot-check"/> appears to be close to a null
         plot, supporting the <em>L</em>inearity condition. The <em>E</em>qual or constant
         variance also holds as the vertical dispersion is fairly uniform. Since we assumed
         the data were collected randomly with no time sequence, the assumption of
@@ -2478,7 +2478,7 @@ boot_distribution_mlr
           <c>continent_of_origin</c>, <c>aroma</c>, <c>flavor</c>,
           <c>moisture_percentage</c>), we have 7 rows for each replicate giving
           7,000 rows in <c>boot_distribution_mlr</c>. We can visualize the bootstrap
-          distributions:
+          distributions in <xref ref="fig-boot-distn-slopes"/>:
         </p>
         <program language="r">
           <input>
@@ -2514,7 +2514,7 @@ confidence_intervals_mlr
           suggesting they are statistically significant and have a meaningful and reliable
           impact on the response. The confidence interval for <c>moisture_percentage</c>
           includes 0, again providing evidence that it might not be a useful regressor in
-          this model. We visualize these confidence intervals:
+          this model. We visualize these confidence intervals in <xref ref="fig-ci-slopes-multiple"/>:
         </p>
         <program language="r">
           <input>
@@ -2573,7 +2573,7 @@ visualize(null_distribution_mlr) +
       </figure>
 
       <p>
-        From these visualizations, <c>aroma</c> and <c>flavor</c> are statistically
+        From these visualizations (<xref ref="fig-shaded-p-values-partial"/>), <c>aroma</c> and <c>flavor</c> are statistically
         significant, as their observed test statistics fall far to the right of the null
         distribution. On the other hand, <c>moisture_percentage</c> is not statistically
         significant. We compute the numerical <m>p</m>-values:
