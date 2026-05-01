@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="ch-visualization" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Data Visualization</title>
-
+  <introduction>
   <p>
     We begin the development of your data science toolbox with data visualization. By
     visualizing data, we gain valuable insights we couldn't initially obtain from just
@@ -44,7 +44,7 @@ library(tibble)
       </input>
     </program>
   </assemblage>
-
+  </introduction>
 
   <!-- ============================================================ -->
   <section xml:id="sec-grammar-of-graphics">
