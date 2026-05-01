@@ -3,757 +3,696 @@
   <title>Preface</title>
 
   <!-- ============================================================ -->
-  <paragraphs xml:id="preface-intro-students">
-    <title>Introduction for students</title>
+  <p><alert>Introduction for students</alert></p>
 
-    <p>
-      <alert>Help! I'm completely new to coding and I need to learn R and RStudio! What do I do?</alert>
-    </p>
+  <p>
+    <alert>Help! I'm completely new to coding and I need to learn R and RStudio! What do I do?</alert>
+  </p>
 
-    <p>
-      If you're asking yourself this question, then you've come to the right place!
-      Start with the rest of this section.
-    </p>
+  <p>
+    If you're asking yourself this question, then you've come to the right place!
+    Start with the rest of this section.
+  </p>
 
-    <p>
-      <ul>
-        <li>
-          <p>
-            <em>Are you an instructor hoping to use this book in your courses?</em>
-            We recommend reading this <q>Introduction for students</q> section first.
-            Then, read the <q>Introduction for instructors</q> section for more information
-            on how to teach with this book.
-          </p>
-        </li>
-        <li>
-          <p>
-            <em>Are you looking to connect with and contribute to ModernDive?</em>
-            Then, read the <q>Connect and contribute</q> section for information on how.
-          </p>
-        </li>
-        <li>
-          <p>
-            <em>Are you curious about the publishing of this book?</em>
-            Then, read the <q>About this book</q> section for more information on the
-            open-source technology, in particular R Markdown and the bookdown package.
-          </p>
-        </li>
-      </ul>
-    </p>
-
-    <p>
-      This is the <url href="https://pretextbook.org/" visual="pretextbook.org">PreTeXt</url>
-      version of <em>Statistical Inference via Data Science: A ModernDive into R and the
-      Tidyverse (Second Edition)</em>. The original online version is available at
-      <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
-    </p>
-
-    <p>
-      This book assumes no prerequisites: no algebra, no calculus, and no prior
-      programming/coding experience. This is intended to be a gentle introduction to the
-      practice of analyzing data and answering questions using data the way data scientists,
-      statisticians, data journalists, and other researchers would.
-    </p>
-
-    <p>
-      You'll first get started with data in <xref ref="ch-getting-started"/> where you'll
-      learn about the difference between R and RStudio, start coding in R, install and load
-      your first R packages, and explore your first dataset: all domestic departure
-      <c>flights</c> from a New York City airport in 2023. Then you'll cover the following
-      three portions of this book (Parts 2 and 4 are combined into a single portion):
-    </p>
-
-    <p>
-      <ol>
-        <li>
-          <p>
-            <em>Data science with <c>tidyverse</c>.</em>
-            You'll assemble your data science toolbox using <c>tidyverse</c> packages.
-            In particular, you'll
-            <ul>
-              <li>
-                <p>
-                  <xref ref="ch-visualization" text="title"/>:
-                  Visualize data using the <c>ggplot2</c> package.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <xref ref="ch-wrangling" text="title"/>:
-                  Wrangle data using the <c>dplyr</c> package.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <xref ref="tidy" text="title"/>:
-                  Learn about the concept of <q>tidy</q> data as a standardized data input
-                  and output format for all packages in the <c>tidyverse</c>. Furthermore,
-                  you'll learn how to import spreadsheet files into R using the
-                  <c>readr</c> package.
-                </p>
-              </li>
-            </ul>
-          </p>
-        </li>
-        <li>
-          <p>
-            <em>Statistical/Data modeling with <c>moderndive</c>.</em>
-            Using these data science tools and helper functions from the
-            <c>moderndive</c> package, you'll fit your first data models. In particular,
-            you'll
-            <ul>
-              <li>
-                <p>
-                  <xref ref="regression" text="title"/>:
-                  Discover basic regression models with only one explanatory variable.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <xref ref="multiple-regression" text="title"/>:
-                  Examine multiple regression models with more than one explanatory
-                  variable.
-                </p>
-              </li>
-            </ul>
-          </p>
-        </li>
-        <li>
-          <p>
-            <em>Statistical inference with <c>infer</c>.</em>
-            Once again using your newly acquired data science tools, you'll unpack
-            statistical inference using the <c>infer</c> package. In particular, you'll:
-            <ul>
-              <li>
-                <p>
-                  <xref ref="sampling" text="title"/>:
-                  Learn about the role that sampling variability plays in statistical
-                  inference and the role that sample size plays in this sampling
-                  variability.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <xref ref="confidence-intervals" text="title"/>:
-                  Construct confidence intervals using bootstrapping.
-                </p>
-              </li>
-              <li>
-                <p>
-                  <xref ref="hypothesis-testing" text="title"/>:
-                  Conduct hypothesis tests using permutation.
-                </p>
-              </li>
-            </ul>
-          </p>
-        </li>
-        <li>
-          <p>
-            <em>Statistical/Data modeling with <c>moderndive</c> (revisited).</em>
-            Armed with your understanding of statistical inference, you'll revisit and
-            review the models you've constructed in
-            <xref ref="regression"/> and <xref ref="multiple-regression"/>.
-            In particular, you'll:
-            <ul>
-              <li>
-                <p>
-                  <xref ref="inference-for-regression" text="title"/>:
-                  Interpret confidence intervals and hypothesis tests in a regression
-                  setting.
-                </p>
-              </li>
-            </ul>
-          </p>
-        </li>
-      </ol>
-    </p>
-
-    <p>
-      We'll end with a discussion on what it means to <q>tell your story with data</q>
-      in <xref ref="thinking-with-data"/> by presenting example case studies.
-    </p>
-
-
-  </paragraphs>
-
-
-    <paragraphs xml:id="preface-what-you-will-learn">
-      <title>What we hope you will learn from this book</title>
-
-      <p>
-        We hope that by the end of this book, you'll have learned how to:
-      </p>
-
-      <p>
-        <ol>
-          <li><p>Use R and the <c>tidyverse</c> suite of R <em>packages</em> for data science.</p></li>
-          <li><p>Fit your first <em>models</em> to data, using a method known as <em>linear regression</em>.</p></li>
-          <li><p>Perform <em>statistical inference</em> using <em>sampling</em>, <em>confidence intervals</em>, and <em>hypothesis tests</em>.</p></li>
-          <li><p><em>Tell your story with data</em> using these tools.</p></li>
-        </ol>
-      </p>
-
-      <p>
-        What do we mean by data stories? We mean any analysis involving data that engages
-        the reader in answering questions with careful visuals and thoughtful discussion.
-      </p>
-
-      <p>
-        Over the course of this book, you will develop your <q>data science toolbox,</q>
-        equipping yourself with tools such as data visualization, data formatting, data
-        wrangling, and statistical/data modeling using regression.
-      </p>
-
-      <p>
-        In particular, this book will lean heavily on data visualization. In today's world,
-        we are bombarded with graphics that attempt to convey ideas. We will explore what
-        makes a good graphic and what the standard ways are used to convey relationships
-        within data. In general, we'll use visualization as a way of building almost all
-        of the ideas in this book.
-      </p>
-
-      <p>
-        To impart the statistical lessons of this book, we have intentionally minimized the
-        number of mathematical formulas used. Instead, you'll develop a conceptual
-        understanding of statistics using data visualization and computer simulations. We
-        hope this is a more intuitive experience than the way statistics has traditionally
-        been taught in the past and how it is commonly perceived.
-      </p>
-
-      <p>
-        Finally, you'll learn the importance of <em>literate programming</em>. By this we
-        mean you'll learn how to write code that is useful not just for a computer to
-        execute, but also for readers to understand exactly what your analysis is doing and
-        how you did it. This is part of a greater effort to encourage reproducible research.
-        Hal Abelson coined the phrase that we will follow throughout this book:
-      </p>
-
-      <blockquote>
+  <p>
+    <ul>
+      <li>
         <p>
-          Programs must be written for people to read, and only incidentally for machines
-          to execute.
+          <em>Are you an instructor hoping to use this book in your courses?</em>
+          We recommend reading this <q>Introduction for students</q> section first.
+          Then, read the <q>Introduction for instructors</q> section for more information
+          on how to teach with this book.
         </p>
-      </blockquote>
+      </li>
+      <li>
+        <p>
+          <em>Are you looking to connect with and contribute to ModernDive?</em>
+          Then, read the <q>Connect and contribute</q> section for information on how.
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Are you curious about the publishing of this book?</em>
+          Then, read the <q>About this book</q> section for more information on the
+          open-source technology, in particular R Markdown and the bookdown package.
+        </p>
+      </li>
+    </ul>
+  </p>
 
-      <p>
-        We understand that there may be challenging moments as you learn to program. Both of
-        us continue to struggle and find ourselves often using web searches to find answers
-        and reach out to colleagues for help. In the long run though, we all can solve
-        problems faster and more elegantly via programming. We wrote this book as our way
-        to help you get started and you should know that there is a huge community of R
-        users that are happy to help everyone along as well. This community exists in
-        particular on the internet on various forums and websites such as
-        <url href="https://stackoverflow.com/" visual="stackoverflow.com">stackoverflow.com</url>.
-      </p>
-    </paragraphs>
+  <p>
+    This is the <url href="https://pretextbook.org/" visual="pretextbook.org">PreTeXt</url>
+    version of <em>Statistical Inference via Data Science: A ModernDive into R and the
+    Tidyverse (Second Edition)</em>. The original online version is available at
+    <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
+  </p>
 
+  <p>
+    This book assumes no prerequisites: no algebra, no calculus, and no prior
+    programming/coding experience. This is intended to be a gentle introduction to the
+    practice of analyzing data and answering questions using data the way data scientists,
+    statisticians, data journalists, and other researchers would.
+  </p>
 
-    <paragraphs xml:id="preface-data-science-pipeline">
-      <title>Data/science pipeline</title>
+  <p>
+    You'll first get started with data in <xref ref="ch-getting-started"/> where you'll
+    learn about the difference between R and RStudio, start coding in R, install and load
+    your first R packages, and explore your first dataset: all domestic departure
+    <c>flights</c> from a New York City airport in 2023. Then you'll cover the following
+    three portions of this book (Parts 2 and 4 are combined into a single portion):
+  </p>
 
-      <p>
-        You may think of statistics as just being a bunch of numbers. We commonly hear the
-        phrase <q>statistician</q> when listening to broadcasts of sporting events.
-        Statistics (in particular, data analysis), in addition to describing numbers like
-        with baseball batting averages, plays a vital role in all of the sciences.
-      </p>
+  <p>
+    <ol>
+      <li>
+        <p>
+          <em>Data science with <c>tidyverse</c>.</em>
+          You'll assemble your data science toolbox using <c>tidyverse</c> packages.
+          In particular, you'll
+          <ul>
+            <li>
+              <p>
+                <xref ref="ch-visualization" text="title"/>:
+                Visualize data using the <c>ggplot2</c> package.
+              </p>
+            </li>
+            <li>
+              <p>
+                <xref ref="ch-wrangling" text="title"/>:
+                Wrangle data using the <c>dplyr</c> package.
+              </p>
+            </li>
+            <li>
+              <p>
+                <xref ref="tidy" text="title"/>:
+                Learn about the concept of <q>tidy</q> data as a standardized data input
+                and output format for all packages in the <c>tidyverse</c>. Furthermore,
+                you'll learn how to import spreadsheet files into R using the
+                <c>readr</c> package.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Statistical/Data modeling with <c>moderndive</c>.</em>
+          Using these data science tools and helper functions from the
+          <c>moderndive</c> package, you'll fit your first data models. In particular,
+          you'll
+          <ul>
+            <li>
+              <p>
+                <xref ref="regression" text="title"/>:
+                Discover basic regression models with only one explanatory variable.
+              </p>
+            </li>
+            <li>
+              <p>
+                <xref ref="multiple-regression" text="title"/>:
+                Examine multiple regression models with more than one explanatory
+                variable.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Statistical inference with <c>infer</c>.</em>
+          Once again using your newly acquired data science tools, you'll unpack
+          statistical inference using the <c>infer</c> package. In particular, you'll:
+          <ul>
+            <li>
+              <p>
+                <xref ref="sampling" text="title"/>:
+                Learn about the role that sampling variability plays in statistical
+                inference and the role that sample size plays in this sampling
+                variability.
+              </p>
+            </li>
+            <li>
+              <p>
+                <xref ref="confidence-intervals" text="title"/>:
+                Construct confidence intervals using bootstrapping.
+              </p>
+            </li>
+            <li>
+              <p>
+                <xref ref="hypothesis-testing" text="title"/>:
+                Conduct hypothesis tests using permutation.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </li>
+      <li>
+        <p>
+          <em>Statistical/Data modeling with <c>moderndive</c> (revisited).</em>
+          Armed with your understanding of statistical inference, you'll revisit and
+          review the models you've constructed in
+          <xref ref="regression"/> and <xref ref="multiple-regression"/>.
+          In particular, you'll:
+          <ul>
+            <li>
+              <p>
+                <xref ref="inference-for-regression" text="title"/>:
+                Interpret confidence intervals and hypothesis tests in a regression
+                setting.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </li>
+    </ol>
+  </p>
 
-      <p>
-        You'll commonly hear the phrase <q>statistically significant</q> thrown around in
-        the media. You'll see articles that say, <q>Science now shows that chocolate is
-        good for you.</q> Underpinning these claims is data analysis. By the end of this
-        book, you'll be able to better understand whether these claims should be trusted or
-        whether we should be wary. Inside data analysis are many sub-fields that we will
-        discuss throughout this book (though not necessarily in this order):
-      </p>
-
-      <p>
-        <ul>
-          <li><p>data collection</p></li>
-          <li><p>data wrangling</p></li>
-          <li><p>data visualization</p></li>
-          <li><p>statistical modeling</p></li>
-          <li><p>inference</p></li>
-          <li><p>correlation and regression</p></li>
-          <li><p>interpretation of results</p></li>
-          <li><p>data communication/storytelling</p></li>
-        </ul>
-      </p>
-
-      <p>
-        These sub-fields are summarized in what Garrett Grolemund and Hadley Wickham have
-        previously termed the
-        <url href="http://r4ds.had.co.nz/explore-intro.html" visual="r4ds.had.co.nz/explore-intro.html"><q>data/science pipeline.</q></url>
-      </p>
-
-      <figure xml:id="fig-preface-pipeline">
-        <caption>Data/science pipeline.</caption>
-        <image source="images/r4ds/data_science_pipeline.png" width="100%">
-          <description>
-            A diagram showing the data science pipeline: Import, Tidy, Transform,
-            Visualize, Model, and Communicate, with Understand encompassing Transform,
-            Visualize, and Model.
-          </description>
-        </image>
-      </figure>
-
-      <p>
-        We will begin by digging into the grey <em>Understand</em> portion of the cycle
-        with data visualization, then with a discussion on what is meant by tidy data and
-        data wrangling, and then conclude by talking about interpreting and discussing the
-        results of our models via <em>Communication</em>. These steps are vital to any
-        statistical analysis. But, why should you care about statistics?
-      </p>
-
-      <p>
-        There's a reason that many fields require a statistics course. Scientific knowledge
-        grows through an understanding of statistical significance and data analysis. You
-        needn't be intimidated by statistics. It's not the beast that it used to be and,
-        paired with computation, you'll see how reproducible research in the sciences
-        particularly increases scientific knowledge.
-      </p>
-    </paragraphs>
-
-
-    <paragraphs xml:id="preface-reproducible-research">
-      <title>Reproducible research</title>
-
-      <blockquote>
-        <p>The most important tool is the <em>mindset</em>, when starting, that the end
-        product will be reproducible.</p>
-        <attribution>Keith Baggerly</attribution>
-      </blockquote>
-
-      <p>
-        Another goal of this book is to help readers understand the importance of
-        reproducible analyses. The hope is to get readers into the habit of making their
-        analyses reproducible from the very beginning. This means we'll be trying to help
-        you build new habits. This will take practice and be difficult at times. You'll see
-        just why it is so important for you to keep track of your code and document it well
-        to help yourself later and any potential collaborators as well.
-      </p>
-
-      <p>
-        Copying and pasting results from one program into a word processor is not an ideal
-        way to conduct efficient and effective scientific research. It's much more important
-        for time to be spent on data collection and data analysis and not on copying and
-        pasting plots back and forth across a variety of programs.
-      </p>
-
-      <blockquote>
-        <p>We are talking about <em>computational</em> reproducibility.</p>
-        <attribution>Yihui Xie</attribution>
-      </blockquote>
-
-      <p>
-        Reproducibility means a lot of things in terms of different scientific fields. Are
-        experiments conducted in a way that another researcher could follow the steps and
-        get similar results? In this book, we will focus on what is known as
-        <term>computational reproducibility</term>. This refers to being able to pass all
-        of one's data analysis, datasets, and conclusions to someone else and have them get
-        exactly the same results on their machine. This allows for time to be spent
-        interpreting results and considering assumptions instead of the more error prone way
-        of starting from scratch or following a list of steps that may be different from
-        machine to machine.
-      </p>
-    </paragraphs>
-
-
-    <paragraphs xml:id="preface-final-note-students">
-      <title>Final note for students</title>
-
-      <p>
-        At this point, if you are interested in instructor perspectives on this book, ways
-        to contribute and collaborate, or the technical details of this book's construction
-        and publishing, then continue with the rest of the chapter. Otherwise, let's get
-        started with R and RStudio in <xref ref="ch-getting-started"/>!
-      </p>
-    </paragraphs>
-
-
-  <!-- ============================================================ -->
-  <paragraphs xml:id="preface-intro-instructors">
-    <title>Introduction for instructors</title>
-
-    <p>
-      Here are some resources and guidance for instructors wishing to use
-      <em>ModernDive</em> in their courses.
-    </p>
-  </paragraphs>
-
-
-    <paragraphs xml:id="preface-resources">
-      <title>Resources</title>
-
-      <p>
-        Here are some resources to help you use <em>ModernDive</em>:
-      </p>
-
-      <p>
-        <ol>
-          <li>
-            <p>
-              We've included review questions posed as <em>Learning checks</em>. You can
-              find all the solutions to all <em>Learning checks</em> in the Appendices of
-              the online version of the book. The Appendices start at
-              <url href="https://moderndive.com/v2/appendixa" visual="moderndive.com/v2/appendixa">moderndive.com/v2/appendixa</url>.
-            </p>
-          </li>
-          <li>
-            <p>
-              Dr. Jenny Smetzer and Albert Y. Kim have written a series of labs and
-              problem sets. You can find them at
-              <url href="https://moderndive.com/labs" visual="moderndive.com/labs">moderndive.com/labs</url>.
-            </p>
-          </li>
-          <li>
-            <p>
-              You can see the webpages for two courses that use <em>ModernDive</em>:
-              <ul>
-                <li>
-                  <p>
-                    Smith College <q>SDS192 Introduction to Data Science</q>:
-                    <url href="https://rudeboybert.github.io/SDS192/" visual="rudeboybert.github.io/SDS192">rudeboybert.github.io/SDS192</url>.
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    Smith College <q>SDS220 Introduction to Probability and Statistics</q>:
-                    <url href="https://rudeboybert.github.io/SDS220/" visual="rudeboybert.github.io/SDS220">rudeboybert.github.io/SDS220</url>.
-                  </p>
-                </li>
-              </ul>
-            </p>
-          </li>
-        </ol>
-      </p>
-    </paragraphs>
-
-
-    <paragraphs xml:id="preface-why-write-this-book">
-      <title>Why did we write this book?</title>
-
-      <p>
-        This book is inspired by
-      </p>
-
-      <p>
-        <ul>
-          <li><p><pubtitle>Mathematical Statistics with Resampling and R</pubtitle> <xref ref="biblio-hester2011"/></p></li>
-          <li><p><pubtitle>OpenIntro: Intro Stat with Randomization and Simulation</pubtitle> <xref ref="biblio-isrs2014"/></p></li>
-          <li><p><pubtitle>R for Data Science</pubtitle> <xref ref="biblio-rds2016"/></p></li>
-        </ul>
-      </p>
-
-      <p>
-        The first book, designed for upper-level undergraduates and graduate students,
-        provides an excellent resource on how to use resampling to impart statistical
-        concepts like sampling distributions using computation instead of large-sample
-        approximations and other mathematical formulas. The last two books are free options
-        for learning about introductory statistics and data science, providing an
-        alternative to the many traditionally expensive introductory statistics textbooks.
-      </p>
-
-      <p>
-        When looking over the introductory statistics textbooks that currently exist, we
-        found there wasn't one that incorporated many newly developed R packages directly
-        into the text, in particular the many packages included in the
-        <url href="http://tidyverse.org/" visual="tidyverse.org"><c>tidyverse</c></url>
-        set of packages, such as <c>ggplot2</c>, <c>dplyr</c>, <c>tidyr</c>, and
-        <c>readr</c> that will be the focus of this book's first part on <q>Data Science
-        with <c>tidyverse</c>.</q>
-      </p>
-
-      <p>
-        Additionally, there wasn't an open-source and easily reproducible textbook
-        available that exposed new learners to all four of the learning goals we listed in
-        the <q>Introduction for students</q> subsection. We wanted to write a book that
-        could develop theory via computational techniques and help novices master the R
-        language in doing so.
-      </p>
-    </paragraphs>
-
-
-    <paragraphs xml:id="preface-who-is-this-book-for">
-      <title>Who is this book for?</title>
-
-      <p>
-        This book is intended for instructors of traditional introductory statistics classes
-        using RStudio, who would like to inject more data science topics into their
-        syllabus. RStudio can be used in either the server version or the desktop version.
-        We assume that students taking the class will have no prior algebra, no calculus,
-        nor programming/coding experience.
-      </p>
-
-      <p>
-        Here are some principles and beliefs we kept in mind while writing this text. If
-        you agree with them, this is the book for you.
-      </p>
-
-      <p>
-        <ol>
-          <li>
-            <p>
-              <alert>Blur the lines between lecture and lab.</alert>
-              With increased availability and accessibility of laptops and open-source
-              non-proprietary statistical software, the strict dichotomy between lab and
-              lecture can be loosened.
-              It's much harder for students to understand the importance of using software
-              if they only use it once a week or less. They forget the syntax in much the
-              same way someone learning a foreign language forgets the grammar rules.
-              Frequent reinforcement is key.
-            </p>
-          </li>
-          <li>
-            <p>
-              <alert>Focus on the entire data/science research pipeline.</alert>
-              We believe that the entirety of Grolemund and Wickham's data/science pipeline
-              should be taught.
-              We heed George Cobb's call to <q>minimize prerequisites to research</q>:
-              students should be answering questions with data as soon as possible.
-            </p>
-          </li>
-          <li>
-            <p>
-              <alert>It's all about the data.</alert>
-              We leverage R packages for rich, real, and realistic datasets that at the
-              same time are easy-to-load into R, such as the <c>nycflights23</c> and
-              <c>fivethirtyeight</c> packages.
-              We believe that data visualization is a <q>gateway drug</q> for statistics
-              and that the grammar of graphics as implemented in the <c>ggplot2</c> package
-              is the best way to impart such lessons.
-              <c>dplyr</c> has made data wrangling much more accessible to novices, and
-              hence much more interesting datasets can be explored.
-            </p>
-          </li>
-          <li>
-            <p>
-              <alert>Use simulation/resampling to introduce statistical inference, not
-              probability/mathematical formulas.</alert>
-              Instead of using formulas, large-sample approximations, and probability
-              tables, we teach statistical concepts using simulation-based inference.
-              This allows for a de-emphasis of traditional probability topics, freeing up
-              room in the syllabus for other topics. Bridges to these mathematical concepts
-              are given as well to help with relation of these traditional topics with more
-              modern approaches.
-            </p>
-          </li>
-          <li>
-            <p>
-              <alert>Don't fence off students from the computation pool, throw them in!</alert>
-              Computing skills are essential to working with data in the 21st century.
-              Given this fact, we feel that to shield students from computing is to
-              ultimately do them a disservice.
-              We are not teaching a course on coding/programming per se, but rather just
-              enough of the computational and algorithmic thinking necessary for data
-              analysis.
-            </p>
-          </li>
-          <li>
-            <p>
-              <alert>Complete reproducibility and customizability.</alert>
-              We are frustrated when textbooks give examples, but not the source code and
-              the data itself. We give you the source code for all examples as well as the
-              whole book! While we have made choices to occasionally hide the code that
-              produces more complicated figures, reviewing the book's GitHub repository will
-              provide you with all the code.
-              Ultimately the best textbook is one you've written yourself. You know best
-              your audience, their background, and their priorities. Customization is the
-              ultimate end. We encourage you to take what we've provided and make it work
-              for your own needs.
-            </p>
-          </li>
-        </ol>
-      </p>
-    </paragraphs>
-
+  <p>
+    We'll end with a discussion on what it means to <q>tell your story with data</q>
+    in <xref ref="thinking-with-data"/> by presenting example case studies.
+  </p>
 
   <!-- ============================================================ -->
-  <paragraphs xml:id="preface-connect-contribute">
-    <title>Connect and contribute</title>
+  <p><alert>What we hope you will learn from this book</alert></p>
 
+  <p>
+    We hope that by the end of this book, you'll have learned how to:
+  </p>
+
+  <p>
+    <ol>
+      <li><p>Use R and the <c>tidyverse</c> suite of R <em>packages</em> for data science.</p></li>
+      <li><p>Fit your first <em>models</em> to data, using a method known as <em>linear regression</em>.</p></li>
+      <li><p>Perform <em>statistical inference</em> using <em>sampling</em>, <em>confidence intervals</em>, and <em>hypothesis tests</em>.</p></li>
+      <li><p><em>Tell your story with data</em> using these tools.</p></li>
+    </ol>
+  </p>
+
+  <p>
+    What do we mean by data stories? We mean any analysis involving data that engages
+    the reader in answering questions with careful visuals and thoughtful discussion.
+  </p>
+
+  <p>
+    Over the course of this book, you will develop your <q>data science toolbox,</q>
+    equipping yourself with tools such as data visualization, data formatting, data
+    wrangling, and statistical/data modeling using regression.
+  </p>
+
+  <p>
+    In particular, this book will lean heavily on data visualization. In today's world,
+    we are bombarded with graphics that attempt to convey ideas. We will explore what
+    makes a good graphic and what the standard ways are used to convey relationships
+    within data. In general, we'll use visualization as a way of building almost all
+    of the ideas in this book.
+  </p>
+
+  <p>
+    To impart the statistical lessons of this book, we have intentionally minimized the
+    number of mathematical formulas used. Instead, you'll develop a conceptual
+    understanding of statistics using data visualization and computer simulations. We
+    hope this is a more intuitive experience than the way statistics has traditionally
+    been taught in the past and how it is commonly perceived.
+  </p>
+
+  <p>
+    Finally, you'll learn the importance of <em>literate programming</em>. By this we
+    mean you'll learn how to write code that is useful not just for a computer to
+    execute, but also for readers to understand exactly what your analysis is doing and
+    how you did it. This is part of a greater effort to encourage reproducible research.
+    Hal Abelson coined the phrase that we will follow throughout this book:
+  </p>
+
+  <blockquote>
     <p>
-      If you would like to connect with ModernDive, check out the following links:
+      Programs must be written for people to read, and only incidentally for machines
+      to execute.
     </p>
+  </blockquote>
 
-    <p>
-      <ul>
-        <li>
-          <p>
-            If you would like to receive periodic updates about ModernDive (roughly every
-            6 months), please sign up for our
-            <url href="http://eepurl.com/cBkItf" visual="eepurl.com/cBkItf">mailing list</url>.
-          </p>
-        </li>
-        <li>
-          <p>
-            We're on X (formerly Twitter) at
-            <url href="https://x.com/ModernDive" visual="x.com/ModernDive">x.com/ModernDive</url>.
-          </p>
-        </li>
-      </ul>
-    </p>
-
-    <p>
-      If you would like to contribute to <em>ModernDive</em>, there are many ways! We
-      would love your help and feedback to make this book as great as possible! For
-      example, if you find any errors, typos, or areas for improvement, then please post
-      an issue on our
-      <url href="https://github.com/moderndive/moderndive_book/issues" visual="github.com/moderndive/moderndive_book/issues">GitHub issues</url>
-      page. If you are familiar with GitHub and would like to contribute, see the
-      <q>About this book</q> section.
-    </p>
-  </paragraphs>
-
+  <p>
+    We understand that there may be challenging moments as you learn to program. Both of
+    us continue to struggle and find ourselves often using web searches to find answers
+    and reach out to colleagues for help. In the long run though, we all can solve
+    problems faster and more elegantly via programming. We wrote this book as our way
+    to help you get started and you should know that there is a huge community of R
+    users that are happy to help everyone along as well. This community exists in
+    particular on the internet on various forums and websites such as
+    <url href="https://stackoverflow.com/" visual="stackoverflow.com">stackoverflow.com</url>.
+  </p>
 
   <!-- ============================================================ -->
-  <paragraphs xml:id="preface-acknowledgements">
-    <title>Acknowledgements</title>
+  <p><alert>Data/science pipeline</alert></p>
 
-    <p>
-      The authors would like to thank
-      <url href="https://github.com/nsonneborn" visual="github.com/nsonneborn">Nina Sonneborn</url>,
-      <url href="https://alison.rbind.io/" visual="alison.rbind.io">Dr. Alison Hill</url>,
-      Kristin Bott, Dr. Jenny Smetzer,
-      <url href="https://www.smith.edu/academics/faculty/katherine-kinnaird" visual="smith.edu/academics/faculty/katherine-kinnaird">Prof. Katherine Kinnaird</url>,
-      and the participants of our
-      <url href="https://www.causeweb.org/cause/uscots/uscots17/workshop/3" visual="causeweb.org/cause/uscots/uscots17/workshop/3">2017</url>
-      and
-      <url href="https://www.causeweb.org/cause/uscots/uscots19/workshop/4" visual="causeweb.org/cause/uscots/uscots19/workshop/4">2019</url>
-      USCOTS workshops for their feedback and suggestions.
-      We'd also like to thank
-      <url href="https://twitter.com/andrewheiss" visual="twitter.com/andrewheiss">Dr. Andrew Heiss</url>
-      for contributing nearly all of the subsection on <q>Errors, warnings, and
-      messages,</q>
-      <url href="https://github.com/echasnovski" visual="github.com/echasnovski">Evgeni Chasnovski</url>
-      for creating the <c>geom_parallel_slopes()</c> extension to the <c>ggplot2</c>
-      package for plotting parallel slopes models, and Smith College Statistical &amp; Data
-      Sciences students
-      <url href="https://github.com/Starryz" visual="github.com/Starryz">Starry Zhou</url>
-      and
-      <url href="https://github.com/mariumtapal" visual="github.com/mariumtapal">Marium Tapal</url>
-      for their many edits to the book.
-      A special thanks goes to Dr. Jude Weinstein-Jones, co-founder of
-      <url href="https://www.learningscientists.org" visual="learningscientists.org">The Learning Scientists</url>,
-      for their extensive feedback.
-      Much appreciation also goes to Jasmin Lörchner for her thorough read, continued
-      support, and thoughtful edits for the second edition of this book!
-    </p>
+  <p>
+    You may think of statistics as just being a bunch of numbers. We commonly hear the
+    phrase <q>statistician</q> when listening to broadcasts of sporting events.
+    Statistics (in particular, data analysis), in addition to describing numbers like
+    with baseball batting averages, plays a vital role in all of the sciences.
+  </p>
 
-    <p>
-      We were honored to have
-      <url href="https://mcconville.rbind.io/" visual="mcconville.rbind.io">Dr. Kelly S. McConville</url>
-      write the <xref ref="foreword" text="title"/> of both editions of the book.
-      Dr. McConville is a pioneer in statistics education and was a source of great
-      inspiration to both of us as we continued to update the book to get it to its current
-      form. Thanks additionally to the
-      <url href="https://github.com/moderndive/ModernDive_book/graphs/contributors" visual="github.com/moderndive/ModernDive_book/graphs/contributors">continued contributions by members of the community</url>
-      to the book on GitHub and to the many individuals that have recommended this book to
-      others. We are so very appreciative of all of you!
-    </p>
+  <p>
+    You'll commonly hear the phrase <q>statistically significant</q> thrown around in
+    the media. You'll see articles that say, <q>Science now shows that chocolate is
+    good for you.</q> Underpinning these claims is data analysis. By the end of this
+    book, you'll be able to better understand whether these claims should be trusted or
+    whether we should be wary. Inside data analysis are many sub-fields that we will
+    discuss throughout this book (though not necessarily in this order):
+  </p>
 
-    <p>
-      Lastly, a special shout out to any student who has ever taken a class with us at
-      Pacific University, Reed College, Middlebury College, Amherst College, Smith College,
-      or Indiana University. We couldn't have made this book without you!
-    </p>
-  </paragraphs>
+  <p>
+    <ul>
+      <li><p>data collection</p></li>
+      <li><p>data wrangling</p></li>
+      <li><p>data visualization</p></li>
+      <li><p>statistical modeling</p></li>
+      <li><p>inference</p></li>
+      <li><p>correlation and regression</p></li>
+      <li><p>interpretation of results</p></li>
+      <li><p>data communication/storytelling</p></li>
+    </ul>
+  </p>
 
+  <p>
+    These sub-fields are summarized in what Garrett Grolemund and Hadley Wickham have
+    previously termed the
+    <url href="http://r4ds.had.co.nz/explore-intro.html" visual="r4ds.had.co.nz/explore-intro.html"><q>data/science pipeline.</q></url>
+  </p>
+
+  <figure xml:id="fig-preface-pipeline">
+    <caption>Data/science pipeline.</caption>
+    <image source="images/r4ds/data_science_pipeline.png" width="100%">
+      <description>
+        A diagram showing the data science pipeline: Import, Tidy, Transform,
+        Visualize, Model, and Communicate, with Understand encompassing Transform,
+        Visualize, and Model.
+      </description>
+    </image>
+  </figure>
+
+  <p>
+    We will begin by digging into the grey <em>Understand</em> portion of the cycle
+    with data visualization, then with a discussion on what is meant by tidy data and
+    data wrangling, and then conclude by talking about interpreting and discussing the
+    results of our models via <em>Communication</em>. These steps are vital to any
+    statistical analysis. But, why should you care about statistics?
+  </p>
+
+  <p>
+    There's a reason that many fields require a statistics course. Scientific knowledge
+    grows through an understanding of statistical significance and data analysis. You
+    needn't be intimidated by statistics. It's not the beast that it used to be and,
+    paired with computation, you'll see how reproducible research in the sciences
+    particularly increases scientific knowledge.
+  </p>
 
   <!-- ============================================================ -->
-  <paragraphs xml:id="preface-about-this-book">
-    <title>About this book</title>
+  <p><alert>Reproducible research</alert></p>
 
-    <p>
-      This book was originally written using the
-      <url href="https://bookdown.org/" visual="bookdown.org">bookdown</url>
-      package <xref ref="biblio-R-bookdown"/> by Yihui Xie. The R Markdown source code of ModernDive is available on
-      GitHub:
-    </p>
+  <blockquote>
+    <p>The most important tool is the <em>mindset</em>, when starting, that the end
+    product will be reproducible.</p>
+    <attribution>Keith Baggerly</attribution>
+  </blockquote>
 
-    <p>
-      <ul>
-        <li>
-          <p>
-            <alert>Latest online version:</alert>
-            Errata and updates will be made to the online text. They will be tracked on
-            GitHub via the NEWS.md file at
-            <url href="https://github.com/moderndive/ModernDive_book/blob/v2/NEWS.md" visual="github.com/moderndive/ModernDive_book/blob/v2/NEWS.md">github.com/moderndive/ModernDive_book</url>.
-            Available at
-            <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
-          </p>
-        </li>
-        <li>
-          <p>
-            <alert>Print second edition:</alert>
-            The CRC Press print edition corresponds to Version 2.0.0 and released on
-            March 20, 2025. We welcomed Dr. Arturo Valdivia as a co-author for this
-            edition. His deep knowledge of statistics and superb teaching experience have
-            been invaluable in improving the book.
-          </p>
-        </li>
-        <li>
-          <p>
-            <alert>Print first edition:</alert>
-            The CRC Press
-            <url href="https://www.routledge.com/Statistical-Inference-via-Data-Science-A-ModernDive-into-R-and-the-Tidyverse/Ismay-Kim/p/book/9780367409821" visual="routledge.com">print edition</url>
-            of <em>ModernDive</em> corresponds to Version 1.1.0. Available at
-            <url href="https://moderndive.com/" visual="moderndive.com">moderndive.com</url>.
-          </p>
-        </li>
-      </ul>
-    </p>
+  <p>
+    Another goal of this book is to help readers understand the importance of
+    reproducible analyses. The hope is to get readers into the habit of making their
+    analyses reproducible from the very beginning. This means we'll be trying to help
+    you build new habits. This will take practice and be difficult at times. You'll see
+    just why it is so important for you to keep track of your code and document it well
+    to help yourself later and any potential collaborators as well.
+  </p>
 
-    <p>
-      Could this be a new paradigm for textbooks? Instead of the traditional model of
-      textbook companies publishing updated <em>editions</em> of the textbook every few
-      years, we apply a software design influenced model of publishing more easily updated
-      <em>versions</em>. We can then leverage open-source communities of instructors and
-      developers for ideas, tools, resources, and feedback. As such, we welcome your GitHub
-      pull requests.
-    </p>
+  <p>
+    Copying and pasting results from one program into a word processor is not an ideal
+    way to conduct efficient and effective scientific research. It's much more important
+    for time to be spent on data collection and data analysis and not on copying and
+    pasting plots back and forth across a variety of programs.
+  </p>
 
-    <p>
-      Finally, since this book is under a
-      <url href="https://creativecommons.org/licenses/by-nc-sa/4.0/" visual="creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution - NonCommercial – ShareAlike 4.0 license</url>,
-      feel free to modify the book as you wish for your own non-commercial needs, but
-      please list the authors at the top of <c>index.Rmd</c> as: <q>Chester Ismay, Albert
-      Y. Kim, Arturo Valdivia, and YOU!</q>
-    </p>
-  </paragraphs>
+  <blockquote>
+    <p>We are talking about <em>computational</em> reproducibility.</p>
+    <attribution>Yihui Xie</attribution>
+  </blockquote>
+
+  <p>
+    Reproducibility means a lot of things in terms of different scientific fields. Are
+    experiments conducted in a way that another researcher could follow the steps and
+    get similar results? In this book, we will focus on what is known as
+    <term>computational reproducibility</term>. This refers to being able to pass all
+    of one's data analysis, datasets, and conclusions to someone else and have them get
+    exactly the same results on their machine. This allows for time to be spent
+    interpreting results and considering assumptions instead of the more error prone way
+    of starting from scratch or following a list of steps that may be different from
+    machine to machine.
+  </p>
+
   <!-- ============================================================ -->
-  <references xml:id="preface-references">
-    <title>References</title>
+  <p><alert>Final note for students</alert></p>
 
-    <biblio type="raw" xml:id="biblio-hester2011">
-      Laura M. Chihara and Tim C. Hesterberg.
-      <pubtitle>Mathematical Statistics with Resampling and R</pubtitle>.
-      First Edition. John Wiley &amp; Sons, Hoboken, NJ, 2011.
-      <url href="https://github.com/lchihara/MathStatsResamplingR/tree/main"
-           visual="github.com/lchihara/MathStatsResamplingR"/>.
-    </biblio>
+  <p>
+    At this point, if you are interested in instructor perspectives on this book, ways
+    to contribute and collaborate, or the technical details of this book's construction
+    and publishing, then continue with the rest of the chapter. Otherwise, let's get
+    started with R and RStudio in <xref ref="ch-getting-started"/>!
+  </p>
 
-    <biblio type="raw" xml:id="biblio-isrs2014">
-      David M. Diez, Christopher D. Barr, and Mine Çetinkaya-Rundel.
-      <pubtitle>Introductory Statistics with Randomization and Simulation</pubtitle>.
-      First Edition. CreateSpace Independent Publishing Platform, 2014.
-      <url href="https://www.openintro.org/stat/textbook.php?stat_book=isrs"
-           visual="openintro.org/stat/textbook.php?stat_book=isrs"/>.
-    </biblio>
+  <!-- ============================================================ -->
+  <p><alert>Introduction for instructors</alert></p>
 
-    <biblio type="raw" xml:id="biblio-rds2016">
-      Garrett Grolemund and Hadley Wickham.
-      <pubtitle>R for Data Science</pubtitle>.
-      First Edition. O'Reilly Media, Sebastopol, CA, 2017.
-      <url href="https://r4ds.had.co.nz/" visual="r4ds.had.co.nz"/>.
-    </biblio>
+  <p>
+    Here are some resources and guidance for instructors wishing to use
+    <em>ModernDive</em> in their courses.
+  </p>
 
-    <biblio type="raw" xml:id="biblio-R-bookdown">
-      Yihui Xie.
-      <pubtitle>bookdown: Authoring Books and Technical Documents with R Markdown</pubtitle>.
-      Chapman and Hall/CRC, Boca Raton, Florida, 2016.
-      <url href="https://bookdown.org/yihui/bookdown/" visual="bookdown.org/yihui/bookdown"/>.
-    </biblio>
-  </references>
+  <!-- ============================================================ -->
+  <p><alert>Resources</alert></p>
+
+  <p>
+    Here are some resources to help you use <em>ModernDive</em>:
+  </p>
+
+  <p>
+    <ol>
+      <li>
+        <p>
+          We've included review questions posed as <em>Learning checks</em>. You can
+          find all the solutions to all <em>Learning checks</em> in the Appendices of
+          the online version of the book. The Appendices start at
+          <url href="https://moderndive.com/v2/appendixa" visual="moderndive.com/v2/appendixa">moderndive.com/v2/appendixa</url>.
+        </p>
+      </li>
+      <li>
+        <p>
+          Dr. Jenny Smetzer and Albert Y. Kim have written a series of labs and
+          problem sets. You can find them at
+          <url href="https://moderndive.com/labs" visual="moderndive.com/labs">moderndive.com/labs</url>.
+        </p>
+      </li>
+      <li>
+        <p>
+          You can see the webpages for two courses that use <em>ModernDive</em>:
+          <ul>
+            <li>
+              <p>
+                Smith College <q>SDS192 Introduction to Data Science</q>:
+                <url href="https://rudeboybert.github.io/SDS192/" visual="rudeboybert.github.io/SDS192">rudeboybert.github.io/SDS192</url>.
+              </p>
+            </li>
+            <li>
+              <p>
+                Smith College <q>SDS220 Introduction to Probability and Statistics</q>:
+                <url href="https://rudeboybert.github.io/SDS220/" visual="rudeboybert.github.io/SDS220">rudeboybert.github.io/SDS220</url>.
+              </p>
+            </li>
+          </ul>
+        </p>
+      </li>
+    </ol>
+  </p>
+
+  <!-- ============================================================ -->
+  <p><alert>Why did we write this book?</alert></p>
+
+  <p>
+    This book is inspired by
+  </p>
+
+  <p>
+    <ul>
+      <li><p><pubtitle>Mathematical Statistics with Resampling and R</pubtitle>
+        by Laura M. Chihara and Tim C. Hesterberg (2011)</p></li>
+      <li><p><pubtitle>OpenIntro: Intro Stat with Randomization and Simulation</pubtitle>
+        by David M. Diez, Christopher D. Barr, and Mine Çetinkaya-Rundel (2014)</p></li>
+      <li><p><pubtitle>R for Data Science</pubtitle>
+        by Garrett Grolemund and Hadley Wickham (2017)</p></li>
+    </ul>
+  </p>
+
+  <p>
+    The first book, designed for upper-level undergraduates and graduate students,
+    provides an excellent resource on how to use resampling to impart statistical
+    concepts like sampling distributions using computation instead of large-sample
+    approximations and other mathematical formulas. The last two books are free options
+    for learning about introductory statistics and data science, providing an
+    alternative to the many traditionally expensive introductory statistics textbooks.
+  </p>
+
+  <p>
+    When looking over the introductory statistics textbooks that currently exist, we
+    found there wasn't one that incorporated many newly developed R packages directly
+    into the text, in particular the many packages included in the
+    <url href="http://tidyverse.org/" visual="tidyverse.org"><c>tidyverse</c></url>
+    set of packages, such as <c>ggplot2</c>, <c>dplyr</c>, <c>tidyr</c>, and
+    <c>readr</c> that will be the focus of this book's first part on <q>Data Science
+    with <c>tidyverse</c>.</q>
+  </p>
+
+  <p>
+    Additionally, there wasn't an open-source and easily reproducible textbook
+    available that exposed new learners to all four of the learning goals we listed in
+    the <q>Introduction for students</q> subsection. We wanted to write a book that
+    could develop theory via computational techniques and help novices master the R
+    language in doing so.
+  </p>
+
+  <!-- ============================================================ -->
+  <p><alert>Who is this book for?</alert></p>
+
+  <p>
+    This book is intended for instructors of traditional introductory statistics classes
+    using RStudio, who would like to inject more data science topics into their
+    syllabus. RStudio can be used in either the server version or the desktop version.
+    We assume that students taking the class will have no prior algebra, no calculus,
+    nor programming/coding experience.
+  </p>
+
+  <p>
+    Here are some principles and beliefs we kept in mind while writing this text. If
+    you agree with them, this is the book for you.
+  </p>
+
+  <p>
+    <ol>
+      <li>
+        <p>
+          <alert>Blur the lines between lecture and lab.</alert>
+          With increased availability and accessibility of laptops and open-source
+          non-proprietary statistical software, the strict dichotomy between lab and
+          lecture can be loosened.
+          It's much harder for students to understand the importance of using software
+          if they only use it once a week or less. They forget the syntax in much the
+          same way someone learning a foreign language forgets the grammar rules.
+          Frequent reinforcement is key.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>Focus on the entire data/science research pipeline.</alert>
+          We believe that the entirety of Grolemund and Wickham's data/science pipeline
+          should be taught.
+          We heed George Cobb's call to <q>minimize prerequisites to research</q>:
+          students should be answering questions with data as soon as possible.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>It's all about the data.</alert>
+          We leverage R packages for rich, real, and realistic datasets that at the
+          same time are easy-to-load into R, such as the <c>nycflights23</c> and
+          <c>fivethirtyeight</c> packages.
+          We believe that data visualization is a <q>gateway drug</q> for statistics
+          and that the grammar of graphics as implemented in the <c>ggplot2</c> package
+          is the best way to impart such lessons.
+          <c>dplyr</c> has made data wrangling much more accessible to novices, and
+          hence much more interesting datasets can be explored.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>Use simulation/resampling to introduce statistical inference, not
+          probability/mathematical formulas.</alert>
+          Instead of using formulas, large-sample approximations, and probability
+          tables, we teach statistical concepts using simulation-based inference.
+          This allows for a de-emphasis of traditional probability topics, freeing up
+          room in the syllabus for other topics. Bridges to these mathematical concepts
+          are given as well to help with relation of these traditional topics with more
+          modern approaches.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>Don't fence off students from the computation pool, throw them in!</alert>
+          Computing skills are essential to working with data in the 21st century.
+          Given this fact, we feel that to shield students from computing is to
+          ultimately do them a disservice.
+          We are not teaching a course on coding/programming per se, but rather just
+          enough of the computational and algorithmic thinking necessary for data
+          analysis.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>Complete reproducibility and customizability.</alert>
+          We are frustrated when textbooks give examples, but not the source code and
+          the data itself. We give you the source code for all examples as well as the
+          whole book! While we have made choices to occasionally hide the code that
+          produces more complicated figures, reviewing the book's GitHub repository will
+          provide you with all the code.
+          Ultimately the best textbook is one you've written yourself. You know best
+          your audience, their background, and their priorities. Customization is the
+          ultimate end. We encourage you to take what we've provided and make it work
+          for your own needs.
+        </p>
+      </li>
+    </ol>
+  </p>
+
+  <!-- ============================================================ -->
+  <p><alert>Connect and contribute</alert></p>
+
+  <p>
+    If you would like to connect with ModernDive, check out the following links:
+  </p>
+
+  <p>
+    <ul>
+      <li>
+        <p>
+          If you would like to receive periodic updates about ModernDive (roughly every
+          6 months), please sign up for our
+          <url href="http://eepurl.com/cBkItf" visual="eepurl.com/cBkItf">mailing list</url>.
+        </p>
+      </li>
+      <li>
+        <p>
+          We're on X (formerly Twitter) at
+          <url href="https://x.com/ModernDive" visual="x.com/ModernDive">x.com/ModernDive</url>.
+        </p>
+      </li>
+    </ul>
+  </p>
+
+  <p>
+    If you would like to contribute to <em>ModernDive</em>, there are many ways! We
+    would love your help and feedback to make this book as great as possible! For
+    example, if you find any errors, typos, or areas for improvement, then please post
+    an issue on our
+    <url href="https://github.com/moderndive/moderndive_book/issues" visual="github.com/moderndive/moderndive_book/issues">GitHub issues</url>
+    page. If you are familiar with GitHub and would like to contribute, see the
+    <q>About this book</q> section.
+  </p>
+
+  <!-- ============================================================ -->
+  <p><alert>Acknowledgements</alert></p>
+
+  <p>
+    The authors would like to thank
+    <url href="https://github.com/nsonneborn" visual="github.com/nsonneborn">Nina Sonneborn</url>,
+    <url href="https://alison.rbind.io/" visual="alison.rbind.io">Dr. Alison Hill</url>,
+    Kristin Bott, Dr. Jenny Smetzer,
+    <url href="https://www.smith.edu/academics/faculty/katherine-kinnaird" visual="smith.edu/academics/faculty/katherine-kinnaird">Prof. Katherine Kinnaird</url>,
+    and the participants of our
+    <url href="https://www.causeweb.org/cause/uscots/uscots17/workshop/3" visual="causeweb.org/cause/uscots/uscots17/workshop/3">2017</url>
+    and
+    <url href="https://www.causeweb.org/cause/uscots/uscots19/workshop/4" visual="causeweb.org/cause/uscots/uscots19/workshop/4">2019</url>
+    USCOTS workshops for their feedback and suggestions.
+    We'd also like to thank
+    <url href="https://twitter.com/andrewheiss" visual="twitter.com/andrewheiss">Dr. Andrew Heiss</url>
+    for contributing nearly all of the subsection on <q>Errors, warnings, and
+    messages,</q>
+    <url href="https://github.com/echasnovski" visual="github.com/echasnovski">Evgeni Chasnovski</url>
+    for creating the <c>geom_parallel_slopes()</c> extension to the <c>ggplot2</c>
+    package for plotting parallel slopes models, and Smith College Statistical &amp; Data
+    Sciences students
+    <url href="https://github.com/Starryz" visual="github.com/Starryz">Starry Zhou</url>
+    and
+    <url href="https://github.com/mariumtapal" visual="github.com/mariumtapal">Marium Tapal</url>
+    for their many edits to the book.
+    A special thanks goes to Dr. Jude Weinstein-Jones, co-founder of
+    <url href="https://www.learningscientists.org" visual="learningscientists.org">The Learning Scientists</url>,
+    for their extensive feedback.
+    Much appreciation also goes to Jasmin Lörchner for her thorough read, continued
+    support, and thoughtful edits for the second edition of this book!
+  </p>
+
+  <p>
+    We were honored to have
+    <url href="https://mcconville.rbind.io/" visual="mcconville.rbind.io">Dr. Kelly S. McConville</url>
+    write the <xref ref="foreword" text="title"/> of both editions of the book.
+    Dr. McConville is a pioneer in statistics education and was a source of great
+    inspiration to both of us as we continued to update the book to get it to its current
+    form. Thanks additionally to the
+    <url href="https://github.com/moderndive/ModernDive_book/graphs/contributors" visual="github.com/moderndive/ModernDive_book/graphs/contributors">continued contributions by members of the community</url>
+    to the book on GitHub and to the many individuals that have recommended this book to
+    others. We are so very appreciative of all of you!
+  </p>
+
+  <p>
+    Lastly, a special shout out to any student who has ever taken a class with us at
+    Pacific University, Reed College, Middlebury College, Amherst College, Smith College,
+    or Indiana University. We couldn't have made this book without you!
+  </p>
+
+  <!-- ============================================================ -->
+  <p><alert>About this book</alert></p>
+
+  <p>
+    This book was originally written using the
+    <url href="https://bookdown.org/" visual="bookdown.org">bookdown</url>
+    package by Yihui Xie. The R Markdown source code of ModernDive is available on
+    GitHub:
+  </p>
+
+  <p>
+    <ul>
+      <li>
+        <p>
+          <alert>Latest online version:</alert>
+          Errata and updates will be made to the online text. They will be tracked on
+          GitHub via the NEWS.md file at
+          <url href="https://github.com/moderndive/ModernDive_book/blob/v2/NEWS.md" visual="github.com/moderndive/ModernDive_book/blob/v2/NEWS.md">github.com/moderndive/ModernDive_book</url>.
+          Available at
+          <url href="https://moderndive.com/v2/" visual="moderndive.com/v2">moderndive.com/v2</url>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>Print second edition:</alert>
+          The CRC Press print edition corresponds to Version 2.0.0 and released on
+          March 20, 2025. We welcomed Dr. Arturo Valdivia as a co-author for this
+          edition. His deep knowledge of statistics and superb teaching experience have
+          been invaluable in improving the book.
+        </p>
+      </li>
+      <li>
+        <p>
+          <alert>Print first edition:</alert>
+          The CRC Press
+          <url href="https://www.routledge.com/Statistical-Inference-via-Data-Science-A-ModernDive-into-R-and-the-Tidyverse/Ismay-Kim/p/book/9780367409821" visual="routledge.com">print edition</url>
+          of <em>ModernDive</em> corresponds to Version 1.1.0. Available at
+          <url href="https://moderndive.com/" visual="moderndive.com">moderndive.com</url>.
+        </p>
+      </li>
+    </ul>
+  </p>
+
+  <p>
+    Could this be a new paradigm for textbooks? Instead of the traditional model of
+    textbook companies publishing updated <em>editions</em> of the textbook every few
+    years, we apply a software design influenced model of publishing more easily updated
+    <em>versions</em>. We can then leverage open-source communities of instructors and
+    developers for ideas, tools, resources, and feedback. As such, we welcome your GitHub
+    pull requests.
+  </p>
+
+  <p>
+    Finally, since this book is under a
+    <url href="https://creativecommons.org/licenses/by-nc-sa/4.0/" visual="creativecommons.org/licenses/by-nc-sa/4.0">Creative Commons Attribution - NonCommercial &#x2013; ShareAlike 4.0 license</url>,
+    feel free to modify the book as you wish for your own non-commercial needs, but
+    please list the authors at the top of <c>index.Rmd</c> as: <q>Chester Ismay, Albert
+    Y. Kim, Arturo Valdivia, and YOU!</q>
+  </p>
 
 </preface>
