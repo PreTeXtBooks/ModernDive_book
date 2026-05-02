@@ -351,13 +351,10 @@ View(not_BTV_SEA)
       follows:
     </p>
 
-    <program language="r">
+    <console prompt="> ">
       <input>
 flights |&gt; filter(!dest == "BTV" | dest == "SEA")
       </input>
-    </program>
-
-    <console prompt="> ">
       <output>
 # A tibble: 431,896 × 19
     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
