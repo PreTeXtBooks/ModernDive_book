@@ -453,12 +453,11 @@
   <p>
     <ul>
       <li><p><pubtitle>Mathematical Statistics with Resampling and R</pubtitle>
-        by Laura M. Chihara and Tim C. Hesterberg (2011)
-        <url href="https://moderndive.com/v2/references.html#ref-hester2011" visual="moderndive.com/v2/references.html">[Chihara and Hesterberg 2011]</url></p></li>
+        by Laura M. Chihara and Tim C. Hesterberg (2011) <xref ref="bib-hester2011"/></p></li>
       <li><p><pubtitle>OpenIntro: Intro Stat with Randomization and Simulation</pubtitle>
-        by David M. Diez, Christopher D. Barr, and Mine Çetinkaya-Rundel (2014)</p></li>
+        by David M. Diez, Christopher D. Barr, and Mine Çetinkaya-Rundel (2014) <xref ref="bib-isrs2014"/></p></li>
       <li><p><pubtitle>R for Data Science</pubtitle>
-        by Garrett Grolemund and Hadley Wickham (2017)</p></li>
+        by Garrett Grolemund and Hadley Wickham (2017) <xref ref="bib-rds2016"/></p></li>
     </ul>
   </p>
 

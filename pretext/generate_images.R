@@ -18,6 +18,7 @@ suppressPackageStartupMessages({
   library(gridExtra)
   library(GGally)
   library(fivethirtyeight)
+  library(mvtnorm)
 })
 
 # Resolve the images output directory relative to this script's location
@@ -418,14 +419,43 @@ gapminder2022 <- un_member_states_2024 |>
   select(country, life_exp = life_expectancy_2022, continent, gdp_per_capita) |>
   na.omit()
 
-## 5.1 Scatterplot: fertility vs life expectancy ----------------
+## 5.1 Nine correlation coefficients ----------------------------
+set.seed(76)
+correlation <- c(-0.9999, -0.9, -0.75, -0.3, 0, 0.3, 0.75, 0.9, 0.9999)
+n_sim <- 100
+values <- NULL
+for (i in seq_along(correlation)) {
+  rho <- correlation[i]
+  sigma <- matrix(c(5, rho * sqrt(50), rho * sqrt(50), 10), 2, 2)
+  sim <- rmvnorm(
+    n = n_sim,
+    mean = c(20, 40),
+    sigma = sigma
+  ) |>
+    as.data.frame() |>
+    as_tibble() |>
+    mutate(correlation = round(rho, 2))
+  values <- bind_rows(values, sim)
+}
+p_correlation1 <- ggplot(data = values, mapping = aes(V1, V2)) +
+  geom_point() +
+  facet_wrap(~correlation, ncol = 3) +
+  labs(x = "x", y = "y") +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  )
+save_fig(p_correlation1, "fig-correlation1.png", width = 6, height = 5)
+
+## 5.2 Scatterplot: fertility vs life expectancy ----------------
 p_numxplot1 <- ggplot(un_data_ch5,
                       aes(x = life_exp, y = fert_rate)) +
   geom_point(alpha = 0.1) +
   labs(x = "Life Expectancy", y = "Fertility Rate")
 save_fig(p_numxplot1, "fig-numxplot1.png")
 
-## 5.2 Scatterplot with regression line -------------------------
+## 5.3 Scatterplot with regression line -------------------------
 p_numxplot3 <- ggplot(un_data_ch5, aes(x = life_exp, y = fert_rate)) +
   geom_point(alpha = 0.1) +
   labs(x = "Life Expectancy",
@@ -434,7 +464,7 @@ p_numxplot3 <- ggplot(un_data_ch5, aes(x = life_exp, y = fert_rate)) +
   geom_smooth(method = "lm", se = FALSE)
 suppressMessages(save_fig(p_numxplot3, "fig-numxplot3.png"))
 
-## 5.3 Scatterplot with annotated residual (Bosnia) -------------
+## 5.4 Scatterplot with annotated residual (Bosnia) -------------
 demographics_model <- lm(fert_rate ~ life_exp, data = un_data_ch5)
 bih_index <- which(un_data_ch5$iso == "BIH")
 bih_pt    <- get_regression_points(demographics_model) |> slice(bih_index)
@@ -455,14 +485,14 @@ p_numxplot4 <- ggplot(un_data_ch5, aes(x = life_exp, y = fert_rate)) +
   annotate("point", x = x_bih, y = y_bih, col = "red", size = 4)
 suppressMessages(save_fig(p_numxplot4, "fig-numxplot4.png"))
 
-## 5.4 Life expectancy histogram --------------------------------
+## 5.5 Life expectancy histogram --------------------------------
 p_lifeexp2022hist <- ggplot(gapminder2022, aes(x = life_exp)) +
   geom_histogram(binwidth = 5, color = "white") +
   labs(x = "Life expectancy", y = "Number of countries",
        title = "Histogram of distribution of worldwide life expectancies")
 suppressMessages(save_fig(p_lifeexp2022hist, "fig-lifeexp2022hist.png"))
 
-## 5.5 Faceted histogram by continent ---------------------------
+## 5.6 Faceted histogram by continent ---------------------------
 p_catxplot0b <- ggplot(gapminder2022, aes(x = life_exp)) +
   geom_histogram(binwidth = 5, color = "white") +
   labs(x = "Life expectancy", y = "Number of countries",
@@ -470,14 +500,14 @@ p_catxplot0b <- ggplot(gapminder2022, aes(x = life_exp)) +
   facet_wrap(~continent, nrow = 2)
 suppressMessages(save_fig(p_catxplot0b, "fig-catxplot0b.png", width = 8, height = 5))
 
-## 5.6 Boxplot by continent -------------------------------------
+## 5.7 Boxplot by continent -------------------------------------
 p_catxplot1 <- ggplot(gapminder2022, aes(x = continent, y = life_exp)) +
   geom_boxplot() +
   labs(x = "Continent", y = "Life expectancy",
        title = "Life expectancy by continent")
 save_fig(p_catxplot1, "fig-catxplot1.png", width = 7, height = 4)
 
-## 5.7 Best-fitting line: 4-panel residuals figure --------------
+## 5.8 Best-fitting line: 4-panel residuals figure --------------
 add_residual <- function(p, x, y, y_hat) {
   p +
     annotate("point", x = x, y = y, col = "red", size = 2) +
@@ -529,7 +559,7 @@ suppressMessages(
            "fig-best-fitting-line.png", width = 9, height = 6)
 )
 
-## 5.8 Three lines example --------------------------------------
+## 5.9 Three lines example --------------------------------------
 example_data <- tibble(x = c(0, 0.5, 1), y = c(2, 1, 3))
 p_three_lines <- ggplot(example_data, aes(x = x, y = y)) +
   geom_smooth(method = "lm", se = FALSE, fullrange = TRUE) +

@@ -185,7 +185,7 @@ UN_data_ch5 &lt;- un_member_states_2024 |&gt;
       </p>
 
       <p>
-        A full description of all the variables included in <c>un_member_states_2024</c> can be found by reading the associated help file (run <c>?un_member_states_2024</c> in the console). Let's describe only the variables we selected in <c>UN_data_ch5</c>:
+        A full description of all the variables included in <c>un_member_states_2024</c> can be found by reading the associated help file (run <url href="https://moderndive.github.io/moderndive/reference/un_member_states_2024.html"><c>?un_member_states_2024</c></url> in the console). Let's describe only the variables we selected in <c>UN_data_ch5</c>:
       </p>
       <ol>
         <li><p><c>iso</c>: An identification variable used to distinguish between the countries in the filtered dataset.</p></li>
@@ -298,7 +298,7 @@ UN_data_ch5 &lt;- un_member_states_2024 |&gt;
       </p>
 
       <p>
-        Typing all these summary statistic functions in <c>summarize()</c> would be long and tedious. Instead, we use the convenient <c>tidy_summary()</c><idx><h>R packages</h><h>moderndive</h><h>tidy_summary()</h></idx> function in the <c>moderndive</c> package. This function takes in a data frame, summarizes it, and returns commonly used summary statistics in tidy format. We take our <c>UN_data_ch5</c> data frame, <c>select()</c> only the outcome and explanatory variables <c>fert_rate</c> and <c>life_exp</c>, and pipe them into the <c>tidy_summary</c> function:
+        Typing all these summary statistic functions in <c>summarize()</c> would be long and tedious. Instead, we use the convenient <url href="https://moderndive.github.io/moderndive/reference/tidy_summary.html"><c>tidy_summary()</c></url><idx><h>R packages</h><h>moderndive</h><h>tidy_summary()</h></idx> function in the <c>moderndive</c> package. This function takes in a data frame, summarizes it, and returns commonly used summary statistics in tidy format. We take our <c>UN_data_ch5</c> data frame, <c>select()</c> only the outcome and explanatory variables <c>fert_rate</c> and <c>life_exp</c>, and pipe them into the <c>tidy_summary</c> function:
       </p>
 
       <console prompt="> ">
@@ -431,11 +431,22 @@ UN_data_ch5 &lt;- un_member_states_2024 |&gt;
       </ul>
 
       <p>
-        For example, a correlation coefficient of -0.75 indicates a negative linear relationship between <m>x</m> and <m>y</m>, but it is not as strong as the negative linear relationship when the correlation coefficient is -0.9 or -1.
+        <xref ref="fig-correlation1"/> gives examples of nine different correlation coefficient values for hypothetical numerical variables <m>x</m> and <m>y</m>.
+      </p>
+
+      <figure xml:id="fig-correlation1">
+        <caption>Nine different correlation coefficients.</caption>
+        <image source="images/fig-correlation1.png" width="90%">
+          <description>Nine scatterplots arranged in a 3-by-3 grid showing hypothetical x and y variables with correlation coefficients ranging from -0.9999 to 0.9999.</description>
+        </image>
+      </figure>
+
+      <p>
+        For example, observe in the top right plot that for a correlation coefficient of -0.75 there is a negative linear relationship between <m>x</m> and <m>y</m>, but it is not as strong as the negative linear relationship between <m>x</m> and <m>y</m> when the correlation coefficient is -0.9 or -1.
       </p>
 
       <p>
-        The correlation coefficient can be computed using the <c>get_correlation()</c><idx><h>R packages</h><h>moderndive</h><h>get_correlation()</h></idx> function in the <c>moderndive</c> package. In this case, the inputs to the function are the two numerical variables for which we want to calculate the correlation coefficient.
+        The correlation coefficient can be computed using the <url href="https://moderndive.github.io/moderndive/reference/get_correlation.html"><c>get_correlation()</c></url><idx><h>R packages</h><h>moderndive</h><h>get_correlation()</h></idx> function in the <c>moderndive</c> package. In this case, the inputs to the function are the two numerical variables for which we want to calculate the correlation coefficient.
       </p>
 
       <p>
@@ -545,7 +556,7 @@ ggplot(UN_data_ch5,
       </p>
 
       <p>
-        We build on the scatterplot in <xref ref="fig-numxplot1"/> by adding a <q>best-fitting</q> line: of all possible lines we can draw on this scatterplot, it is the line that <q>best</q> fits through the cloud of points. We do this by adding a new <c>geom_smooth(method = "lm", se = FALSE)</c> layer to the <c>ggplot()</c> code that created the scatterplot in <xref ref="fig-numxplot1"/>. The <c>method = "lm"</c> argument sets the line to be a <q><em>l</em>inear <em>m</em>odel.</q> The <c>se = FALSE</c><idx><h>R packages</h><h>ggplot2</h><h>geom_smooth()</h></idx> argument suppresses <em>standard error</em> uncertainty bars.
+        We build on the scatterplot in <xref ref="fig-numxplot1"/> by adding a <q>best-fitting</q> line: of all possible lines we can draw on this scatterplot, it is the line that <q>best</q> fits through the cloud of points. We do this by adding a new <c>geom_smooth(method = "lm", se = FALSE)</c> layer to the <c>ggplot()</c> code that created the scatterplot in <xref ref="fig-numxplot1"/>. The <c>method = "lm"</c> argument sets the line to be a <q><em>l</em>inear <em>m</em>odel.</q> The <c>se = FALSE</c><idx><h>R packages</h><h>ggplot2</h><h>geom_smooth()</h></idx> argument suppresses <em>standard error</em> uncertainty bars. (We'll define the concept of <em>standard error</em> later in <xref ref="sampling-variation"/>.)
       </p>
 
       <program language="r">
@@ -731,7 +742,7 @@ coef(demographics_model)
       <ul>
         <li><p><c>y</c> is the outcome variable, followed by a tilde <c>~</c>. In our case, <c>y</c> is set to <c>fert_rate</c>.</p></li>
         <li><p><c>x</c> is the explanatory variable. In our case, <c>x</c> is set to <c>life_exp</c>.</p></li>
-        <li><p>The combination of <c>y ~ x</c> is called a <em>model formula</em>. (Note the order of <c>y</c> and <c>x</c>.) In our case, the model formula is <c>fert_rate ~ life_exp</c>. We saw such model formulas earlier with the <c>get_correlation()</c> function in <xref ref="model1EDA"/>.</p></li>
+        <li><p>The combination of <c>y ~ x</c> is called a <em>model formula</em>. (Note the order of <c>y</c> and <c>x</c>.) In our case, the model formula is <c>fert_rate ~ life_exp</c>. We saw such model formulas earlier with the <url href="https://moderndive.github.io/moderndive/reference/get_correlation.html"><c>get_correlation()</c></url> function in <xref ref="model1EDA"/>.</p></li>
         <li><p><c>df_name</c> is the name of the data frame that contains the variables <c>y</c> and <c>x</c>. In our case, <c>data</c> is the <c>UN_data_ch5</c> data frame.</p></li>
       </ul>
 
@@ -1112,7 +1123,7 @@ gapminder2022 &lt;- un_member_states_2024 |&gt;
       </p>
 
       <p>
-        A full description of all the variables included in <c>un_member_states_2024</c> can be found by reading the associated help file (run <c>?un_member_states_2024</c> in the console). However, we fully describe only the 4 variables we selected in <c>gapminder2022</c>:
+        A full description of all the variables included in <c>un_member_states_2024</c> can be found by reading the associated help file (run <url href="https://moderndive.github.io/moderndive/reference/un_member_states_2024.html"><c>?un_member_states_2024</c></url> in the console). However, we fully describe only the 4 variables we selected in <c>gapminder2022</c>:
       </p>
       <ol>
         <li><p><c>country</c>: An identification variable of type character/text used to distinguish the countries in the dataset.</p></li>
