@@ -1512,9 +1512,37 @@ fruits_counted &lt;- tibble(
 
     <p>
       We see both the <c>fruits</c> and <c>fruits_counted</c> data frames represent the
-      same collection of fruit. Whereas <c>fruits</c> just lists the fruit individually,
-      <c>fruits_counted</c> has a variable <c>count</c> which represents the
-      <q>pre-counted</q> values of each fruit. Depending on how your categorical data is
+      same collection of fruit. Whereas <c>fruits</c> just lists the fruit individually...
+    </p>
+    <program language="r">
+      <input>
+# A tibble: 5 × 1
+  fruit 
+  &lt;chr&gt; 
+1 apple 
+2 apple 
+3 orange
+4 apple 
+5 orange
+      </input>
+    </program>
+
+<p>... <c>fruits_counted</c> has a variable <c>count</c> which represents the
+      <q>pre-counted</q> values of each fruit.
+</p>
+
+    <program language="r">
+      <input>
+# A tibble: 2 × 2
+  fruit  number
+  &lt;chr&gt;  &lt;dbl&gt;
+1 apple       3
+2 orange      2
+      </input>
+    </program>
+
+<p>
+Depending on how your categorical data is
       represented, you'll need to add a different <c>geom</c>etric layer type to your
       <c>ggplot()</c> to create a barplot, as we now explore.
     </p>
