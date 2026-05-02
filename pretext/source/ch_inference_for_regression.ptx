@@ -1328,7 +1328,8 @@ ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
           <em>I</em>ndependence, <em>N</em>ormality, and <em>E</em>quality of variance.
           When there are clear violations, remedial measures include variable transformations
           for non-linearity, linear mixed-effects models for non-independence, and weighted
-          least squares for non-constant variance.
+          least squares for non-constant variance. An example of such a variable transformation
+          is given in <xref ref="appendix-log10-transformations"/>.
         </p>
         <p>
           Checking that the assumptions of the model are satisfied is a key component of

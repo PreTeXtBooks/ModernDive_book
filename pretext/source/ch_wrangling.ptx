@@ -456,7 +456,8 @@ View(many_airports)
       (the middle value). Other examples of summary statistics that might not
       immediately come to mind include the <em>sum</em>, the smallest value also
       called the <em>minimum</em>, the largest value also called the
-      <em>maximum</em>, and the <em>standard deviation</em>.
+      <em>maximum</em>, and the <em>standard deviation</em>. See
+      <xref ref="appendix-stat-terms"/> for a glossary of such summary statistics.
     </p>
     <p>
       Let's calculate two summary statistics of the <c>wind_speed</c> variable in
@@ -2288,6 +2289,23 @@ named_dests |&gt;
 
     <subsection xml:id="sec-wrangling-additional-resources">
       <title>Additional resources</title>
+
+      <p>
+        In <xref ref="appendixC-wrangling"/>, we provide a page of data wrangling
+        <q>tips and tricks</q> consisting of the most common data wrangling questions
+        we've encountered in student projects. These include:
+        <ul>
+          <li><p>Dealing with missing values</p></li>
+          <li><p>Reordering bars in a barplot</p></li>
+          <li><p>Showing money on an axis</p></li>
+          <li><p>Changing values inside cells</p></li>
+          <li><p>Converting a numerical variable to a categorical one</p></li>
+          <li><p>Computing proportions</p></li>
+          <li><p>Dealing with %, commas, and dollar signs</p></li>
+        </ul>
+        However, to provide a tips and tricks page covering all possible data wrangling
+        questions would be too long to be useful!
+      </p>
 
       <p>
         If you want to further unlock the power of the <c>dplyr</c> package for
