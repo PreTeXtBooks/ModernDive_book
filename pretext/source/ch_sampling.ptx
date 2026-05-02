@@ -531,7 +531,8 @@ ggplot(virtual_prop_red, aes(x = prop_red)) +
         <p>
           With 1000 samples, the distribution is clearly symmetric and bell-shaped, closely
           approximated by a normal distribution. This is the sampling distribution of the sample
-          proportion for <m>n = 50</m>.
+          proportion for <m>n = 50</m>. Please read <xref ref="appendix-normal-curve"/> for a
+          brief discussion of this distribution and its properties.
         </p>
 
         <exercises>

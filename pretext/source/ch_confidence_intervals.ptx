@@ -505,7 +505,10 @@ almonds_sample_100 |&gt;
           density curve, we could use the mathematical technique from calculus known as integration
           to determine this area. In the case of the normal curve, the integral for any interval
           does not have a close-form solution, and the solution is calculated using numerical
-          approximations.
+          approximations. Please review <xref ref="appendix-normal-calculations"/> where we provide
+          R code to work with different areas, probabilities, and values under a normal density
+          curve. Here, we place focus on the insights of specific values and areas without
+          dedicating time to those calculations.
         </p>
         <p>
           We assume that a random variable <m>Z</m> follows a standard normal distribution. We
@@ -542,7 +545,9 @@ almonds_sample_100 |&gt;
           representing an experiment follows a normal distribution, the probability that the outcome
           of this experiment is within two standard deviations from the mean is 95.45%. It is also
           common practice to use the exact number of standard deviations that correspond to an area
-          around the mean exactly equal to 95% (instead of 95.45%). The result is that the area
+          around the mean exactly equal to 95% (instead of 95.45%). Please see
+          <xref ref="appendix-normal-calculations"/> to produce these or other calculations in R.
+          The result is that the area
           under the density curve around the mean that is exactly equal to 0.95, or 95%, is the
           area within 1.96 standard deviations from the mean. Remember this number as it will be
           used a few times in later sections.
@@ -785,7 +790,9 @@ almonds_sample_100 |&gt;
         gets closer to the standard normal density curve, or <m>z</m>-curve, in solid black, than
         the dotted blue <m>t</m> curve (<m>t</m> with 2 degrees of freedom). The greater the number
         of degrees of freedom, the closer the <m>t</m> density curve is from the <m>z</m> curve.
-        This change makes our calculations slightly different.
+        This change makes our calculations slightly different. Please see
+        <xref ref="appendix-normal-calculations"/> for calculations of probabilities for <m>t</m>
+        density curves with different degrees of freedom.
       </p>
       <p>
         Using that knowledge, the calculation for our specific example shows that 95% of the sample
