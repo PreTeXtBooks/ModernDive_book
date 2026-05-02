@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="ch-wrangling" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Data Wrangling</title>
-
+  <introduction>
   <p>
     So far in our journey, we've seen how to look at data saved in data frames using
     the <c>glimpse()</c> and <c>View()</c> functions in
@@ -87,7 +87,7 @@ library(nycflights23)
       </input>
     </program>
   </assemblage>
-
+  </introduction>
 
   <!-- ============================================================ -->
   <section xml:id="sec-piping">
