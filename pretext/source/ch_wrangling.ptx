@@ -1204,21 +1204,21 @@ flights &lt;- flights |&gt;
           <cell><c>arr_delay</c></cell>
           <cell><c>gain</c></cell>
         </row>
-        <row><cell>2</cell><cell>11</cell><cell>&#x2212;9</cell></row>
-        <row><cell>4</cell><cell>20</cell><cell>&#x2212;16</cell></row>
-        <row><cell>2</cell><cell>33</cell><cell>&#x2212;31</cell></row>
-        <row><cell>&#x2212;1</cell><cell>&#x2212;18</cell><cell>17</cell></row>
-        <row><cell>&#x2212;6</cell><cell>&#x2212;25</cell><cell>19</cell></row>
+        <row><cell>203</cell><cell>205</cell><cell>-2</cell></row>
+        <row><cell>78</cell><cell>53</cell><cell>25</cell></row>
+        <row><cell>47</cell><cell>34</cell><cell>13</cell></row>
+        <row><cell>173</cell><cell>166</cell><cell>7</cell></row>
+        <row><cell>228</cell><cell>211</cell><cell>17</cell></row>
       </tabular>
     </table>
 
     <p>
-      The flight in the first row departed 2 minutes late but arrived 11 minutes
-      late, so its <q>gained time in the air</q> is <m>2 - 11 = -9</m> minutes,
-      which is a loss of 9 minutes. On the other hand, the flight in the fourth row
-      departed 1 minute early (<c>dep_delay</c> of <m>-1</m>) and arrived 18 minutes
-      early (<c>arr_delay</c> of <m>-18</m>), so its gained time is
-      <m>-1 - (-18) = 17</m> minutes.
+      The flight in the first row departed 203 minutes late but arrived 205 minutes late,
+      so its “gained time in the air” is a gain of -2 minutes, hence its <c>gain</c> is 
+     <m>203 - 205 = -2</m>, which is a loss of 2 minutes. On the other hand, the flight in
+     the third row departed late (<c>dep_delay</c> of 47) but arrived 34 minutes late
+     (<c>arr_delay</c> of 34), so its “gained time in the air” is <m>47 - 34 = 13</m>
+     minutes, hence its <c>gain</c> is 13.
     </p>
     <p>
       Let's look at some summary statistics of the <c>gain</c> variable by
@@ -1253,6 +1253,8 @@ gain_summary
     </console>
 
     <p>
+      We see for example that the median gain is 11 minutes, while the largest is +101
+      minutes and the largest negative gain (or loss) at -321 minutes! 
       However, this code would take some time to type out in practice. We'll see later on
       in <xref ref="model1EDA"/> that there is a much more succinct way to compute a
       variety of common summary statistics using the <c>tidy_summary()</c> function from
