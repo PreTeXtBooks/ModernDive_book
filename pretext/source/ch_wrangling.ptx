@@ -351,10 +351,13 @@ View(not_BTV_SEA)
       follows:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 flights |&gt; filter(!dest == "BTV" | dest == "SEA")
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 431,896 × 19
     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
@@ -500,12 +503,15 @@ View(many_airports)
       <c>std_dev</c>:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 summary_windspeed &lt;- weather |&gt;
   summarize(mean = mean(wind_speed), std_dev = sd(wind_speed))
 summary_windspeed
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 2
    mean std_dev
@@ -538,13 +544,16 @@ summary_windspeed
       non-missing values of <c>wind_speed</c>:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 summary_windspeed &lt;- weather |&gt;
   summarize(mean = mean(wind_speed, na.rm = TRUE),
             std_dev = sd(wind_speed, na.rm = TRUE))
 summary_windspeed
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 2
    mean std_dev
@@ -656,13 +665,16 @@ summary_windspeed &lt;- weather |&gt;
       in the column:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 summary_temp &lt;- weather |&gt;
   summarize(mean = mean(wind_speed, na.rm = TRUE),
             std_dev = sd(wind_speed, na.rm = TRUE))
 summary_temp
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 2
    mean std_dev
@@ -680,7 +692,7 @@ summary_temp
       12 values of the variable <c>month</c>:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 summary_monthly_windspeed &lt;- weather |&gt;
   group_by(month) |&gt;
@@ -688,6 +700,9 @@ summary_monthly_windspeed &lt;- weather |&gt;
             std_dev = sd(wind_speed, na.rm = TRUE))
 summary_monthly_windspeed
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 12 × 3
    month  mean std_dev
@@ -728,10 +743,13 @@ summary_monthly_windspeed
       frame included in the <c>ggplot2</c> package:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 diamonds
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 53,940 × 10
    carat cut       color clarity depth table price     x     y     z
@@ -758,11 +776,14 @@ diamonds
       <c>diamonds</c> data frame into <c>group_by(cut)</c>:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 diamonds |&gt;
   group_by(cut)
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 53,940 × 10
 # Groups:   cut [5]
@@ -793,12 +814,15 @@ diamonds |&gt;
       <c>summarize()</c>, will the data actually be transformed.
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 diamonds |&gt;
   group_by(cut) |&gt;
   summarize(avg_price = mean(price))
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 5 × 2
   cut       avg_price
@@ -818,12 +842,15 @@ diamonds |&gt;
       function:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 diamonds |&gt;
   group_by(cut) |&gt;
   ungroup()
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 53,940 × 10
    carat cut       color clarity depth table price     x     y     z
@@ -854,13 +881,16 @@ diamonds |&gt;
       flights departed each of the three airports in New York City:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 by_origin &lt;- flights |&gt;
   group_by(origin) |&gt;
   summarize(count = n())
 by_origin
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 3 × 2
   origin  count
@@ -890,12 +920,15 @@ by_origin
         <c>group_by(origin, month)</c>:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 by_origin_monthly &lt;- flights |&gt;
   group_by(origin, month) |&gt;
   summarize(count = n())
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 `summarise()` has grouped output by 'origin'. You can override using the
 `.groups` argument.
@@ -921,10 +954,13 @@ by_origin_monthly &lt;- flights |&gt;
         to drop the last grouping variable, which in this case is <c>month</c>.
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 by_origin_monthly
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 36 × 3
 # Groups:   origin [3]
@@ -951,7 +987,7 @@ by_origin_monthly
         <c>group_by(month)</c>? Let's investigate:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 by_origin_monthly_incorrect &lt;- flights |&gt;
   group_by(origin) |&gt;
@@ -959,6 +995,9 @@ by_origin_monthly_incorrect &lt;- flights |&gt;
   summarize(count = n())
 by_origin_monthly_incorrect
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 12 × 2
    month count
@@ -1106,7 +1145,7 @@ weather &lt;- weather |&gt;
       <xref ref="sec-groupby"/>:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 summary_monthly_temp &lt;- weather |&gt;
   group_by(month) |&gt;
@@ -1114,6 +1153,9 @@ summary_monthly_temp &lt;- weather |&gt;
             mean_temp_in_C = mean(temp_in_C, na.rm = TRUE))
 summary_monthly_temp
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 12 × 3
    month mean_temp_in_F mean_temp_in_C
@@ -1184,7 +1226,7 @@ flights &lt;- flights |&gt;
       code:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 gain_summary &lt;- flights |&gt;
   summarize(
@@ -1199,6 +1241,9 @@ gain_summary &lt;- flights |&gt;
   )
 gain_summary
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 8
     min    q1 median    q3   max  mean    sd missing
@@ -1311,13 +1356,16 @@ flights &lt;- flights |&gt;
       for all domestic flights departing from New York City in 2023:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 freq_dest &lt;- flights |&gt;
   group_by(dest) |&gt;
   summarize(num_flights = n())
 freq_dest
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 118 × 2
    dest  num_flights
@@ -1343,11 +1391,14 @@ freq_dest
       flights (<c>num_flights</c>) instead:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 freq_dest |&gt;
   arrange(num_flights)
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 118 × 2
    dest  num_flights
@@ -1375,11 +1426,14 @@ freq_dest |&gt;
       <c>desc()</c> function as so:
     </p>
 
-    <console prompt="> ">
+    <program language="r">
       <input>
 freq_dest |&gt;
   arrange(desc(num_flights))
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 118 × 2
    dest  num_flights
@@ -1549,7 +1603,7 @@ View(flights_with_airport_names)
         about each destination airport:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 named_dests &lt;- flights |&gt;
   group_by(dest) |&gt;
@@ -1559,6 +1613,9 @@ named_dests &lt;- flights |&gt;
   rename(airport_name = name)
 named_dests
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 118 × 9
    dest  num_flights airport_name             lat    lon   alt    tz dst   tzone
@@ -1730,10 +1787,13 @@ View(joined_flights)
         running the <c>glimpse()</c> function from the <c>dplyr</c> package:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 glimpse(flights)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 Rows: 435,352
 Columns: 22
@@ -1769,11 +1829,14 @@ $ gain_per_hour  &lt;dbl&gt; -0.3269755, 13.8888889, 4.1052632, 3.8888889, 12.75
         <c>select()</c> these two variables:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 flights |&gt;
   select(carrier, flight)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 435,352 × 2
    carrier flight
@@ -1818,11 +1881,14 @@ flights_no_year &lt;- flights |&gt; select(-year)
         columns:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 flight_arr_times &lt;- flights |&gt; select(month:day, arr_time:sched_arr_time)
 flight_arr_times
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 435,352 × 4
    month   day arr_time sched_arr_time
@@ -1852,12 +1918,15 @@ flight_arr_times
         conditions. As examples:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 flights |&gt; select(starts_with("a"))
 flights |&gt; select(ends_with("delay"))
 flights |&gt; select(contains("time"))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 435,352 × 3
    arr_time arr_delay air_time
@@ -1913,12 +1982,15 @@ flights |&gt; select(contains("time"))
         <c>everything()</c> will pick up all remaining variables:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 flights_reorder &lt;- flights |&gt;
   select(year, month, day, hour, minute, time_hour, everything())
 glimpse(flights_reorder)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 Rows: 435,352
 Columns: 22
@@ -1962,12 +2034,15 @@ $ gain_per_hour  &lt;dbl&gt; -0.3269755, 13.8888889, 4.1052632, 3.8888889, 12.75
         can use the following code:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 flights_relocate &lt;- flights |&gt;
   relocate(hour, minute, time_hour, .after = day)
 glimpse(flights_relocate)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 Rows: 435,352
 Columns: 22
@@ -2010,13 +2085,16 @@ $ gain_per_hour  &lt;dbl&gt; -0.3269755, 13.8888889, 4.1052632, 3.8888889, 12.75
         <c>arrival_time</c> instead in the <c>flights_time_new</c> data frame:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 flights_time_new &lt;- flights |&gt;
   select(dep_time, arr_time) |&gt;
   rename(departure_time = dep_time, arrival_time = arr_time)
 glimpse(flights_time_new)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 Rows: 435,352
 Columns: 2
@@ -2052,10 +2130,13 @@ $ arrival_time   &lt;int&gt; 328, 228, 500, 238, 223, 808, 948, 645, 926, 845, 9
         help file for <c>top_n()</c> by running <c>?top_n</c> for more information.
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 named_dests |&gt; top_n(n = 10, wt = num_flights)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 10 × 9
    dest  num_flights airport_name             lat    lon   alt    tz dst   tzone
@@ -2078,12 +2159,15 @@ named_dests |&gt; top_n(n = 10, wt = num_flights)
         <c>num_flights</c>:
       </p>
 
-      <console prompt="> ">
+      <program language="r">
         <input>
 named_dests |&gt;
   top_n(n = 10, wt = num_flights) |&gt;
   arrange(desc(num_flights))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 10 × 9
    dest  num_flights airport_name             lat    lon   alt    tz dst   tzone
