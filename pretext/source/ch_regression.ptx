@@ -2199,6 +2199,11 @@ regression_points |&gt;
       <title>Additional resources</title>
 
       <p>
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/05-regression.R">here</url>.
+      </p>
+
+      <p>
         As we suggested in <xref ref="model1EDA"/>, interpreting coefficients that are not close to the extreme values of -1, 0, and 1 can be somewhat subjective. To help develop your sense of correlation coefficients, we suggest you play the 80s-style video game called, <q>Guess the Correlation,</q> at <url href="http://guessthecorrelation.com/">http://guessthecorrelation.com/</url> previewed in <xref ref="fig-guess-the-correlation"/>.
       </p>
 

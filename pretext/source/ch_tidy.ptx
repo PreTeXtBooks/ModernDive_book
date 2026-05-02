@@ -1338,6 +1338,11 @@ library(forcats)
       <title>Additional resources</title>
 
       <p>
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/04-tidy.R">here</url>.
+      </p>
+
+      <p>
         If you want to learn more about using the <c>readr</c> and
         <c>tidyr</c> package, we suggest that you check out RStudio's
         <q>Data Import Cheat Sheet.</q> In the current version of RStudio in

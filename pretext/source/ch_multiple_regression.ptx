@@ -1022,7 +1022,8 @@ get_regression_points(debt_model)
       <title>Additional resources</title>
 
       <p>
-        Solutions to all <em>Learning checks</em> can be found in the Appendices of the online version of the book at <url href="https://moderndive.com/v2/appendixa">https://moderndive.com/v2/appendixa</url>.
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/06-multiple-regression.R">here</url>.
       </p>
 
     </subsection>
