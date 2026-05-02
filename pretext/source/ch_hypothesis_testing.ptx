@@ -3077,6 +3077,11 @@ flights_sample |&gt;
       <title>Additional resources</title>
 
       <p>
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/09-hypothesis-testing.R">here</url>.
+      </p>
+
+      <p>
         If you want more examples of the <c>infer</c> workflow for conducting hypothesis tests,
         we suggest you check out the <c>infer</c> package homepage, in particular, a series of
         example analyses available at

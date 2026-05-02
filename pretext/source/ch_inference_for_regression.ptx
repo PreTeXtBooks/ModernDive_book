@@ -2694,6 +2694,15 @@ null_distribution_mlr |>
       </ol>
     </subsection>
 
+    <subsection xml:id="inference-for-regression-additional-resources">
+      <title>Additional resources</title>
+
+      <p>
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/10-inference-for-regression.R">here</url>.
+      </p>
+    </subsection>
+
     <subsection xml:id="what-is-to-come-ch10">
       <title>What's to come</title>
 

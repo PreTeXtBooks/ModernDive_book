@@ -2374,9 +2374,16 @@ named_dests |&gt;
       <title>Additional resources</title>
 
       <p>
+        An R script file of all R code used in this chapter is available
+        <url href="https://moderndive.com/v2/scripts/03-wrangling.R">here</url>.
+      </p>
+
+      <p>
         In <xref ref="appendixC-wrangling"/>, we provide a page of data wrangling
         <q>tips and tricks</q> consisting of the most common data wrangling questions
-        we've encountered in student projects. These include:
+        we've encountered in student projects (shout out to
+        <url href="https://www.scsparkscience.org/fellow/jennifer-smetzer/">Dr. Jenny
+        Smetzer</url> for her work setting this up!). These include:
         <ul>
           <li><p>Dealing with missing values</p></li>
           <li><p>Reordering bars in a barplot</p></li>
