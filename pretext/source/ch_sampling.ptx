@@ -61,10 +61,13 @@ library(infer)
         Let's explore it:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 bowl
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 2,400 × 2
    ball_ID color
@@ -88,11 +91,14 @@ bowl
         is <c>TRUE</c> if a ball is red and <c>FALSE</c> otherwise:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 bowl |&gt;
   mutate(is_red = (color == "red"))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 2,400 × 3
    ball_ID color is_red
@@ -116,12 +122,15 @@ bowl |&gt;
         <c>TRUE</c> counts as 1 and <c>FALSE</c> as 0):
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 bowl |&gt;
   mutate(is_red = (color == "red")) |&gt;
   summarize(num_red = sum(is_red))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 1
   num_red
@@ -135,12 +144,15 @@ bowl |&gt;
         bowl. We can compute the proportion by using <c>mean()</c> instead of <c>sum()</c>:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 bowl |&gt;
   mutate(is_red = (color == "red")) |&gt;
   summarize(prop_red = mean(is_red))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 1
   prop_red
@@ -154,11 +166,14 @@ bowl |&gt;
         because it computes the fraction of <c>TRUE</c> values. We can write this more concisely as:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 bowl |&gt;
   summarize(prop_red = mean(color == "red"))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 1
   prop_red
@@ -259,10 +274,13 @@ bowl |&gt;
           frame in the <c>moderndive</c> package:
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 tactile_prop_red
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 33 × 4
    group            replicate red_balls prop_red
@@ -1093,12 +1111,15 @@ virtual_prop_red_100 |&gt;
           <m>0/1</m> indicator of <q>red ball</q>:
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 bowl |&gt;
   mutate(is_red = color == "red") |&gt;
   summarize(p = mean(is_red), st_dev = sd(is_red))
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 1 × 2
       p st_dev
@@ -1121,11 +1142,14 @@ bowl |&gt;
           closed-form formula: <m>SD = \sqrt{p(1-p)}</m>. We can verify this:
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 p &lt;- 0.375
 sqrt(p * (1 - p))
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 [1] 0.4841229
           </output>
@@ -1179,11 +1203,14 @@ bowl |&gt;
           </me>
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 p &lt;- 0.375
 sqrt(p * (1 - p) / 100)
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 [1] 0.04841229
           </output>
@@ -1202,11 +1229,14 @@ virtual_prop_red_50 |&gt;
           </input>
         </program>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 sqrt(p * (1 - p) / 25)
 sqrt(p * (1 - p) / 50)
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 [1] 0.06846532
           </output>
@@ -1383,10 +1413,13 @@ sqrt(p * (1 - p) / 50)
         (in grams) of all 5000 almonds in a bowl:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_bowl
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 5,000 × 2
       ID weight
@@ -1405,13 +1438,16 @@ almonds_bowl
         </output>
       </console>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_bowl |&gt;
   summarize(mean_weight = mean(weight),
             sd_weight = sd(weight),
             length = n())
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 3
   mean_weight sd_weight length
@@ -1501,10 +1537,13 @@ ggplot(almonds_bowl, aes(x = weight)) +
         of 25 almonds:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 25 × 3
 # Groups:   replicate [1]
@@ -1545,10 +1584,13 @@ ggplot(almonds_sample, aes(x = weight)) +
         </image>
       </figure>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample |&gt; summarize(sample_mean_weight = mean(weight))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 2
   replicate sample_mean_weight
@@ -1645,10 +1687,13 @@ ggplot(virtual_mean_weight, aes(x = mean_weight)) +
         Bernoulli 0/1, the sample mean equals the sample proportion.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 25 × 3
 # Groups:   replicate [1]
@@ -1677,11 +1722,14 @@ almonds_sample
         </me>
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample |&gt;
   summarize(sample_mean_weight = mean(weight))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 2
   replicate sample_mean_weight
@@ -1755,11 +1803,14 @@ ggplot(virtual_mean_weight_100, aes(x = mean_weight)) +
         We can compute the population parameters and compare them to the simulation results:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_bowl |&gt;
   summarize(mu = mean(weight), sigma = sd(weight))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 2
      mu sigma

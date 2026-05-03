@@ -286,12 +286,15 @@ $ sqft_lot15    &lt;int&gt; 5650, 7639, 8062, 5000, 7503, 101930, 6819, 9711, 81
         the <c>moderndive</c> package we first used in <xref ref="model4EDA"/>, being sure
         to only <c>select()</c> the variables of interest for our model:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 house_prices |&gt;
   select(price, sqft_living, condition) |&gt;
   tidy_summary()
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 7 × 11
   column        n group type    min     Q1    mean median     Q3     max      sd
@@ -427,11 +430,14 @@ house_prices &lt;- house_prices |&gt;
         Let's display the before and after effects of this transformation on these
         variables for only the first 10 rows of <c>house_prices</c>:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 house_prices |&gt;
   select(price, log10_price, sqft_living, log10_size)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 21,613 × 4
      price log10_price sqft_living log10_size
@@ -641,11 +647,14 @@ ggplot(house_prices,
       <p>
         This can be further checked using <c>dplyr</c> and its <c>count()</c> function:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 house_prices |&gt;
   count(condition)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 5 × 2
   condition     n
@@ -843,10 +852,13 @@ get_regression_table(price_interaction)
         the regression line for the condition = 5 houses, being sure to <c>log10()</c> the
         square footage first.
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 2.45 + 1 * log10(1900)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 5.728754
         </output>
@@ -859,10 +871,13 @@ get_regression_table(price_interaction)
         dollar units of <c>price</c>, we need to un-log this by taking a power of 10.
         This described in <xref ref = "appendix-stat-terms"/> online.
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 10^(2.45 + 1 * log10(1900))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 535492.8
         </output>
@@ -900,6 +915,7 @@ get_regression_table(price_interaction)
 price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
 get_regression_table(price_interaction)
           </input>
+
          </program>
 <table xml:id="tab-price-interaction">
   <title>Regression table for interaction model (shown again)</title>
