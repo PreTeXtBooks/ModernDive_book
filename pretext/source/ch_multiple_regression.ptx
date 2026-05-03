@@ -315,7 +315,25 @@ coef(one_factor_model)
       </console>
 
       <p>
-        The first level, <c>Low income</c>, is the <q>baseline</q> group. The average fertility rate for <c>Low income</c> UN member states is <m>b_0</m>. Similarly, the average fertility rate for <c>Upper middle income</c> member states is <m>b_0 + b_3</m>.
+        We present these results in a table with the mathematical notation used above:
+      </p>
+
+      <table xml:id="tab-one-factor-coef">
+        <title>Regression coefficients for the one-factor model</title>
+        <tabular>
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row><cell><m>b_0</m></cell><cell>4.280</cell></row>
+          <row><cell><m>b_2</m></cell><cell>-1.299</cell></row>
+          <row><cell><m>b_3</m></cell><cell>-2.247</cell></row>
+          <row><cell><m>b_4</m></cell><cell>-2.653</cell></row>
+        </tabular>
+      </table>
+
+      <p>
+        The first level, <c>Low income</c>, is the <q>baseline</q> group. The average fertility rate for <c>Low income</c> UN member states is <m>b_0 = 4.280</m>. Similarly, the average fertility rate for <c>Upper middle income</c> member states is <m>b_0 + b_3 = 4.280 + (-2.247) = 2.033</m>.
       </p>
 
       <p>
@@ -380,13 +398,35 @@ life_exp:incomeUpper middle income         life_exp:incomeHigh income
       </console>
 
       <p>
-        We can match the coefficients with the values computed in the output above: the fitted fertility rate <m>\widehat{y} = \widehat{\text{fert rate}}</m> for <c>Low income</c> countries is
+        We present these results in a table with the mathematical notation:
+      </p>
+
+      <table xml:id="tab-interaction-coef">
+        <title>Regression coefficients for the interaction model</title>
+        <tabular>
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row><cell><m>b_0</m></cell><cell>11.918</cell></row>
+          <row><cell><m>b_{02}</m></cell><cell>-1.504</cell></row>
+          <row><cell><m>b_{03}</m></cell><cell>-1.893</cell></row>
+          <row><cell><m>b_{04}</m></cell><cell>-6.580</cell></row>
+          <row><cell><m>b_1</m></cell><cell>-0.118</cell></row>
+          <row><cell><m>b_{12}</m></cell><cell>0.013</cell></row>
+          <row><cell><m>b_{13}</m></cell><cell>0.011</cell></row>
+          <row><cell><m>b_{14}</m></cell><cell>0.072</cell></row>
+        </tabular>
+      </table>
+
+      <p>
+        We can match the coefficients with the values computed in <xref ref="tab-interaction-coef"/>: the fitted fertility rate <m>\widehat{y} = \widehat{\text{fert rate}}</m> for <c>Low income</c> countries is
       </p>
 
       <me>\widehat{\text{fert rate}} = b_0 + b_1\cdot x,</me>
 
       <p>
-        which is the equation of the regression line in <xref ref="fig-numxcatxplot1"/> for low income countries. The regression has an intercept of <m>b_0</m> and a slope of <m>b_1</m>. Since life expectancy is greater than zero for all countries, the intercept has no practical interpretation and we only need it to produce the most appropriate line. The interpretation of the slope is: for <c>Low income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>|b_1|</m> units.
+        which is the equation of the regression line in <xref ref="fig-numxcatxplot1"/> for low income countries. The regression has an intercept of <m>11.918</m> and a slope of <m>-0.118</m>. Since life expectancy is greater than zero for all countries, the intercept has no practical interpretation and we only need it to produce the most appropriate line. The interpretation of the slope is: for <c>Low income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>|b_1|</m> units.
       </p>
 
       <p>
@@ -396,11 +436,11 @@ life_exp:incomeUpper middle income         life_exp:incomeHigh income
       <me>\widehat{y} = \widehat{\text{fert rate}} = b_0 + b_1x + b_{04} + b_{14}x = (b_0 + b_{04}) + (b_1 + b_{14})x</me>
 
       <p>
-        where <m>x</m> is life expectancy, <c>life_exp</c>. The intercept is <c>(Intercept) + incomeHigh income</c>, that is <m>b_0 + b_{04}</m>, and the slope for these <c>High income</c> countries is <c>life_exp + life_exp:incomeHigh income</c> corresponding to <m>b_1 + b_{14}</m>.
+        where <m>x</m> is life expectancy, <c>life_exp</c>. The intercept is <c>(Intercept) + incomeHigh income</c>: <m>b_0 + b_{04} = 11.918 + (-6.580) = 5.338</m>, and the slope for these <c>High income</c> countries is <c>life_exp + life_exp:incomeHigh income</c> corresponding to <m>b_1 + b_{14} = -0.118 + 0.072 = -0.046</m>.
       </p>
 
       <p>
-        For <c>High income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>|b_1 + b_{14}|</m> units. The intercepts and slopes for other income levels are calculated similarly.
+        For <c>High income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>0.046</m> units. The intercepts and slopes for other income levels are calculated similarly.
       </p>
 
       <p>
@@ -528,7 +568,26 @@ incomeUpper middle income         incomeHigh income
       </console>
 
       <p>
-        In this model without interactions, the slope is the same for all the regression lines, <m>b_1</m>. Assuming that this model is correct, for any UN member state, every additional year of life expectancy reduces the average fertility rate by <m>|b_1|</m> units, regardless of the income level of the member state. The intercept of the regression line for <c>Low income</c> member states is <m>b_0</m> while for <c>High income</c> member states is <m>b_0 + b_{04}</m>. The intercepts for other income levels can be determined similarly. We compare the visualizations for both models side-by-side in <xref ref="fig-numxcatx-comparison"/>.
+        We present these results in a table with the mathematical notation:
+      </p>
+
+      <table xml:id="tab-no-int-coef">
+        <title>Regression table for a model without interactions</title>
+        <tabular>
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row><cell><m>b_0</m></cell><cell>10.768</cell></row>
+          <row><cell><m>b_{02}</m></cell><cell>-0.719</cell></row>
+          <row><cell><m>b_{03}</m></cell><cell>-1.239</cell></row>
+          <row><cell><m>b_{04}</m></cell><cell>-1.067</cell></row>
+          <row><cell><m>b_1</m></cell><cell>-0.101</cell></row>
+        </tabular>
+      </table>
+
+      <p>
+        In this model without interactions presented in <xref ref="tab-no-int-coef"/>, the slope is the same for all the regression lines, <m>b_1 = -0.101</m>. Assuming that this model is correct, for any UN member state, every additional year of life expectancy reduces the average fertility rate by <m>0.101</m> units, regardless of the income level of the member state. The intercept of the regression line for <c>Low income</c> member states is <m>10.768</m> while for <c>High income</c> member states is <m>10.768 + (-1.067) = 9.701</m>. The intercepts for other income levels can be determined similarly. We compare the visualizations for both models side-by-side in <xref ref="fig-numxcatx-comparison"/>.
       </p>
 
       <figure xml:id="fig-numxcatx-comparison">
@@ -566,11 +625,27 @@ incomeUpper middle income         incomeHigh income
       <title>Observed responses, fitted values, and residuals</title>
 
       <p>
-        In this subsection, we work with the regression model with interactions. The coefficients for this model were found earlier and saved in <c>model_int</c>. We can use these coefficients to find the fitted values and residuals for any given observation. As an illustration, we chose two observations from the UN member states dataset — one <c>High income</c> country and one <c>Low income</c> country — and provide the values for the explanatory variables and response, as well as the fitted values and residuals.
+        In this subsection, we work with the regression model with interactions. The coefficients for this model were found earlier and saved in <c>model_int</c>, and are displayed in <xref ref="tab-interaction-coef"/>. We can use these coefficients to find the fitted values and residuals for any given observation. As an illustration, we chose two observations from the UN member states dataset, provided the values for the explanatory variables and response, as well as the fitted values and residuals:
       </p>
 
+      <table xml:id="tab-fitted-two-countries">
+        <title>Fitted values and residuals for two example countries</title>
+        <tabular>
+          <row header="yes">
+            <cell>ID</cell>
+            <cell>fert_rate</cell>
+            <cell>life_exp</cell>
+            <cell>income</cell>
+            <cell>fert_rate_hat</cell>
+            <cell>residual</cell>
+          </row>
+          <row><cell>1</cell><cell>1.3</cell><cell>83.1</cell><cell>High income</cell><cell>1.494</cell><cell>-0.194</cell></row>
+          <row><cell>2</cell><cell>5.4</cell><cell>59.1</cell><cell>Low income</cell><cell>4.916</cell><cell>0.484</cell></row>
+        </tabular>
+      </table>
+
       <p>
-        The fitted value, <m>\hat y</m>, called <c>fert_rate_hat</c> in the table, is the estimated value of the response determined by the regression line. This value is computed by using the values of the explanatory variables and the coefficients of the linear regression. In addition, recall the difference between the observed response value and the fitted value, <m>y - \hat y</m>, is called the residual.
+        The first observation is a <c>High income</c> country with a life expectancy of 83.1 years and an observed fertility rate equal to 1.3. The second observation is a <c>Low income</c> country with a life expectancy of 59.1 years and an observed fertility rate equal to 5.4. The fitted value, <c>fert_rate_hat</c>, is the estimated value of the response determined by the regression line. This value is computed by using the values of the explanatory variables and the coefficients of the linear regression. In addition, recall the difference between the observed response value and the fitted value, <m>y - \hat y</m>, is called the residual.
       </p>
 
       <p>
@@ -585,7 +660,7 @@ incomeUpper middle income         incomeHigh income
       </figure>
 
       <p>
-        We can generalize the study of fitted values and residuals for all the countries in the <c>UN_data_ch6</c> dataset, as shown in the output of the following code:
+        We can generalize the study of fitted values and residuals for all the countries in the <c>UN_data_ch6</c> dataset, as shown in Table <xref ref="tab-regression-points-un"/>:
       </p>
 
             <program language="r">
@@ -610,9 +685,28 @@ regression_points
  8     8       1.6     83.1 High income                  1.50    0.105
  9     9       1.5     82.3 High income                  1.53   -0.033
 10    10       1.6     74.2 Upper middle income          2.07   -0.469
-# ℹ 172 more rows
+# ℹ️ 172 more rows
         </output>
       </console>
+
+      <table xml:id="tab-regression-points-un">
+        <title>Regression points (First 10 out of 182 countries)</title>
+        <tabular>
+          <row header="yes">
+            <cell>ID</cell><cell>fert_rate</cell><cell>life_exp</cell><cell>income</cell><cell>fert_rate_hat</cell><cell>residual</cell>
+          </row>
+          <row><cell>1</cell><cell>4.3</cell><cell>53.6</cell><cell>Low income</cell><cell>5.56</cell><cell>-1.26</cell></row>
+          <row><cell>2</cell><cell>1.4</cell><cell>79.5</cell><cell>Upper middle income</cell><cell>1.50</cell><cell>-0.098</cell></row>
+          <row><cell>3</cell><cell>2.7</cell><cell>78.0</cell><cell>Lower middle income</cell><cell>2.16</cell><cell>0.544</cell></row>
+          <row><cell>4</cell><cell>5.0</cell><cell>62.1</cell><cell>Lower middle income</cell><cell>3.84</cell><cell>1.16</cell></row>
+          <row><cell>5</cell><cell>1.6</cell><cell>77.8</cell><cell>High income</cell><cell>1.74</cell><cell>-0.139</cell></row>
+          <row><cell>6</cell><cell>1.9</cell><cell>78.3</cell><cell>Upper middle income</cell><cell>1.62</cell><cell>0.278</cell></row>
+          <row><cell>7</cell><cell>1.6</cell><cell>76.1</cell><cell>Upper middle income</cell><cell>1.86</cell><cell>-0.256</cell></row>
+          <row><cell>8</cell><cell>1.6</cell><cell>83.1</cell><cell>High income</cell><cell>1.50</cell><cell>0.105</cell></row>
+          <row><cell>9</cell><cell>1.5</cell><cell>82.3</cell><cell>High income</cell><cell>1.53</cell><cell>-0.033</cell></row>
+          <row><cell>10</cell><cell>1.6</cell><cell>74.2</cell><cell>Upper middle income</cell><cell>2.07</cell><cell>-0.469</cell></row>
+        </tabular>
+      </table>
 
       <exercises>
         <exercise xml:id="lc6-5">
@@ -703,8 +797,20 @@ glimpse(credit_ch6)
         </input>
       </program>
 
+      <console prompt="> ">
+        <output>
+Rows: 400
+Columns: 5
+$ debt          &lt;dbl&gt; 333, 903, 580, 964, 331, 1151, 203, 872, 279, 1350, 12…
+$ credit_limit  &lt;dbl&gt; 3606, 6645, 7075, 9504, 4897, 8047, 3388, 7114, 3300, …
+$ income        &lt;dbl&gt; 14.891, 106.025, 104.593, 148.924, 55.882, 80.180, 21.0…
+$ credit_rating &lt;int&gt; 283, 483, 514, 681, 357, 569, 259, 512, 266, 491, 589, …
+$ age           &lt;int&gt; 34, 82, 71, 36, 68, 77, 37, 87, 66, 41, 30, 64, 57, 49…
+        </output>
+      </console>
+
       <p>
-        Furthermore, we present a random sample of five out of the 400 credit card holders. As observed before, each time you run this code, a different subset of five rows is given.
+        Furthermore, we present a random sample of five out of the 400 credit card holders in Table <xref ref="tab-credit-sample"/>. As observed before, each time you run this code, a different subset of five rows is given.
       </p>
 
       <program language="r">
@@ -713,8 +819,22 @@ credit_ch6 |&gt; sample_n(size = 5)
         </input>
       </program>
 
+      <table xml:id="tab-credit-sample">
+        <title>Random sample of 5 credit card holders</title>
+        <tabular>
+          <row header="yes">
+            <cell>debt</cell><cell>credit_limit</cell><cell>income</cell><cell>credit_rating</cell><cell>age</cell>
+          </row>
+          <row><cell>333</cell><cell>3606</cell><cell>14.891</cell><cell>283</cell><cell>34</cell></row>
+          <row><cell>903</cell><cell>6645</cell><cell>106.025</cell><cell>483</cell><cell>82</cell></row>
+          <row><cell>580</cell><cell>7075</cell><cell>104.593</cell><cell>514</cell><cell>71</cell></row>
+          <row><cell>964</cell><cell>9504</cell><cell>148.924</cell><cell>681</cell><cell>36</cell></row>
+          <row><cell>331</cell><cell>4897</cell><cell>55.882</cell><cell>357</cell><cell>68</cell></row>
+        </tabular>
+      </table>
+
       <p>
-        Note that income is in thousands of dollars while debt and credit limit are in dollars. We can also compute summary statistics using the <c>tidy_summary()</c> function. We only <c>select()</c> the columns of interest for our model:
+        Note that income is in thousands of dollars while debt and credit limit are in dollars. We can also compute summary statistics using the <c>tidy_summary()</c> function. We only <c>select()</c> the columns of interest for our model, and the results are shown in Table <xref ref="tab-credit-summary"/>:
       </p>
 
       <program language="r">
@@ -722,6 +842,18 @@ credit_ch6 |&gt; sample_n(size = 5)
 credit_ch6 |&gt; select(debt, credit_limit, income) |&gt; tidy_summary()
         </input>
       </program>
+
+      <table xml:id="tab-credit-summary">
+        <title>Summary of credit data</title>
+        <tabular>
+          <row header="yes">
+            <cell>column</cell><cell>n</cell><cell>group</cell><cell>type</cell><cell>min</cell><cell>Q1</cell><cell>mean</cell><cell>median</cell><cell>Q3</cell><cell>max</cell><cell>sd</cell>
+          </row>
+          <row><cell>debt</cell><cell>400</cell><cell>NA</cell><cell>numeric</cell><cell>0</cell><cell>68.8</cell><cell>520.0</cell><cell>459.5</cell><cell>863.0</cell><cell>1999</cell><cell>459.8</cell></row>
+          <row><cell>credit_limit</cell><cell>400</cell><cell>NA</cell><cell>numeric</cell><cell>855</cell><cell>3088</cell><cell>4735.6</cell><cell>4622.5</cell><cell>5872.8</cell><cell>13913</cell><cell>2308.2</cell></row>
+          <row><cell>income</cell><cell>400</cell><cell>NA</cell><cell>numeric</cell><cell>10.4</cell><cell>21.0</cell><cell>45.2</cell><cell>33.1</cell><cell>57.5</cell><cell>186.6</cell><cell>35.2</cell></row>
+        </tabular>
+      </table>
 
       <p>
         The mean and median credit card <c>debt</c> are $520.0 and $459.5, respectively. The first quartile for <c>debt</c> is 68.8; this means that 25% of card holders had debts of $68.80 or less. Correspondingly, the mean and median credit card limit, <c>credit_limit</c>, are around $4,736 and $4,622, respectively. Note also that the third quartile of <c>income</c> is 57.5; so 75% of card holders had incomes below $57,500.
@@ -769,8 +901,21 @@ credit_ch6 |&gt; get_correlation(debt ~ income)
         </input>
       </program>
 
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 1
+    cor
+  &lt;dbl&gt;
+1 0.862
+# A tibble: 1 × 1
+    cor
+  &lt;dbl&gt;
+1 0.464
+        </output>
+      </console>
+
       <p>
-        Alternatively, using the <c>select()</c> verb and command <c>cor()</c> we can find all correlations simultaneously by returning a <em>correlation matrix</em><idx><h>correlation (coefficient)</h></idx>. This matrix shows the correlation coefficient for any pair of variables in the appropriate row/column combination.
+        Alternatively, using the <c>select()</c> verb and command <c>cor()</c> we can find all correlations simultaneously by returning the <em>correlation matrix</em><idx><h>correlation (coefficient)</h></idx> in Table <xref ref="tab-credit-correlation"/>. This matrix shows the correlation coefficient for any pair of variables in the appropriate row/column combination.
       </p>
 
       <program language="r">
@@ -778,6 +923,18 @@ credit_ch6 |&gt; get_correlation(debt ~ income)
 credit_ch6 |&gt; select(debt, credit_limit, income) |&gt; cor()
         </input>
       </program>
+
+      <table xml:id="tab-credit-correlation">
+        <title>Correlation matrix for credit card debt, credit limit, and income</title>
+        <tabular>
+          <row header="yes">
+            <cell></cell><cell>debt</cell><cell>credit_limit</cell><cell>income</cell>
+          </row>
+          <row><cell>debt</cell><cell>1.000</cell><cell>0.862</cell><cell>0.464</cell></row>
+          <row><cell>credit_limit</cell><cell>0.862</cell><cell>1.000</cell><cell>0.792</cell></row>
+          <row><cell>income</cell><cell>0.464</cell><cell>0.792</cell><cell>1.000</cell></row>
+        </tabular>
+      </table>
 
       <p>
         Let's look at some findings presented in the correlation matrix:
@@ -798,6 +955,15 @@ credit_ch6 |&gt; select(debt, credit_limit, income) |&gt; cor()
 credit_ch6 |&gt; get_correlation(debt ~ 1000 * income)
         </input>
       </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 1
+    cor
+  &lt;dbl&gt;
+1 0.464
+        </output>
+      </console>
 
       <p>
         The correlation is exactly the same.
@@ -870,6 +1036,30 @@ coef(debt_model)
         </input>
       </program>
 
+      <console prompt="> ">
+        <output>
+ (Intercept) credit_limit       income 
+ -385.179        0.264       -7.663 
+        </output>
+      </console>
+
+      <p>
+        We present these results in a table with the mathematical notation used above:
+      </p>
+
+      <table xml:id="tab-debt-model-coef">
+        <title>Regression coefficients for the credit card debt model</title>
+        <tabular>
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row><cell><m>b_0</m></cell><cell>-385.179</cell></row>
+          <row><cell><m>b_1</m></cell><cell>0.264</cell></row>
+          <row><cell><m>b_2</m></cell><cell>-7.663</cell></row>
+        </tabular>
+      </table>
+
       <ol>
         <li><p>We determine the linear regression coefficients using <c>lm(y ~ x1 + x2, data)</c> where <c>x1</c> and <c>x2</c> are the two numerical explanatory variables used.</p></li>
         <li><p>We extract the coefficients from the output using the <c>coef()</c> command.</p></li>
@@ -908,6 +1098,29 @@ simple_model &lt;- lm(debt ~ income, data = credit_ch6)
 coef(simple_model)
         </input>
       </program>
+
+      <console prompt="> ">
+        <output>
+(Intercept)      income 
+    246.515       6.048 
+        </output>
+      </console>
+
+      <p>
+        We present these results in a table with the mathematical notation:
+      </p>
+
+      <table xml:id="tab-simple-model-coef">
+        <title>Regression coefficients for the simple income model</title>
+        <tabular>
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row><cell><m>b_0'</m></cell><cell>246.515</cell></row>
+          <row><cell><m>b_2'</m></cell><cell>6.048</cell></row>
+        </tabular>
+      </table>
 
       <p>
         The regression line is given by the following with the coefficients denoted using the prime (<m>'</m>) designation since they are different values than what we saw previously:
@@ -1034,6 +1247,48 @@ get_regression_table(m_ca)
 get_regression_points(debt_model)
         </input>
       </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 400 × 6
+      ID  debt credit_limit income debt_hat residual
+   &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1   333         3606  14.891     453.    -120.  
+ 2     2   903         6645 106.025     558.     345.  
+ 3     3   580         7075 104.593     625.     -45.0 
+ 4     4   964         9504 148.924    1037.     -73.1 
+ 5     5   331         4897  55.882     466.    -135.  
+ 6     6  1151         8047  80.180     719.     432.  
+ 7     7   203         3388  20.960     365.    -162.  
+ 8     8   872         7114  71.408     651.     221.  
+ 9     9   279         3300  15.125     381.    -102.  
+10    10  1350         6819  71.061     619.     731.  
+# ℹ️ 390 more rows
+        </output>
+      </console>
+
+      <p>
+        In Table <xref ref="tab-regression-points-credit"/>, we present the first 10 rows:
+      </p>
+
+      <table xml:id="tab-regression-points-credit">
+        <title>Regression points (First 10 credit card holders out of 400)</title>
+        <tabular>
+          <row header="yes">
+            <cell>ID</cell><cell>debt</cell><cell>credit_limit</cell><cell>income</cell><cell>debt_hat</cell><cell>residual</cell>
+          </row>
+          <row><cell>1</cell><cell>333</cell><cell>3606</cell><cell>14.891</cell><cell>453.</cell><cell>-120.</cell></row>
+          <row><cell>2</cell><cell>903</cell><cell>6645</cell><cell>106.025</cell><cell>558.</cell><cell>345.</cell></row>
+          <row><cell>3</cell><cell>580</cell><cell>7075</cell><cell>104.593</cell><cell>625.</cell><cell>-45.0</cell></row>
+          <row><cell>4</cell><cell>964</cell><cell>9504</cell><cell>148.924</cell><cell>1037.</cell><cell>-73.1</cell></row>
+          <row><cell>5</cell><cell>331</cell><cell>4897</cell><cell>55.882</cell><cell>466.</cell><cell>-135.</cell></row>
+          <row><cell>6</cell><cell>1151</cell><cell>8047</cell><cell>80.180</cell><cell>719.</cell><cell>432.</cell></row>
+          <row><cell>7</cell><cell>203</cell><cell>3388</cell><cell>20.960</cell><cell>365.</cell><cell>-162.</cell></row>
+          <row><cell>8</cell><cell>872</cell><cell>7114</cell><cell>71.408</cell><cell>651.</cell><cell>221.</cell></row>
+          <row><cell>9</cell><cell>279</cell><cell>3300</cell><cell>15.125</cell><cell>381.</cell><cell>-102.</cell></row>
+          <row><cell>10</cell><cell>1350</cell><cell>6819</cell><cell>71.061</cell><cell>619.</cell><cell>731.</cell></row>
+        </tabular>
+      </table>
 
     </subsection>
 
