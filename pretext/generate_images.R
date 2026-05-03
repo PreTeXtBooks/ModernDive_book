@@ -885,17 +885,27 @@ suppressMessages(
   save_fig(hp_sz1 + hp_sz2, "fig-log10-size-viz.png", width = 8, height = 4)
 )
 
-## 11.4 Parallel slopes model ----------------------------------
+## 11.4 Interaction and parallel slopes models side-by-side ----
+p_hp_interaction <- ggplot(
+  house_prices,
+  aes(x = log10_size, y = log10_price, col = condition)
+) +
+  geom_point(alpha = 0.05) +
+  geom_smooth(method = "lm", se = FALSE) +
+  guides(color = "none") +
+  labs(y = "log10 price", x = "log10 size",
+       title = "House prices in Seattle")
 p_hp_parallel <- ggplot(
   house_prices,
   aes(x = log10_size, y = log10_price, col = condition)
 ) +
   geom_point(alpha = 0.05) +
   geom_parallel_slopes(se = FALSE) +
-  labs(y = "log10 price", x = "log10 size",
-       title = "House prices in Seattle")
-save_fig(p_hp_parallel, "fig-house-price-parallel-slopes.png",
-         width = 7, height = 5)
+  labs(y = NULL, x = "log10 size")
+suppressMessages(
+  save_fig(p_hp_interaction + p_hp_parallel, "fig-house-price-parallel-slopes-1.png",
+           width = 10, height = 5)
+)
 
 ## 11.5 Interaction model faceted ------------------------------
 p_hp_int2 <- ggplot(
