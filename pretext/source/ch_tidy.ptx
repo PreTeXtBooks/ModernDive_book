@@ -44,7 +44,7 @@
       already installed them). If needed, read <xref ref="sec-packages"/> for
       information on how to install and load R packages.
     </p>
-    <program language="r">
+    <console prompt="> ">
       <input>
 library(dplyr)
 library(ggplot2)
@@ -53,24 +53,19 @@ library(tidyr)
 library(nycflights23)
 library(fivethirtyeight)
       </input>
-    </program>
+      <output>
+Some larger datasets need to be installed separately, like senators and
+house_district_forecast. To install these, we recommend you install the
+fivethirtyeightdata package by running:
+install.packages('fivethirtyeightdata', repos =
+'https://fivethirtyeightdata.github.io/drat/', type = 'source')
+      </output>
+    </console>
     <p>
-      Note that when you load the <c>fivethirtyeight</c> package, you'll
-      receive the following message:
-    </p>
-    <blockquote>
-      <p>
-        Some larger datasets need to be installed separately, like senators and
-        house_district_forecast. To install these, we recommend you install the
-        fivethirtyeightdata package by running:
-        <c>install.packages('fivethirtyeightdata', repos =
-        'https://fivethirtyeightdata.github.io/drat/', type = 'source')</c>
-      </p>
-    </blockquote>
-    <p>
-      This message can be ignored for the purposes of this book, but if you'd
-      like to explore these larger datasets, you can install the
-      <c>fivethirtyeightdata</c> package as suggested.
+      Note that the message shown above from loading the
+      <c>fivethirtyeight</c> package can be ignored for the purposes of this
+      book, but if you'd like to explore these larger datasets, you can
+      install the <c>fivethirtyeightdata</c> package as suggested.
     </p>
   </introduction>
 
