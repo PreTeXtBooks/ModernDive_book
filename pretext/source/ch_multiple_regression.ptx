@@ -426,7 +426,7 @@ life_exp:incomeUpper middle income         life_exp:incomeHigh income
       <me>\widehat{\text{fert rate}} = b_0 + b_1\cdot x,</me>
 
       <p>
-        which is the equation of the regression line in <xref ref="fig-numxcatxplot1"/> for low income countries. The regression has an intercept of <m>11.918</m> and a slope of <m>-0.118</m>. Since life expectancy is greater than zero for all countries, the intercept has no practical interpretation and we only need it to produce the most appropriate line. The interpretation of the slope is: for <c>Low income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>|b_1|</m> units.
+        which is the equation of the regression line in <xref ref="fig-numxcatxplot1"/> for low income countries. The regression has an intercept of <m>11.918</m> and a slope of <m>-0.118</m>. Since life expectancy is greater than zero for all countries, the intercept has no practical interpretation and we only need it to produce the most appropriate line. The interpretation of the slope is: for <c>Low income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>0.118</m> units.
       </p>
 
       <p>
@@ -625,7 +625,7 @@ incomeUpper middle income         incomeHigh income
       <title>Observed responses, fitted values, and residuals</title>
 
       <p>
-        In this subsection, we work with the regression model with interactions. The coefficients for this model were found earlier and saved in <c>model_int</c>, and are displayed in <xref ref="tab-interaction-coef"/>. We can use these coefficients to find the fitted values and residuals for any given observation. As an illustration, we chose two observations from the UN member states dataset, provided the values for the explanatory variables and response, as well as the fitted values and residuals:
+        In this subsection, we work with the regression model with interactions. The coefficients for this model were found earlier and saved in <c>model_int</c>, and are displayed in <xref ref="tab-interaction-coef"/>. We can use these coefficients to find the fitted values and residuals for any given observation. As an illustration, we chose two observations from the UN member states dataset — one <c>High income</c> country (ID 1) and one <c>Low income</c> country (ID 2) — and provide the values for the explanatory variables and response, as well as the fitted values and residuals:
       </p>
 
       <table xml:id="tab-fitted-two-countries">
