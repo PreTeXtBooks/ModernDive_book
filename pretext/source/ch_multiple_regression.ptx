@@ -685,7 +685,7 @@ regression_points
  8     8       1.6     83.1 High income                  1.50    0.105
  9     9       1.5     82.3 High income                  1.53   -0.033
 10    10       1.6     74.2 Upper middle income          2.07   -0.469
-# ℹ️ 172 more rows
+# ℹ 172 more rows
         </output>
       </console>
 
@@ -1263,7 +1263,7 @@ get_regression_points(debt_model)
  8     8   872         7114  71.408     651.     221.  
  9     9   279         3300  15.125     381.    -102.  
 10    10  1350         6819  71.061     619.     731.  
-# ℹ️ 390 more rows
+# ℹ 390 more rows
         </output>
       </console>
 
