@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="multiple-regression" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Multiple Regression</title>
-
+  <introduction>
   <p>
     In <xref ref="regression"/>, we studied simple linear regression as a model that represents the relationship between two variables: an outcome variable or response <m>y</m> and an explanatory variable or regressor <m>x</m>. Furthermore, to keep things simple, we only considered models with one explanatory <m>x</m> variable that was either numerical in <xref ref="model1"/> or categorical in <xref ref="model2"/>.
   </p>
@@ -9,9 +9,8 @@
   <p>
     In this chapter, we introduce <term>multiple linear regression</term><idx><h>regression</h><h>multiple linear</h></idx>, the direct extension to simple linear regression when more than one explanatory variable is taken into account to explain changes in the outcome variable. As we show in the next few sections, much of the material developed for simple linear regression translates directly into multiple linear regression, but the interpretation of the associated effect of any one explanatory variable must be made taking into account the other explanatory variables included in the model.
   </p>
-
-  <subsection xml:id="mult-reg-packages">
-    <title>Needed packages</title>
+<p></p>
+    <alert>Needed packages</alert>
     <p>
       If needed, read <xref ref="sec-packages"/> for information on how to install and load R packages.
     </p>
@@ -22,7 +21,7 @@ library(moderndive)
 library(ISLR2)
       </input>
     </program>
-  </subsection>
+  </introduction>
 
 
   <!-- ============================================================ -->
