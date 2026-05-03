@@ -365,12 +365,16 @@ library(tibble)
         down piece-by-piece.
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay)) + 
   geom_point()
         </input>
-      </program>
+        <output>
+Warning: Removed 3 rows containing missing values or values outside the scale range 
+(`geom_point()`).
+        </output>
+      </console>
 
       <p>
         Within the <c>ggplot()</c>
@@ -404,11 +408,6 @@ ggplot(data = envoy_flights, mapping = aes(x = dep_delay, y = arr_delay)) +
           <description>Scatterplot showing arrival delay (y-axis) versus departure delay (x-axis) for Envoy Air flights from NYC in 2023. A dense cluster of points is visible near (0, 0) with a positive linear trend.</description>
         </image>
       </figure>
-
-      <pre>
-Warning: Removed 3 rows containing missing values or values outside the scale range 
-(`geom_point()`).
-      </pre>
 
       <p>
         Let's first unpack the graphic in <xref ref="fig-noalpha"/>. Observe that a
@@ -944,12 +943,16 @@ ggplot(data = early_january_2023_weather,
         the warning messages first.
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 ggplot(data = weather, mapping = aes(x = wind_speed)) +
   geom_histogram()
         </input>
-      </program>
+        <output>
+`stat_bin()` using `bins=30`. Pick better value with `binwidth`.
+Warning: Removed 1033 rows containing non-finite outside the scale range (`stat_bin()`).
+        </output>
+      </console>
 
       <figure xml:id="fig-weather-histogram">
         <caption>Histogram of hourly wind speeds at three NYC airports.</caption>
@@ -957,13 +960,6 @@ ggplot(data = weather, mapping = aes(x = wind_speed)) +
           <description>Histogram of hourly wind speed values from the NYC weather dataset using 30 bins (the default). The distribution is right-skewed.</description>
         </image>
       </figure>
-
-      <pre>
-`stat_bin()` using `bins=30`. Pick better value with `binwidth`.
-      </pre>
-      <pre>
-Warning: Removed 1033 rows containing non-finite outside the scale range (`stat_bin()`).
-      </pre>
 
       <p>
         The first message is telling us that the histogram was constructed using
@@ -1334,12 +1330,16 @@ ggplot(data = weather, mapping = aes(x = wind_speed)) +
         layer:
       </p>
 
-      <program language="r">
+      <console prompt="> ">
         <input>
 ggplot(data = weather, mapping = aes(x = month, y = wind_speed)) +
   geom_boxplot()
         </input>
-      </program>
+        <output>
+Warning message:
+1: Continuous x aesthetic -- did you forget aes(group=...)?
+        </output>
+      </console>
 
       <figure xml:id="fig-badbox">
         <caption>Invalid boxplot specification.</caption>
@@ -1347,11 +1347,6 @@ ggplot(data = weather, mapping = aes(x = month, y = wind_speed)) +
           <description>An incorrectly specified boxplot where month is treated as a continuous variable, resulting in a single wide box rather than 12 separate boxes.</description>
         </image>
       </figure>
-
-      <pre>
-Warning message:
-1: Continuous x aesthetic -- did you forget aes(group=...)?
-      </pre>
 
       <p>
         Observe in <xref ref="fig-badbox"/> that this plot does not provide information
@@ -1514,8 +1509,11 @@ fruits_counted &lt;- tibble(
       We see both the <c>fruits</c> and <c>fruits_counted</c> data frames represent the
       same collection of fruit. Whereas <c>fruits</c> just lists the fruit individually...
     </p>
-    <program language="r">
+    <console prompt="> ">
       <input>
+fruits
+      </input>
+      <output>
 # A tibble: 5 × 1
   fruit 
   &lt;chr&gt; 
@@ -1524,22 +1522,25 @@ fruits_counted &lt;- tibble(
 3 orange
 4 apple 
 5 orange
-      </input>
-    </program>
+      </output>
+    </console>
 
-<p>... <c>fruits_counted</c> has a variable <c>count</c> which represents the
+    <p>... <c>fruits_counted</c> has a variable <c>count</c> which represents the
       <q>pre-counted</q> values of each fruit.
-</p>
+    </p>
 
-    <program language="r">
+    <console prompt="> ">
       <input>
+fruits_counted
+      </input>
+      <output>
 # A tibble: 2 × 2
   fruit  number
   &lt;chr&gt;  &lt;dbl&gt;
 1 apple       3
 2 orange      2
-      </input>
-    </program>
+      </output>
+    </console>
 
 <p>
 Depending on how your categorical data is
