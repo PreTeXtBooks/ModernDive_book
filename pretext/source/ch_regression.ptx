@@ -898,7 +898,7 @@ coef(demographics_model)
 
       <p>
         We could repeat the previous calculations we performed by hand for all countries, but that would be tedious and time consuming. Instead, we use a computer with the <c>get_regression_points()</c> function. We apply the <c>get_regression_points()</c> function to <c>demographics_model</c>, which is where we saved our <c>lm()</c> model in the previous section.
-      In Table <xref ref = "tab-demo-model-1"</xref> we present the results of only the 21st through 24th courses for brevity.
+        In <xref ref = "tab-demo-model-1"/> we present the results of only the 21st through 24th courses for brevity.
       </p>
 
       <console prompt="> ">
