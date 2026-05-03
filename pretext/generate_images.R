@@ -19,6 +19,7 @@ suppressPackageStartupMessages({
   library(GGally)
   library(fivethirtyeight)
   library(mvtnorm)
+  library(ISLR2)
 })
 
 # Resolve the images output directory relative to this script's location
@@ -568,6 +569,103 @@ p_three_lines <- ggplot(example_data, aes(x = x, y = y)) +
               linetype = "dashed", linewidth = 1) +
   geom_point(size = 4)
 suppressMessages(save_fig(p_three_lines, "fig-three-lines.png", width = 5, height = 4))
+
+# ============================================================
+# Chapter 6: Multiple Regression
+# ============================================================
+
+## Data setup ---------------------------------------------------
+UN_data_ch6 <- un_member_states_2024 |>
+  select(country,
+         life_expectancy_2022,
+         fertility_rate_2022,
+         income_group_2024) |>
+  na.omit() |>
+  rename(life_exp = life_expectancy_2022,
+         fert_rate = fertility_rate_2022,
+         income = income_group_2024) |>
+  mutate(income = factor(income,
+                         levels = c("Low income", "Lower middle income",
+                                    "Upper middle income", "High income")))
+
+credit_ch6 <- Credit |>
+  as_tibble() |>
+  select(debt = Balance, credit_limit = Limit,
+         income = Income, credit_rating = Rating, age = Age)
+
+## 6.1 Colored scatterplot with interaction lines ---------------
+p_numxcatxplot1 <- ggplot(UN_data_ch6,
+                           aes(x = life_exp, y = fert_rate, color = income)) +
+  geom_point() +
+  labs(x = "Life Expectancy", y = "Fertility Rate", color = "Income group") +
+  geom_smooth(method = "lm", se = FALSE)
+suppressMessages(save_fig(p_numxcatxplot1, "numxcatxplot1.png", width = 7, height = 4))
+
+## 6.2 Parallel slopes model ------------------------------------
+p_numxcatx_parallel <- ggplot(UN_data_ch6,
+                               aes(x = life_exp, y = fert_rate, color = income)) +
+  geom_point() +
+  labs(x = "Life expectancy", y = "Fertility rate", color = "Income group") +
+  geom_parallel_slopes(se = FALSE)
+save_fig(p_numxcatx_parallel, "numxcatx-parallel.png", width = 7, height = 4)
+
+## 6.3 Side-by-side comparison of interaction vs parallel slopes -
+interaction_plot <- ggplot(UN_data_ch6,
+                            aes(x = life_exp, y = fert_rate, color = income)) +
+  geom_point() +
+  labs(x = "Life expectancy", y = "Fertility rate", color = "Income group") +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(legend.position = "none")
+parallel_slopes_plot <- ggplot(UN_data_ch6,
+                                aes(x = life_exp, y = fert_rate, color = income)) +
+  geom_point() +
+  labs(x = "Life expectancy", y = "Fertility rate", color = "Income group") +
+  geom_parallel_slopes(se = FALSE) +
+  theme(axis.title.y = element_blank())
+suppressMessages(
+  save_fig(interaction_plot + parallel_slopes_plot,
+           "numxcatx-comparison.png", width = 10, height = 4)
+)
+
+## 6.4 Fitted values for two example countries ------------------
+model_int_ch6 <- lm(fert_rate ~ income + life_exp + income:life_exp,
+                    data = UN_data_ch6)
+newpoints_ch6 <- get_regression_points(model_int_ch6,
+                                       newdata = slice(UN_data_ch6, c(41, 102)))
+p_fitted <- ggplot(UN_data_ch6,
+                   aes(x = life_exp, y = fert_rate, color = income)) +
+  geom_point() +
+  labs(x = "Life expectancy", y = "Fertility rate", title = "Interaction model") +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_vline(data = newpoints_ch6,
+             aes(xintercept = life_exp, col = income),
+             linetype = "dashed", linewidth = 1, show.legend = FALSE) +
+  geom_point(data = newpoints_ch6,
+             aes(x = life_exp, y = fert_rate_hat),
+             size = 3, show.legend = FALSE) +
+  geom_point(data = newpoints_ch6,
+             aes(x = life_exp, y = fert_rate),
+             size = 3, show.legend = FALSE)
+suppressMessages(save_fig(p_fitted, "fitted-values.png", width = 7, height = 5))
+
+## 6.5 Credit card debt vs credit limit and income --------------
+p_debt_vs_limit <- ggplot(credit_ch6, aes(x = credit_limit, y = debt)) +
+  geom_point() +
+  labs(x = "Credit limit (in $)", y = "Credit card debt (in $)",
+       title = "Debt and credit limit") +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_y_continuous(limits = c(0, 2000))
+p_debt_vs_income <- ggplot(credit_ch6, aes(x = income, y = debt)) +
+  geom_point() +
+  labs(x = "Income (in $1000)", y = "Credit card debt (in $)",
+       title = "Debt and income") +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_y_continuous(limits = c(0, 2000)) +
+  theme(axis.title.y = element_blank())
+suppressMessages(
+  save_fig(p_debt_vs_limit + p_debt_vs_income,
+           "2numxplot1.png", width = 9, height = 4)
+)
 
 # ============================================================
 # Chapter 10: Inference for Regression

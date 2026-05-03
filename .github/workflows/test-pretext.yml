@@ -40,7 +40,8 @@ jobs:
             pkgs <- c("ggplot2", "dplyr", "tibble", "tidyr", "readr",
                       "patchwork", "scales", "gapminder",
                       "nycflights23", "moderndive",
-                      "infer", "gridExtra", "GGally", "fivethirtyeight", "mvtnorm")
+                      "infer", "gridExtra", "GGally", "fivethirtyeight", "mvtnorm",
+                      "ISLR2")
             missing <- pkgs[!pkgs %in% rownames(installed.packages())]
             if (length(missing) > 0) {
               install.packages(missing, quiet = TRUE,
