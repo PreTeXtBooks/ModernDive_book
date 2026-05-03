@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="regression" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Simple Linear Regression</title>
-
+  <introduction>
   <p>
     We have introduced data visualization in <xref ref="ch-visualization"/>, data wrangling in <xref ref="ch-wrangling"/>, and data importing and <q>tidy</q> data in <xref ref="tidy"/>. In this chapter, we work with <term>regression</term>, a method that helps us study the relationship between an <em>outcome variable</em> or <em>response</em> and one or more <em>explanatory variables</em> or <em>regressors</em>.
     The method starts by proposing a <em>statistical model</em>. Data is then collected and used to estimate the coefficients or parameters for the model, and these results are typically used for two purposes:
@@ -48,9 +48,8 @@
   <p>
     We begin with regression with a single explanatory variable<idx><h>regression</h><h>basic</h></idx>. We also introduce the <em>correlation coefficient</em>, discuss <q>correlation versus causation,</q> and determine whether the model <em>fits</em> the data observed.
   </p>
-
-  <subsection xml:id="reg-packages">
-    <title>Needed packages</title>
+  <p></p>
+    <alert>Needed packages</alert>
     <p>
       We now load all the packages needed for this chapter (this assumes you've already installed them). In this chapter, we introduce some new packages:
     </p>
@@ -82,8 +81,7 @@ library(tidyverse)
 library(moderndive)
       </input>
     </program>
-  </subsection>
-
+  </introduction>
 
   <!-- ============================================================ -->
   <section xml:id="model1">
@@ -294,6 +292,9 @@ UN_data_ch5 |&gt;
 
       <p>
         Looking at this output, we can see how the values of both variables distribute.
+For example, the median fertility rate was 2, whereas the median life expectancy was 75.14 years. The middle 50% of fertility rates was between 1.6 and 3.2 (the first and third quartiles), and the middle 50% of life expectancies was from 69.36 to 78.31.
+</p>
+<p>
         The <c>tidy_summary()</c> function only returns what are known as <term>univariate</term><idx><h>univariate</h></idx> summary statistics: functions that take a single variable and return some numerical summary of that variable. However, there also exist <term>bivariate</term><idx><h>bivariate</h></idx> summary statistics: functions that take in two variables and return some summary of those two variables.
       </p>
 
@@ -408,6 +409,7 @@ ggplot(UN_data_ch5,
 
       <p>
         We do not see much for overplotting due to little to no overlap in the points. Most life expectancy entries appear to fall between 70 and 80 years, while most fertility rate entries fall between 1.5 and 3.5 births. Furthermore, while opinions may vary, it is our opinion that the relationship between fertility rate and life expectancy is <q>moderately negative.</q>
+        This is consistent with our earlier computed correlation coefficient of -0.812.
       </p>
 
       <p>
@@ -554,19 +556,22 @@ coef(demographics_model)
       <md>
         <mrow>\widehat{y} \amp= b_0 + b_1 \cdot x</mrow>
         <mrow>\widehat{\text{fertility\_rate}} \amp= b_0 + b_{\text{life\_expectancy}} \cdot \text{life\_expectancy}</mrow>
+        <mrow>\widehat{\text{fertility\_rate}} \amp= 12.599 + (-0.137) \cdot \text{life\_expectancy}</mrow>
       </md>
 
       <p>
-        The intercept <m>b_0</m> is the average fertility rate <m>\widehat{y} = \widehat{\text{fertility\_rate}}</m> for those countries that had a <c>life_exp</c> of 0. Or in graphical terms, where the line intersects the <m>y</m> axis for <m>x = 0</m>. Note, however, that while the <term>intercept</term><idx><h>regression</h><h>equation of a line</h><h>intercept</h></idx> of the regression line has a mathematical interpretation, it has no <em>practical</em> interpretation here, since observing a <c>life_exp</c> of 0 is impossible. Furthermore, looking at the scatterplot with the regression line in <xref ref="fig-numxplot3"/>, no countries had a life expectancy anywhere near 0.
+        The intercept <m>b_0 = 12.599</m> is the average fertility rate <m>\widehat{y} = \widehat{\text{fertility\_rate}}</m> for those countries that had a <c>life_exp</c> of 0.
+        Or in graphical terms, where the line intersects the <m>y</m> axis for <m>x = 0</m>. Note, however, that while the <term>intercept</term><idx><h>regression</h><h>equation of a line</h><h>intercept</h></idx> of the regression line has a mathematical interpretation, it has no <em>practical</em> interpretation here, since observing a <c>life_exp</c> of 0 is impossible. Furthermore, looking at the scatterplot with the regression line in <xref ref="fig-numxplot3"/>, no countries had a life expectancy anywhere near 0.
       </p>
 
       <p>
-        Of greater interest is the <term>slope</term><idx><h>regression</h><h>equation of a line</h><h>slope</h></idx> <m>b_{\text{life\_expectancy}}</m> for <c>life_exp</c>. This summarizes the relationship between the fertility rate and life expectancy variables. Note that the sign is negative, suggesting a negative relationship between these two variables. This means countries with higher life expectancies tend to have lower fertility rates. Recall that the correlation coefficient is negative. They both have the same negative sign, but have a different value. Recall also that the correlation's interpretation is the <q>strength of linear association.</q> The <term>slope's interpretation</term><idx><h>regression</h><h>interpretation of the slope</h></idx> is a little different:
-      </p>
+        Of greater interest is the <term>slope</term><idx><h>regression</h><h>equation of a line</h><h>slope</h></idx> <m>b_{\text{life\_expectancy}}</m> for <c>life_exp</c> of <m>-0.137</m>. 
+This summarizes the relationship between the fertility rate and life expectancy variables. Note that the sign is negative, suggesting a negative relationship between these two variables. This means countries with higher life expectancies tend to have lower fertility rates. Recall that the correlation coefficient is -0.812. They both have the same negative sign, but have a different value. Recall also that the correlation’s interpretation is the “strength of linear association.” The slope’s interpretation is a little different:
+</p>
 
       <blockquote>
         <p>
-          For every increase of 1 unit in <c>life_exp</c>, there is an <em>associated</em> decrease of, <em>on average</em>, some number of units of <c>fert_rate</c>.
+          For every increase of 1 unit in <c>life_exp</c>, there is an <em>associated</em> decrease of, <em>on average</em>, 0.137 units of <c>fert_rate</c>.
         </p>
       </blockquote>
 
@@ -575,7 +580,11 @@ coef(demographics_model)
       </p>
 
       <p>
-        Furthermore, we say that this associated decrease is <em>on average</em> because you might have two countries whose <c>life_exp</c> values differ by 1 unit, but their difference in fertility rates may not be exactly the slope value. What the slope is saying is that across all possible countries, the <em>average</em> difference in fertility rate between two countries whose life expectancies differ by one is the slope value.
+        Furthermore, we say that this associated decrease is <em>on average</em> 0.137 units because you might have two
+        countries whose <c>life_exp</c> values differ by 1 unit, but their difference in fertility rates
+        may not be exactly <m>-0.137</m>. What the slope of <m>-0.137</m> is saying is that across all
+        possible countries, the <em>average</em> difference in fertility rate between two countries whose
+        life expectancies differ by one is <m>-0.137</m>.
       </p>
 
       <p>
@@ -691,18 +700,32 @@ get_regression_table(m_obesity)
       <title>Observed/fitted values and residuals</title>
 
       <p>
-        We just saw how to get the value of the intercept and the slope of a regression line from the output of the <c>coef()</c> function. Now instead say we want information on individual observations. For example, we focus on the 21st of the countries in the <c>UN_data_ch5</c> data frame. This corresponds to the UN member state of Bosnia and Herzegovina (BIH).
+        We just saw how to get the value of the intercept and the slope of a regression line from the output of the <c>coef()</c> function. Now instead say we want information on individual observations. For example, we focus on the 21st of the countries in the <c>UN_data_ch5</c> data frame in Table <xref ref="tab-data-bih"/>. This corresponds to the UN member state of Bosnia and Herzegovina (BIH).
       </p>
+
+<table xml:id="tab-data-bih">
+  <title>Data for the 21st country out of 193.</title>
+  <tabular>
+    <row header="yes">
+      <cell>iso</cell><cell>life_exp</cell><cell>fert_rate</cell><cell>obes_rate</cell>
+    </row>
+    <row>
+      <cell>BIH</cell><cell>78</cell><cell>1.3</cell><cell>17.9</cell>
+    </row>
+  </tabular>
+</table>
 
       <p>
         What is the value <m>\widehat{y}</m> on the regression line corresponding to this country's <c>life_exp</c> value? In <xref ref="fig-numxplot4"/> we mark three values corresponding to these results for Bosnia and Herzegovina and give their statistical names:
       </p>
       <ul>
-        <li><p>Circle: The <em>observed value</em> <m>y</m> is this country's actual fertility rate.</p></li>
-        <li><p>Square: The <em>fitted value</em> <m>\widehat{y}</m> is the value on the regression line for that <m>x = \texttt{life\_exp}</m> value, computed with the intercept and slope in the regression table.</p></li>
+        <li><p>Circle: The <em>observed value</em> <m>y = 1.3</m> is this country's actual fertility rate.</p></li>
+        <li><p>Square: The <em>fitted value</em> <m>\widehat{y}</m> is the value on the regression line for that <m>x = \texttt{life\_exp} = 77.98</m> value, computed with the intercept and slope in the regression table:</p>
+<me>\widehat{y} = b_0 + b_1 \dot x = 12.599 + (-0.137) \dot 77.98 = 1.894</me></li>
         <li>
           <p>
             Arrow: The length of this arrow is the <term>residual</term><idx><h>regression</h><h>residual</h></idx> and is computed by subtracting the fitted value <m>\widehat{y}</m> from the observed value <m>y</m>. The residual can be thought of as a model's error or <q>lack of fit</q> for a particular observation.
+            In the case of this country <m>y-\widehat{y} = 1.3 - 1.894 = -0.594</m>
           </p>
         </li>
       </ul>
@@ -720,6 +743,7 @@ get_regression_table(m_obesity)
 
       <p>
         We could repeat the previous calculations we performed by hand for all countries, but that would be tedious and time consuming. Instead, we use a computer with the <c>get_regression_points()</c> function. We apply the <c>get_regression_points()</c> function to <c>demographics_model</c>, which is where we saved our <c>lm()</c> model in the previous section.
+        In <xref ref = "tab-demo-model-1"/> we present the results of only the 21st through 24th courses for brevity.
       </p>
 
             <program language="r">
@@ -749,6 +773,20 @@ regression_points
         </output>
       </console>
 
+<table xml:id="tab-demo-model-1">
+  <title>Regression points (for only the 21st through 24th countries)</title>
+  <tabular>
+    <row header="yes">
+      <cell>ID</cell><cell>fert_rate</cell><cell>life_exp</cell>
+      <cell>fert_rate_hat</cell><cell>residual</cell>
+    </row>
+    <row><cell>21</cell><cell>1.3</cell><cell>78.0</cell><cell>1.89</cell><cell>-0.594</cell></row>
+    <row><cell>22</cell><cell>2.7</cell><cell>65.6</cell><cell>3.59</cell><cell>-0.888</cell></row>
+    <row><cell>23</cell><cell>1.6</cell><cell>75.9</cell><cell>2.18</cell><cell>-0.576</cell></row>
+    <row><cell>24</cell><cell>1.7</cell><cell>80.6</cell><cell>1.53</cell><cell>0.165</cell></row>
+  </tabular>
+</table>
+
       <p>
         This function is an example of what is known in computer programming as a <term>wrapper function</term><idx><h>functions</h><h>wrapper</h></idx>. It takes other pre-existing functions and <q>wraps</q> them into a single function that hides its inner workings. This concept is illustrated in <xref ref="fig-moderndive-figure-wrapper"/>.
       </p>
@@ -768,20 +806,20 @@ regression_points
         We inspect the individual columns and match them with the elements of <xref ref="fig-numxplot4"/>:
       </p>
       <ul>
-        <li><p>The <c>fert_rate</c> column represents the observed outcome variable <m>y</m>. This is the y-position of the black points.</p></li>
-        <li><p>The <c>life_exp</c> column represents the values of the explanatory variable <m>x</m>. This is the x-position of the black points.</p></li>
-        <li><p>The <c>fert_rate_hat</c> column represents the fitted values <m>\widehat{y}</m>. This is the corresponding value on the regression line for the <m>x</m> values.</p></li>
-        <li><p>The <c>residual</c> column represents the residuals <m>y - \widehat{y}</m>. This is the vertical distances between the black points and the regression line.</p></li>
+        <li><p>The <c>fert_rate</c> column represents the observed outcome variable <m>y</m>. This is the y-position of the 181 black points.</p></li>
+        <li><p>The <c>life_exp</c> column represents the values of the explanatory variable <m>x</m>. This is the x-position of the 181 black points.</p></li>
+        <li><p>The <c>fert_rate_hat</c> column represents the fitted values <m>\widehat{y}</m>. This is the corresponding value on the regression line for the 181 <m>x</m> values.</p></li>
+        <li><p>The <c>residual</c> column represents the residuals <m>y - \widehat{y}</m>. This is the 181 vertical distances between the 181 black points and the regression line.</p></li>
       </ul>
 
       <p>
         Just as we did for the 21st country in the <c>UN_data_ch5</c> dataset, we repeat the calculations for the 24th country. This corresponds to the country of Brunei (BRN):
       </p>
       <ul>
-        <li><p><c>fert_rate</c> is the observed <c>fert_rate</c> <m>y</m> for this country.</p></li>
-        <li><p><c>life_exp</c> is the value of the explanatory variable <c>life_exp</c> <m>x</m> for Brunei.</p></li>
-        <li><p><c>fert_rate_hat</c> is the fitted value <m>\widehat{y}</m> on the regression line for this country.</p></li>
-        <li><p><c>residual</c> is the value of the residual for this country. In other words, the model's fitted value was off by the residual value in fertility rate units for Brunei.</p></li>
+        <li><p><c>fert_rate</c> <m>= 1.7</m> is the observed <c>fert_rate</c> <m>y</m> for this country.</p></li>
+        <li><p><c>life_exp</c> <m>= 80.590</m> is the value of the explanatory variable <c>life_exp</c> <m>x</m> for Brunei.</p></li>
+        <li><p><c>fert_rate_hat</c> <m>= 1.535 = 12.599 + (-0.137) \dot 80.590</m> is the fitted value <m>\widehat{y}</m> on the regression line for this country.</p></li>
+        <li><p><c>residual</c> <m>= 0.165 = 1.7 - 1.535</m> is the value of the residual for this country. In other words, the model's fitted value was off by the residual value in fertility rate units for Brunei.</p></li>
       </ul>
 
       <p>
