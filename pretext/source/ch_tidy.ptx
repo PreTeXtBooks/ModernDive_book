@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="tidy" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Data Importing and Tidy Data</title>
-
+  <introduction>
   <p>
     In <xref ref="sec-programming-concepts"/>, we introduced the concept of a
     <term>data frame</term><idx><h>data frame</h></idx> in R: a rectangular
@@ -38,8 +38,7 @@
   </p>
 
   <!-- Needed packages -->
-  <subsection xml:id="tidy-packages">
-    <title>Needed packages</title>
+    <alert>Needed packages</alert>
     <p>
       Let's load all the packages needed for this chapter (this assumes you've
       already installed them). If needed, read <xref ref="sec-packages"/> for
@@ -73,7 +72,8 @@ library(fivethirtyeight)
       like to explore these larger datasets, you can install the
       <c>fivethirtyeightdata</c> package as suggested.
     </p>
-  </subsection>
+  </introduction>
+
 
 
   <!-- ============================================================ -->
