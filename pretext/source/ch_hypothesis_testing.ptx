@@ -135,10 +135,13 @@ library(ggplot2movies)
         <c>moderndive</c> package, and the first 10 lines are shown:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 100 × 3
 # Groups:   replicate [1]
@@ -249,12 +252,15 @@ almonds_sample_100
           first calculate the sample mean and sample standard deviation from this sample:
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 almonds_sample_100 |>
   summarize(sample_mean = mean(weight),
             sample_sd = sd(weight))
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 1 × 3
   replicate sample_mean sample_sd
@@ -284,7 +290,7 @@ almonds_sample_100 |>
           The output presents these values.
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 almonds_sample_100 |>
   summarize(x_bar = mean(weight),
@@ -292,6 +298,9 @@ almonds_sample_100 |>
             n = length(weight),
             t = (x_bar - 3.6)/(s/sqrt(n)))
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 1 × 5
   replicate x_bar     s     n     t
@@ -340,10 +349,13 @@ almonds_sample_100 |>
           the results by 2:
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 2 * pt(q = -2.26, df = 100 - 1)
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 [1] 0.02601195
           </output>
@@ -598,12 +610,15 @@ null_dist |&gt;
 
       <p>and the 95% confidence interval is:</p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100 |&gt;
   summarize(lower_bound = mean(weight) - 1.98*sd(weight)/sqrt(length(weight)),
             upper_bound = mean(weight) + 1.98*sd(weight)/sqrt(length(weight)))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 3
   replicate lower_bound upper_bound
@@ -727,7 +742,7 @@ bootstrap_means |&gt;
         <c>popular_or_not</c> are selected.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 spotify_metal_deephouse &lt;- spotify_by_genre |&gt;
   filter(track_genre %in% c("metal", "deep-house")) |&gt;
@@ -736,6 +751,9 @@ spotify_metal_deephouse |&gt;
   group_by(track_genre, popular_or_not) |&gt;
   sample_n(size = 3)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 12 × 5
 # Groups:   track_genre, popular_or_not [4]
@@ -799,12 +817,15 @@ ggplot(spotify_metal_deephouse, aes(x = track_genre, fill = popular_or_not)) +
         shortcut for <c>summarize(n = n())</c> to get counts.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 spotify_metal_deephouse |&gt;
   group_by(track_genre, popular_or_not) |&gt;
   tally() # Same as summarize(n = n())
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 4 × 3
 # Groups:   track_genre [2]
@@ -859,12 +880,15 @@ spotify_metal_deephouse |&gt;
         the output below.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 spotify_52_original |&gt;
   select(-track_id) |&gt;
   head(10)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 10 × 5
    track_genre artists                  track_name     popularity popular_or_not
@@ -890,12 +914,15 @@ spotify_52_original |&gt;
         possible random shuffling.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 spotify_52_shuffled |&gt;
   select(-track_id) |&gt;
   head(10)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 10 × 5
    track_genre artists                  track_name     popularity popular_or_not
@@ -987,12 +1014,15 @@ ggplot(spotify_52_shuffled, aes(x = track_genre, fill = popular_or_not)) +
         <c>popular_or_not</c> column for each genre:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 spotify_52_shuffled |&gt;
   group_by(track_genre, popular_or_not) |&gt;
   tally()
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 4 × 3
 # Groups:   track_genre [2]
@@ -2188,10 +2218,13 @@ movies
         <url href="https://github.com/moderndive/moderndive/blob/master/data-raw/process_data_sets.R">GitHub</url>.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 movies_sample
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 68 × 4
    title                     year rating genre  
@@ -2259,12 +2292,15 @@ ggplot(data = movies_sample, aes(x = genre, y = rating)) +
         function.
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 movies_sample |&gt;
   group_by(genre) |&gt;
   summarize(n = n(), mean_rating = mean(rating), std_dev = sd(rating))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 2 × 4
   genre       n mean_rating std_dev
@@ -2808,12 +2844,15 @@ null_distribution_movies |&gt;
           during our exploratory data analysis in <xref ref="imdb-data"/>.
         </p>
 
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 movies_sample |&gt;
   group_by(genre) |&gt;
   summarize(n = n(), mean_rating = mean(rating), std_dev = sd(rating))
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 2 × 4
   genre       n mean_rating std_dev
@@ -2987,12 +3026,15 @@ ggplot(data = flights_sample, mapping = aes(x = carrier, y = air_time)) +
         summary statistics: the number of observations using <c>n()</c> and the mean airtime:
       </p>
 
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 flights_sample |&gt;
   group_by(carrier, dest) |&gt;
   summarize(n = n(), mean_time = mean(air_time, na.rm = TRUE), .groups = "keep")
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 8 × 4
 # Groups:   carrier, dest [8]

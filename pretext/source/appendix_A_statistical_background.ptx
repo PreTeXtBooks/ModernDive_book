@@ -263,10 +263,13 @@
         <m>\sigma = 1</m>. For example, the probability of observing a value that is less
         than or equal to 1 in the standard normal curve is given by:
       </p>
-      <console prompt="> ">
+            <program language="r">
         <input>
 pnorm(1)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 0.8413447
         </output>
@@ -280,10 +283,13 @@ pnorm(1)
         <m>1</m> is given by subtracting the area to the left of <m>-1</m> from the area
         to the left of <m>1</m>. In R, we obtain this probability as follows:
       </p>
-      <console prompt="> ">
+            <program language="r">
         <input>
 pnorm(1) - pnorm(-1)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 0.6826895
         </output>
@@ -294,10 +300,13 @@ pnorm(1) - pnorm(-1)
         from the mean is about 68%. Similarly, the probability of getting a value within
         2 standard deviations from the mean is given by:
       </p>
-      <console prompt="> ">
+            <program language="r">
         <input>
 pnorm(2) - pnorm(-2)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 0.9544997
         </output>
@@ -319,10 +328,13 @@ pnorm(2) - pnorm(-2)
         to find the standard value that corresponds to exactly an area of 84% under the
         curve to the left of this value, we can use the following syntax:
       </p>
-      <console prompt="> ">
+            <program language="r">
         <input>
 qnorm(0.84)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 0.9944579
         </output>
@@ -343,11 +355,14 @@ qnorm(0.84)
         left tail or <m>0.95 + 0.025 = 0.975</m>. We can now obtain the standard value
         <c>q</c> by using <c>qnorm()</c>:
       </p>
-      <console prompt="> ">
+            <program language="r">
         <input>
 q &lt;- qnorm(0.975)
 q
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 1.959964
         </output>
@@ -364,10 +379,13 @@ q
         <m>0.02/2 = 0.01</m> on each tail, the area under the curve to the left of the
         desired <c>q</c> value would be <m>0.98 + 0.01 = 0.99</m> so:
       </p>
-      <console prompt="> ">
+            <program language="r">
         <input>
 qnorm(0.99)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 2.326348
         </output>
@@ -404,7 +422,7 @@ qnorm(0.99)
       We start by obtaining the sample statistics (assuming a dataset <c>almonds_sample_100</c>
       with a variable <c>weight</c>):
     </p>
-    <console prompt="> ">
+        <program language="r">
       <input>
 almonds_sample_100 |>
   summarize(
@@ -413,6 +431,9 @@ almonds_sample_100 |>
     sample_size = n()
   )
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 4
   replicate mean_weight sd_weight sample_size
@@ -430,10 +451,13 @@ almonds_sample_100 |>
       that the area under the <m>t</m> curve to the left of <m>q</m> is exactly
       <m>0.975</m>. Using R we get:
     </p>
-    <console prompt="> ">
+        <program language="r">
       <input>
 qt(0.975, df = 100 - 1)
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 [1] 1.984217
       </output>
@@ -445,7 +469,7 @@ qt(0.975, df = 100 - 1)
       is due to the fact that the <m>t</m> curve has thicker tails than the standard
       normal. We can now construct the 95% confidence interval:
     </p>
-    <console prompt="> ">
+        <program language="r">
       <input>
 xbar &lt;- 3.682
 se_xbar &lt;- 0.362 / sqrt(100)
@@ -453,6 +477,9 @@ lower_bound &lt;- xbar - 1.98 * se_xbar
 upper_bound &lt;- xbar + 1.98 * se_xbar
 c(lower_bound, upper_bound)
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 [1] 3.610324 3.753676
       </output>

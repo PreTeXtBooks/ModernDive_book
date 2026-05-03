@@ -44,7 +44,7 @@
       already installed them). If needed, read <xref ref="sec-packages"/> for
       information on how to install and load R packages.
     </p>
-    <console prompt="> ">
+        <program language="r">
       <input>
 library(dplyr)
 library(ggplot2)
@@ -53,6 +53,9 @@ library(tidyr)
 library(nycflights23)
 library(fivethirtyeight)
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 Some larger datasets need to be installed separately, like senators and
 house_district_forecast. To install these, we recommend you install the
@@ -140,12 +143,15 @@ install.packages('fivethirtyeightdata', repos =
         R, and save it in a data frame called <c>dem_score</c>.
       </p>
 
-      <console prompt="> ">
+            <program language="r">
         <input>
 library(readr)
 dem_score &lt;- read_csv("https://moderndive.com/data/dem_score.csv")
 dem_score
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 96 × 10
    country    `1952` `1957` `1962` `1967` `1972` `1977` `1982` `1987` `1992`
@@ -256,11 +262,14 @@ dem_score
       its first 5 rows:
     </p>
 
-    <console prompt="> ">
+        <program language="r">
       <input>
 drinks |>
   head(5)
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 5 × 5
   country     beer_servings spirit_servings wine_servings total_litres_of_pure…¹
@@ -295,7 +304,7 @@ drinks |>
 
     <p>and save the resulting data frame in <c>drinks_smaller</c>:</p>
 
-    <console prompt="> ">
+        <program language="r">
       <input>
 drinks_smaller &lt;- drinks |>
   filter(country %in% c("USA", "China", "Italy", "Saudi Arabia")) |>
@@ -303,6 +312,9 @@ drinks_smaller &lt;- drinks |>
   rename(beer = beer_servings, spirit = spirit_servings, wine = wine_servings)
 drinks_smaller
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 4 × 4
   country       beer spirit  wine
@@ -350,10 +362,13 @@ drinks_smaller
       would have to look like this:
     </p>
 
-    <console prompt="> ">
+        <program language="r">
       <input>
 drinks_smaller_tidy
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 12 × 3
    country      type   servings
@@ -619,10 +634,13 @@ drinks_smaller_tidy
 
       <p>Going back to our <c>drinks_smaller</c> data frame from earlier:</p>
 
-      <console prompt="> ">
+            <program language="r">
         <input>
 drinks_smaller
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 4 × 4
   country       beer spirit  wine
@@ -640,7 +658,7 @@ drinks_smaller
         follows:
       </p>
 
-      <console prompt="> ">
+            <program language="r">
         <input>
 drinks_smaller_tidy &lt;- drinks_smaller |>
   pivot_longer(names_to = "type",
@@ -648,6 +666,9 @@ drinks_smaller_tidy &lt;- drinks_smaller |>
                cols = -country)
 drinks_smaller_tidy
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 12 × 3
    country      type   servings
@@ -720,13 +741,16 @@ drinks_smaller_tidy
         the same output:
       </p>
 
-      <console prompt="> ">
+            <program language="r">
         <input>
 drinks_smaller |>
   pivot_longer(names_to = "type",
                values_to = "servings",
                cols = c(beer, spirit, wine))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 12 × 3
    country      type   servings
@@ -757,13 +781,16 @@ drinks_smaller |>
         the <c>cols</c> argument:
       </p>
 
-      <console prompt="> ">
+            <program language="r">
         <input>
 drinks_smaller |>
   pivot_longer(names_to = "type",
                values_to = "servings",
                cols = beer:wine)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 12 × 3
    country      type   servings
@@ -847,10 +874,13 @@ ggplot(drinks_smaller_tidy, aes(x = country, y = servings, fill = type)) +
               Take a look at the <c>airline_safety</c> data frame included in
               the <c>fivethirtyeight</c> data package. Run the following:
             </p>
-            <console prompt="> ">
+                        <program language="r">
               <input>
 airline_safety
               </input>
+            </program>
+
+            <console prompt="> ">
               <output>
 # A tibble: 56 × 8
    airline          avail_seat_km_per_week incidents_85_99 fatal_accidents_85_99
@@ -880,12 +910,15 @@ airline_safety
               Let's only consider the variables <c>airline</c> and those
               relating to fatalities for simplicity:
             </p>
-            <console prompt="> ">
+                        <program language="r">
               <input>
 airline_safety_smaller &lt;- airline_safety |>
   select(airline, starts_with("fatalities"))
 airline_safety_smaller
               </input>
+            </program>
+
+            <console prompt="> ">
               <output>
 # A tibble: 56 × 3
    airline               fatalities_85_99 fatalities_00_14
@@ -912,13 +945,16 @@ airline_safety_smaller
             </p>
           </statement>
           <answer>
-            <console prompt="> ">
+                        <program language="r">
               <input>
 airline_safety_smaller |>
   pivot_longer(names_to = "fatalities_years",
                values_to = "count",
                cols = -airline)
               </input>
+            </program>
+
+            <console prompt="> ">
               <output>
 # A tibble: 112 × 3
    airline               fatalities_years count
@@ -1014,12 +1050,15 @@ airline_safety_smaller |>
       <xref ref="csv"/>, but focus on only data corresponding to Guatemala.
     </p>
 
-    <console prompt="> ">
+        <program language="r">
       <input>
 guat_dem &lt;- dem_score |>
   filter(country == "Guatemala")
 guat_dem
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 10
   country   `1952` `1957` `1962` `1967` `1972` `1977` `1982` `1987` `1992`
@@ -1066,7 +1105,7 @@ guat_dem
       in the <c>tidyr</c> package does this for us:
     </p>
 
-    <console prompt="> ">
+        <program language="r">
       <input>
 guat_dem_tidy &lt;- guat_dem |>
   pivot_longer(names_to = "year",
@@ -1075,6 +1114,9 @@ guat_dem_tidy &lt;- guat_dem |>
                names_transform = list(year = as.integer))
 guat_dem_tidy
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 9 × 3
   country    year democracy_score
@@ -1174,7 +1216,7 @@ ggplot(guat_dem_tidy, aes(x = year, y = democracy_score)) +
           </p>
         </statement>
         <answer>
-          <console prompt="> ">
+                    <program language="r">
             <input>
 dem_score_tidy &lt;- dem_score |>
   pivot_longer(names_to = "year",
@@ -1183,6 +1225,9 @@ dem_score_tidy &lt;- dem_score |>
                names_transform = list(year = as.integer))
 dem_score_tidy
             </input>
+          </program>
+
+          <console prompt="> ">
             <output>
 # A tibble: 864 × 3
    country    year democracy_score
@@ -1212,7 +1257,7 @@ dem_score_tidy
           </p>
         </statement>
         <answer>
-          <console prompt="> ">
+                    <program language="r">
             <input>
 le_mess &lt;- read_csv("https://moderndive.com/data/le_mess.csv")
 le_mess_tidy &lt;- le_mess |>
@@ -1222,6 +1267,9 @@ le_mess_tidy &lt;- le_mess |>
                names_transform = list(year = as.integer))
 le_mess_tidy
             </input>
+          </program>
+
+          <console prompt="> ">
             <output>
 # A tibble: 13,332 × 3
    country      year life_expectancy

@@ -258,12 +258,15 @@ glimpse(house_prices)
         the <c>moderndive</c> package we first used in <xref ref="model4EDA"/>, being sure
         to only <c>select()</c> the variables of interest for our model:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 house_prices |&gt;
   select(price, sqft_living, condition) |&gt;
   tidy_summary()
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 7 × 11
   column        n group type    min     Q1    mean median     Q3     max      sd
@@ -399,11 +402,14 @@ house_prices &lt;- house_prices |&gt;
         Let's display the before and after effects of this transformation on these
         variables for only the first 10 rows of <c>house_prices</c>:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 house_prices |&gt;
   select(price, log10_price, sqft_living, log10_size)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 21,613 × 4
      price log10_price sqft_living log10_size
@@ -613,11 +619,14 @@ ggplot(house_prices,
       <p>
         This can be further checked using <c>dplyr</c> and its <c>count()</c> function:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 house_prices |&gt;
   count(condition)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 5 × 2
   condition     n
@@ -678,11 +687,14 @@ house_prices |&gt;
       </p>
       <listing xml:id="tab-seattle-interaction">
         <caption>Regression table for interaction model.</caption>
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
 get_regression_table(price_interaction)
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 10 × 7
    term                   estimate std_error statistic p_value lower_ci upper_ci
@@ -815,10 +827,13 @@ get_regression_table(price_interaction)
         the regression line for the condition = 5 houses, being sure to <c>log10()</c> the
         square footage first.
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 2.45 + 1 * log10(1900)
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 5.728754
         </output>
@@ -830,10 +845,13 @@ get_regression_table(price_interaction)
         using <c>log10_price</c> as our outcome variable! If we want a prediction in
         dollar units of <c>price</c>, we need to un-log this by taking a power of 10.
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 10^(2.45 + 1 * log10(1900))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 [1] 535492.8
         </output>
@@ -866,11 +884,14 @@ get_regression_table(price_interaction)
           <c>get_regression_table(price_interaction)</c>. We can use these values to
           perform hypothesis tests on the partial slopes.
         </p>
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 price_interaction &lt;- lm(log10_price ~ log10_size * condition, data = house_prices)
 get_regression_table(price_interaction)
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 10 × 7
    term                   estimate std_error statistic p_value lower_ci upper_ci

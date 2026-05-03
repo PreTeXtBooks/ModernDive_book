@@ -146,10 +146,13 @@ library(infer)
       We took a random sample of 100 almonds' weights such as the one shown here and stored it in
       the <c>moderndive</c> package with the same name:
     </p>
-    <console prompt="&gt; ">
+        <program language="r">
       <input>
 almonds_sample_100
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 100 × 3
 # Groups:   replicate [1]
@@ -171,11 +174,14 @@ almonds_sample_100
     <p>
       We can use it to calculate the sample mean weight:
     </p>
-    <console prompt="&gt; ">
+        <program language="r">
       <input>
 almonds_sample_100 |&gt;
   summarize(sample_mean = mean(weight))
       </input>
+    </program>
+
+    <console prompt="> ">
       <output>
 # A tibble: 1 × 2
   replicate sample_mean
@@ -262,12 +268,15 @@ almonds_sample_100 |&gt;
         100 from a bowl of 5,000 chocolate-covered almonds. Since we have access to the contents
         of the entire bowl, we can compute the population parameters:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_bowl |&gt;
   summarize(population_mean = mean(weight),
             population_sd = pop_sd(weight))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 2
   population_mean population_sd
@@ -294,13 +303,16 @@ almonds_bowl |&gt;
         the almond chosen from the bowl and its corresponding <c>weight</c>. Using this sample we
         calculate some sample statistics:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100 |&gt;
   summarize(mean_weight = mean(weight),
             sd_weight = sd(weight),
             sample_size = n())
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 4
   replicate mean_weight sd_weight sample_size
@@ -805,11 +817,14 @@ almonds_sample_100 |&gt;
         sample information and using the sample mean and sample standard deviation. We calculate
         those values again for <c>almonds_sample_100</c>:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100 |&gt;
   summarize(sample_mean = mean(weight), sample_sd = sd(weight))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 3
   replicate sample_mean sample_sd
@@ -831,13 +846,16 @@ almonds_sample_100 |&gt;
       <p>
         We can also compute these lower and upper bounds:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100 |&gt;
   summarize(sample_mean = mean(weight), sample_sd = sd(weight),
             lower_bound = mean(weight) - 1.98*sd(weight)/sqrt(length(weight)),
             upper_bound = mean(weight) + 1.98*sd(weight)/sqrt(length(weight)))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 5
   replicate sample_mean sample_sd lower_bound upper_bound
@@ -1061,10 +1079,13 @@ almonds_sample_100 |&gt;
             curve to the left of this value <m>q</m> is given. In our example the area to the left
             of <m>-q</m> is <m>\alpha/2 = 0.05/2 = 0.025</m>, so
           </p>
-          <console prompt="&gt; ">
+                    <program language="r">
             <input>
 qnorm(0.025)
             </input>
+          </program>
+
+          <console prompt="> ">
             <output>
 [1] -1.959964
             </output>
@@ -1074,10 +1095,13 @@ qnorm(0.025)
             to the left of <m>q</m> is the total shaded area, 0.95, plus the small white area on
             the left tail, 0.025, and <m>0.95 + 0.025 = 0.975</m>, so
           </p>
-          <console prompt="&gt; ">
+                    <program language="r">
             <input>
 qnorm(0.975)
             </input>
+          </program>
+
+          <console prompt="> ">
             <output>
 [1] 1.959964
             </output>
@@ -1095,10 +1119,13 @@ qnorm(0.975)
               <li>The area needed to find <m>q</m> is <m>0.90 + 0.05 = 0.95</m>.</li>
             </ul>
           </p>
-          <console prompt="&gt; ">
+                    <program language="r">
             <input>
 qnorm(0.95)
             </input>
+          </program>
+
+          <console prompt="> ">
             <output>
 [1] 1.644854
             </output>
@@ -1120,10 +1147,13 @@ almonds_sample_100 |&gt;
             Let's do one more. If we want an 80% confidence interval,
             <m>1 - 0.8 = 0.2</m>, <m>0.2/2 = 0.1</m>, and <m>0.8 + 0.1 = 0.9</m>, so
           </p>
-          <console prompt="&gt; ">
+                    <program language="r">
             <input>
 qnorm(0.9)
             </input>
+          </program>
+
+          <console prompt="> ">
             <output>
 [1] 1.281552
             </output>
@@ -1293,13 +1323,16 @@ qnorm(0.9)
         virtually. The data frame <c>almonds_sample_100</c> contains the random sample of almonds
         taken from the population. We show selected rows from this sample.
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100 &lt;- almonds_sample_100 |&gt;
   ungroup() |&gt;
   select(-replicate)
 almonds_sample_100
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 100 × 2
       ID weight
@@ -1659,11 +1692,14 @@ almonds_sample_100 |&gt;
         estimate from a sample, such as the sample mean, when using <c>dplyr</c> we use
         <c>summarize()</c> and <c>mean()</c>:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 almonds_sample_100 |&gt;
   summarize(stat = mean(weight))
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 1 × 1
    stat
@@ -2469,10 +2505,13 @@ visualize(bootstrap_means) +
         <c>mythbusters_yawn</c><idx><h>R packages</h><h>moderndive</h><h>mythbusters_yawn</h></idx>
         included in the <c>moderndive</c> package:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 mythbusters_yawn
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 50 × 3
     subj group   yawn 
@@ -2517,12 +2556,15 @@ mythbusters_yawn
       <p>
         Let's use some data wrangling to calculate counts of the four possible outcomes:
       </p>
-      <console prompt="&gt; ">
+            <program language="r">
         <input>
 mythbusters_yawn |&gt;
   group_by(group, yawn) |&gt;
   summarize(count = n(), .groups = "keep")
         </input>
+      </program>
+
+      <console prompt="> ">
         <output>
 # A tibble: 4 × 3
 # Groups:   group, yawn [4]
@@ -2740,11 +2782,14 @@ mythbusters_yawn |&gt;
           <em>row</em> is potentially resampled. Let's investigate this by focusing only on
           the first six rows of <c>mythbusters_yawn</c>:
         </p>
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 first_six_rows &lt;- head(mythbusters_yawn)
 first_six_rows
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 6 × 3
    subj group   yawn 
@@ -2767,11 +2812,14 @@ first_six_rows
           to the <c>rep_sample_n()</c> function in <c>infer</c>, except that it is not
           repeated, but rather only performs one sample with or without replacement.
         </p>
-        <console prompt="&gt; ">
+                <program language="r">
           <input>
 first_six_rows |&gt;
   sample_n(size = 6, replace = TRUE)
           </input>
+        </program>
+
+        <console prompt="> ">
           <output>
 # A tibble: 6 × 3
    subj group   yawn 
