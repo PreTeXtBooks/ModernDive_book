@@ -1353,7 +1353,8 @@ library(forcats)
         information on using the <c>readr</c>, <c>readxl</c> and
         <c>googlesheets4</c> packages to import data and the <q>Data tidying
         with tidyr cheatsheet</q> for information on using the <c>tidyr</c>
-        package to <q>tidy</q> data.
+        package to <q>tidy</q> data. You can see a preview of both cheatsheets
+        in the figures below.
       </p>
 
       <figure xml:id="fig-import-cheatsheet">
