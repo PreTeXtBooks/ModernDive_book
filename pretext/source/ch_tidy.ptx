@@ -923,16 +923,16 @@ airline_safety_smaller
 # A tibble: 56 × 3
    airline               fatalities_85_99 fatalities_00_14
    &lt;chr&gt;                            &lt;int&gt;            &lt;int&gt;
- 1 Aer Lingus                           1                0
- 2 Aeroflot*                          128                7
+ 1 Aer Lingus                           0                0
+ 2 Aeroflot                           128               88
  3 Aerolineas Argentinas                0                0
- 4 Aeromexico*                         64                0
+ 4 Aeromexico                          64                0
  5 Air Canada                           0                0
- 6 Air France                         289              337
- 7 Air India*                         329              158
- 8 Air New Zealand*                     0                7
- 9 Alaska Airlines*                     0               88
-10 Alitalia                            50               50
+ 6 Air France                          79              337
+ 7 Air India                          329              158
+ 8 Air New Zealand                      0                7
+ 9 Alaska Airlines                      0               88
+10 Alitalia                            50                0
 # ℹ 46 more rows
               </output>
             </console>
