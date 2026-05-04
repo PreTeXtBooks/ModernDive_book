@@ -570,6 +570,20 @@ p_three_lines <- ggplot(example_data, aes(x = x, y = y)) +
   geom_point(size = 4)
 suppressMessages(save_fig(p_three_lines, "fig-three-lines.png", width = 5, height = 4))
 
+## 5.10 HDI vs Life Expectancy scatterplot ----------------------
+p_hdi_lifeexp <- ggplot(data = un_member_states_2024,
+                        aes(x = hdi_2022, y = life_expectancy_2022)) +
+  geom_point() +
+  labs(x = "Human Development Index (HDI)", y = "Life Expectancy")
+save_fig(p_hdi_lifeexp, "fig-hdi-lifeexp.png")
+
+## 5.11 HDI vs Fertility Rate scatterplot -----------------------
+p_hdi_fertility <- ggplot(data = un_member_states_2024,
+                          aes(x = hdi_2022, y = fertility_rate_2022)) +
+  geom_point() +
+  labs(x = "Human Development Index (HDI)", y = "Fertility Rate")
+save_fig(p_hdi_fertility, "fig-hdi-fertility.png")
+
 # ============================================================
 # Chapter 6: Multiple Regression
 # ============================================================

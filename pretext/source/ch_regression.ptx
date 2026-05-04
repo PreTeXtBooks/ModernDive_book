@@ -1598,6 +1598,13 @@ ggplot(data = un_member_states_2024,
         </input>
       </program>
 
+      <figure xml:id="fig-hdi-lifeexp">
+        <caption>Scatterplot of Human Development Index vs Life Expectancy.</caption>
+        <image source="images/fig-hdi-lifeexp.png" width="80%">
+          <description>Scatterplot showing a positive relationship between the Human Development Index (HDI) and life expectancy across UN member states.</description>
+        </image>
+      </figure>
+
       <program language="r">
         <input>
 ggplot(data = un_member_states_2024, 
@@ -1606,6 +1613,13 @@ ggplot(data = un_member_states_2024,
   labs(x = "Human Development Index (HDI)", y = "Fertility Rate")
         </input>
       </program>
+
+      <figure xml:id="fig-hdi-fertility">
+        <caption>Scatterplot of Human Development Index vs Fertility Rate.</caption>
+        <image source="images/fig-hdi-fertility.png" width="80%">
+          <description>Scatterplot showing a negative relationship between the Human Development Index (HDI) and fertility rate across UN member states.</description>
+        </image>
+      </figure>
 
             <program language="r">
         <input>
