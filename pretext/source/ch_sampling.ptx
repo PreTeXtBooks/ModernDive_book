@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="sampling" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Sampling</title>
-
+  <introduction>
   <p>
     The third portion of this book introduces statistical inference. This chapter is about
     <term>sampling</term><idx><h>sampling</h></idx>. Sampling involves drawing repeated random
@@ -19,8 +19,7 @@
   </p>
 
   <!-- Needed packages -->
-  <subsection xml:id="sampling-packages">
-    <title>Needed packages</title>
+    <alert>Needed packages</alert>
     <p>
       We now load all the packages needed for this chapter (this assumes you've already installed
       them). The <c>moderndive</c> and <c>infer</c> packages contain functions and data frames
@@ -33,7 +32,7 @@ library(moderndive)
 library(infer)
       </input>
     </program>
-  </subsection>
+  </introduction>
 
 
   <!-- ============================================================ -->
