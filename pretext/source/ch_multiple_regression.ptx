@@ -660,7 +660,7 @@ incomeUpper middle income         incomeHigh income
       </figure>
 
       <p>
-        We can generalize the study of fitted values and residuals for all the countries in the <c>UN_data_ch6</c> dataset, as shown in Table <xref ref="tab-regression-points-un"/>:
+        We can generalize the study of fitted values and residuals for all the countries in the <c>UN_data_ch6</c> dataset, as shown in <xref ref="tab-regression-points-un"/>:
       </p>
 
             <program language="r">
@@ -810,7 +810,7 @@ $ age           &lt;int&gt; 34, 82, 71, 36, 68, 77, 37, 87, 66, 41, 30, 64, 57, 
       </console>
 
       <p>
-        Furthermore, we present a random sample of five out of the 400 credit card holders in Table <xref ref="tab-credit-sample"/>. As observed before, each time you run this code, a different subset of five rows is given.
+        Furthermore, we present a random sample of five out of the 400 credit card holders in <xref ref="tab-credit-sample"/>. As observed before, each time you run this code, a different subset of five rows is given.
       </p>
 
       <program language="r">
@@ -834,7 +834,7 @@ credit_ch6 |&gt; sample_n(size = 5)
       </table>
 
       <p>
-        Note that income is in thousands of dollars while debt and credit limit are in dollars. We can also compute summary statistics using the <c>tidy_summary()</c> function. We only <c>select()</c> the columns of interest for our model, and the results are shown in Table <xref ref="tab-credit-summary"/>:
+        Note that income is in thousands of dollars while debt and credit limit are in dollars. We can also compute summary statistics using the <c>tidy_summary()</c> function. We only <c>select()</c> the columns of interest for our model, and the results are shown in <xref ref="tab-credit-summary"/>:
       </p>
 
       <program language="r">
@@ -880,7 +880,7 @@ ggplot(credit_ch6, aes(x = income, y = debt)) +
       </program>
 
       <figure xml:id="fig-2numxplot1">
-        <caption>Relationship between credit card debt and credit limit (left) and income (right).</caption>
+        <caption>Relationship between credit card debt and credit limit/income.</caption>
         <image source="images/2numxplot1.png" width="80%">
           <description>Two scatterplots: (left) credit limit vs credit card debt with a positive linear regression line; (right) income vs credit card debt with a weaker positive linear association, especially for incomes above $50,000.</description>
         </image>
@@ -915,7 +915,7 @@ credit_ch6 |&gt; get_correlation(debt ~ income)
       </console>
 
       <p>
-        Alternatively, using the <c>select()</c> verb and command <c>cor()</c> we can find all correlations simultaneously by returning the <em>correlation matrix</em><idx><h>correlation (coefficient)</h></idx> in Table <xref ref="tab-credit-correlation"/>. This matrix shows the correlation coefficient for any pair of variables in the appropriate row/column combination.
+        Alternatively, using the <c>select()</c> verb and command <c>cor()</c> we can find all correlations simultaneously by returning the <em>correlation matrix</em><idx><h>correlation (coefficient)</h></idx> in <xref ref="tab-credit-correlation"/>. This matrix shows the correlation coefficient for any pair of variables in the appropriate row/column combination.
       </p>
 
       <program language="r">
@@ -925,7 +925,7 @@ credit_ch6 |&gt; select(debt, credit_limit, income) |&gt; cor()
       </program>
 
       <table xml:id="tab-credit-correlation">
-        <title>Correlation matrix for credit card debt, credit limit, and income</title>
+        <title>Correlation coefficients between credit card debt, credit limit, and income</title>
         <tabular>
           <row header="yes">
             <cell></cell><cell>debt</cell><cell>credit_limit</cell><cell>income</cell>
@@ -970,7 +970,7 @@ credit_ch6 |&gt; get_correlation(debt ~ 1000 * income)
       </p>
 
       <p>
-        We return to our exploratory data analysis of the multiple regression. The plots in <xref ref="fig-2numxplot1"/> correspond to the response and each of the explanatory variables <em>separately</em>. In <xref ref="fig-3D-scatterplot"/> we show a 3-dimensional (3D) scatterplot representing the <em>joint</em> relationship of all three variables simultaneously. Each of the 400 observations in the <c>credit_ch6</c> data frame are marked with a point where
+        We return to our exploratory data analysis of the multiple regression. The plots in <xref ref="fig-2numxplot1"/> correspond to the response and each of the explanatory variables <em>separately</em>. In <xref ref="fig-3D-scatterplot"/> we show a 3-dimensional (3D) scatterplot representing the <em>joint</em> relationship of all three variables simultaneously. Each of the 400 observations in the <c>credit_ch6</c> data frame are marked with a blue point where
       </p>
       <ol>
         <li><p>The response variable <m>y</m>, <c>debt</c>, is on the vertical axis.</p></li>
@@ -1239,7 +1239,10 @@ get_regression_table(m_ca)
       </md>
 
       <p>
-        where <m>x_1</m> is <c>credit_limit</c> and <m>x_2</m> is <c>income</c>. The residuals are the difference between the observed credit card debt and the fitted credit card debt, <m>y - \widehat y</m>, for each observation in the data set. In R, we find the fitted values, <c>debt_hat</c>, and residuals, <c>residual</c>, using the <c>get_regression_points()</c> function. Remember that the coordinates of each of the points in our 3D scatterplot in <xref ref="fig-3D-scatterplot"/> can be found in the <c>income</c>, <c>credit_limit</c>, and <c>debt</c> columns.
+        where <m>x_1</m> is <c>credit_limit</c> and <m>x_2</m> is <c>income</c>. The residuals are the difference between the observed credit card debt and the fitted credit card debt, <m>y - \widehat y</m>, for each observation in the data set.
+In R, we find the fitted values, <c>debt_hat</c>, and residuals, <c>residual</c>, using the <c>get_regression_points()</c> function.
+        In <xref ref="tab-regression-points-credit"/>, we present the first 10 rows.
+Remember that the coordinates of each of the points in our 3D scatterplot in <xref ref="fig-3D-scatterplot"/> can be found in the <c>income</c>, <c>credit_limit</c>, and <c>debt</c> columns.
       </p>
 
       <program language="r">
@@ -1248,45 +1251,23 @@ get_regression_points(debt_model)
         </input>
       </program>
 
-      <console prompt="> ">
-        <output>
-# A tibble: 400 × 6
-      ID  debt credit_limit income debt_hat residual
-   &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
- 1     1   333         3606  14.891     453.    -120.  
- 2     2   903         6645 106.025     558.     345.  
- 3     3   580         7075 104.593     625.     -45.0 
- 4     4   964         9504 148.924    1037.     -73.1 
- 5     5   331         4897  55.882     466.    -135.  
- 6     6  1151         8047  80.180     719.     432.  
- 7     7   203         3388  20.960     365.    -162.  
- 8     8   872         7114  71.408     651.     221.  
- 9     9   279         3300  15.125     381.    -102.  
-10    10  1350         6819  71.061     619.     731.  
-# ℹ 390 more rows
-        </output>
-      </console>
-
-      <p>
-        In Table <xref ref="tab-regression-points-credit"/>, we present the first 10 rows:
-      </p>
-
       <table xml:id="tab-regression-points-credit">
         <title>Regression points (First 10 credit card holders out of 400)</title>
         <tabular>
-          <row header="yes">
-            <cell>ID</cell><cell>debt</cell><cell>credit_limit</cell><cell>income</cell><cell>debt_hat</cell><cell>residual</cell>
-          </row>
-          <row><cell>1</cell><cell>333</cell><cell>3606</cell><cell>14.891</cell><cell>453.</cell><cell>-120.</cell></row>
-          <row><cell>2</cell><cell>903</cell><cell>6645</cell><cell>106.025</cell><cell>558.</cell><cell>345.</cell></row>
-          <row><cell>3</cell><cell>580</cell><cell>7075</cell><cell>104.593</cell><cell>625.</cell><cell>-45.0</cell></row>
-          <row><cell>4</cell><cell>964</cell><cell>9504</cell><cell>148.924</cell><cell>1037.</cell><cell>-73.1</cell></row>
-          <row><cell>5</cell><cell>331</cell><cell>4897</cell><cell>55.882</cell><cell>466.</cell><cell>-135.</cell></row>
-          <row><cell>6</cell><cell>1151</cell><cell>8047</cell><cell>80.180</cell><cell>719.</cell><cell>432.</cell></row>
-          <row><cell>7</cell><cell>203</cell><cell>3388</cell><cell>20.960</cell><cell>365.</cell><cell>-162.</cell></row>
-          <row><cell>8</cell><cell>872</cell><cell>7114</cell><cell>71.408</cell><cell>651.</cell><cell>221.</cell></row>
-          <row><cell>9</cell><cell>279</cell><cell>3300</cell><cell>15.125</cell><cell>381.</cell><cell>-102.</cell></row>
-          <row><cell>10</cell><cell>1350</cell><cell>6819</cell><cell>71.061</cell><cell>619.</cell><cell>731.</cell></row>
+    <row header="yes">
+      <cell>ID</cell><cell>debt</cell><cell>credit_limit</cell>
+      <cell>income</cell><cell>debt_hat</cell><cell>residual</cell>
+    </row>
+    <row><cell>1</cell><cell>333</cell><cell>3606</cell><cell>14.9</cell><cell>454</cell><cell>-120.8</cell></row>
+    <row><cell>2</cell><cell>903</cell><cell>6645</cell><cell>106.0</cell><cell>559</cell><cell>344.3</cell></row>
+    <row><cell>3</cell><cell>580</cell><cell>7075</cell><cell>104.6</cell><cell>683</cell><cell>-103.4</cell></row>
+    <row><cell>4</cell><cell>964</cell><cell>9504</cell><cell>148.9</cell><cell>986</cell><cell>-21.7</cell></row>
+    <row><cell>5</cell><cell>331</cell><cell>4897</cell><cell>55.9</cell><cell>481</cell><cell>-150.0</cell></row>
+    <row><cell>6</cell><cell>1151</cell><cell>8047</cell><cell>80.2</cell><cell>1127</cell><cell>23.6</cell></row>
+    <row><cell>7</cell><cell>203</cell><cell>3388</cell><cell>21.0</cell><cell>349</cell><cell>-146.4</cell></row>
+    <row><cell>8</cell><cell>872</cell><cell>7114</cell><cell>71.4</cell><cell>948</cell><cell>-76.0</cell></row>
+    <row><cell>9</cell><cell>279</cell><cell>3300</cell><cell>15.1</cell><cell>371</cell><cell>-92.2</cell></row>
+    <row><cell>10</cell><cell>1350</cell><cell>6819</cell><cell>71.1</cell><cell>873</cell><cell>477.3</cell></row>
         </tabular>
       </table>
 
@@ -1317,7 +1298,8 @@ get_regression_points(debt_model)
       </p>
 
       <p>
-        Once we have covered <xref ref="sampling"/> on sampling, <xref ref="confidence-intervals"/> on confidence intervals, and <xref ref="hypothesis-testing"/> on hypothesis testing, we revisit the regression models in <xref ref="inference-for-regression"/> on inference for regression. This will complete the topics in this book!
+        Once we have covered <xref ref="sampling"/> on sampling, <xref ref="confidence-intervals"/> on confidence intervals, and <xref ref="hypothesis-testing"/> on hypothesis testing, we revisit the regression models in <xref ref="inference-for-regression"/> on inference for regression. This will complete the topics in this book,
+        as shown in <xref ref = "fig-mult-reg-part3-flowchart"/>!
       </p>
 
       <p>
