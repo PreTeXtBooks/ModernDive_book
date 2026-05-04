@@ -423,10 +423,10 @@ life_exp:incomeUpper middle income         life_exp:incomeHigh income
         We can match the coefficients with the values computed in <xref ref="tab-interaction-coef"/>: the fitted fertility rate <m>\widehat{y} = \widehat{\text{fert rate}}</m> for <c>Low income</c> countries is
       </p>
 
-      <me>\widehat{\text{fert rate}} = b_0 + b_1\cdot x,</me>
+      <me>\widehat{\text{fert rate}} = b_0 + b_1\cdot x = 11.92 + (-0.12)\cdot x,</me>
 
       <p>
-        which is the equation of the regression line in <xref ref="fig-numxcatxplot1"/> for low income countries. The regression has an intercept of <m>11.918</m> and a slope of <m>-0.118</m>. Since life expectancy is greater than zero for all countries, the intercept has no practical interpretation and we only need it to produce the most appropriate line. The interpretation of the slope is: for <c>Low income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>0.118</m> units.
+        which is the equation of the regression line in <xref ref="fig-numxcatxplot1"/> for low income countries. The regression has an intercept of <m>11.92</m> and a slope of <m>-0.12</m>. Since life expectancy is greater than zero for all countries, the intercept has no practical interpretation and we only need it to produce the most appropriate line. The interpretation of the slope is: for <c>Low income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>0.12</m> units.
       </p>
 
       <p>
@@ -436,11 +436,15 @@ life_exp:incomeUpper middle income         life_exp:incomeHigh income
       <me>\widehat{y} = \widehat{\text{fert rate}} = b_0 + b_1x + b_{04} + b_{14}x = (b_0 + b_{04}) + (b_1 + b_{14})x</me>
 
       <p>
-        where <m>x</m> is life expectancy, <c>life_exp</c>. The intercept is <c>(Intercept) + incomeHigh income</c>: <m>b_0 + b_{04} = 11.918 + (-6.580) = 5.338</m>, and the slope for these <c>High income</c> countries is <c>life_exp + life_exp:incomeHigh income</c> corresponding to <m>b_1 + b_{14} = -0.118 + 0.072 = -0.046</m>.
-      </p>
+        where <m>x</m> is life expectancy, <c>life_exp</c>. The intercept is <c>(Intercept) + incomeHigh income</c>:
+</p>
+<me>b_0 + b_{04} = 11.92 + (-6.58) = 5.34,</me>
+
+<p> and the slope for these <c>High income</c> countries is <c>life_exp + life_exp:incomeHigh income</c> corresponding to</p>
+<me>b_1 + b_{14} = -0.12 + 0.07 = -0.05</me>
 
       <p>
-        For <c>High income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>0.046</m> units. The intercepts and slopes for other income levels are calculated similarly.
+        For <c>High income</c> countries, every additional year of life expectancy reduces the average fertility rate by <m>0.05</m> units. The intercepts and slopes for other income levels are calculated similarly.
       </p>
 
       <p>
@@ -558,15 +562,6 @@ coef(model_no_int)
         </input>
       </program>
 
-      <console prompt="> ">
-        <output>
-(Intercept)                  life_exp incomeLower middle income 
-               10.7676024                -0.1006323                -0.7186537 
-incomeUpper middle income         incomeHigh income 
-               -1.2393433                -1.0666572
-        </output>
-      </console>
-
       <p>
         We present these results in a table with the mathematical notation:
       </p>
@@ -624,9 +619,27 @@ incomeUpper middle income         incomeHigh income
     <subsection xml:id="model4points">
       <title>Observed responses, fitted values, and residuals</title>
 
+<p> In this subsection, we work with the regression model with interactions. The coefficients for this model were found earlier, saved in <c>model_int</c>, and are displayed in 
+<xref ref = "tab-observed-fitted-values"/>:</p>
+
+<table xml:id="tab-observed-fitted-values">
+  <title>Regression table for interaction model</title>
+  <tabular>
+    <row header="yes">
+      <cell>Coefficients</cell><cell>Values</cell><cell></cell>
+    </row>
+    <row><cell>(Intercept)</cell><cell><m>b_0</m></cell><cell>11.918</cell></row>
+    <row><cell>incomeLower middle income</cell><cell><m>b_{02}</m></cell><cell>-1.504</cell></row>
+    <row><cell>incomeUpper middle income</cell><cell><m>b_{03}</m></cell><cell>-1.893</cell></row>
+    <row><cell>incomeHigh income</cell><cell><m>b_{04}</m></cell><cell>-6.580</cell></row>
+    <row><cell>life_exp</cell><cell><m>b_1</m></cell><cell>-0.118</cell></row>
+    <row><cell>incomeLower middle income:life_exp</cell><cell><m>b_{12}</m></cell><cell>0.013</cell></row>
+    <row><cell>incomeUpper middle income:life_exp</cell><cell><m>b_{13}</m></cell><cell>0.011</cell></row>
+    <row><cell>incomeHigh income:life_exp</cell><cell><m>b_{14}</m></cell><cell>0.072</cell></row>
+  </tabular>
+</table>
       <p>
-        In this subsection, we work with the regression model with interactions. The coefficients for this model were found earlier and saved in <c>model_int</c>, and are displayed in <xref ref="tab-interaction-coef"/>. We can use these coefficients to find the fitted values and residuals for any given observation. As an illustration, we chose two observations from the UN member states dataset — one <c>High income</c> country (ID 1) and one <c>Low income</c> country (ID 2) — and provide the values for the explanatory variables and response, as well as the fitted values and residuals:
-      </p>
+We can use these coefficients to find the fitted values and residuals for any given observation. As an illustration, we chose two observations from the UN member states dataset, provided the values for the explanatory variables and response, as well as the fitted values and residuals:      </p>
 
       <table xml:id="tab-fitted-two-countries">
         <title>Fitted values and residuals for two example countries</title>
@@ -634,18 +647,20 @@ incomeUpper middle income         incomeHigh income
           <row header="yes">
             <cell>ID</cell>
             <cell>fert_rate</cell>
-            <cell>life_exp</cell>
             <cell>income</cell>
+            <cell>life_exp</cell>
             <cell>fert_rate_hat</cell>
             <cell>residual</cell>
           </row>
-          <row><cell>1</cell><cell>1.3</cell><cell>83.1</cell><cell>High income</cell><cell>1.494</cell><cell>-0.194</cell></row>
-          <row><cell>2</cell><cell>5.4</cell><cell>59.1</cell><cell>Low income</cell><cell>4.916</cell><cell>0.484</cell></row>
+          <row><cell>1</cell><cell>1.3</cell><cell>High income</cell><cell>79.7</cell><cell>1.65</cell><cell>-0.35</cell></row>
+          <row><cell>2</cell><cell>5.7</cell><cell>Low income</cell><cell>62.4</cell><cell>4.52</cell><cell>1.18</cell></row>
         </tabular>
       </table>
 
       <p>
-        The first observation is a <c>High income</c> country with a life expectancy of 83.1 years and an observed fertility rate equal to 1.3. The second observation is a <c>Low income</c> country with a life expectancy of 59.1 years and an observed fertility rate equal to 5.4. The fitted value, <c>fert_rate_hat</c>, is the estimated value of the response determined by the regression line. This value is computed by using the values of the explanatory variables and the coefficients of the linear regression. In addition, recall the difference between the observed response value and the fitted value, <m>y - \hat y</m>, is called the residual.
+        The first observation is a <c>High income</c> country with a life expectancy of 79.74 years and an observed fertility rate equal to 1.3.
+        The second observation is a <c>Low income</c> country with a life expectancy of 62.41 years and an observed fertility rate equal to 5.7.
+        The fitted value, <c>fert_rate_hat</c>, is the estimated value of the response determined by the regression line. This value is computed by using the values of the explanatory variables and the coefficients of the linear regression. In addition, recall the difference between the observed response value and the fitted value, <m>y - \hat y</m>, is called the residual.
       </p>
 
       <p>
@@ -669,25 +684,6 @@ regression_points &lt;- get_regression_points(model_int)
 regression_points
         </input>
       </program>
-
-      <console prompt="> ">
-        <output>
-# A tibble: 182 × 6
-      ID fert_rate life_exp income              fert_rate_hat residual
-   &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;                       &lt;dbl&gt;    &lt;dbl&gt;
- 1     1       4.3     53.6 Low income                   5.56   -1.26 
- 2     2       1.4     79.5 Upper middle income          1.50   -0.098
- 3     3       2.7     78.0 Lower middle income          2.16    0.544
- 4     4       5       62.1 Lower middle income          3.84    1.16 
- 5     5       1.6     77.8 High income                  1.74   -0.139
- 6     6       1.9     78.3 Upper middle income          1.62    0.278
- 7     7       1.6     76.1 Upper middle income          1.86   -0.256
- 8     8       1.6     83.1 High income                  1.50    0.105
- 9     9       1.5     82.3 High income                  1.53   -0.033
-10    10       1.6     74.2 Upper middle income          2.07   -0.469
-# ℹ 172 more rows
-        </output>
-      </console>
 
       <table xml:id="tab-regression-points-un">
         <title>Regression points (First 10 out of 182 countries)</title>
