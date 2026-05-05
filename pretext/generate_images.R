@@ -20,6 +20,7 @@ suppressPackageStartupMessages({
   library(fivethirtyeight)
   library(mvtnorm)
   library(ISLR2)
+  library(ggrepel)
 })
 
 # Resolve the images output directory relative to this script's location
@@ -680,6 +681,363 @@ suppressMessages(
   save_fig(p_debt_vs_limit + p_debt_vs_income,
            "2numxplot1.png", width = 9, height = 4)
 )
+
+# ============================================================
+# Chapter 8: Confidence Intervals
+# ============================================================
+
+## Output subdirectory for Ch8 images --------------------------
+ch8_dir <- file.path(images_dir, "08-confidence-intervals")
+dir.create(ch8_dir, showWarnings = FALSE, recursive = TRUE)
+
+save_fig_ch8 <- function(plot, filename, width = 6, height = 4) {
+  path <- file.path(ch8_dir, filename)
+  ggsave(path, plot = plot, width = width, height = height, dpi = 150)
+  message("Saved: 08-confidence-intervals/", filename)
+}
+
+## Data setup --------------------------------------------------
+# Population parameters for the almonds bowl
+mu_ch8    <- almonds_bowl |>
+  summarize(mean(weight)) |>
+  pull()
+sigma_ch8 <- almonds_bowl |>
+  summarize(pop_sd(weight)) |>
+  pull()
+
+num_almonds_sample_ch8 <- length(almonds_sample_100$weight)
+se_xbar_ch8 <- sigma_ch8 / sqrt(num_almonds_sample_ch8)
+sample_mean_ch8 <- mean(almonds_sample_100$weight)
+lower_bound_ch8 <- sample_mean_ch8 - 1.96 * sigma_ch8 / sqrt(100)
+upper_bound_ch8 <- sample_mean_ch8 + 1.96 * sigma_ch8 / sqrt(100)
+
+## 8.1 Sample mean histogram + normal curve (redraw from Ch7) --
+set.seed(2)
+virtual_mean_weight_100_ch8 <- almonds_bowl |>
+  rep_slice_sample(n = num_almonds_sample_ch8, replace = TRUE, reps = 1000) |>
+  summarize(mean_weight = mean(weight), n = n())
+
+p_sample_mean_100 <- ggplot(virtual_mean_weight_100_ch8, aes(x = mean_weight)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.01,
+                 color = "white") +
+  stat_function(fun = dnorm,
+                args = list(mean = mu_ch8,
+                            sd = sigma_ch8 / sqrt(num_almonds_sample_ch8)),
+                col = "red") +
+  labs(x = "Sample means with n=100") +
+  annotate("point", x = sample_mean_ch8, y = 0, color = "blue") +
+  annotate("point", x = mu_ch8, y = 0, color = "red") +
+  annotate("text", x = mu_ch8, y = -1, label = "mu", parse = TRUE,
+           color = "red") +
+  annotate("text", x = sample_mean_ch8, y = -1,
+           label = "bar(x)", parse = TRUE, color = "blue")
+save_fig_ch8(p_sample_mean_100, "sample-mean-100-with-normal-redraw-1.png",
+             width = 6, height = 4)
+
+## 8.2 Three normal distributions -------------------------------
+all_points_ch8 <- tibble(
+  domain = seq(from = -10, to = 25, by = 0.01),
+  `mu = 5, sigma = 2` = dnorm(x = domain, mean = 5, sd = 2),
+  `mu = 5, sigma = 5` = dnorm(x = domain, mean = 5, sd = 5),
+  `mu = 15, sigma = 2` = dnorm(x = domain, mean = 15, sd = 2)
+) |>
+  pivot_longer(
+    cols = -domain,
+    names_to = "Distribution",
+    values_to = "value"
+  ) |>
+  mutate(
+    Distribution = factor(
+      Distribution,
+      levels = c("mu = 5, sigma = 2", "mu = 5, sigma = 5", "mu = 15, sigma = 2")
+    )
+  )
+
+for_labels_ch8 <- all_points_ch8 |>
+  filter(
+    (between(domain, 3.795, 3.805) & Distribution == "mu = 5, sigma = 2") |
+    (between(domain, 0.005, 0.0105) & Distribution == "mu = 5, sigma = 5") |
+    (between(domain, 16.005, 16.015) & Distribution == "mu = 15, sigma = 2")
+  )
+
+p_normal_curves <- all_points_ch8 |>
+  ggplot(aes(x = domain, y = value, linetype = Distribution)) +
+  geom_line() +
+  ggrepel::geom_label_repel(data = for_labels_ch8, aes(label = Distribution),
+                             nudge_x = c(-1, -2.1, 1)) +
+  theme_light() +
+  scale_linetype_manual(values = c("solid", "dotted", "longdash")) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    legend.position = "none"
+  )
+save_fig_ch8(p_normal_curves, "normal-curves-1.png", width = 7, height = 4)
+
+## 8.3 Normal area within one standard deviation ---------------
+p_norm_shaded_1a <- ggplot(data = data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100",
+            xlim = c(-4, -1)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey80",
+            xlim = c(-1, 1)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100",
+            xlim = c(1, 4)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = c(-1, 1))
+save_fig_ch8(p_norm_shaded_1a, "normal-curve-shaded-1a-1.png",
+             width = 3, height = 4)
+
+## 8.4 Normal area within two standard deviations --------------
+p_norm_shaded_2a <- ggplot(data = data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100",
+            xlim = c(-4, -2)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey80",
+            xlim = c(-2, 2)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100",
+            xlim = c(2, 4)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = c(-2, 2))
+save_fig_ch8(p_norm_shaded_2a, "normal-curve-shaded-2a-1.png",
+             width = 3, height = 4)
+
+## 8.5 Normal density curve for sample mean weight of almonds --
+p_norm_curve_1 <- ggplot(data = data.frame(x = c(3.5, 3.8)), aes(x)) +
+  stat_function(fun = dnorm,
+                args = list(mean = mu_ch8,
+                            sd = sigma_ch8 / sqrt(num_almonds_sample_ch8)),
+                col = "red") +
+  ylab("") +
+  scale_y_continuous(breaks = NULL) +
+  labs(x = "Sample means with n=100") +
+  annotate("point", x = sample_mean_ch8, y = 0, color = "blue") +
+  annotate("point", x = mu_ch8, y = 0, color = "red") +
+  annotate("text", x = mu_ch8, y = -1,
+           label = paste0("mu == ", round(mu_ch8, 2)), parse = TRUE,
+           color = "red") +
+  annotate("text", x = sample_mean_ch8, y = -1,
+           label = paste0("bar(x) == ", round(sample_mean_ch8, 2)),
+           parse = TRUE, color = "blue") +
+  geom_hline(yintercept = 0, col = "red", lty = 2)
+save_fig_ch8(p_norm_curve_1, "normal-curve-1-1.png", width = 6, height = 4)
+
+## 8.6 Normal density curve showing CI interval -----------------
+df_ci_ch8 <- data.frame(
+  x1 = lower_bound_ch8, x2 = upper_bound_ch8, y1 = 0, y2 = 0
+)
+p_norm_curve_2 <- ggplot(data = data.frame(x = c(3.5, 3.8)), aes(x)) +
+  stat_function(fun = dnorm,
+                args = list(mean = mu_ch8,
+                            sd = sigma_ch8 / sqrt(num_almonds_sample_ch8)),
+                col = "red") +
+  ylab("") +
+  scale_y_continuous(breaks = NULL) +
+  labs(title = "The Sampling Distribution of the Sample Mean",
+       x = "Sample mean weights") +
+  geom_point(aes(x = sample_mean_ch8, y = 0), color = "blue") +
+  geom_point(aes(x = mu_ch8, y = 0), color = "red") +
+  annotate(geom = "text", x = mu_ch8, y = -1,
+           label = "\u03BC", color = "red") +
+  annotate(geom = "text", x = sample_mean_ch8, y = -1,
+           label = "x\u0305", color = "blue") +
+  geom_hline(yintercept = 0, col = "red", lty = 2) +
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2),
+               data = df_ci_ch8, col = "blue")
+save_fig_ch8(p_norm_curve_2, "normal-curve-2-1.png", width = 6, height = 4)
+
+## 8.7 Standard normal and two t-distributions -----------------
+p_t_curve_1 <- ggplot(data = data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm, args = list(), col = "black") +
+  ylab("") +
+  stat_function(fun = dt, args = list(df = 2), col = "blue",
+                linetype = "dotted") +
+  ylab("") +
+  stat_function(fun = dt, args = list(df = 10), col = "red",
+                linetype = "dashed") +
+  ylab("") +
+  scale_y_continuous(breaks = NULL) +
+  labs(x = "The standard normal and two t-distributions")
+save_fig_ch8(p_t_curve_1, "t-curve-1-1.png", width = 6, height = 4)
+
+## 8.8 100 confidence intervals for almond mean ----------------
+set.seed(202)
+almond_mean_cis_ch8 <- almonds_bowl |>
+  rep_sample_n(size = 100, reps = 100, replace = FALSE) |>
+  summarize(sample_mean = mean(weight), sample_sd = sd(weight),
+            size = n()) |>
+  mutate(
+    lower_bound = sample_mean - qt(.975, size - 1) * sample_sd / sqrt(size),
+    upper_bound = sample_mean + qt(.975, size - 1) * sample_sd / sqrt(size),
+    captured = lower_bound <= mu_ch8 & upper_bound >= mu_ch8
+  )
+
+p_almond_cis <- ggplot(almond_mean_cis_ch8) +
+  geom_segment(aes(
+    y = replicate, yend = replicate,
+    x = lower_bound, xend = upper_bound,
+    alpha = factor(captured, levels = c("TRUE", "FALSE"))
+  )) +
+  labs(
+    x = expression("Sample mean weight of almonds"),
+    y = "Confidence interval number",
+    alpha = "Captured"
+  ) +
+  geom_vline(xintercept = mu_ch8, color = "red") +
+  theme_light() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+save_fig_ch8(p_almond_cis, "almond-mean-cis-1.png",
+             width = 6, height = 5)
+
+## 8.9 Normal curve with shaded middle 0.95 area ---------------
+p_norm_shaded_3a <- ggplot(data = data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100",
+            xlim = c(-4, -1.96)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey80",
+            xlim = c(-1.96, 1.96)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100",
+            xlim = c(1.96, 4)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = NULL) +
+  geom_point(aes(x = 0, y = 0), color = "red") +
+  geom_point(aes(x = -1.96, y = 0), color = "red") +
+  geom_point(aes(x = 1.96, y = 0), color = "red") +
+  annotate(geom = "text", x = -1.96, y = -0.03, label = "-q", color = "red") +
+  annotate(geom = "text", x = 1.96, y = -0.03, label = "q", color = "red") +
+  annotate(geom = "text", x = 0, y = -0.04, label = "0", color = "red")
+save_fig_ch8(p_norm_shaded_3a, "normal-curve-shaded-3a-1.png",
+             width = 3, height = 4)
+
+## 8.10 Bootstrap sample vs original sample histograms ---------
+set.seed(202)
+boot_sample_ch8 <- almonds_sample_100 |>
+  ungroup() |>
+  select(-replicate) |>
+  rep_sample_n(size = 100, replace = TRUE, reps = 1)
+
+almonds_clean_ch8 <- almonds_sample_100 |>
+  ungroup() |>
+  select(-replicate)
+
+p_boot_orig_1 <- ggplot(boot_sample_ch8, aes(x = weight)) +
+  geom_histogram(binwidth = 0.1, color = "white") +
+  labs(title = "Resample of 100 almonds' weights") +
+  scale_x_continuous(limits = c(2.85, 4.15),
+                     breaks = seq(2.85, 4.15, 0.1)) +
+  scale_y_continuous(limits = c(0, 25), breaks = seq(0, 25, 5))
+p_boot_orig_2 <- ggplot(almonds_clean_ch8, aes(x = weight)) +
+  geom_histogram(binwidth = 0.1, color = "white") +
+  labs(title = "Original sample of 100 almonds' weights") +
+  scale_x_continuous(limits = c(2.85, 4.15),
+                     breaks = seq(2.85, 4.15, 0.1)) +
+  scale_y_continuous(limits = c(0, 25), breaks = seq(0, 25, 5))
+save_fig_ch8(
+  p_boot_orig_1 + p_boot_orig_2 + plot_layout(ncol = 1, guides = "collect"),
+  "origandresample-1.png", width = 7, height = 6
+)
+
+## 8.11 Distribution of 35 bootstrap sample means --------------
+set.seed(20)
+bootstrap_samples_35_ch8 <- almonds_clean_ch8 |>
+  rep_sample_n(size = 100, replace = TRUE, reps = 35)
+
+boot_means_35_ch8 <- bootstrap_samples_35_ch8 |>
+  summarize(mean_weight = mean(weight))
+
+p_resampling_35 <- ggplot(boot_means_35_ch8, aes(x = mean_weight)) +
+  geom_histogram(binwidth = 0.01, color = "white") +
+  labs(x = "sample mean weight in grams")
+save_fig_ch8(p_resampling_35, "resampling-35-1.png", width = 6, height = 4)
+
+## 8.12 Histogram of 1000 bootstrap sample means ---------------
+set.seed(20)
+boot_means_1000_ch8 <- almonds_clean_ch8 |>
+  rep_sample_n(size = 100, replace = TRUE, reps = 1000) |>
+  summarize(mean_weight = mean(weight))
+
+p_one_thousand_means <- ggplot(boot_means_1000_ch8, aes(x = mean_weight)) +
+  geom_histogram(binwidth = 0.01, color = "white") +
+  labs(x = "sample mean weight in grams")
+suppressMessages(
+  save_fig_ch8(p_one_thousand_means, "one-thousand-sample-means-1.png",
+               width = 6, height = 4)
+)
+
+## 8.13 Bootstrap distribution via infer -----------------------
+set.seed(20)
+bootstrap_means_ch8 <- almonds_clean_ch8 |>
+  specify(response = weight) |>
+  generate(reps = 1000) |>
+  calculate(stat = "mean")
+
+p_boot_dist_infer <- visualize(bootstrap_means_ch8)
+save_fig_ch8(p_boot_dist_infer, "bootstrap-distribution-infer-1.png",
+             width = 6, height = 4)
+
+## 8.14 Percentile CI visualization ----------------------------
+percentile_ci_ch8 <- bootstrap_means_ch8 |>
+  get_confidence_interval(level = 0.95, type = "percentile")
+
+p_percentile_ci <- visualize(bootstrap_means_ch8) +
+  shade_confidence_interval(endpoints = percentile_ci_ch8)
+save_fig_ch8(p_percentile_ci, "percentile-ci-viz-1.png",
+             width = 6, height = 4)
+
+## 8.15 Standard-error CI visualization -----------------------
+x_bar_ch8 <- almonds_clean_ch8 |>
+  specify(response = weight) |>
+  calculate(stat = "mean")
+
+standard_error_ci_ch8 <- bootstrap_means_ch8 |>
+  get_confidence_interval(type = "se", point_estimate = x_bar_ch8,
+                          level = 0.95)
+
+p_se_ci <- visualize(bootstrap_means_ch8) +
+  shade_confidence_interval(endpoints = standard_error_ci_ch8)
+save_fig_ch8(p_se_ci, "se-ci-viz-1.png", width = 6, height = 4)
+
+## 8.16 Mythbusters yawning bootstrap distribution -------------
+set.seed(42)
+bootstrap_dist_yawning_ch8 <- mythbusters_yawn |>
+  specify(formula = yawn ~ group, success = "yes") |>
+  generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "diff in props", order = c("seed", "control"))
+
+p_boot_myth <- visualize(bootstrap_dist_yawning_ch8) +
+  geom_vline(xintercept = 0)
+save_fig_ch8(p_boot_myth, "bootstrap-distribution-mythbusters-1.png",
+             width = 6, height = 4)
+
+## 8.17 Mythbusters: percentile + SE confidence intervals ------
+myth_ci_percentile_ch8 <- bootstrap_dist_yawning_ch8 |>
+  get_confidence_interval(type = "percentile", level = 0.95)
+
+obs_diff_props_ch8 <- mythbusters_yawn |>
+  specify(formula = yawn ~ group, success = "yes") |>
+  calculate(stat = "diff in props", order = c("seed", "control"))
+
+myth_ci_se_ch8 <- bootstrap_dist_yawning_ch8 |>
+  get_confidence_interval(type = "se", point_estimate = obs_diff_props_ch8,
+                          level = 0.95)
+
+p_boot_myth_ci <- visualize(bootstrap_dist_yawning_ch8) +
+  ggtitle("") +
+  shade_confidence_interval(endpoints = myth_ci_percentile_ch8, fill = NULL,
+                            color = "black") +
+  shade_confidence_interval(endpoints = myth_ci_se_ch8, fill = NULL,
+                            color = "grey70")
+save_fig_ch8(p_boot_myth_ci, "bootstrap-distribution-mythbusters-CI-1.png",
+             width = 6, height = 4)
 
 # ============================================================
 # Chapter 9: Hypothesis Testing
