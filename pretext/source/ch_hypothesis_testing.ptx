@@ -1625,6 +1625,15 @@ obs_diff_prop
           </input>
         </program>
 
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1 0.034
+          </output>
+        </console>
+
         <p>
           Note that there is also a wrapper function in <c>infer</c> called <c>observe()</c>
           that can be used to calculate the observed test statistic. However, we chose to use
@@ -1641,6 +1650,15 @@ spotify_metal_deephouse |&gt;
           order = c("metal", "deep-house"))
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1 0.034
+          </output>
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="ht-visualize">
@@ -1748,6 +1766,15 @@ null_distribution |&gt;
   get_p_value(obs_stat = obs_diff_prop, direction = "right")
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.052
+          </output>
+        </console>
 
         <p>
           Keeping the definition of a <m>p</m>-value in mind, the probability of observing a
@@ -2277,7 +2304,7 @@ null_distribution_mean &lt;- spotify_metal_deephouse |&gt;
 
       <p>
         The <c>movies</c> dataset in the <c>ggplot2movies</c> package contains information on
-        movies that have been rated by users of IMDb.com.
+        58,788 movies that have been rated by users of IMDb.com.
       </p>
 
       <program language="r">
@@ -2287,9 +2314,9 @@ movies
       </program>
 
       <p>
-        We will focus on a random sample of 200 movies that are classified as either "action"
+        We will focus on a random sample of 68 movies that are classified as either "action"
         or "romance" movies but not both. We disregard movies that are classified as both so
-        that we can assign all 200 movies into either category. Furthermore, since the original
+        that we can assign all 68 movies into either category. Furthermore, since the original
         <c>movies</c> dataset was a little messy, we provide a pre-wrangled version of our data
         in the <c>movies_sample</c> data frame included in the <c>moderndive</c> package.
         If you are curious, you can look at the necessary data-wrangling code to do this on
@@ -2404,7 +2431,7 @@ movies_sample |&gt;
         Let's now revisit this study in terms of terminology and notation related to sampling we
         studied in <xref ref="terminology-and-notation"/>. The <em>study population</em> is all
         movies in the IMDb database that are either action or romance (but not both). The
-        <em>sample</em> from this population is the 200 movies included in the
+        <em>sample</em> from this population is the 68 movies included in the
         <c>movies_sample</c> dataset.
       </p>
 
@@ -2619,6 +2646,15 @@ obs_diff_means &lt;- movies_sample |&gt;
 obs_diff_means
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1 -1.04
+          </output>
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="movies-visualize">
@@ -2669,6 +2705,15 @@ null_distribution_movies |&gt;
   get_p_value(obs_stat = obs_diff_means, direction = "both")
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.004
+          </output>
+        </console>
 
         <p>
           This <m>p</m>-value is very small. In other words, there is a very small chance that
@@ -2967,6 +3012,15 @@ movies_sample |&gt;
          alternative = "two-sided")
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 7
+  statistic t_df p_value alternative estimate lower_ci upper_ci
+      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1     -2.89  65.8 0.00526 two.sided     -1.04    -1.76   -0.321
+          </output>
+        </console>
 
         <p>
           Based on the small <m>p</m>-value we reject the null hypothesis; the average rating
