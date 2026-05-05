@@ -1229,4 +1229,168 @@ p_us_births <- ggplot(US_births_1999, aes(x = date, y = births)) +
        title = "US Births in 1999")
 save_fig(p_us_births, "fig-us-births.png", width = 7, height = 4)
 
+# ============================================================
+# Chapter 9: Hypothesis Testing
+# ============================================================
+
+ch9_dir <- file.path(images_dir, "09-hypothesis-testing")
+dir.create(ch9_dir, showWarnings = FALSE, recursive = TRUE)
+
+save_fig_ch9 <- function(plot, filename, width = 6, height = 4) {
+  path <- file.path(ch9_dir, filename)
+  ggsave(path, plot = plot, width = width, height = height, dpi = 150)
+  message("Saved: 09-hypothesis-testing/", filename)
+}
+
+## 9.1 t-curve for one-sample hypothesis test (almonds) ----------
+hypo_test_ch9 <- almonds_sample_100 |>
+  summarize(
+    x_bar = mean(weight),
+    s     = sd(weight),
+    n     = length(weight),
+    t     = (x_bar - 3.6) / (s / sqrt(n))
+  )
+t_value_ch9 <- hypo_test_ch9$t[1]
+
+p_t_curve_hypo <- ggplot(data.frame(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dt, args = list(df = 99)) +
+  geom_area(stat = "function", fun = dt, args = list(df = 99),
+            fill = "pink", xlim = c(-4, -t_value_ch9)) +
+  geom_area(stat = "function", fun = dt, args = list(df = 99),
+            fill = "white", xlim = c(-t_value_ch9, t_value_ch9)) +
+  geom_area(stat = "function", fun = dt, args = list(df = 99),
+            fill = "pink", xlim = c(t_value_ch9, 4)) +
+  labs(x = "t", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = c(-2.26, 2.26))
+save_fig_ch9(p_t_curve_hypo, "t-curve-hypo-1.png", width = 3, height = 4)
+
+## 9.2 Spotify genre barplot (metal vs deep-house) ---------------
+spotify_metal_deephouse_ch9 <- spotify_by_genre |>
+  filter(track_genre %in% c("metal", "deep-house")) |>
+  select(track_genre, artists, track_name, popularity, popular_or_not)
+
+p_spotify_genre_barplot <- ggplot(
+  spotify_metal_deephouse_ch9,
+  aes(x = track_genre, fill = popular_or_not)
+) +
+  geom_bar() +
+  labs(x = "Genre of track")
+save_fig_ch9(p_spotify_genre_barplot, "spotify-genre-barplot-1.png",
+             width = 6, height = 4)
+
+## 9.3 Side-by-side original vs shuffled barplot (52 songs) ------
+height1_ch9 <- spotify_52_original |>
+  group_by(track_genre, popular_or_not) |>
+  summarize(n = n(), .groups = "drop") |>
+  pull(n) |>
+  max()
+height2_ch9 <- spotify_52_shuffled |>
+  group_by(track_genre, popular_or_not) |>
+  summarize(n = n(), .groups = "drop") |>
+  pull(n) |>
+  max()
+height_ch9 <- max(height1_ch9, height2_ch9)
+
+plot1_ch9 <- ggplot(
+  spotify_52_original,
+  aes(x = track_genre, fill = popular_or_not)
+) +
+  geom_bar() +
+  labs(x = "Genre of track", title = "Original") +
+  theme(legend.position = "none") +
+  coord_cartesian(ylim = c(0, height_ch9))
+
+plot2_ch9 <- ggplot(
+  spotify_52_shuffled,
+  aes(x = track_genre, fill = popular_or_not)
+) +
+  geom_bar() +
+  labs(x = "Genre of track", y = "", title = "Shuffled") +
+  coord_cartesian(ylim = c(0, height_ch9))
+
+suppressMessages(
+  save_fig_ch9(plot1_ch9 + plot2_ch9,
+               "spotify-genre-barplot-permuted-1.png",
+               width = 9, height = 4)
+)
+
+## 9.4 Null distribution (infer, spotify) ------------------------
+set.seed(2024)
+null_distribution_ch9 <- spotify_metal_deephouse_ch9 |>
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+
+p_null_dist_infer <- visualize(null_distribution_ch9, bins = 25)
+save_fig_ch9(p_null_dist_infer, "null-distribution-infer-1.png",
+             width = 6, height = 4)
+
+## 9.5 Null distribution with p-value shading (spotify) ----------
+obs_diff_prop_ch9 <- spotify_metal_deephouse_ch9 |>
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |>
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+
+p_null_dist_infer2 <- visualize(null_distribution_ch9, bins = 25) +
+  shade_p_value(obs_stat = obs_diff_prop_ch9, direction = "right")
+save_fig_ch9(p_null_dist_infer2, "null-distribution-infer-2-1.png",
+             width = 6, height = 4)
+
+## 9.6 Bootstrap distribution with 90% percentile CI (spotify) ---
+set.seed(16)
+bootstrap_distribution_ch9 <- spotify_metal_deephouse_ch9 |>
+  specify(formula = popular_or_not ~ track_genre, success = "popular") |>
+  generate(reps = 1000, type = "bootstrap") |>
+  calculate(stat = "diff in props", order = c("metal", "deep-house"))
+
+percentile_ci_ch9 <- bootstrap_distribution_ch9 |>
+  get_confidence_interval(level = 0.90, type = "percentile")
+
+p_bootstrap_two_prop <- visualize(bootstrap_distribution_ch9) +
+  shade_confidence_interval(endpoints = percentile_ci_ch9)
+save_fig_ch9(p_bootstrap_two_prop,
+             "bootstrap-distribution-two-prop-percentile-1.png",
+             width = 6, height = 4)
+
+## 9.7 Action vs Romance IMDb rating boxplot ---------------------
+p_action_romance_boxplot <- ggplot(
+  data = movies_sample,
+  aes(x = genre, y = rating)
+) +
+  geom_boxplot() +
+  labs(y = "IMDb rating")
+save_fig_ch9(p_action_romance_boxplot, "action-romance-boxplot-1.png",
+             width = 6, height = 4)
+
+## 9.8 Null distribution + p-value for movies case study ---------
+set.seed(76)
+null_distribution_movies_ch9 <- movies_sample |>
+  specify(formula = rating ~ genre) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
+  calculate(stat = "diff in means", order = c("Action", "Romance"))
+
+obs_diff_means_ch9 <- movies_sample |>
+  specify(formula = rating ~ genre) |>
+  calculate(stat = "diff in means", order = c("Action", "Romance"))
+
+p_null_dist_movies2 <- visualize(null_distribution_movies_ch9, bins = 10) +
+  shade_p_value(obs_stat = obs_diff_means_ch9, direction = "both")
+save_fig_ch9(p_null_dist_movies2, "null-distribution-movies-2-1.png",
+             width = 6, height = 4)
+
+## 9.9 Hawaiian vs Alaska Airlines air time boxplot --------------
+flights_sample_ch9 <- flights |>
+  filter(carrier %in% c("HA", "AS"))
+
+p_ha_as_boxplot <- ggplot(
+  data = flights_sample_ch9,
+  mapping = aes(x = carrier, y = air_time)
+) +
+  geom_boxplot() +
+  labs(x = "Carrier", y = "Air Time")
+save_fig_ch9(p_ha_as_boxplot, "ha-as-flights-boxplot-1.png",
+             width = 6, height = 4)
+
 message("\nAll figures generated successfully in: ", images_dir)
