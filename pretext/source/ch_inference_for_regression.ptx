@@ -406,11 +406,27 @@ sigma(model_1)
         </input>
       </program>
 
-      <console prompt="> ">
-        <output>
-[1] 20.3701
-        </output>
-      </console>
+      <table xml:id="tab-regtable-ch10-1">
+        <title>Old Faithful geyser linear regression coefficients</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row>
+            <cell><m>b_0</m></cell>
+            <cell>79.500</cell>
+          </row>
+          <row>
+            <cell><m>b_1</m></cell>
+            <cell>0.371</cell>
+          </row>
+          <row>
+            <cell><m>s</m></cell>
+            <cell>20.370</cell>
+          </row>
+        </tabular>
+      </table>
       <p>
         Based on these data and assuming the linear model is appropriate, we can say that for
         every additional second that an eruption lasts, the waiting time to the next eruption
@@ -894,8 +910,33 @@ old_faithful_2024 |>
         <m>b_1 \pm q \cdot SE(b_1)</m> where the critical value <m>q</m> is determined by
         the level of confidence required, the sample size used, and the corresponding degrees
         of freedom for the <m>t</m>-distribution. For the Old Faithful example, with
-        <m>n - 2 = 112</m> degrees of freedom, the critical value is <m>q = 1.981</m>.
+        <m>n - 2 = 112</m> degrees of freedom, the critical value is <m>q = 1.981</m>. The
+        estimates <m>b_0</m>, <m>b_1</m>, and <m>s</m> are shown again in
+        <xref ref="tab-regtable-ch10-2"/>.
       </p>
+
+      <table xml:id="tab-regtable-ch10-2">
+        <title>Old Faithful linear regression coefficients</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row>
+            <cell><m>b_0</m></cell>
+            <cell>79.500</cell>
+          </row>
+          <row>
+            <cell><m>b_1</m></cell>
+            <cell>0.371</cell>
+          </row>
+          <row>
+            <cell><m>s</m></cell>
+            <cell>20.370</cell>
+          </row>
+        </tabular>
+      </table>
+
       <p>
         The standard error for <m>b_1</m> using the formula presented earlier is:
       </p>
@@ -1998,6 +2039,48 @@ sigma(mod_mult)
 [1] 0.5066865
         </output>
       </console>
+
+      <table xml:id="tab-regtable-coffee">
+        <title>Coffee quality multiple regression coefficients</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row>
+            <cell><m>b_0</m></cell>
+            <cell>37.300</cell>
+          </row>
+          <row>
+            <cell><m>b_1</m></cell>
+            <cell>1.730</cell>
+          </row>
+          <row>
+            <cell><m>b_2</m></cell>
+            <cell>4.315</cell>
+          </row>
+          <row>
+            <cell><m>b_3</m></cell>
+            <cell>-0.008</cell>
+          </row>
+          <row>
+            <cell><m>b_{02}</m></cell>
+            <cell>-0.393</cell>
+          </row>
+          <row>
+            <cell><m>b_{03}</m></cell>
+            <cell>-0.273</cell>
+          </row>
+          <row>
+            <cell><m>b_{04}</m></cell>
+            <cell>-0.478</cell>
+          </row>
+          <row>
+            <cell><m>s</m></cell>
+            <cell>0.507</cell>
+          </row>
+        </tabular>
+      </table>
       <p>
         Recall that the numerical regressors' coefficients (<m>b_1</m>, <m>b_2</m>, and
         <m>b_3</m>) are partial slopes, each representing the extra effect of increasing the
@@ -2162,6 +2245,36 @@ sigma(mod_mult_1)
 [1] 0.5208255
         </output>
       </console>
+
+      <table xml:id="tab-regtable-coffee-mult-1">
+        <title>Coffee quality regression coefficients for three-regressor model</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row>
+            <cell><m>b_0</m></cell>
+            <cell>36.750</cell>
+          </row>
+          <row>
+            <cell><m>b_1</m></cell>
+            <cell>1.800</cell>
+          </row>
+          <row>
+            <cell><m>b_2</m></cell>
+            <cell>4.285</cell>
+          </row>
+          <row>
+            <cell><m>b_3</m></cell>
+            <cell>-0.015</cell>
+          </row>
+          <row>
+            <cell><m>s</m></cell>
+            <cell>0.521</cell>
+          </row>
+        </tabular>
+      </table>
       <p>
         Now consider a further reduced model without the regressor <c>flavor</c>:
       </p>
@@ -2180,6 +2293,32 @@ sigma(mod_mult_2)
 [1] 0.8571982
         </output>
       </console>
+
+      <table xml:id="tab-regtable-coffee-mult-2">
+        <title>Coffee quality regression coefficients for two-regressor model</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Coefficients</cell>
+            <cell>Values</cell>
+          </row>
+          <row>
+            <cell><m>b'_0</m></cell>
+            <cell>43.546</cell>
+          </row>
+          <row>
+            <cell><m>b'_1</m></cell>
+            <cell>5.202</cell>
+          </row>
+          <row>
+            <cell><m>b'_3</m></cell>
+            <cell>-0.016</cell>
+          </row>
+          <row>
+            <cell><m>s'</m></cell>
+            <cell>0.857</cell>
+          </row>
+        </tabular>
+      </table>
       <p>
         The partial slope for <c>aroma</c> in <c>mod_mult_1</c> differs from the partial
         slope for <c>aroma</c> in <c>mod_mult_2</c> because the models are different.
@@ -2520,10 +2659,88 @@ observed_fit
           </input>
         </program>
         <p>
-          These values match the first two columns of the <c>get_regression_table()</c> output
-          for <c>mod_mult</c>. The <c>observed_fit</c> values will be our point estimates for
-          the partial slopes in the confidence intervals.
+          These values match the regression table for <c>mod_mult</c> as shown in
+          <xref ref="tab-mod-mult-table-again"/>. The <c>observed_fit</c> values will be our
+          point estimates for the partial slopes in the confidence intervals.
         </p>
+
+        <table xml:id="tab-mod-mult-table-again">
+          <title>Regression table for <c>mod_mult</c></title>
+          <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+            <row header="yes">
+              <cell>term</cell>
+              <cell>estimate</cell>
+              <cell>std_error</cell>
+              <cell>statistic</cell>
+              <cell>p_value</cell>
+              <cell>lower_ci</cell>
+              <cell>upper_ci</cell>
+            </row>
+            <row>
+              <cell>intercept</cell>
+              <cell>37.3</cell>
+              <cell>1.12</cell>
+              <cell>33.4</cell>
+              <cell>0</cell>
+              <cell>35.1</cell>
+              <cell>39.5</cell>
+            </row>
+            <row>
+              <cell>aroma</cell>
+              <cell>1.73</cell>
+              <cell>0.222</cell>
+              <cell>7.80</cell>
+              <cell>0</cell>
+              <cell>1.29</cell>
+              <cell>2.17</cell>
+            </row>
+            <row>
+              <cell>flavor</cell>
+              <cell>4.32</cell>
+              <cell>0.226</cell>
+              <cell>19.1</cell>
+              <cell>0</cell>
+              <cell>3.87</cell>
+              <cell>4.76</cell>
+            </row>
+            <row>
+              <cell>moisture_percentage</cell>
+              <cell>-0.008</cell>
+              <cell>0.030</cell>
+              <cell>-0.27</cell>
+              <cell>0.787</cell>
+              <cell>-0.067</cell>
+              <cell>0.051</cell>
+            </row>
+            <row>
+              <cell>continent_of_origin-Asia</cell>
+              <cell>-0.393</cell>
+              <cell>0.121</cell>
+              <cell>-3.24</cell>
+              <cell>0.001</cell>
+              <cell>-0.632</cell>
+              <cell>-0.154</cell>
+            </row>
+            <row>
+              <cell>continent_of_origin-North America</cell>
+              <cell>-0.273</cell>
+              <cell>0.127</cell>
+              <cell>-2.15</cell>
+              <cell>0.033</cell>
+              <cell>-0.524</cell>
+              <cell>-0.023</cell>
+            </row>
+            <row>
+              <cell>continent_of_origin-South America</cell>
+              <cell>-0.478</cell>
+              <cell>0.142</cell>
+              <cell>-3.38</cell>
+              <cell>0.001</cell>
+              <cell>-0.757</cell>
+              <cell>-0.199</cell>
+            </row>
+          </tabular>
+        </table>
       </subsubsection>
 
       <subsubsection xml:id="bootstrap-mlr">
@@ -2745,6 +2962,67 @@ null_distribution_mlr |>
       <title>Summary of statistical inference</title>
 
       <p>
+        We've now finished the last two scenarios: inference for a simple linear regression
+        slope and inference for multiple linear regression partial slopes. All six scenarios
+        are summarized in <xref ref="tab-table-ch10"/>.
+      </p>
+
+      <table xml:id="tab-table-ch10">
+        <title>Scenarios of sampling for inference</title>
+        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <row header="yes">
+            <cell>Scenario</cell>
+            <cell>Population parameter</cell>
+            <cell>Notation</cell>
+            <cell>Point estimate</cell>
+            <cell>Notation</cell>
+          </row>
+          <row>
+            <cell>1</cell>
+            <cell>Population proportion</cell>
+            <cell><m>p</m></cell>
+            <cell>Sample proportion</cell>
+            <cell><m>\widehat{p}</m></cell>
+          </row>
+          <row>
+            <cell>2</cell>
+            <cell>Population mean</cell>
+            <cell><m>\mu</m></cell>
+            <cell>Sample mean</cell>
+            <cell><m>\overline{x}</m></cell>
+          </row>
+          <row>
+            <cell>3</cell>
+            <cell>Difference in population proportions</cell>
+            <cell><m>p_1 - p_2</m></cell>
+            <cell>Difference in sample proportions</cell>
+            <cell><m>\widehat{p}_1 - \widehat{p}_2</m></cell>
+          </row>
+          <row>
+            <cell>4</cell>
+            <cell>Difference in population means</cell>
+            <cell><m>\mu_1 - \mu_2</m></cell>
+            <cell>Difference in sample means</cell>
+            <cell><m>\overline{x}_1 - \overline{x}_2</m></cell>
+          </row>
+          <row>
+            <cell>5</cell>
+            <cell>Population SLR slope</cell>
+            <cell><m>\beta_1</m></cell>
+            <cell>Fitted SLR slope</cell>
+            <cell><m>b_1</m></cell>
+          </row>
+          <row>
+            <cell>6</cell>
+            <cell>Population MLR partial slopes</cell>
+            <cell><m>\beta_1, \dots, \beta_p</m></cell>
+            <cell>Fitted MLR partial slopes</cell>
+            <cell><m>b_1, \dots, b_p</m></cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
         Armed with the regression modeling techniques you learned in
         <xref ref="regression"/> and <xref ref="multiple-regression"/>, your understanding
         of sampling for inference in <xref ref="sampling"/>, and the tools for statistical
@@ -2754,18 +3032,6 @@ null_distribution_mlr |>
         of data! Many of the ideas presented here can be extended into multiple regression
         and other more advanced modeling techniques.
       </p>
-      <p>
-        Throughout this chapter, we have covered six scenarios for inference that build on
-        one another:
-      </p>
-      <ol>
-        <li><p>Confidence intervals and hypothesis tests for a single mean (using <m>t</m>-distribution and bootstrap).</p></li>
-        <li><p>Confidence intervals and hypothesis tests for a single proportion (using normal approximation and bootstrap).</p></li>
-        <li><p>Confidence intervals and hypothesis tests for the difference in two means (using <m>t</m>-distribution and permutation).</p></li>
-        <li><p>Confidence intervals and hypothesis tests for the difference in two proportions (using normal approximation and permutation).</p></li>
-        <li><p>Confidence intervals and hypothesis tests for a simple linear regression slope (using <m>t</m>-distribution and bootstrap/permutation).</p></li>
-        <li><p>Confidence intervals and hypothesis tests for multiple linear regression partial slopes (using <m>t</m>-distribution and bootstrap/permutation).</p></li>
-      </ol>
     </subsection>
 
     <subsection xml:id="inference-for-regression-additional-resources">
