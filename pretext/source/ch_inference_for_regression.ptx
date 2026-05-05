@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="inference-for-regression" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Inference for Regression</title>
-
+  <introduction>
   <p>
     In this chapter, we revisit the regression model studied in <xref ref="regression"/> and
     <xref ref="multiple-regression"/>. We do it by taking into account the inferential statistics
@@ -10,10 +10,9 @@
     data, we can gain insight into the relationships between the response and explanatory
     variables of an entire population.
   </p>
-
+<p></p>
   <!-- Needed packages -->
-  <subsection xml:id="inf-packages">
-    <title>Needed packages</title>
+    <alert>Needed packages</alert>
     <p>
       If needed, read <xref ref="sec-packages"/> for information on how to install and load
       R packages.
@@ -33,7 +32,7 @@ library(GGally)
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used
       in this chapter.
     </p>
-  </subsection>
+  </introduction>
 
 
   <!-- ============================================================ -->
