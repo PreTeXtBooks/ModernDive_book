@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="hypothesis-testing" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Hypothesis Testing</title>
-
+  <introduction>
   <p>
     We have studied confidence intervals in <xref ref="confidence-intervals"/>. We now introduce
     hypothesis testing, another widely used method for statistical inference. A claim is made
@@ -61,11 +61,10 @@
     and bootstrapping have much fewer restrictions. Furthermore, they help develop your
     computational thinking, which is one big reason they are emphasized throughout this book.
   </p>
-
+<p></p>
 
   <!-- Needed packages -->
-  <subsection xml:id="nhst-packages">
-    <title>Needed packages</title>
+    <alert>Needed packages</alert>
 
     <p>
       If needed, read <xref ref="sec-packages"/> for information on how to install and load R
@@ -88,7 +87,7 @@ library(ggplot2movies)
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used
       in this chapter.
     </p>
-  </subsection>
+  </introduction>
 
 
   <!-- ============================================================ -->
