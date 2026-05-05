@@ -3037,7 +3037,7 @@ visualize(bootstrap_distribution_yawning) +
         of them will contain the true value of <m>p_{seed} - p_{control}</m> while about
         five won't. Given that this is a little long winded, we use the shorthand
         interpretation: we're 95% <q>confident</q> that the true difference in proportions
-        <m>p_{seed} - p_{control}</m> is within the computed interval.
+        <m>p_{seed} - p_{control}</m> is between (-0.238, 0.302).
       </p>
 
       <p>
