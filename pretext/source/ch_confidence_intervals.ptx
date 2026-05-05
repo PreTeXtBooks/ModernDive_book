@@ -1463,7 +1463,7 @@ boot_sample |&gt;
         By using <c>summarize()</c> and <c>mean()</c> on the bootstrap sample <c>boot_sample</c>,
         we determine that the mean weight is 3.69 grams. Recall that the sample
         mean of the original sample was found in the previous subsection as 3.68 grams. So, the
-        sample mean of the bootstrap sample is different than the sample mean of the original
+        sample mean of the bootstrap sample is likely different than the sample mean of the original
         sample. This variation is induced by resampling with replacement, the method for finding the
         bootstrap sample. We can also compare the histogram of <c>weight</c>s for the bootstrap
         sample with the histogram of <c>weight</c>s for the original sample.
