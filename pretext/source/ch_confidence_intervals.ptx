@@ -350,60 +350,6 @@ almonds_sample_100 |&gt;
         understand this better, we need to learn a few additional properties of the normal
         distribution.
       </p>
-
-      <exercises>
-        <exercise xml:id="lc8-3">
-          <statement>
-            <p>
-              What does the population mean (<m>\mu</m>) represent in the context of the almond
-              activity?
-            </p>
-            <p>
-              <ul>
-                <li>A. The average weight of 100 randomly sampled almonds.</li>
-                <li>B. The weight of the heaviest almond in the bowl.</li>
-                <li>C. The average weight of all 5,000 almonds in the bowl.</li>
-                <li>D. The total weight of all almonds in the bowl.</li>
-              </ul>
-            </p>
-          </statement>
-        </exercise>
-        <exercise xml:id="lc8-4">
-          <statement>
-            <p>
-              Which of the following statements best describes the population standard deviation
-              (<m>\sigma</m>) in the almond activity?
-            </p>
-            <p>
-              <ul>
-                <li>A. It measures the average difference between each almond's weight and the
-                sample mean weight.</li>
-                <li>B. It measures the average difference between each almond's weight and the
-                population mean weight.</li>
-                <li>C. It is equal to the square root of the sample variance.</li>
-                <li>D. It is always smaller than the population mean.</li>
-              </ul>
-            </p>
-          </statement>
-        </exercise>
-        <exercise xml:id="lc8-5">
-          <statement>
-            <p>
-              Why do we use the sample mean to estimate the population mean in the almond activity?
-            </p>
-            <p>
-              <ul>
-                <li>A. Because the sample mean is always larger than the population mean.</li>
-                <li>B. Because the sample mean is a good estimator of the population mean due to
-                its unbiasedness.</li>
-                <li>C. Because the sample mean requires less computational effort than the
-                population mean.</li>
-                <li>D. Because the sample mean eliminates all sampling variation.</li>
-              </ul>
-            </p>
-          </statement>
-        </exercise>
-      </exercises>
     </subsection>
 
 
@@ -516,7 +462,9 @@ almonds_sample_100 |&gt;
           density curve, we could use the mathematical technique from calculus known as integration
           to determine this area. In the case of the normal curve, the integral for any interval
           does not have a close-form solution, and the solution is calculated using numerical
-          approximations. Please review <xref ref="appendix-normal-calculations"/> where we provide
+          approximations. </p>
+        <p>
+         Please review <xref ref="appendix-normal-calculations"/> where we provide
           R code to work with different areas, probabilities, and values under a normal density
           curve. Here, we place focus on the insights of specific values and areas without
           dedicating time to those calculations.
@@ -576,6 +524,60 @@ almonds_sample_100 |&gt;
           single sample.
         </p>
       </subsubsection>
+
+      <exercises>
+        <exercise xml:id="lc8-3">
+          <statement>
+            <p>
+              What does the population mean (<m>\mu</m>) represent in the context of the almond
+              activity?
+            </p>
+            <p>
+              <ul>
+                <li>A. The average weight of 100 randomly sampled almonds.</li>
+                <li>B. The weight of the heaviest almond in the bowl.</li>
+                <li>C. The average weight of all 5,000 almonds in the bowl.</li>
+                <li>D. The total weight of all almonds in the bowl.</li>
+              </ul>
+            </p>
+          </statement>
+        </exercise>
+        <exercise xml:id="lc8-4">
+          <statement>
+            <p>
+              Which of the following statements best describes the population standard deviation
+              (<m>\sigma</m>) in the almond activity?
+            </p>
+            <p>
+              <ul>
+                <li>A. It measures the average difference between each almond's weight and the
+                sample mean weight.</li>
+                <li>B. It measures the average difference between each almond's weight and the
+                population mean weight.</li>
+                <li>C. It is equal to the square root of the sample variance.</li>
+                <li>D. It is always smaller than the population mean.</li>
+              </ul>
+            </p>
+          </statement>
+        </exercise>
+        <exercise xml:id="lc8-5">
+          <statement>
+            <p>
+              Why do we use the sample mean to estimate the population mean in the almond activity?
+            </p>
+            <p>
+              <ul>
+                <li>A. Because the sample mean is always larger than the population mean.</li>
+                <li>B. Because the sample mean is a good estimator of the population mean due to
+                its unbiasedness.</li>
+                <li>C. Because the sample mean requires less computational effort than the
+                population mean.</li>
+                <li>D. Because the sample mean eliminates all sampling variation.</li>
+              </ul>
+            </p>
+          </statement>
+        </exercise>
+      </exercises>
     </subsection>
 
 
@@ -612,7 +614,10 @@ almonds_sample_100 |&gt;
         possible random samples of 100 almonds. The red dot represents the expected value of the
         sampling distribution, <m>\mu = 3.64</m>, located on the X-axis at the center of the
         distribution. The density curve's height can be thought of as how likely those sample means
-        are to be observed. The blue dot is the sample mean from our sample of 100 almonds,
+        are to be observed. For example, it is more likely to get a random sample with a sample mean 
+        around <m>3.645</m> grams (which corresponds to the highest point of the curve) than it is to
+        get a sample with a sample mean of around <m>3.5</m> grams, since the curve’s height is almost
+        zero at that value. The blue dot is the sample mean from our sample of 100 almonds,
         <m>\overline{x} = 3.68</m> grams. It is located 0.04 grams above the population mean
         weight. How far is 0.04 grams? It is helpful to express this distance in standardized
         values:
@@ -869,6 +874,8 @@ almonds_sample_100 |&gt;
         upper and lower bound. This happens because with a sample size of 100, the <m>t</m>-curve
         and <m>z</m>-curve are almost identical and also because the sample standard deviation was
         very similar to the population standard deviation.
+        This does not have to be always the case and occasionally we can observe greater differences;
+        but, in general, the results are fairly similar.
       </p>
       <p>
         More importantly, the confidence interval constructed here contains the population mean of
@@ -1272,7 +1279,8 @@ qnorm(0.9)
       for its implementation, the use of the bootstrap has become more and more popular in many
       fields.
     </p>
-
+    <p> As an illustration, if we are interested in the mean of the population, <m>\mu</m>, and
+       we have collected one random sample, we can gain a large number of bootstrap samples from this original sample, use them to calculate sample means, order the sample means from smallest to largest, and choose the interval that contains the middle 95% of these sample means. This will be the simplest way to find a confidence interval based on the bootstrap. In the next few subsections, we explore how to incorporate this and similar methods to construct confidence intervals.</p>
 
     <subsection xml:id="revisit-almond-bootstrap">
       <title>Revisiting the almond activity: bootstrap sampling</title>
