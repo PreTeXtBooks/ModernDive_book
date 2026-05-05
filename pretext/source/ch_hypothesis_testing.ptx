@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="hypothesis-testing" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Hypothesis Testing</title>
-
+  <introduction>
   <p>
     We have studied confidence intervals in <xref ref="confidence-intervals"/>. We now introduce
     hypothesis testing, another widely used method for statistical inference. A claim is made
@@ -61,11 +61,10 @@
     and bootstrapping have much fewer restrictions. Furthermore, they help develop your
     computational thinking, which is one big reason they are emphasized throughout this book.
   </p>
-
+<p></p>
 
   <!-- Needed packages -->
-  <subsection xml:id="nhst-packages">
-    <title>Needed packages</title>
+    <alert>Needed packages</alert>
 
     <p>
       If needed, read <xref ref="sec-packages"/> for information on how to install and load R
@@ -88,7 +87,7 @@ library(ggplot2movies)
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used
       in this chapter.
     </p>
-  </subsection>
+  </introduction>
 
 
   <!-- ============================================================ -->
@@ -321,22 +320,22 @@ almonds_sample_100 |>
         <p>
           The value of <m>t</m> in <xref ref="tab-hypo-test-1"/> is the sample mean standardized such that the claim
           <m>\mu = 3.6</m> grams corresponds to the center of the <m>t</m> distribution
-          (<m>t = 0</m>), and the sample mean observed, <m>\overline{x}</m>, corresponds to
-          the <m>t</m> test statistic.
+          (<m>t = 0</m>), and the sample mean observed, <m>\overline{x} = 0.36</m>, corresponds to
+          the <m>t</m> test statistic (t = 2.26).
         </p>
 
         <p>
           Assuming that the null hypothesis is true (<m>\mu = 3.6</m> grams) how likely is it
           to observe a sample as extreme as or more extreme than <c>almonds_sample_100</c>?
           Or correspondingly, how likely is it to observe a sample mean as extreme as or more
-          extreme than <m>\overline{x}</m>? Or even, how likely is it to observe a test
-          statistic that is <m>t</m> units or more away from the center of the
+          extreme than <m>\overline{x} = 0.36</m>? Or even, how likely is it to observe a test
+          statistic that is <m>t = 2.26</m> units or more away from the center of the
           <m>t</m> distribution?
         </p>
 
         <p>
           Because this is a two-sided test, we care about extreme values that are that
-          <m>t</m> value away in either direction of the distribution. The shaded regions on
+          <m>2.26</m> value away in either direction of the distribution. The shaded regions on
           both tails of the <m>t</m> distribution in <xref ref="t-curve-hypo"/> represent the
           probability of these extreme values.
         </p>
@@ -351,7 +350,7 @@ almonds_sample_100 |>
         <p>
           The function <c>pt()</c> finds the area under a <m>t</m> curve to the left of a
           given value. The function requires the argument <c>q</c> (quantile) that in our
-          example is the value of <m>t</m> on the left part of the plot and the argument
+          example is the value of <m>t</m> on the left part of the plot (-2.26) and the argument
           <c>df</c>, the degrees of freedom that for a one-sample test are <m>n-1</m>. The
           sample size of <c>almonds_sample_100</c> was <m>n = 100</m>. Finally, since we need
           the area on both tails and the <m>t</m> distribution is symmetric, we simply multiply
@@ -363,12 +362,6 @@ almonds_sample_100 |>
 2 * pt(q = -2.26, df = 100 - 1)
           </input>
         </program>
-
-        <console prompt="> ">
-          <output>
-[1] 0.02601195
-          </output>
-        </console>
 
         <p>
           We have determined that, assuming that the null hypothesis is true, the probability of
@@ -594,8 +587,17 @@ null_dist |&gt;
           </input>
         </program>
 
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.032
+        </output>
+      </console>
+
         <p>
-          The <m>p</m>-value is fairly similar to the <m>p</m>-value obtained using the
+          The <m>p</m>-value is 0.032. This is fairly similar to the <m>p</m>-value obtained using the
           theory-based approach. Using the same significance level <m>\alpha = 0.04</m> we
           again reject the null hypothesis.
         </p>
@@ -656,6 +658,15 @@ bootstrap_means |&gt;
   get_confidence_interval(level = 0.95, type = "percentile")
         </input>
       </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1  3.61198    3.756
+        </output>
+      </console>
 
       <p>
         Both 95% confidence intervals are very similar and, more importantly, both intervals do
@@ -746,7 +757,7 @@ bootstrap_means |&gt;
         <c>rock</c>). You will have the opportunity to explore relationships with the other
         genres and popularity in the Learning Checks. Let's explore this data by focusing on
         just <c>metal</c> and <c>deep-house</c> by looking at 12 randomly selected rows and our
-        columns of interest in <xref ref="tab-twelve-spotify"/>. Note that we also group our
+        columns of interest in <xref ref = "tab-deepmetal"/>. Note that we also group our
         selection so that each of the four possible groupings of <c>track_genre</c> and
         <c>popular_or_not</c> are selected.
       </p>
@@ -762,54 +773,27 @@ spotify_metal_deephouse |&gt;
         </input>
       </program>
 
-      <table xml:id="tab-twelve-spotify">
-        <title>Sample of twelve songs from the Spotify data frame</title>
-        <tabular halign="left" top="minor" bottom="minor" left="minor" right="minor">
-          <row header="yes">
-            <cell>track_genre</cell>
-            <cell>artists</cell>
-            <cell>track_name</cell>
-            <cell>popularity</cell>
-            <cell>popular_or_not</cell>
-          </row>
-          <row>
-            <cell>deep-house</cell><cell>Kideko</cell><cell>Free</cell><cell>5</cell><cell>not popular</cell>
-          </row>
-          <row>
-            <cell>deep-house</cell><cell>The Avener;Phoebe Killdeer</cell><cell>Fade Out Lines</cell><cell>0</cell><cell>not popular</cell>
-          </row>
-          <row>
-            <cell>deep-house</cell><cell>Deep Chills;Coral Reef;Bikini</cell><cell>Talkin' 'Bout a Revolution</cell><cell>41</cell><cell>not popular</cell>
-          </row>
-          <row>
-            <cell>deep-house</cell><cell>CID</cell><cell>Carnaval de Paris</cell><cell>51</cell><cell>popular</cell>
-          </row>
-          <row>
-            <cell>deep-house</cell><cell>Sunmoon</cell><cell>Just the Way You Are</cell><cell>52</cell><cell>popular</cell>
-          </row>
-          <row>
-            <cell>deep-house</cell><cell>Autograf;Tiina</cell><cell>Love Runs Out</cell><cell>60</cell><cell>popular</cell>
-          </row>
-          <row>
-            <cell>metal</cell><cell>Marilyn Manson</cell><cell>Sweet Dreams (Are Made of This)</cell><cell>0</cell><cell>not popular</cell>
-          </row>
-          <row>
-            <cell>metal</cell><cell>DragonForce</cell><cell>Fury of the Storm</cell><cell>0</cell><cell>not popular</cell>
-          </row>
-          <row>
-            <cell>metal</cell><cell>Ghost</cell><cell>Dance Macabre</cell><cell>0</cell><cell>not popular</cell>
-          </row>
-          <row>
-            <cell>metal</cell><cell>Bon Jovi</cell><cell>It's My Life</cell><cell>80</cell><cell>popular</cell>
-          </row>
-          <row>
-            <cell>metal</cell><cell>Scorpions</cell><cell>Rock You Like a Hurricane</cell><cell>64</cell><cell>popular</cell>
-          </row>
-          <row>
-            <cell>metal</cell><cell>Sick Puppies</cell><cell>You're Going Down</cell><cell>66</cell><cell>popular</cell>
-          </row>
-        </tabular>
-      </table>
+<table xml:id="tab-deepmetal">
+  <title>Sample of twelve songs from the Spotify data frame</title>
+  <tabular>
+    <row header="yes">
+      <cell>track_genre</cell><cell>artists</cell><cell>track_name</cell>
+      <cell>popularity</cell><cell>popular_or_not</cell>
+    </row>
+    <row><cell>deep-house</cell><cell>LYOD;Tom Auton</cell><cell>On My Way</cell><cell>51</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>Sunmoon</cell><cell>Just the Two of Us</cell><cell>52</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>Tensnake;Nazzereene</cell><cell>Latching Onto You</cell><cell>51</cell><cell>popular</cell></row>
+    <row><cell>metal</cell><cell>Slipknot</cell><cell>Psychosocial</cell><cell>66</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>BCX</cell><cell>Miracle In The Middle Of My Heart - Original Mix</cell><cell>41</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>blessthefall</cell><cell>I Wouldn't Quit If Everyone Quit</cell><cell>0</cell><cell>not popular</cell></row>
+    <row><cell>deep-house</cell><cell>Junge Junge;Tyron Hapi</cell><cell>I'm The One - Tyron Hapi Remix</cell><cell>49</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Poison</cell><cell>Every Rose Has Its Thorn - Remastered 2003</cell><cell>0</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Armored Dawn</cell><cell>S.O.S.</cell><cell>54</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>James Hype;Pia Mia;PS1</cell><cell>Good Luck (feat. Pia Mia) - PS1 Remix</cell><cell>47</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Hollywood Undead</cell><cell>Riot</cell><cell>26</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Breaking Benjamin</cell><cell>Ashes of Eden</cell><cell>61</cell><cell>popular</cell></row>
+  </tabular>
+</table>
 
       <p>
         The <c>track_genre</c> variable indicates what genre the song is classified under, the
@@ -876,17 +860,17 @@ spotify_metal_deephouse |&gt;
       </console>
 
       <p>
-        So of the 1000 metal songs, some were popular and some were not, for a proportion
-        <m>\widehat{p}_m</m>. On the other hand, of the 1000 deep house songs, the proportion
-        that were popular is <m>\widehat{p}_d</m>. Comparing these two rates of popularity, it
-        appears that metal songs were popular at a higher rate than deep house songs. This is
-        suggestive of an advantage for metal songs in terms of popularity.
+So of the 1000 metal songs, 563 were popular, for a proportion of <m>563/1000 = 0.563 = 56.3%</m>.
+On the other hand, of the 1000 deep house songs, <m>529</m> were popular, for a proportion of
+<m>529/1000 = 0.529 = 52.9%</m>. Comparing these two rates of popularity, it appears that metal
+songs were popular at a rate <m>0.563 -  0.529 = 0.034 = 3.4%</m> higher than deep house songs. This
+is suggestive of an advantage for metal songs in terms of popularity.
       </p>
 
       <p>
         The question is, however, does this provide <em>conclusive</em> evidence that there is
         greater popularity for metal songs compared to deep house songs? Could a difference in
-        popularity rates still occur by chance, even in a hypothetical world where no difference
+        popularity rates of 3.4% still occur by chance, even in a hypothetical world where no difference
         in popularity existed between the two genres? In other words, what is the role of
         <em>sampling variation</em> in this hypothesized world? To answer this question, we
         will again rely on a computer to run <em>simulations</em>.
@@ -910,7 +894,8 @@ spotify_metal_deephouse |&gt;
         saw earlier. The <c>track_genre</c> column shows what the original genre of the song
         was. Note that to keep this smaller dataset of 52 rows to be a representative sample of
         the 2000 rows, we have sampled such that the popularity rate for each of <c>metal</c>
-        and <c>deep-house</c> is close to the original rates prior to shuffling. This data is
+        and <c>deep-house</c> is close to the original rates of 0.563 and 0.529, respectively,
+        prior to shuffling. This data is
         available in the <c>spotify_52_original</c> data frame in the <c>moderndive</c> package.
         We also remove the <c>track_id</c> column for simplicity. It is an identification
         variable that is not relevant for our analysis. A sample of this is shown in
@@ -1122,13 +1107,19 @@ spotify_52_shuffled |&gt;
         </output>
       </console>
 
-      <p>
-        So in this one sample of a hypothetical universe of no difference in genre popularity,
-        the proportion of metal songs that are popular differs from the proportion of deep house
-        songs. The difference in rates is not the same as the original difference we observed.
-        This is once again due to <em>sampling variation</em>. How can we better understand the
-        effect of this sampling variation? By repeating this shuffling several times!
-      </p>
+<p>
+  So in this one sample of a hypothetical universe of no difference in genre popularity,
+  <m>13/26 = 0.5 = 50\%</m> of metal songs were popular. On the other hand,
+  <m>16/26 = 0.615 = 61.5\%</m> of deep house songs were popular. Let's next compare these
+  two values. It appears that metal tracks were popular at a rate that was
+  <m>0.5 - 0.615 = -0.115 = -11.5</m> percentage points different than deep house songs.
+</p>
+<p>
+  Observe how this difference in rates is not the same as the difference in rates of
+  <m>0.034 = 3.4\%</m> we originally observed. This is once again due to sampling variation.
+  How can we better understand the effect of this sampling variation? By repeating this
+  shuffling several times!
+</p>
     </subsection>
 
     <subsection xml:id="ht-what-did-we-just-do">
@@ -1195,9 +1186,9 @@ spotify_52_shuffled |&gt;
       <p>
         So, based on our sample of <m>n_m = 1000</m> metal tracks and
         <m>n_d = 1000</m> deep house tracks, the <em>point estimate</em> for
-        <m>p_{m} - p_{d}</m> is the <em>difference in sample proportions</em>
-        <m>\widehat{p}_{m} - \widehat{p}_{d}</m>. This difference is greater than 0,
-        suggesting metal songs are more popular than deep house songs.
+        <m>p_{m} - p_{d}</m> is the <em>difference in sample proportions</em></p>
+<me>\widehat{p}_{m} - \widehat{p}_{d} = 0.563-0529=0.034</me>.
+<p>This difference in favor of metal songs of 0.034 (3.4 percentage points) is greater than 0, suggesting metal songs are more popular than deep house songs.
       </p>
 
       <p>
@@ -1344,8 +1335,8 @@ spotify_52_shuffled |&gt;
       result? Here, extreme is defined in terms of the alternative hypothesis <m>H_A</m> that
       metal popularity is at a higher rate than deep house. In other words, how often was the
       popularity of metal <em>even more</em> pronounced than the observed difference in sample
-      proportions <m>\widehat{p}_{m} - \widehat{p}_{d}</m>?
-    </p>
+      proportions <m>0.563-0529=0.034=3.4%</m>?
+</p>
 
     <p>
       Seventh and lastly, in many hypothesis testing procedures, it is commonly recommended to
