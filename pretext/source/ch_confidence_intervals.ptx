@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xml:id="confidence-intervals" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Estimation, Confidence Intervals, and Bootstrapping</title>
-
+<introduction>
   <p>
     We studied sampling in <xref ref="sampling"/>. Recall, for example, getting many random samples
     of red and white balls from a bowl, finding the sample proportions of red balls from each of
@@ -80,8 +80,7 @@
 
 
   <!-- Needed packages -->
-  <subsection xml:id="CI-packages">
-    <title>Needed packages</title>
+    <alert>Needed packages</alert>
 
     <p>
       If needed, read <xref ref="sec-packages"/> for information on how to install and load R packages.
@@ -101,7 +100,7 @@ library(infer)
       <c>moderndive</c> and <c>infer</c> contain functions and data frames that will be used in
       this chapter.
     </p>
-  </subsection>
+  </introduction>
 
 
   <!-- Section 8.1 -->
