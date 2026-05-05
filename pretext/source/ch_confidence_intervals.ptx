@@ -1514,6 +1514,25 @@ bootstrap_samples_35 &lt;- almonds_sample_100 |&gt;
 bootstrap_samples_35
         </input>
       </program>
+      <console prompt="> ">
+        <output>
+# A tibble: 3,500 × 3
+# Groups:   replicate [35]
+   replicate    ID weight
+       &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1         1  1215    4.2
+ 2         1   166    4.2
+ 3         1  2574    4.1
+ 4         1  1899    3.9
+ 5         1   127    4  
+ 6         1  4637    3.3
+ 7         1  4419    3.5
+ 8         1  4729    4.2
+ 9         1   511    3.5
+10         1  4729    4.2
+# ℹ 3,490 more rows
+        </output>
+      </console>
       <p>
         The syntax is the same as before, but this time we set <c>reps = 35</c> to get 35 bootstrap
         samples. The resulting data frame, <c>bootstrap_samples_35</c>, has
@@ -1527,6 +1546,24 @@ boot_means &lt;- bootstrap_samples_35 |&gt;
 boot_means
         </input>
       </program>
+      <console prompt="> ">
+        <output>
+# A tibble: 35 × 2
+   replicate mean_weight
+       &lt;int&gt;       &lt;dbl&gt;
+ 1         1        3.68
+ 2         2        3.69
+ 3         3        3.63
+ 4         4        3.68
+ 5         5        3.68
+ 6         6        3.67
+ 7         7        3.68
+ 8         8        3.71
+ 9         9        3.64
+10        10        3.68
+# ℹ 25 more rows
+        </output>
+      </console>
       <p>
         Observe that <c>boot_means</c> has 35 rows, corresponding to the 35 bootstrap sample means.
         Furthermore, observe that the values of <c>mean_weight</c> vary as shown in
@@ -1574,6 +1611,24 @@ boot_means &lt;- almonds_sample_100 |&gt;
 boot_means
         </input>
       </program>
+      <console prompt="> ">
+        <output>
+# A tibble: 1,000 × 2
+   replicate mean_weight
+       &lt;int&gt;       &lt;dbl&gt;
+ 1         1        3.68
+ 2         2        3.69
+ 3         3        3.63
+ 4         4        3.68
+ 5         5        3.68
+ 6         6        3.67
+ 7         7        3.68
+ 8         8        3.71
+ 9         9        3.64
+10        10        3.68
+# ℹ 990 more rows
+        </output>
+      </console>
       <p>
         The data frame <c>boot_means</c> contains 1000 sample mean weights. Each is calculated from
         a different bootstrap sample and visualized in <xref ref="fig-one-thousand-sample-means"/>.
@@ -1617,6 +1672,14 @@ boot_means |&gt;
             sd_of_means = sd(mean_weight))
         </input>
       </program>
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 2
+  mean_of_means sd_of_means
+          &lt;dbl&gt;       &lt;dbl&gt;
+1          3.68      0.0357
+        </output>
+      </console>
       <p>
         Everything we learned in <xref ref="sampling"/> when studying the sampling distribution of
         the sample mean applies here. For example, observe that the mean of these bootstrap sample
@@ -1791,6 +1854,14 @@ almonds_sample_100 |&gt;
   calculate(stat = "mean")
         </input>
       </program>
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  3.68
+        </output>
+      </console>
       <p>
         The new structure using <c>infer</c> seems slightly more complicated than the one using
         <c>dplyr</c> for this simple calculation. These functions will provide three chief benefits
@@ -1887,7 +1958,9 @@ almonds_sample_100 |&gt;
           interest. Thus, we set the <c>x</c> on the right-hand side of the <c>~</c> to be
           <c>NULL</c>. In cases where inference is focused on a single sample, as it is the
           almonds' weights example, either specification works. In the examples we present in later
-          sections, the <c>formula</c> specification is simpler and more flexible.
+          sections, the <c>formula</c> specification is simpler and more flexible. In particular,
+          this comes up in the upcoming <xref ref="case-study-two-prop-ci"/> on comparing two
+          proportions and <xref ref="infer-regression"/> on inference for regression.
         </p>
       </subsubsection>
 
@@ -2084,8 +2157,10 @@ visualize(bootstrap_means)
         </figure>
         <p>
           <term>Comparing with original workflow</term>: In fact, <c>visualize()</c> is a
-          <em>wrapper function</em> for the <c>ggplot()</c> function that uses a
-          <c>geom_histogram()</c> layer.
+          <em>wrapper function</em><idx><h>functions</h><h>wrapper</h></idx> for the
+          <c>ggplot()</c> function that uses a <c>geom_histogram()</c> layer. Recall that we
+          illustrated the concept of a wrapper function in
+          <xref ref="fig-moderndive-figure-wrapper"/> in <xref ref="model1table"/>.
         </p>
         <program language="r">
           <input>
@@ -2140,6 +2215,24 @@ ggplot(bootstrap_means, aes(x = stat)) +
 bootstrap_means
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1,000 × 2
+   replicate  stat
+       &lt;int&gt; &lt;dbl&gt;
+ 1         1  3.68
+ 2         2  3.69
+ 3         3  3.63
+ 4         4  3.68
+ 5         5  3.68
+ 6         6  3.68
+ 7         7  3.68
+ 8         8  3.71
+ 9         9  3.64
+10        10  3.68
+# ℹ 990 more rows
+          </output>
+        </console>
         <p>
           The sample means stored in <c>bootstrap_means</c> represent a good approximation to the
           bootstrap distribution of all possible bootstrap samples. The percentile method for
@@ -2162,6 +2255,14 @@ percentile_ci &lt;- bootstrap_means |&gt;
 percentile_ci
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1     3.61     3.76
+          </output>
+        </console>
         <p>
           Alternatively, we can visualize the interval by piping the <c>bootstrap_means</c> data
           frame into the <c>visualize()</c> function and adding a
@@ -2237,6 +2338,11 @@ SE_boot &lt;- bootstrap_means |&gt;
 SE_boot
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+[1] 0.03566146
+          </output>
+        </console>
         <p>
           and then use the original sample mean to calculate the 95% confidence interval:
         </p>
@@ -2247,6 +2353,14 @@ almonds_sample_100 |&gt;
             upper_bound = mean(weight) + 1.96 * SE_boot)
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 2
+  lower_bound upper_bound
+        &lt;dbl&gt;       &lt;dbl&gt;
+1        3.61        3.75
+          </output>
+        </console>
         <p>
           Alternatively, computation of the 95% confidence interval can once again be done via
           <c>infer</c>. We find the sample mean of the original sample and store it in variable
@@ -2260,6 +2374,14 @@ x_bar &lt;- almonds_sample_100 |&gt;
 x_bar
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+   stat
+  &lt;dbl&gt;
+1  3.68
+          </output>
+        </console>
         <p>
           Now, we pipe the <c>bootstrap_means</c> data frame we created into the
           <c>get_confidence_interval()</c> function. We set the <c>type</c> argument to be
@@ -2273,6 +2395,14 @@ standard_error_ci &lt;- bootstrap_means |&gt;
 standard_error_ci
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1     3.61     3.75
+          </output>
+        </console>
         <p>
           The results are the same whether <c>dplyr</c> or <c>infer</c> is used, but as explained
           earlier, the latter provides more flexibility for other tests.
@@ -2307,8 +2437,8 @@ visualize(bootstrap_means) +
         </p>
         <p>
           <ul>
-            <li>Percentile method: approximately (3.65, 3.71)</li>
-            <li>Standard error method: approximately (3.65, 3.71)</li>
+            <li>Percentile method: approximately (3.61, 3.76)</li>
+            <li>Standard error method: approximately (3.61, 3.75)</li>
             <li>Theory-based method: (3.653, 3.707)</li>
           </ul>
         </p>
@@ -2877,12 +3007,12 @@ mythbusters_yawn |&gt;
   specify(formula = yawn ~ group)
           </input>
         </program>
-        <program language="r">
-          <input>
+        <console prompt="> ">
+          <output>
 Error: A level of the response variable `yawn` needs to be specified for the
 `success` argument in `specify()`.
-          </input>
-        </program>
+          </output>
+        </console>
         <p>
           Alas, we got an error message that <c>infer</c> is telling us that one of the
           levels of the categorical variable <c>yawn</c> needs to be defined as the
@@ -2899,6 +3029,27 @@ mythbusters_yawn |&gt;
   specify(formula = yawn ~ group, success = "yes")
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+Response: yawn (factor)
+Explanatory: group (factor)
+Success: yes
+# A tibble: 50 × 3
+    subj group   yawn 
+   &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;
+ 1     1 seed    yes  
+ 2     2 control yes  
+ 3     3 seed    no   
+ 4     4 seed    yes  
+ 5     5 seed    no   
+ 6     6 control no   
+ 7     7 seed    yes  
+ 8     8 control no   
+ 9     9 control no   
+10    10 seed    no   
+# ℹ 40 more rows
+          </output>
+        </console>
       </subsubsection>
 
 
@@ -3002,16 +3153,16 @@ mythbusters_yawn |&gt;
   calculate(stat = "diff in props")
           </input>
         </program>
-        <program language="r">
-          <input>
+        <console prompt="> ">
+          <output>
 Warning message:
 The statistic is based on a difference or ratio; by default, for
 difference-based statistics, the explanatory variable is subtracted in the
 order "control" - "seed", or divided in the order "control" / "seed" for
 ratio-based statistics. To specify this order yourself, supply
 `order = c("control", "seed")` to the calculate() function.
-          </input>
-        </program>
+          </output>
+        </console>
         <p>
           We see another warning here. We need to specify the order of the subtraction. Is it
           <m>\widehat{p}_{seed} - \widehat{p}_{control}</m> or
@@ -3034,6 +3185,24 @@ bootstrap_distribution_yawning &lt;- mythbusters_yawn |&gt;
 bootstrap_distribution_yawning
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1,000 × 2
+   replicate    stat
+       &lt;int&gt;   &lt;dbl&gt;
+ 1         1  0.0357
+ 2         2  0.229 
+ 3         3  0.00952
+ 4         4  0.0107 
+ 5         5  0.00483
+ 6         6  0.00794
+ 7         7 -0.0846 
+ 8         8 -0.00466
+ 9         9  0.165  
+10        10  0.125  
+# ℹ 990 more rows
+          </output>
+        </console>
         <p>
           Observe that the resulting data frame has 1000 rows and 2 columns corresponding to
           the 1000 <c>replicate</c> ID's and the 1000 differences in proportions for each
@@ -3077,6 +3246,14 @@ myth_ci_percentile &lt;- bootstrap_distribution_yawning |&gt;
 myth_ci_percentile
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1   -0.238    0.302
+          </output>
+        </console>
 
         <p>
           Second, since the bootstrap distribution is roughly bell-shaped, we can construct a
@@ -3101,6 +3278,14 @@ obs_diff_in_props &lt;- mythbusters_yawn |&gt;
 obs_diff_in_props
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 1
+    stat
+   &lt;dbl&gt;
+1 0.0441
+          </output>
+        </console>
         <p>
           We thus plug this value in as the <c>point_estimate</c> argument.
         </p>
@@ -3112,6 +3297,14 @@ myth_ci_se &lt;- bootstrap_distribution_yawning |&gt;
 myth_ci_se
           </input>
         </program>
+        <console prompt="> ">
+          <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1   -0.227    0.316
+          </output>
+        </console>
         <p>
           Let's visualize both confidence intervals in
           <xref ref="fig-bootstrap-distribution-mythbusters-CI"/>, with the percentile method
