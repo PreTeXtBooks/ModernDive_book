@@ -985,7 +985,7 @@ spotify_52_shuffled |&gt;
       </program>
 
       <table xml:id="tab-spotify-shuffled-52-sample">
-        <title>Shuffled version of <c>popular_or_not</c> in sample</title>
+        <title>Shuffled version of popularity classification in sample</title>
         <tabular halign="left" top="minor" bottom="minor" left="minor" right="minor">
           <row header="yes">
             <cell>track_genre</cell>
