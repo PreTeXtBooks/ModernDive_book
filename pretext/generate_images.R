@@ -733,6 +733,7 @@ save_fig_ch9(p_spotify_bar, "spotify-genre-barplot-1.png",
              width = 6, height = 4)
 
 ## 9.3 Side-by-side barplots: original vs shuffled -------------
+# spotify_52_original and spotify_52_shuffled are datasets from moderndive
 height1 <- spotify_52_original |>
   group_by(track_genre, popular_or_not) |>
   summarize(n = n(), .groups = "drop") |>
