@@ -311,22 +311,22 @@ almonds_sample_100 |>
         <p>
           The value of <m>t</m> is the sample mean standardized such that the claim
           <m>\mu = 3.6</m> grams corresponds to the center of the <m>t</m> distribution
-          (<m>t = 0</m>), and the sample mean observed, <m>\overline{x}</m>, corresponds to
-          the <m>t</m> test statistic.
+          (<m>t = 0</m>), and the sample mean observed, <m>\overline{x} = 0.36</m>, corresponds to
+          the <m>t</m> test statistic (t = 2.26).
         </p>
 
         <p>
           Assuming that the null hypothesis is true (<m>\mu = 3.6</m> grams) how likely is it
           to observe a sample as extreme as or more extreme than <c>almonds_sample_100</c>?
           Or correspondingly, how likely is it to observe a sample mean as extreme as or more
-          extreme than <m>\overline{x}</m>? Or even, how likely is it to observe a test
-          statistic that is <m>t</m> units or more away from the center of the
+          extreme than <m>\overline{x} = 0.36</m>? Or even, how likely is it to observe a test
+          statistic that is <m>t = 2.26</m> units or more away from the center of the
           <m>t</m> distribution?
         </p>
 
         <p>
           Because this is a two-sided test, we care about extreme values that are that
-          <m>t</m> value away in either direction of the distribution. The shaded regions on
+          <m>2.26</m> value away in either direction of the distribution. The shaded regions on
           both tails of the <m>t</m> distribution in <xref ref="t-curve-hypo"/> represent the
           probability of these extreme values.
         </p>
@@ -341,7 +341,7 @@ almonds_sample_100 |>
         <p>
           The function <c>pt()</c> finds the area under a <m>t</m> curve to the left of a
           given value. The function requires the argument <c>q</c> (quantile) that in our
-          example is the value of <m>t</m> on the left part of the plot and the argument
+          example is the value of <m>t</m> on the left part of the plot (-2.26) and the argument
           <c>df</c>, the degrees of freedom that for a one-sample test are <m>n-1</m>. The
           sample size of <c>almonds_sample_100</c> was <m>n = 100</m>. Finally, since we need
           the area on both tails and the <m>t</m> distribution is symmetric, we simply multiply
@@ -353,12 +353,6 @@ almonds_sample_100 |>
 2 * pt(q = -2.26, df = 100 - 1)
           </input>
         </program>
-
-        <console prompt="> ">
-          <output>
-[1] 0.02601195
-          </output>
-        </console>
 
         <p>
           We have determined that, assuming that the null hypothesis is true, the probability of
@@ -584,8 +578,17 @@ null_dist |&gt;
           </input>
         </program>
 
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 1
+  p_value
+    &lt;dbl&gt;
+1   0.032
+        </output>
+      </console>
+
         <p>
-          The <m>p</m>-value is fairly similar to the <m>p</m>-value obtained using the
+          The <m>p</m>-value is 0.032. This is fairly similar to the <m>p</m>-value obtained using the
           theory-based approach. Using the same significance level <m>\alpha = 0.04</m> we
           again reject the null hypothesis.
         </p>
@@ -646,6 +649,15 @@ bootstrap_means |&gt;
   get_confidence_interval(level = 0.95, type = "percentile")
         </input>
       </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1  3.61198    3.756
+        </output>
+      </console>
 
       <p>
         Both 95% confidence intervals are very similar and, more importantly, both intervals do
@@ -736,7 +748,7 @@ bootstrap_means |&gt;
         <c>rock</c>). You will have the opportunity to explore relationships with the other
         genres and popularity in the Learning Checks. Let's explore this data by focusing on
         just <c>metal</c> and <c>deep-house</c> by looking at 12 randomly selected rows and our
-        columns of interest in the output below. Note that we also group our
+        columns of interest in <xref ref = "tab-deepmetal"/>. Note that we also group our
         selection so that each of the four possible groupings of <c>track_genre</c> and
         <c>popular_or_not</c> are selected.
       </p>
@@ -752,26 +764,27 @@ spotify_metal_deephouse |&gt;
         </input>
       </program>
 
-      <console prompt="> ">
-        <output>
-# A tibble: 12 × 5
-# Groups:   track_genre, popular_or_not [4]
-   track_genre artists                      track_name popularity popular_or_not
-   &lt;chr&gt;       &lt;chr&gt;                        &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;         
- 1 deep-house  Kideko                       Free                5 not popular   
- 2 deep-house  The Avener;Phoebe Killdeer   Fade Out …          0 not popular   
- 3 deep-house  Deep Chills;Coral Reef;Biki… Talkin' B…         41 not popular   
- 4 deep-house  CID                          Carnaval …         51 popular       
- 5 deep-house  Sunmoon                      Just the …         52 popular       
- 6 deep-house  Autograf;Tiina               Love Runs…         60 popular       
- 7 metal       Marilyn Manson               Sweet Dre…          0 not popular   
- 8 metal       DragonForce                  Fury Of T…          0 not popular   
- 9 metal       Ghost                        Dance Mac…          0 not popular   
-10 metal       Bon Jovi                     It's My L…         80 popular       
-11 metal       Scorpions                    Rock You …         64 popular       
-12 metal       Sick Puppies                 You're Go…         66 popular
-        </output>
-      </console>
+<table xml:id="tab-deepmetal">
+  <title>Sample of twelve songs from the Spotify data frame</title>
+  <tabular>
+    <row header="yes">
+      <cell>track_genre</cell><cell>artists</cell><cell>track_name</cell>
+      <cell>popularity</cell><cell>popular_or_not</cell>
+    </row>
+    <row><cell>deep-house</cell><cell>LYOD;Tom Auton</cell><cell>On My Way</cell><cell>51</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>Sunmoon</cell><cell>Just the Two of Us</cell><cell>52</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>Tensnake;Nazzereene</cell><cell>Latching Onto You</cell><cell>51</cell><cell>popular</cell></row>
+    <row><cell>metal</cell><cell>Slipknot</cell><cell>Psychosocial</cell><cell>66</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>BCX</cell><cell>Miracle In The Middle Of My Heart - Original Mix</cell><cell>41</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>blessthefall</cell><cell>I Wouldn't Quit If Everyone Quit</cell><cell>0</cell><cell>not popular</cell></row>
+    <row><cell>deep-house</cell><cell>Junge Junge;Tyron Hapi</cell><cell>I'm The One - Tyron Hapi Remix</cell><cell>49</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Poison</cell><cell>Every Rose Has Its Thorn - Remastered 2003</cell><cell>0</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Armored Dawn</cell><cell>S.O.S.</cell><cell>54</cell><cell>popular</cell></row>
+    <row><cell>deep-house</cell><cell>James Hype;Pia Mia;PS1</cell><cell>Good Luck (feat. Pia Mia) - PS1 Remix</cell><cell>47</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Hollywood Undead</cell><cell>Riot</cell><cell>26</cell><cell>not popular</cell></row>
+    <row><cell>metal</cell><cell>Breaking Benjamin</cell><cell>Ashes of Eden</cell><cell>61</cell><cell>popular</cell></row>
+  </tabular>
+</table>
 
       <p>
         The <c>track_genre</c> variable indicates what genre the song is classified under, the
