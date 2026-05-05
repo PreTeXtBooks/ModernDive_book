@@ -60,7 +60,29 @@ UN_data_ch10 &lt;- un_member_states_2024 |>
         </input>
       </program>
       <p>
-        The data frame contains a summary of two numerical variables. Using simple linear
+        We can display the summary of the two numerical variables:
+      </p>
+      <program language="r">
+        <input>
+un_member_states_2024 |>
+  select(life_exp = life_expectancy_2022,
+         fert_rate = fertility_rate_2022) |>
+  na.omit() |>
+  tidy_summary()
+        </input>
+      </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 2 × 11
+  column       n group type      min    Q1  mean median    Q3   max    sd
+  &lt;chr&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 life_exp   183 &lt;NA&gt;  numeric  53.6  69.4  73.7   75.2  78.3  86.4  6.84
+2 fert_rate  183 &lt;NA&gt;  numeric   0.9   1.6   2.48   2     3.2   6.6  1.15
+        </output>
+      </console>
+      <p>
+        Observe that there are 183 observations without missing values. Using simple linear
         regression<idx><h>regression</h><h>simple linear</h></idx> between the response
         variable fertility rate (<c>fert_rate</c>) or <m>y</m>, and the regressor life
         expectancy (<c>life_exp</c>) or <m>x</m>, the regression line is:
@@ -2090,6 +2112,59 @@ sigma(mod_mult)
         coefficient, on average. This interpretation is only valid for this particular model.
         If we change the regressors used, the partial slope for <c>flavor</c> will be
         different in magnitude and meaning.
+      </p>
+      <p>
+        In addition, observe that <c>mod_mult</c> is a model without interactions. The
+        coefficients for factor levels of <c>continent_of_origin</c> (<m>b_{02}</m>,
+        <m>b_{03}</m>, and <m>b_{04}</m>) affect only the intercept of the model, based on
+        the category of the observation. Recall that the factor levels, in order, are
+        <c>Africa</c>, <c>Asia</c>, <c>North America</c>, and <c>South America</c>. For
+        example, if the fifth observation's continent of origin is South America
+        (<m>D_{04} = 1</m> and <m>D_{02} = D_{03} = 0</m>), the regression formula is:
+      </p>
+      <md>
+        <mrow>\widehat{y}_5 &amp;= b_0 + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}
+              + b_{02}D_{52} + b_{03}D_{53} + b_{04}D_{54}</mrow>
+        <mrow>&amp;= b_0 + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}
+              + b_{02}\cdot 0 + b_{03}\cdot 0 + b_{04}\cdot 1</mrow>
+        <mrow>&amp;= (b_0 + b_{04}) + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}</mrow>
+      </md>
+      <p>
+        and the regression intercept for this observation is estimated to be
+        <m>b_0 + b_{04} = 37.300 + (-0.478) = 36.822</m>.
+      </p>
+      <p>
+        We typically do not expect the scores of all regressors to be zero, but you can always
+        check the range of values that your regressors take. For <c>mod_mult</c> the range of
+        regressors can be extracted by using <c>tidy_summary()</c>. In the following code,
+        using the <c>coffee_data</c> dataset, we select the numerical regressors, use
+        <c>tidy_summary()</c>, and select the <c>column</c> name, <c>min</c>, and <c>max</c>
+        to get the range for all regressors:
+      </p>
+      <program language="r">
+        <input>
+coffee_data |>
+  select(aroma, flavor, moisture_percentage) |>
+  tidy_summary() |>
+  select(column, min, max)
+        </input>
+      </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 3 × 3
+  column                min   max
+  &lt;chr&gt;               &lt;dbl&gt; &lt;dbl&gt;
+1 aroma                 6.5   8.58
+2 flavor                6.75  8.5 
+3 moisture_percentage   0    13.5 
+        </output>
+      </console>
+      <p>
+        As we see, only <c>moisture_percentage</c> includes zero in its range, and we would
+        need all numerical regressors to include zero in order for the intercept to have a
+        special meaning in the context of the problem. Observe that we have decided to use
+        only a subset of regressors and construct a model without interactions.
       </p>
 
       <exercises>
