@@ -2674,6 +2674,12 @@ Explanatory: genre (factor)
 # ℹ 58 more rows
           </output>
         </console>
+
+        <p>
+          Observe at this point that the data in <c>movies_sample</c> has not changed. The only
+          change so far is the newly defined <c>Response: rating (numeric)</c> and
+          <c>Explanatory: genre (factor)</c> <em>meta-data</em>.
+        </p>
       </subsubsection>
 
       <subsubsection xml:id="movies-hypothesize">
@@ -2793,10 +2799,15 @@ null_distribution_movies
         <p>
           Observe that we have 1000 values of <c>stat</c>, each representing one instance of
           <m>\overline{x}_{a} - \overline{x}_{r}</m>. The 1000 values form the <em>null
-          distribution</em>. We can also compute the observed test statistic
-          <m>\overline{x}_{a} - \overline{x}_{r}</m> using the code that constructed the null
-          distribution but with the <c>hypothesize()</c> and <c>generate()</c> steps removed.
-          We save this in <c>obs_diff_means</c>:
+          distribution</em>, which is the technical term for the sampling distribution of the
+          difference in sample means <m>\overline{x}_{a} - \overline{x}_{r}</m> assuming
+          <m>H_0</m> is true. What happened in real life? What was the observed difference in
+          popularity rates? What was the <em>observed test statistic</em>
+          <m>\overline{x}_{a} - \overline{x}_{r}</m>? Recall from our earlier data wrangling,
+          this observed difference in means was <m>5.28 - 6.32 = -1.04</m>. We can also
+          compute the observed test statistic <m>\overline{x}_{a} - \overline{x}_{r}</m> using
+          the code that constructed the null distribution but with the <c>hypothesize()</c> and
+          <c>generate()</c> steps removed. We save this in <c>obs_diff_means</c>:
         </p>
 
         <program language="r">
@@ -2823,12 +2834,13 @@ obs_diff_means
 
         <p>
           Lastly, in order to compute the <m>p</m>-value, we have to assess how "extreme" the
-          observed difference in means is. We do this by comparing the observed value to our
-          null distribution. We visualize both the null distribution and the <m>p</m>-value in
-          <xref ref="null-distribution-movies-2"/>. Unlike our example in
-          <xref ref="infer-workflow-ht"/> involving music popularity, since we have a two-sided
-          <m>H_A: \mu_a - \mu_r \neq 0</m>, we have to allow for both possibilities for
-          <em>more extreme</em>, so we set <c>direction = "both"</c>.
+          observed difference in means of <m>-1.04</m> is. We do this by comparing
+          <m>-1.04</m> to our null distribution, which was constructed in a hypothesized
+          universe of no true difference in movie ratings. We visualize both the null
+          distribution and the <m>p</m>-value in <xref ref="null-distribution-movies-2"/>.
+          Unlike our example in <xref ref="infer-workflow-ht"/> involving music popularity,
+          since we have a two-sided <m>H_A: \mu_a - \mu_r \neq 0</m>, we have to allow for
+          both possibilities for <em>more extreme</em>, so we set <c>direction = "both"</c>.
         </p>
 
         <program language="r">
@@ -2848,7 +2860,8 @@ visualize(null_distribution_movies, bins = 10) +
         <p>
           Let's go over the elements of this plot. First, the histogram is the <em>null
           distribution</em>. Second, the solid line is the <em>observed test statistic</em>,
-          or the difference in sample means we observed in real life. Third, the two shaded
+          or the difference in sample means we observed in real life of
+          <m>5.28 - 6.32 = -1.04</m>. Third, the two shaded
           areas of the histogram form the <em><m>p</m>-value</em>, or the probability of
           obtaining a test statistic just as or more extreme than the observed test statistic
           <em>assuming the null hypothesis <m>H_0</m> is true</em>.
@@ -2877,9 +2890,9 @@ null_distribution_movies |&gt;
         </console>
 
         <p>
-          This <m>p</m>-value is very small. In other words, there is a very small chance that
-          we would observe the difference in means we found in a hypothesized universe where
-          there was truly no difference in ratings.
+          This <m>p</m>-value of 0.004 is very small. In other words, there is a very small
+          chance that we would observe a difference of <m>5.28 - 6.32 = -1.04</m> in a
+          hypothesized universe where there was truly no difference in ratings.
         </p>
 
         <p>
@@ -3152,7 +3165,7 @@ movies_sample |&gt;
 
         <me>
           \dfrac{\bar{x}_a - \bar{x}_r}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
-          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -3.32
+          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -2.89
         </me>
 
         <p>
@@ -3184,8 +3197,8 @@ movies_sample |&gt;
         </console>
 
         <p>
-          Based on the small <m>p</m>-value we reject the null hypothesis; the average rating
-          for the <c>Romance</c> movies is not the same as the average rating for the
+          Based on the <m>p</m>-value of 0.005, we reject the null hypothesis; the average
+          rating for the <c>Romance</c> movies is not the same as the average rating for the
           <c>Action</c> movies. This result is similar to the one calculated using the
           simulation-based approach.
         </p>
@@ -3216,7 +3229,7 @@ movies_sample |&gt;
 
         <ol>
           <li>
-            <p>This is met since the action and romance movie samples do not seem to be highly
+            <p>This is met since <m>n_a = 32</m> and <m>n_r = 36</m> do not seem to be highly
             skewed and therefore are somewhat symmetric.</p>
           </li>
           <li>
