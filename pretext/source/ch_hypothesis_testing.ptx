@@ -1454,6 +1454,27 @@ spotify_metal_deephouse |&gt;
           </input>
         </program>
 
+        <console prompt="> ">
+          <output>
+Response: popular_or_not (factor)
+Explanatory: track_genre (factor)
+# A tibble: 2,000 × 2
+   popular_or_not track_genre
+   &lt;fct&gt;          &lt;fct&gt;      
+ 1 popular        deep-house 
+ 2 popular        deep-house 
+ 3 popular        deep-house 
+ 4 popular        deep-house 
+ 5 popular        deep-house 
+ 6 popular        deep-house 
+ 7 popular        deep-house 
+ 8 popular        deep-house 
+ 9 popular        deep-house 
+10 popular        deep-house 
+# ℹ 1,990 more rows
+          </output>
+        </console>
+
         <p>
           Again, notice how the <c>spotify_metal_deephouse</c> data itself does not change,
           but the <c>Response: popular_or_not (factor)</c> and
@@ -1502,6 +1523,28 @@ spotify_metal_deephouse |&gt;
   hypothesize(null = "independence")
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+Response: popular_or_not (factor)
+Explanatory: track_genre (factor)
+Null Hypothesis: independence
+# A tibble: 2,000 × 2
+   popular_or_not track_genre
+   &lt;fct&gt;          &lt;fct&gt;      
+ 1 popular        deep-house 
+ 2 popular        deep-house 
+ 3 popular        deep-house 
+ 4 popular        deep-house 
+ 5 popular        deep-house 
+ 6 popular        deep-house 
+ 7 popular        deep-house 
+ 8 popular        deep-house 
+ 9 popular        deep-house 
+10 popular        deep-house 
+# ℹ 1,990 more rows
+          </output>
+        </console>
 
         <p>
           Again, the data has not changed yet. This will occur at the upcoming
@@ -1558,6 +1601,12 @@ nrow(spotify_generate)
           </input>
         </program>
 
+        <console prompt="> ">
+          <output>
+[1] 2000000
+          </output>
+        </console>
+
         <p>
           The resulting data frame has 2,000,000 rows. This is because we performed
           shuffles/permutations for each of the 2000 rows 1000 times and
@@ -1598,6 +1647,25 @@ null_distribution &lt;- spotify_metal_deephouse |&gt;
 null_distribution
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+# A tibble: 1,000 × 2
+   replicate   stat
+       &lt;int&gt;  &lt;dbl&gt;
+ 1         1  0.014
+ 2         2 -0.042
+ 3         3  0.022
+ 4         4 -0.014
+ 5         5 -0.018
+ 6         6 -0.016
+ 7         7  0.016
+ 8         8 -0.040
+ 9         9  0.014
+10        10  0.012
+# ℹ 990 more rows
+          </output>
+        </console>
 
         <p>
           Observe that we have 1000 values of <c>stat</c>, each representing one instance of
@@ -1844,6 +1912,15 @@ percentile_ci &lt;- bootstrap_distribution |&gt;
 percentile_ci
         </input>
       </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1 0.000356   0.0702
+        </output>
+      </console>
 
       <p>
         Using our shorthand interpretation for 90% confidence intervals, we are 90%
@@ -2313,6 +2390,28 @@ movies
         </input>
       </program>
 
+      <console prompt="> ">
+        <output>
+# A tibble: 58,788 × 24
+   title                     year length budget rating votes    r1    r2    r3
+   &lt;chr&gt;                    &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 $                         1971    121     NA    6.4   348   4.5   4.5   4.5
+ 2 $1000 a Touchdown         1939     71     NA    6.0    20   0.0  14.5   4.5
+ 3 $21 a Day Once a Month    1941      7     NA    8.2     5   0.0   0.0   0.0
+ 4 $40,000                   1996     70     NA    8.2     6  14.5   0.0   0.0
+ 5 $50,000 Climax Show, The  1975     71     NA    3.4    17  24.5   4.5   0.0
+ 6 $pent                     2000     91     NA    4.3    45   4.5   4.5   4.5
+ 7 $windle                   2002     93     NA    5.3   200   4.5   0.0   4.5
+ 8 '15'                      2002     25     NA    6.7    24   4.5   4.5   4.5
+ 9 '38                       1987     97     NA    6.6    18   4.5   4.5   4.5
+10 '49-'17                   1917     61     NA    6.0    51   4.5   0.0   4.5
+# ℹ 58,778 more rows
+# ℹ 15 more variables: r4 &lt;dbl&gt;, r5 &lt;dbl&gt;, r6 &lt;dbl&gt;, r7 &lt;dbl&gt;, r8 &lt;dbl&gt;,
+#   r9 &lt;dbl&gt;, r10 &lt;dbl&gt;, mpaa &lt;chr&gt;, Action &lt;int&gt;, Animation &lt;int&gt;,
+#   Comedy &lt;int&gt;, Drama &lt;int&gt;, Documentary &lt;int&gt;, Romance &lt;int&gt;, Short &lt;int&gt;
+        </output>
+      </console>
+
       <p>
         We will focus on a random sample of 68 movies that are classified as either "action"
         or "romance" movies but not both. We disregard movies that are classified as both so
@@ -2561,6 +2660,33 @@ movies_sample |&gt;
   specify(formula = rating ~ genre)
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+Response: rating (numeric)
+Explanatory: genre (factor)
+# A tibble: 68 × 2
+   rating genre  
+    &lt;dbl&gt; &lt;fct&gt;  
+ 1    3.1 Action 
+ 2    6.3 Romance
+ 3    6.8 Romance
+ 4    5   Romance
+ 5    4   Action 
+ 6    4.9 Romance
+ 7    7.4 Romance
+ 8    3.5 Action 
+ 9    7.7 Romance
+10    5.8 Romance
+# ℹ 58 more rows
+          </output>
+        </console>
+
+        <p>
+          Observe at this point that the data in <c>movies_sample</c> has not changed. The only
+          change so far is the newly defined <c>Response: rating (numeric)</c> and
+          <c>Explanatory: genre (factor)</c> <em>meta-data</em>.
+        </p>
       </subsubsection>
 
       <subsubsection xml:id="movies-hypothesize">
@@ -2580,6 +2706,28 @@ movies_sample |&gt;
   hypothesize(null = "independence")
           </input>
         </program>
+
+        <console prompt="> ">
+          <output>
+Response: rating (numeric)
+Explanatory: genre (factor)
+Null Hypothesis: independence
+# A tibble: 68 × 2
+   rating genre  
+    &lt;dbl&gt; &lt;fct&gt;  
+ 1    3.1 Action 
+ 2    6.3 Romance
+ 3    6.8 Romance
+ 4    5   Romance
+ 5    4   Action 
+ 6    4.9 Romance
+ 7    7.4 Romance
+ 8    3.5 Action 
+ 9    7.7 Romance
+10    5.8 Romance
+# ℹ 58 more rows
+          </output>
+        </console>
       </subsubsection>
 
       <subsubsection xml:id="movies-generate">
@@ -2636,13 +2784,37 @@ null_distribution_movies
           </input>
         </program>
 
+        <console prompt="> ">
+          <output>
+# A tibble: 1,000 × 2
+   replicate   stat
+       &lt;int&gt;  &lt;dbl&gt;
+ 1         1  0.511
+ 2         2  0.346
+ 3         3 -0.327
+ 4         4 -0.209
+ 5         5 -0.433
+ 6         6 -0.103
+ 7         7  0.387
+ 8         8  0.169
+ 9         9  0.257
+10        10  0.334
+# ℹ 990 more rows
+          </output>
+        </console>
+
         <p>
           Observe that we have 1000 values of <c>stat</c>, each representing one instance of
           <m>\overline{x}_{a} - \overline{x}_{r}</m>. The 1000 values form the <em>null
-          distribution</em>. We can also compute the observed test statistic
-          <m>\overline{x}_{a} - \overline{x}_{r}</m> using the code that constructed the null
-          distribution but with the <c>hypothesize()</c> and <c>generate()</c> steps removed.
-          We save this in <c>obs_diff_means</c>:
+          distribution</em>, which is the technical term for the sampling distribution of the
+          difference in sample means <m>\overline{x}_{a} - \overline{x}_{r}</m> assuming
+          <m>H_0</m> is true. What happened in real life? What was the observed difference in
+          popularity rates? What was the <em>observed test statistic</em>
+          <m>\overline{x}_{a} - \overline{x}_{r}</m>? Recall from our earlier data wrangling,
+          this observed difference in means was <m>5.28 - 6.32 = -1.04</m>. We can also
+          compute the observed test statistic <m>\overline{x}_{a} - \overline{x}_{r}</m> using
+          the code that constructed the null distribution but with the <c>hypothesize()</c> and
+          <c>generate()</c> steps removed. We save this in <c>obs_diff_means</c>:
         </p>
 
         <program language="r">
@@ -2669,12 +2841,13 @@ obs_diff_means
 
         <p>
           Lastly, in order to compute the <m>p</m>-value, we have to assess how "extreme" the
-          observed difference in means is. We do this by comparing the observed value to our
-          null distribution. We visualize both the null distribution and the <m>p</m>-value in
-          <xref ref="null-distribution-movies-2"/>. Unlike our example in
-          <xref ref="infer-workflow-ht"/> involving music popularity, since we have a two-sided
-          <m>H_A: \mu_a - \mu_r \neq 0</m>, we have to allow for both possibilities for
-          <em>more extreme</em>, so we set <c>direction = "both"</c>.
+          observed difference in means of <m>-1.04</m> is. We do this by comparing
+          <m>-1.04</m> to our null distribution, which was constructed in a hypothesized
+          universe of no true difference in movie ratings. We visualize both the null
+          distribution and the <m>p</m>-value in <xref ref="null-distribution-movies-2"/>.
+          Unlike our example in <xref ref="infer-workflow-ht"/> involving music popularity,
+          since we have a two-sided <m>H_A: \mu_a - \mu_r \neq 0</m>, we have to allow for
+          both possibilities for <em>more extreme</em>, so we set <c>direction = "both"</c>.
         </p>
 
         <program language="r">
@@ -2694,7 +2867,8 @@ visualize(null_distribution_movies, bins = 10) +
         <p>
           Let's go over the elements of this plot. First, the histogram is the <em>null
           distribution</em>. Second, the solid line is the <em>observed test statistic</em>,
-          or the difference in sample means we observed in real life. Third, the two shaded
+          or the difference in sample means we observed in real life of
+          <m>5.28 - 6.32 = -1.04</m>. Third, the two shaded
           areas of the histogram form the <em><m>p</m>-value</em>, or the probability of
           obtaining a test statistic just as or more extreme than the observed test statistic
           <em>assuming the null hypothesis <m>H_0</m> is true</em>.
@@ -2723,9 +2897,9 @@ null_distribution_movies |&gt;
         </console>
 
         <p>
-          This <m>p</m>-value is very small. In other words, there is a very small chance that
-          we would observe the difference in means we found in a hypothesized universe where
-          there was truly no difference in ratings.
+          This <m>p</m>-value of 0.004 is very small. In other words, there is a very small
+          chance that we would observe a difference of <m>5.28 - 6.32 = -1.04</m> in a
+          hypothesized universe where there was truly no difference in ratings.
         </p>
 
         <p>
@@ -2998,7 +3172,7 @@ movies_sample |&gt;
 
         <me>
           \dfrac{\bar{x}_a - \bar{x}_r}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
-          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -3.32
+          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -2.89
         </me>
 
         <p>
@@ -3030,8 +3204,8 @@ movies_sample |&gt;
         </console>
 
         <p>
-          Based on the small <m>p</m>-value we reject the null hypothesis; the average rating
-          for the <c>Romance</c> movies is not the same as the average rating for the
+          Based on the <m>p</m>-value of 0.005, we reject the null hypothesis; the average
+          rating for the <c>Romance</c> movies is not the same as the average rating for the
           <c>Action</c> movies. This result is similar to the one calculated using the
           simulation-based approach.
         </p>
@@ -3062,7 +3236,7 @@ movies_sample |&gt;
 
         <ol>
           <li>
-            <p>This is met since the action and romance movie samples do not seem to be highly
+            <p>This is met since <m>n_a = 32</m> and <m>n_r = 36</m> do not seem to be highly
             skewed and therefore are somewhat symmetric.</p>
           </li>
           <li>
