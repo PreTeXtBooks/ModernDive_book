@@ -2416,10 +2416,12 @@ movies_sample |&gt;
       </console>
 
       <p>
-        Observe that romance movies have a higher mean rating than action movies. The difference
-        in these average ratings is greater than 0. So there appears to be an edge in favor of
-        romance movies. The question is, however, are these results indicative of a true
-        difference for <em>all</em> romance and action movies? Or could we attribute this
+        Observe that we have 36 movies with an average rating of 6.322 stars
+        and 32 movies with an average rating of 5.275 stars. The difference
+        in these average ratings is thus 6.322 - 5.275 = 1.047. So there
+        appears to be an edge of 1.047 stars in favor of romance movies. The
+        question is, however, are these results indicative of a true difference 
+        for <em>all</em> romance and action movies? Or could we attribute this
         difference to chance <em>sampling variation</em>?
       </p>
     </subsection>
@@ -2465,7 +2467,7 @@ movies_sample |&gt;
             <cell>Population mean</cell>
             <cell><m>\mu</m></cell>
             <cell>Sample mean</cell>
-            <cell><m>\overline{x}</m></cell>
+            <cell><m>\overline{x}</m> or <m>\widehat{\mu}</m></cell>
           </row>
           <row>
             <cell>3</cell>
@@ -2475,11 +2477,13 @@ movies_sample |&gt;
             <cell><m>\widehat{p}_1 - \widehat{p}_2</m></cell>
           </row>
           <row>
-            <cell>4</cell>
-            <cell>Difference in population means</cell>
+            <cell>3</cell>
+            <cell>Difference in population proportions</cell>
             <cell><m>\mu_1 - \mu_2</m></cell>
-            <cell>Difference in sample means</cell>
-            <cell><m>\overline{x}_1 - \overline{x}_2</m></cell>
+            <cell>Difference in sample proportions</cell>
+            <cell><m>\widehat{p}_1 - \widehat{p}_2</m> or <m>\widehat{\mu}_1 - \widehat{\mu}_2</m></cell>
+          </row>
+
           </row>
         </tabular>
       </table>
@@ -2493,17 +2497,22 @@ movies_sample |&gt;
         concerned with <em>differences in means</em>.
       </p>
 
-      <p>
-        In other words, the population parameter of interest is the difference in population
-        mean ratings <m>\mu_a - \mu_r</m>, where <m>\mu_a</m> is the mean rating of all action
-        movies on IMDb and similarly <m>\mu_r</m> is the mean rating of all romance movies.
-        Additionally the point estimate/sample statistic of interest is the difference in sample
-        means <m>\overline{x}_a - \overline{x}_r</m>. So there appears to be a slight
-        difference in favor of romance movies. The question is, however, could this difference
-        be merely due to chance and sampling variation? Or are these results indicative of a
-        true difference in mean ratings for <em>all</em> romance and action movies on IMDb? To
-        answer this question, we will use hypothesis testing.
-      </p>
+<p>
+  In other words, the population parameter of interest is the difference in population mean
+  ratings <m>\mu_a - \mu_r</m>, where <m>\mu_a</m> is the mean rating of all action movies on
+  IMDb and similarly <m>\mu_r</m> is the mean rating of all romance movies. Additionally the
+  point estimate/sample statistic of interest is the difference in sample means
+  <m>\overline{x}_a - \overline{x}_r</m>, where <m>\overline{x}_a</m> is the mean rating of the
+  <m>n_a = 32</m> movies in our sample and <m>\overline{x}_r</m> is the mean rating of the
+  <m>n_r = 36</m> in our sample. Based on our earlier exploratory data analysis, our estimate
+  <m>\overline{x}_a - \overline{x}_r</m> is <m>5.275 - 6.322 = -1.047</m>.
+</p>
+<p>
+  So there appears to be a slight difference of <m>-1.047</m> in favor of romance movies. The
+  question is, however, could this difference of <m>-1.047</m> be merely due to chance and
+  sampling variation? Or are these results indicative of a true difference in mean ratings for
+  all romance and action movies on IMDb? To answer this question, we will use hypothesis testing.
+</p>
     </subsection>
 
     <subsection xml:id="movies-hypothesis-test">
