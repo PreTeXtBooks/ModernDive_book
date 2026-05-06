@@ -2447,7 +2447,7 @@ movies_sample |&gt;
 
       <table xml:id="tab-summarytable-ch9">
         <title>Scenarios of sampling for inference (extended)</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Scenario</cell>
             <cell>Population parameter</cell>
@@ -2482,8 +2482,6 @@ movies_sample |&gt;
             <cell><m>\mu_1 - \mu_2</m></cell>
             <cell>Difference in sample proportions</cell>
             <cell><m>\widehat{p}_1 - \widehat{p}_2</m> or <m>\widehat{\mu}_1 - \widehat{\mu}_2</m></cell>
-          </row>
-
           </row>
         </tabular>
       </table>
