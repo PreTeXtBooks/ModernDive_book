@@ -369,41 +369,108 @@ if (file.exists(dem_csv)) {
 # ============================================================
 
 ## Normal curves comparison ------------------------------------
-x_vals <- seq(-4, 4, length.out = 500)
-normal_data <- bind_rows(
-  tibble(x = x_vals, y = dnorm(x_vals, 0, 0.5),
-         Distribution = "mean=0, sd=0.5"),
-  tibble(x = x_vals, y = dnorm(x_vals, 0, 1),
-         Distribution = "mean=0, sd=1"),
-  tibble(x = x_vals, y = dnorm(x_vals, 0, 2),
-         Distribution = "mean=0, sd=2"),
-  tibble(x = x_vals, y = dnorm(x_vals, -2, 1),
-         Distribution = "mean=-2, sd=1")
-)
-p_normal2 <- ggplot(normal_data, aes(x = x, y = y,
-                                     color = Distribution,
-                                     linetype = Distribution)) +
-  geom_line(linewidth = 0.8) +
-  labs(x = "x", y = "Density") +
-  theme(legend.position = "bottom")
+all_points <- tibble(
+  domain = seq(from = -10, to = 25, by = 0.01),
+  `mu = 5, sigma = 2` = dnorm(x = domain, mean = 5, sd = 2),
+  `mu = 5, sigma = 5` = dnorm(x = domain, mean = 5, sd = 5),
+  `mu = 15, sigma = 2` = dnorm(x = domain, mean = 15, sd = 2)
+) |>
+  pivot_longer(
+    cols = -domain,
+    names_to = "Distribution",
+    values_to = "value"
+  ) |>
+  mutate(
+    Distribution = factor(
+      Distribution,
+      levels = c(
+        "mu = 5, sigma = 2",
+        "mu = 5, sigma = 5",
+        "mu = 15, sigma = 2"
+      )
+    )
+  )
+
+for_labels <- all_points |>
+  filter(
+    between(domain, 3.795, 3.805) & Distribution == "mu = 5, sigma = 2" |
+      between(domain, 0.005, 0.0105) & Distribution == "mu = 5, sigma = 5" |
+      between(domain, 16.005, 16.015) & Distribution == "mu = 15, sigma = 2"
+  )
+
+p_normal2 <- ggplot(all_points, aes(x = domain, y = value, linetype = Distribution)) +
+  geom_line() +
+  geom_label_repel(
+    data = for_labels,
+    aes(label = Distribution),
+    nudge_x = c(-1, -2.1, 1)
+  ) +
+  theme_light() +
+  scale_linetype_manual(values = c("solid", "dotted", "longdash")) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    legend.position = "none"
+  )
 save_fig(p_normal2, "fig-normal-curves2.png", width = 7, height = 4)
 
 ## Rule of thumb figure ----------------------------------------
-df_norm <- tibble(x = x_vals, y = dnorm(x_vals))
+shade_3_sd <- function(x) {
+  y <- dnorm(x, mean = 0, sd = 1)
+  y[x <= -3 | x >= 3] <- NA
+  y
+}
 
-p_rot <- ggplot(df_norm, aes(x = x, y = y)) +
-  geom_line() +
-  geom_area(data = df_norm |> filter(x >= -3, x <= 3),
-            aes(x = x, y = y), fill = "grey80", alpha = 0.5) +
-  geom_area(data = df_norm |> filter(x >= -2, x <= 2),
-            aes(x = x, y = y), fill = "grey60", alpha = 0.5) +
-  geom_area(data = df_norm |> filter(x >= -1, x <= 1),
-            aes(x = x, y = y), fill = "grey40", alpha = 0.5) +
-  annotate("text", x = 0, y = 0.2, label = "68%", size = 4) +
-  annotate("text", x = 0, y = 0.1, label = "95%", size = 4) +
-  annotate("text", x = 0, y = 0.04, label = "99.7%", size = 4) +
-  labs(x = "Standard deviations from mean", y = "Density")
+shade_2_sd <- function(x) {
+  y <- dnorm(x, mean = 0, sd = 1)
+  y[x <= -1.96 | x >= 1.96] <- NA
+  y
+}
+
+shade_1_sd <- function(x) {
+  y <- dnorm(x, mean = 0, sd = 1)
+  y[x <= -1 | x >= 1] <- NA
+  y
+}
+
+labels <- tibble(
+  x = c(-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5),
+  label = c("0.15%", "2.35%", "13.5%", "34%", "34%", "13.5%", "2.35%", "0.15%"),
+  y = rep(0.3, times = 8)
+)
+
+p_rot <- ggplot(data = tibble(x = c(-4, 4)), aes(x)) +
+  geom_text(data = labels, aes(y = y, label = label)) +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), n = 1000) +
+  stat_function(fun = shade_3_sd, geom = "area", fill = "black", alpha = 0.25, n = 1000) +
+  stat_function(fun = shade_2_sd, geom = "area", fill = "black", alpha = 0.25, n = 1000) +
+  stat_function(fun = shade_1_sd, geom = "area", fill = "black", alpha = 0.25, n = 1000) +
+  geom_vline(
+    xintercept = c(-3, -1.96, -1, 0, 1, 1.96, 3),
+    linetype = "dashed",
+    alpha = 0.5
+  ) +
+  scale_x_continuous(breaks = seq(from = -3, to = 3, by = 1)) +
+  labs(x = "z", y = "") +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
 save_fig(p_rot, "fig-normal-rule-of-thumb.png", width = 6, height = 4)
+
+## Middle 95% shaded normal curve --------------------------------
+p_norm_shaded <- ggplot(NULL, aes(c(-4, 4))) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100", xlim = c(-4, -2)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey80", xlim = c(-2, 2)) +
+  geom_area(stat = "function", fun = dnorm, fill = "grey100", xlim = c(2, 4)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = NULL) +
+  annotate("text", x = 2, y = -0.01, label = "q", color = "blue")
+save_fig(p_norm_shaded, "fig-normal-curve-shaded-3.png", width = 6, height = 4)
 
 # ============================================================
 # Chapter 5: Regression
