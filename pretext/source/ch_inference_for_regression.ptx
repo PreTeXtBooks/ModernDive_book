@@ -59,6 +59,11 @@ UN_data_ch10 &lt;- un_member_states_2024 |>
   na.omit()
         </input>
       </program>
+      <program language="r">
+        <input>
+UN_data_ch10
+        </input>
+      </program>
       <p>
         We can display the summary of the two numerical variables:
       </p>
@@ -176,6 +181,25 @@ UN_data_ch10 |>
       <console prompt="> ">
         <output>
 [1] 57
+        </output>
+      </console>
+      <p>
+        France is the 57th member state in <c>UN_data_ch10</c>. Its observed fertility rate
+        and life expectancy are:
+      </p>
+      <program language="r">
+        <input>
+UN_data_ch10 |>
+  filter(country == "France")
+        </input>
+      </program>
+
+      <console prompt="> ">
+        <output>
+# A tibble: 1 × 3
+  country life_exp fert_rate
+  &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+1 France      82.6       1.8
         </output>
       </console>
       <p>
@@ -2738,6 +2762,11 @@ observed_fit
           <xref ref="tab-mod-mult-table-again"/>. The <c>observed_fit</c> values will be our
           point estimates for the partial slopes in the confidence intervals.
         </p>
+        <program language="r">
+          <input>
+mod_mult_table
+          </input>
+        </program>
 
         <table xml:id="tab-mod-mult-table-again">
           <title>Regression table for <c>mod_mult</c></title>
@@ -2829,6 +2858,15 @@ observed_fit
           <li><p><c>generate()</c> 1000 bootstrap replicates with <c>type = "bootstrap"</c>.</p></li>
           <li><p><c>fit()</c> models for each replicate.</p></li>
         </ol>
+        <program language="r">
+          <input>
+coffee_data |>
+  specify(
+    total_cup_points ~ continent_of_origin + aroma + flavor + moisture_percentage
+  ) |>
+  generate(reps = 1000, type = "bootstrap")
+          </input>
+        </program>
         <program language="r">
           <input>
 boot_distribution_mlr &lt;- coffee_quality |>
