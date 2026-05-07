@@ -3280,7 +3280,8 @@ movies_sample |&gt;
         <em>all</em> flights leaving a New York City airport, are Hawaiian Airlines flights in
         the air for longer than Alaska Airlines flights? Furthermore, let's assume that 2023
         flights are a representative sample of all such flights. Then we can use the
-        <c>flights</c> data frame in the <c>nycflights23</c> package to answer our question. Let's filter this data frame to only
+        <c>flights</c> data frame in the <c>nycflights23</c> package we introduced in
+        <xref ref="nycflights"/> to answer our question. Let's filter this data frame to only
         include Hawaiian and Alaska Airlines using their <c>carrier</c> codes <c>HA</c> and
         <c>AS</c>:
       </p>
