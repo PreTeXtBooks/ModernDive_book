@@ -28,62 +28,62 @@
       <row>
         <cell>Chapter 1 (Getting Started)</cell>
         <cell>LC1.1–LC1.7</cell>
-        <cell><xref ref="ch-getting-started"/></cell>
+        <cell><xref ref="lc1-1"/>–<xref ref="lc1-7"/> in <xref ref="ch-getting-started"/></cell>
       </row>
       <row>
         <cell>Chapter 2 (Data Visualization)</cell>
         <cell>LC2.1–LC2.37</cell>
-        <cell><xref ref="ch-visualization"/></cell>
+        <cell><xref ref="lc2-1"/>–<xref ref="lc2-37"/> in <xref ref="ch-visualization"/></cell>
       </row>
       <row>
         <cell>Chapter 3 (Data Wrangling)</cell>
         <cell>LC3.1–LC3.20</cell>
-        <cell><xref ref="ch-wrangling"/></cell>
+        <cell><xref ref="lc3-1"/>–<xref ref="lc3-20"/> in <xref ref="ch-wrangling"/></cell>
       </row>
       <row>
         <cell>Chapter 4 (Tidy Data)</cell>
         <cell>LC4.1–LC4.5</cell>
-        <cell><xref ref="tidy"/></cell>
+        <cell><xref ref="lc4-1"/>–<xref ref="lc4-5"/> in <xref ref="tidy"/></cell>
       </row>
       <row>
         <cell>Chapter 5 (Regression)</cell>
         <cell>LC5.1–LC5.19</cell>
-        <cell><xref ref="regression"/></cell>
+        <cell><xref ref="lc5-1"/>–<xref ref="lc5-19"/> in <xref ref="regression"/></cell>
       </row>
       <row>
         <cell>Chapter 6 (Multiple Regression)</cell>
         <cell>LC6.1–LC6.12</cell>
-        <cell><xref ref="multiple-regression"/></cell>
+        <cell><xref ref="lc6-1"/>–<xref ref="lc6-12"/> in <xref ref="multiple-regression"/></cell>
       </row>
       <row>
         <cell>Chapter 7 (Sampling)</cell>
         <cell>LC7.1–LC7.18</cell>
-        <cell><xref ref="sampling"/></cell>
+        <cell><xref ref="lc7-1"/>–<xref ref="lc7-18"/> in <xref ref="sampling"/></cell>
       </row>
       <row>
         <cell>Chapter 8 (Confidence Intervals)</cell>
         <cell>LC8.1–LC8.18</cell>
-        <cell><xref ref="confidence-intervals"/></cell>
+        <cell><xref ref="lc8-1"/>–<xref ref="lc8-18"/> in <xref ref="confidence-intervals"/></cell>
       </row>
       <row>
         <cell>Chapter 9 (Hypothesis Testing)</cell>
         <cell>LC9.1–LC9.15</cell>
-        <cell><xref ref="hypothesis-testing"/></cell>
+        <cell><xref ref="lc9-1"/>–<xref ref="lc9-15"/> in <xref ref="hypothesis-testing"/></cell>
       </row>
       <row>
         <cell>Chapter 10 (Inference for Regression)</cell>
         <cell>LC10.1–LC10.26</cell>
-        <cell><xref ref="inference-for-regression"/></cell>
+        <cell><xref ref="lc10-1"/>–<xref ref="lc10-26"/> in <xref ref="inference-for-regression"/></cell>
       </row>
       <row>
         <cell>Chapter 11 (Tell Your Story with Data)</cell>
         <cell>LC11.1–LC11.5</cell>
-        <cell><xref ref="thinking-with-data"/></cell>
+        <cell><xref ref="lc11-1"/>–<xref ref="lc11-5"/> in <xref ref="thinking-with-data"/></cell>
       </row>
       <row bottom="medium">
         <cell>Appendix A (Statistical Background)</cell>
         <cell>LCA.1–LCA.2</cell>
-        <cell><xref ref="appendixA"/></cell>
+        <cell><xref ref="lcA-1"/>–<xref ref="lcA-2"/> in <xref ref="appendixA"/></cell>
       </row>
     </tabular>
   </table>
