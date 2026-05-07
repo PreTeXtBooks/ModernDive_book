@@ -1846,15 +1846,16 @@ null_distribution |&gt;
 
         <p>
           Keeping the definition of a <m>p</m>-value in mind, the probability of observing a
-          difference in popularity rates as large as the one observed due to sampling variation
-          alone in the null distribution is small. Since this <m>p</m>-value is smaller than
-          our pre-specified significance level <m>\alpha = 0.1</m>, we reject the null
-          hypothesis <m>H_0: p_{m} - p_{d} = 0</m>. In other words, this <m>p</m>-value is
-          sufficiently small to reject our hypothesized universe of no difference in genre
-          popularity. We instead have enough evidence to change our mind in favor of difference
-          in genre popularity being a likely culprit here. Observe that whether we reject the
-          null hypothesis <m>H_0</m> or not depends in large part on our choice of significance
-          level <m>\alpha</m>. We will discuss this more in <xref ref="choosing-alpha"/>.
+          difference in popularity rates as large as the observed <m>0.034 = 3.4\%</m> due to
+          sampling variation alone in the null distribution is <m>0.052 = 5.2\%</m>. Since this
+          <m>p</m>-value is smaller than our pre-specified significance level
+          <m>\alpha = 0.1</m>, we reject the null hypothesis <m>H_0: p_{m} - p_{d} = 0</m>. In
+          other words, this <m>p</m>-value is sufficiently small to reject our hypothesized
+          universe of no difference in genre popularity. We instead have enough evidence to
+          change our mind in favor of difference in genre popularity being a likely culprit here.
+          Observe that whether we reject the null hypothesis <m>H_0</m> or not depends in large
+          part on our choice of significance level <m>\alpha</m>. We will discuss this more in
+          <xref ref="choosing-alpha"/>.
         </p>
       </subsubsection>
     </subsection>
@@ -3110,13 +3111,14 @@ null_distribution_movies |&gt;
 
         <p>
           In <xref ref="t-distribution-CI"/> we have discussed the properties of the
-          <m>t</m> distribution. Recall that the <m>t</m> distribution is similar to the
-          standard normal; its density curve is also bell-shaped, and it is symmetric around
-          zero, but the tails of the <m>t</m> distribution are a little thicker (or heavier)
-          than those of the standard normal. This is important for hypothesis testing, since the
-          <m>p</m>-value is calculated from the areas on those tails. Also recall that as the
-          degrees of freedom increase, the <m>t</m>-distribution more and more approximates the
-          standard normal curve.
+          <m>t</m> distribution and in <xref ref="fig-t-curve-1"/> we have shown different
+          <m>t</m> distributions with different degrees of freedom. Recall that the
+          <m>t</m> distribution is similar to the standard normal; its density curve is also
+          bell-shaped, and it is symmetric around zero, but the tails of the <m>t</m>
+          distribution are a little thicker (or heavier) than those of the standard normal.
+          This is important for hypothesis testing, since the <m>p</m>-value is calculated from
+          the areas on those tails. Also recall that as the degrees of freedom increase, the
+          <m>t</m>-distribution more and more approximates the standard normal curve.
         </p>
 
         <p>
@@ -3278,7 +3280,8 @@ movies_sample |&gt;
         <em>all</em> flights leaving a New York City airport, are Hawaiian Airlines flights in
         the air for longer than Alaska Airlines flights? Furthermore, let's assume that 2023
         flights are a representative sample of all such flights. Then we can use the
-        <c>flights</c> data frame in the <c>nycflights23</c> package to answer our question. Let's filter this data frame to only
+        <c>flights</c> data frame in the <c>nycflights23</c> package we introduced in
+        <xref ref="nycflights"/> to answer our question. Let's filter this data frame to only
         include Hawaiian and Alaska Airlines using their <c>carrier</c> codes <c>HA</c> and
         <c>AS</c>:
       </p>
