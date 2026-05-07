@@ -3111,13 +3111,14 @@ null_distribution_movies |&gt;
 
         <p>
           In <xref ref="t-distribution-CI"/> we have discussed the properties of the
-          <m>t</m> distribution. Recall that the <m>t</m> distribution is similar to the
-          standard normal; its density curve is also bell-shaped, and it is symmetric around
-          zero, but the tails of the <m>t</m> distribution are a little thicker (or heavier)
-          than those of the standard normal. This is important for hypothesis testing, since the
-          <m>p</m>-value is calculated from the areas on those tails. Also recall that as the
-          degrees of freedom increase, the <m>t</m>-distribution more and more approximates the
-          standard normal curve.
+          <m>t</m> distribution and in <xref ref="fig-t-curve-1"/> we have shown different
+          <m>t</m> distributions with different degrees of freedom. Recall that the
+          <m>t</m> distribution is similar to the standard normal; its density curve is also
+          bell-shaped, and it is symmetric around zero, but the tails of the <m>t</m>
+          distribution are a little thicker (or heavier) than those of the standard normal.
+          This is important for hypothesis testing, since the <m>p</m>-value is calculated from
+          the areas on those tails. Also recall that as the degrees of freedom increase, the
+          <m>t</m>-distribution more and more approximates the standard normal curve.
         </p>
 
         <p>
