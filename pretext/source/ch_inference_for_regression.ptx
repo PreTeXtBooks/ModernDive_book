@@ -1870,75 +1870,91 @@ get_regression_points(model_hdi)
       the values in the regression table. In particular, we'll use the <c>infer</c> package
       workflow to
     </p>
-    <ul>
-      <li>
-        <p>
-          Construct a 95% confidence interval for the population slope <m>\beta_1</m> using
-          bootstrap resampling with replacement.
-        </p>
-      </li>
-      <li>
-        <p>
-          Conduct a hypothesis test of <m>H_0: \beta_1 = 0</m> versus
-          <m>H_A: \beta_1 \neq 0</m> using a permutation test.
-        </p>
-      </li>
-    </ul>
+<p>
+  <ul>
+    <li>Construct a 95% confidence interval for the population slope <m>\beta_1</m> using
+    bootstrap resampling with replacement. We did this previously in
+    <xref ref="sec-bootstrap-process"/> with the almonds data and <xref ref="sec-case-study-two-prop-ci"/>
+    with the <c>mythbusters_yawn</c> data.</li>
+    <li>Conduct a hypothesis test of <m>H_0: \beta_1 = 0</m> versus <m>H_A: \beta_1 \neq 0</m>
+    using a permutation test. We did this previously in <xref ref="sec-ht-infer"/> with the
+    <c>spotify_sample</c> data and <xref ref="sec-ht-case-study"/> with the
+    <c>movies_sample</c> IMDb data.</li>
+  </ul>
+</p>
 
     <subsection xml:id="infer-ci-slr">
       <title>Confidence intervals for the population slope using <c>infer</c></title>
 
-      <p>
-        We'll construct a 95% confidence interval for <m>\beta_1</m> using the <c>infer</c>
-        workflow. Specifically, we'll first construct the bootstrap distribution for the
-        fitted slope <m>b_1</m> using our single sample of eruptions:
-      </p>
-      <ol>
-        <li>
-          <p>
-            <c>specify()</c> the variables of interest in <c>old_faithful_2024</c> with
-            the formula: <c>waiting ~ duration</c>.
-          </p>
-        </li>
-        <li>
-          <p>
-            <c>generate()</c> replicates by using <c>bootstrap</c> resampling with
-            replacement from the original sample. We generate
-            <c>reps = 1000</c> replicates using <c>type = "bootstrap"</c>.
-          </p>
-        </li>
-        <li>
-          <p>
-            <c>calculate()</c> the summary statistic of interest: the fitted <c>slope</c>
-            <m>b_1</m>.
-          </p>
-        </li>
-      </ol>
-      <p>
-        It is important to note in this case that the bootstrapping with replacement is done
-        <em>row-by-row</em>. Thus, the original pairs of <c>waiting</c> and <c>duration</c>
-        values are always kept together, but different pairs may be resampled multiple times.
-        The resulting confidence interval will denote a range of plausible values for the
-        unknown population slope <m>\beta_1</m>.
-      </p>
-      <program language="r">
-        <input>
-bootstrap_distn_slope &lt;- old_faithful_2024 |>
+<p>
+  We'll construct a 95% confidence interval for <m>\beta_1</m> using the <c>infer</c> workflow
+  outlined in <xref ref="sec-infer-workflow"/>. Specifically, we'll first construct the
+  bootstrap distribution for the fitted slope <m>b_1</m> using our single sample of 114
+  eruptions:
+  <ol>
+    <li><c>specify()</c> the variables of interest in <c>old_faithful_2024</c> with the formula:
+    <c>waiting ~ duration</c>.</li>
+    <li><c>generate()</c> replicates by using <c>bootstrap</c> resampling with replacement from
+    the original sample of 114 courses. We generate <c>reps = 1000</c> replicates using
+    <c>type = "bootstrap"</c>.</li>
+    <li><c>calculate()</c> the summary statistic of interest: the fitted <c>slope</c>
+    <m>b_1</m>.</li>
+  </ol>
+  Using this bootstrap distribution, we'll construct the 95% confidence interval using the
+  percentile method and (if appropriate) the standard error method as well. It is important to
+  note in this case that the bootstrapping with replacement is done row-by-row. Thus, the
+  original pairs of <c>waiting</c> and <c>duration</c> values are always kept together, but
+  different pairs of <c>waiting</c> and <c>duration</c> values may be resampled multiple times.
+  The resulting confidence interval will denote a range of plausible values for the unknown
+  population slope <m>\beta_1</m> quantifying the relationship between waiting times and
+  duration for Old Faithful eruptions.
+</p>
+<p>
+  Let's first construct the bootstrap distribution for the fitted slope <m>b_1</m>:
+</p>
+
+<program language="r">
+  <input>
+bootstrap_distn_slope &lt;- old_faithful_2024 |> 
   specify(formula = waiting ~ duration) |>
-  generate(reps = 1000, type = "bootstrap") |>
+  generate(reps = 1000, type = "bootstrap") |> 
   calculate(stat = "slope")
 bootstrap_distn_slope
-        </input>
-      </program>
-      <p>
-        Observe how we have 1000 values of the bootstrapped slope <m>b_1</m> in the
-        <c>stat</c> column. We visualize these bootstrapped values in <xref ref="fig-bootstrap-distribution-slope"/>:
-      </p>
-      <program language="r">
-        <input>
+  </input>
+</program>
+
+<console>
+  <output>
+Response: waiting (numeric)
+Explanatory: duration (numeric)
+# A tibble: 1,000 × 2
+   replicate     stat
+       &lt;int&gt;    &lt;dbl&gt;
+ 1         1 0.334197
+ 2         2 0.331819
+ 3         3 0.385334
+ 4         4 0.380571
+ 5         5 0.369226
+ 6         6 0.370921
+ 7         7 0.337145
+ 8         8 0.417517
+ 9         9 0.343136
+10        10 0.359239
+# ℹ 990 more rows
+  </output>
+</console>
+
+<p>
+  Observe how we have 1000 values of the bootstrapped slope <m>b_1</m> in the <c>stat</c>
+  column. Let's visualize the 1000 bootstrapped values in
+  <xref ref="fig-bootstrap-distribution-slope"/>.
+</p>
+
+<program language="r">
+  <input>
 visualize(bootstrap_distn_slope)
-        </input>
-      </program>
+  </input>
+</program>
 
       <figure xml:id="fig-bootstrap-distribution-slope">
         <caption>Bootstrap distribution of slope for Old Faithful waiting and duration.</caption>
@@ -1955,56 +1971,100 @@ visualize(bootstrap_distn_slope)
 
       <subsubsection xml:id="percentile-ci-slr">
         <title>Percentile method</title>
-        <p>
-          First, let's compute the 95% confidence interval for <m>\beta_1</m> using the
-          percentile method. We identify the 2.5th and 97.5th percentiles which include the
-          middle 95% of values. Recall that this method does not require the bootstrap
-          distribution to be normally shaped.
-        </p>
-        <program language="r">
-          <input>
-percentile_ci &lt;- bootstrap_distn_slope |>
+<p>
+  First, let's compute the 95% confidence interval for <m>\beta_1</m> using the percentile
+  method. We'll do so by identifying the 2.5th and 97.5th percentiles which include the middle
+  95% of values. Recall that this method does not require the bootstrap distribution to be
+  normally shaped.
+</p>
+
+<program language="r">
+  <input>
+percentile_ci &lt;- bootstrap_distn_slope |> 
   get_confidence_interval(type = "percentile", level = 0.95)
 percentile_ci
-          </input>
-        </program>
+  </input>
+</program>
+
+<console>
+  <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1 0.309088 0.425198
+  </output>
+</console>
+
+<p>
+  The resulting percentile-based 95% confidence interval for <m>\beta_1</m> of (0.309, 0.425).
+</p>
       </subsubsection>
 
       <subsubsection xml:id="se-ci-slr">
         <title>Standard error method</title>
-        <p>
-          Since the bootstrap distribution appears to be roughly bell-shaped, we can also
-          construct a 95% confidence interval for <m>\beta_1</m> using the standard error
-          method. We first compute the fitted slope <m>b_1</m> using the <c>infer</c>
-          pipeline with the <c>generate()</c> step removed:
-        </p>
-        <program language="r">
-          <input>
-observed_slope &lt;- old_faithful_2024 |>
-  specify(waiting ~ duration) |>
+<p>
+  Since the bootstrap distribution in <xref ref="fig-bootstrap-distribution-slope"/> appears to
+  be roughly bell-shaped, we can also construct a 95% confidence interval for <m>\beta_1</m>
+  using the standard error method.
+</p>
+<p>
+  In order to do this, we need to first compute the fitted slope <m>b_1</m>, which will act as
+  the center of our standard error-based confidence interval. While we saw in the regression
+  table in <xref ref="tab-simple-model-part-deux"/> that this was <m>b_1 = 0.371</m>, we can
+  also use the <c>infer</c> pipeline with the <c>generate()</c> step removed to calculate it:
+</p>
+
+<program language="r">
+  <input>
+observed_slope &lt;- old_faithful_2024 |> 
+  specify(waiting ~ duration) |> 
   calculate(stat = "slope")
 observed_slope
-          </input>
-        </program>
-        <p>
-          We then use <c>get_ci()</c> with <c>level = 0.95</c> and set the
-          <c>point_estimate</c> argument to the <c>observed_slope</c>:
-        </p>
-        <program language="r">
-          <input>
-se_ci &lt;- bootstrap_distn_slope |>
+  </input>
+</program>
+
+<console>
+  <output>
+Response: waiting (numeric)
+Explanatory: duration (numeric)
+# A tibble: 1 × 1
+      stat
+     &lt;dbl&gt;
+1 0.371095
+  </output>
+</console>
+
+<p>
+  We then use the <c>get_ci()</c> function with <c>level = 0.95</c> to compute the 95%
+  confidence interval for <m>\beta_1</m>. Note that setting the <c>point_estimate</c> argument
+  to the <c>observed_slope</c> of 0.371 sets the center of the confidence interval.
+</p>
+
+<program language="r">
+  <input>
+se_ci &lt;- bootstrap_distn_slope |> 
   get_ci(level = 0.95, type = "se", point_estimate = observed_slope)
 se_ci
-          </input>
-        </program>
-        <p>
-          The resulting standard error-based 95% confidence interval for <m>\beta_1</m> is
-          slightly different than the percentile-based confidence interval. Note that neither
-          of these confidence intervals contains 0 and both are entirely located above 0,
-          suggesting a meaningful positive relationship between waiting times and duration
-          for Old Faithful eruptions.
-        </p>
-      </subsubsection>
+  </input>
+</program>
+
+<console>
+  <output>
+# A tibble: 1 × 2
+  lower_ci upper_ci
+     &lt;dbl&gt;    &lt;dbl&gt;
+1 0.311278 0.430912
+  </output>
+</console>
+
+<p>
+  The resulting standard error-based 95% confidence interval for <m>\beta_1</m> of (0.311,
+  0.431) is slightly different than the percentile-based confidence interval. Note that neither
+  of these confidence intervals contains 0 and is entirely located above 0. This is suggesting
+  that there is in fact a meaningful positive relationship between waiting times and duration
+  for Old Faithful eruptions.
+</p>
+</subsubsection>
 
     </subsection><!-- end Confidence intervals using infer -->
 
