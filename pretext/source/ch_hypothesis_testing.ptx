@@ -301,7 +301,7 @@ almonds_sample_100 |>
 
         <table xml:id="tab-hypo-test-1">
           <title>Sample mean, standard deviation, size, and the t-test statistic</title>
-          <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <tabular>
             <row header="yes">
               <cell><m>\overline{x}</m></cell>
               <cell><m>s</m></cell>
@@ -1151,7 +1151,7 @@ spotify_52_shuffled |&gt;
 
       <table xml:id="tab-table-diff-prop">
         <title>Scenarios of sampling for inference</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Scenario</cell>
             <cell>Population parameter</cell>
@@ -1840,21 +1840,20 @@ null_distribution |&gt;
 # A tibble: 1 × 1
   p_value
     &lt;dbl&gt;
-1   0.052
+1   0.065
           </output>
         </console>
 
-        <p>
-          Keeping the definition of a <m>p</m>-value in mind, the probability of observing a
-          difference in popularity rates as large as the observed <m>0.034 = 3.4\%</m> due to
-          sampling variation alone in the null distribution is <m>0.052 = 5.2\%</m>. Since this
-          <m>p</m>-value is smaller than our pre-specified significance level
-          <m>\alpha = 0.1</m>, we reject the null hypothesis <m>H_0: p_{m} - p_{d} = 0</m>. In
-          other words, this <m>p</m>-value is sufficiently small to reject our hypothesized
-          universe of no difference in genre popularity. We instead have enough evidence to
-          change our mind in favor of difference in genre popularity being a likely culprit here.
-          Observe that whether we reject the null hypothesis <m>H_0</m> or not depends in large
-          part on our choice of significance level <m>\alpha</m>. We will discuss this more in
+<p>
+  Keeping the definition of a p-value in mind, the probability of observing a difference in
+  popularity rates as large as <m>0.034 = 3.4\%</m> due to sampling variation alone in the null
+  distribution is <m>0.065 = 6.5\%</m>. Since this p-value is smaller than our pre-specified
+  significance level <m>\alpha = 0.1</m>, we reject the null hypothesis
+  <m>H_0: p_m - p_d = 0</m>. In other words, this p-value is sufficiently small to reject our
+  hypothesized universe of no difference in genre popularity. We instead have enough evidence to
+  change our mind in favor of difference in genre popularity being a likely culprit here. Observe
+  that whether we reject the null hypothesis <m>H_0</m> or not depends in large part on our
+  choice of significance level <m>\alpha</m>. We will discuss this more in
           <xref ref="choosing-alpha"/>.
         </p>
       </subsubsection>
@@ -2210,7 +2209,7 @@ null_distribution_mean &lt;- spotify_metal_deephouse |&gt;
 
       <table xml:id="tab-trial-errors">
         <title>Type I and Type II errors in US criminal trials</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Verdict</cell>
             <cell>Truly not guilty</cell>
@@ -2236,7 +2235,7 @@ null_distribution_mean &lt;- spotify_metal_deephouse |&gt;
 
       <table xml:id="tab-hypo-errors">
         <title>Type I and Type II errors in hypothesis tests</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Decision</cell>
             <cell><m>H_0</m> true</cell>
@@ -2581,7 +2580,7 @@ movies_sample |&gt;
             <cell>Difference in population proportions</cell>
             <cell><m>\mu_1 - \mu_2</m></cell>
             <cell>Difference in sample proportions</cell>
-            <cell><m>\widehat{p}_1 - \widehat{p}_2</m> or <m>\widehat{\mu}_1 - \widehat{\mu}_2</m></cell>
+            <cell><m>\widehat{x}_1 - \widehat{x}_2</m> or <m>\widehat{\mu}_1 - \widehat{\mu}_2</m></cell>
           </row>
         </tabular>
       </table>
@@ -3163,8 +3162,8 @@ movies_sample |&gt;
 # A tibble: 2 × 4
   genre       n mean_rating std_dev
   &lt;chr&gt;   &lt;int&gt;       &lt;dbl&gt;   &lt;dbl&gt;
-1 Action     32        5.28    1.36
-2 Romance    36        6.32    1.61
+1 Action     32       5.275 1.36121
+2 Romance    36     6.32222 1.60963
           </output>
         </console>
 
@@ -3174,7 +3173,7 @@ movies_sample |&gt;
 
         <me>
           \dfrac{\bar{x}_a - \bar{x}_r}{\sqrt{\dfrac{s_a^2}{n_a} + \dfrac{s_r^2}{n_r}}}
-          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -2.89
+          = \dfrac{5.28 - 6.32}{\sqrt{\dfrac{1.36^2}{32} + \dfrac{1.61^2}{36}}} \approx -2.906
         </me>
 
         <p>
@@ -3199,9 +3198,11 @@ movies_sample |&gt;
         <console prompt="> ">
           <output>
 # A tibble: 1 × 7
-  statistic t_df p_value alternative estimate lower_ci upper_ci
-      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1     -2.89  65.8 0.00526 two.sided     -1.04    -1.76   -0.321
+  statistic   t_df    p_value alternative  estimate lower_ci  upper_ci
+      &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1     -2.89    65.8    0.00526 two.sided      -1.04    -1.76    -0.321
+1  -2.90589 65.8496 0.00498319 two.sided   -1.04722 -1.76677 -0.327671
+
           </output>
         </console>
 
@@ -3354,16 +3355,16 @@ flights_sample |&gt;
         <output>
 # A tibble: 8 × 4
 # Groups:   carrier, dest [8]
-  carrier dest      n mean_time
-  &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;     &lt;dbl&gt;
-1 AS      LAS       1      299 
-2 AS      LAX     980      324.
-3 AS      PDX     710      326.
-4 AS      PSP      18      310.
-5 AS      SAN    1034      325.
-6 AS      SEA    2417      325.
-7 AS      SFO    2683      344.
-8 HA      HNL     366      623.
+  carrier dest      n  mean_time
+  &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;      &lt;dbl&gt;
+1 AS      LAS       1   299 
+2 AS      LAX     980   323.929
+3 AS      PDX     710   326.383
+4 AS      PSP      18   309.611
+5 AS      SAN    1034   325.457
+6 AS      SEA    2417   324.787
+7 AS      SFO    2683   343.542
+8 HA      HNL     366   623.287
         </output>
       </console>
 
