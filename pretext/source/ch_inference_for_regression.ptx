@@ -194,11 +194,23 @@ UN_data_ch10 |>
 1 France      82.6       1.8
         </output>
       </console>
-      <p>
-        We can determine France's fitted fertility rate from the regression line and compare
-        it to the observed value. Using R we are not required to manually calculate the
-        fitted values and residuals. We do this directly using <c>get_regression_points()</c>:
-      </p>
+
+<p>
+  France's life expectancy is <m>x_{57} = 82.59</m> years and the fertility rate is
+  <m>y_{57} = 1.8</m>. Using the regression line from earlier, we can determine France's
+  fitted fertility rate:
+  <me>\hat{y}_{57} = 12.613 - 0.137 \cdot x_{57} = 12.613 - 0.137 \cdot 82.59 = 1.258.</me>
+  Based on our regression line we would expect France's fertility rate to be 1.258. The observed
+  fertility rate for France was 1.8, so the residual for France is
+  <m>y_{57} - \hat{y}_{57} = 1.8 - 1.258 = 0.542</m>.
+</p>
+<p>
+  Using R we are not required to manually calculate the fitted values and residual for each UN
+  member state. We do this directly using the regression model <c>simple_model</c> and the
+  <c>get_regression_points()</c> function. To do this only for France, we <c>filter()</c> the
+  57th observation in the data frame.
+</p>
+
             <program language="r">
         <input>
 simple_model |>
@@ -216,8 +228,8 @@ simple_model |>
         </output>
       </console>
       <p>
-        We can retrieve this information for all observations:
-      </p>
+We can retrieve this information for each observation. Here we show the first few rows:
+</p>
             <program language="r">
         <input>
 simple_model |>
@@ -302,11 +314,22 @@ simple_model |>
 
       <p>
         As we did in <xref ref="confidence-intervals"/> and <xref ref="hypothesis-testing"/>,
-        we use a sample to estimate the parameters in the population. We use data collected
-        from the Old Faithful Geyser in Yellowstone National Park in Wyoming, USA. This
-        dataset contains the <c>duration</c> of the geyser eruption in seconds and the
-        <c>waiting</c> time to the next eruption in minutes. These data are stored in the
-        <c>old_faithful_2024</c> data frame in the <c>moderndive</c> package.
+  we use a sample to estimate the parameters in the population. We use data collected from the
+  Old Faithful Geyser in Yellowstone National Park in Wyoming, USA. This dataset contains the
+  <c>duration</c> of the geyser eruption in seconds and the <c>waiting</c> time to the next
+  eruption in minutes. The duration of the current eruption can help determine fairly well the
+  waiting time to the next eruption. For this example, we use a sample of data collected by
+  volunteers and saved on the website <url href="https://geysertimes.org/">https://geysertimes.org/</url>
+  between June 1st, 2024 and August 19th, 2024.
+</p>
+<p>
+  These data are stored in the <c>old_faithful_2024</c> data frame in the <c>moderndive</c>
+  package. While data collected by volunteers are not a random sample, as the volunteers could
+  introduce some sort of bias, the eruptions selected by the volunteers had no specific patterns.
+  Further, beyond the individual skill of each volunteer measuring the times appropriately, no
+  response bias or preference seems to be present. Therefore, it seems safe to consider the data
+  a random sample. The first ten rows are shown here:
+</p>
       </p>
             <program language="r">
         <input>
@@ -354,20 +377,30 @@ old_faithful_2024 |>
 2 waiting    114 &lt;NA&gt;  numeric   102  139.  160.   176.  184.   201  29.9
         </output>
       </console>
-      <p>
-        We have a sample of eruptions, lasting between 99 seconds and 300 seconds, and the
-        waiting time to the next eruption was between 102 minutes and 201 minutes. Observe
-        that each observation is a pair of values, the value of the explanatory variable
-        (<m>X</m>) and the value of the response (<m>Y</m>). The sample takes the form:
-      </p>
-      <me>
-        (x_1, y_1),\quad (x_2, y_2),\quad \dots,\quad (x_n, y_n),
-      </me>
-      <p>
-        where <m>(x_i, y_i)</m> is the pair of explanatory and response values for the
-        <m>i</m>th observation. <xref ref="fig-geyserplot1"/> shows the scatterplot for the
-        entire sample with some transparency set to check for overplotting:
-      </p>
+<p>
+  We have a sample of 114 eruptions, lasting between 99 seconds and 300 seconds, and the waiting
+  time to the next eruption was between 102 minutes and 201 minutes. Observe that each observation
+  is a pair of values, the value of the explanatory variable (<m>X</m>) and the value of the
+  response (<m>Y</m>). The sample takes the form:
+  <me>
+    \begin{aligned}
+    (x_1, y_1) \\
+    (x_2, y_2) \\
+    \vdots \\
+    (x_n, y_n)
+    \end{aligned}
+  </me>
+  where, for example, <m>(x_2, y_2)</m> is the pair of explanatory and response values,
+  respectively, for the second observation in the sample. More generally, we denote the
+  <m>i</m>th pair by <m>(x_i, y_i)</m>, where <m>x_i</m> is the observed value of the
+  explanatory variable <m>X</m> and <m>y_i</m> is the observed value of the response variable
+  <m>Y</m>. Since the sample has <m>n</m> observations we let <m>i = 1, \ldots, n</m>.
+</p>
+<p>
+  In our example <m>n = 114</m>, and <m>(x_2, y_2) = (259, 184)</m>.
+  <xref ref="fig-geyserplot1"/> shows the scatterplot for the entire sample with some
+  transparency set to check for overplotting:
+</p>
       <program language="r">
         <input>
 ggplot(old_faithful_2024,
@@ -412,12 +445,17 @@ ggplot(old_faithful_2024,
       <me>
         \sum_{i=1}^n \left[y_i - (\beta_0 + \beta_1 \cdot x_i)\right]^2.
       </me>
-      <p>
-        The solutions are the regression coefficients introduced in <xref ref="model1"/>:
-        <m>b_0</m> is the estimator of <m>\beta_0</m> and <m>b_1</m> is the estimator of
-        <m>\beta_1</m>. They are called the <term>least squares estimators</term>
-        <idx><h>least squares estimators</h></idx> and their mathematical expressions are:
-      </p>
+<p>
+  This is an optimization problem and to solve it analytically we require calculus and the topic
+  goes beyond the scope of this book. We provide a sketch of the solution here for those familiar
+  with the method: using the expression above we find the partial derivative with respect to
+  <m>\beta_0</m> and equate that expression to zero, the partial derivative with respect to
+  <m>\beta_1</m> and equate that expression to zero, and use those two equations to solve for
+  <m>\beta_0</m> and <m>\beta_1</m>. The solutions are the regression coefficients introduced
+  first in <xref ref="sec-model1"/>: <m>b_0</m> is the estimator of <m>\beta_0</m> and
+  <m>b_1</m> is the estimator of <m>\beta_1</m>. They are called the <term>least squares
+  estimators</term> and their mathematical expressions are:
+</p>
       <me>
         b_1 = \frac{\sum_{i=1}^n(x_i - \bar x)(y_i - \bar y)}{\sum_{i=1}^n(x_i - \bar x)^2}
         \quad\text{ and }\quad b_0 = \bar y - b_1 \cdot \bar x.
@@ -447,14 +485,14 @@ sigma(model_1)
 
       <table xml:id="tab-regtable-ch10-1">
         <title>Old Faithful geyser linear regression coefficients</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
             <cell>Values</cell>
           </row>
           <row>
             <cell><m>b_0</m></cell>
-            <cell>79.500</cell>
+            <cell>79.459</cell>
           </row>
           <row>
             <cell><m>b_1</m></cell>
@@ -480,39 +518,28 @@ sigma(model_1)
     <subsection xml:id="properties-least-squares">
       <title>Properties of the least squares estimators</title>
 
-      <p>
-        The least squares method produces the <em>best-fitting</em> line by selecting the
-        least squares estimators, <m>b_0</m> and <m>b_1</m>, that make the sum of residual
-        squares the smallest possible. But the choice of <m>b_0</m> and <m>b_1</m> depends
-        on the sample observed. For every random sample taken from the data, different values
-        for <m>b_0</m> and <m>b_1</m> will be determined. In that sense, the least squares
-        estimators, <m>b_0</m> and <m>b_1</m>, are random variables and as such, they have
-        very useful properties:
-      </p>
-      <ul>
-        <li>
-          <p>
-            <m>b_0</m> and <m>b_1</m> are <em>unbiased estimators</em> of <m>\beta_0</m>
-            and <m>\beta_1</m>: <m>E(b_0) = \beta_0</m> and <m>E(b_1) = \beta_1</m>. This
-            means that, for some random samples, <m>b_1</m> will be greater than <m>\beta_1</m>
-            and for others less than <m>\beta_1</m>. On average, <m>b_1</m> will be equal to
-            <m>\beta_1</m>.
-          </p>
-        </li>
-        <li>
-          <p>
-            <m>b_0</m> and <m>b_1</m> are linear combinations of the observed responses
-            <m>y_1, y_2, \dots, y_n</m>. This means that, for example for <m>b_1</m>, there
-            are known constants <m>c_1, c_2, \dots, c_n</m> such that
-            <m>b_1 = \sum_{i=1}^n c_iy_i</m>.
-          </p>
-        </li>
-        <li>
-          <p>
-            <m>s^2</m> is an unbiased estimator of the variance <m>\sigma^2</m>.
-          </p>
-        </li>
-      </ul>
+<p>
+  The least squares method produces the best-fitting line by selecting the least squares
+  estimators, <m>b_0</m> and <m>b_1</m>, that make the sum of residual squares the smallest
+  possible. But the choice of <m>b_0</m> and <m>b_1</m> depends on the sample observed. For
+  every random sample taken from the data, different values for <m>b_0</m> and <m>b_1</m> will
+  be determined. In that sense, the least squares estimators, <m>b_0</m> and <m>b_1</m>, are
+  random variables and as such, they have very useful properties:
+  <ul>
+    <li><m>b_0</m> and <m>b_1</m> are unbiased estimators of <m>\beta_0</m> and <m>\beta_1</m>,
+    or using mathematical notation: <m>E(b_0) = \beta_0</m> and <m>E(b_1) = \beta_1</m>. This
+    means that, for some random samples, <m>b_1</m> will be greater than <m>\beta_1</m> and for
+    others less than <m>\beta_1</m>. On average, <m>b_1</m> will be equal to
+    <m>\beta_1</m>.</li>
+    <li><m>b_0</m> and <m>b_1</m> are linear combinations of the observed responses
+    <m>y_1, y_2, \ldots, y_n</m>. This means that, for example for <m>b_1</m>, there are known
+    constants <m>c_1, c_2, \ldots, c_n</m> such that
+    <m>b_1 = \sum_{i=1}^{n} c_i y_i</m>.</li>
+    <li><m>s^2</m> is an unbiased estimator of the variance <m>\sigma^2</m>.</li>
+  </ul>
+  These properties will be useful in the next subsection, once we perform theory-based inference
+  for regression.
+</p>
       <p>
         These properties will be useful in the next section, once we perform theory-based
         inference for regression.
@@ -534,12 +561,18 @@ sigma(model_1)
         <title>Two-sample difference in means</title>
         <p>
           The two-sample difference in means is a common statistical technique used to compare
-          the means of two groups, as seen in <xref ref="ht-case-study"/>. It can be
-          represented in the regression framework by using a dummy variable to represent the
-          two groups. Let's consider the <c>movies_sample</c> data frame in the
-          <c>moderndive</c> package. We compare the average rating for the genres
-          <q>Action</q> versus <q>Romance</q> using <c>lm()</c> with a dummy variable for
-          the genre:
+          the means of two groups, as seen in <xref ref="ht-case-study"/>. 
+  It is often used to determine if there is a significant difference in the mean response between
+  two groups, such as a treatment group and a control group. The two-sample difference in means
+  can be represented in the regression framework by using a dummy variable to represent the two
+  groups.
+</p>
+<p>
+  Let's again consider the <c>movies_sample</c> data frame in the <c>moderndive</c> package.
+  We'll compare once more the average rating for the genres of <q>Action</q> versus
+  <q>Romance.</q> We can use the <c>lm()</c> function to fit a linear model with a dummy
+  variable for the genre and then use <c>get_regression_table()</c>:
+</p>
         </p>
                 <program language="r">
           <input>
@@ -557,32 +590,33 @@ get_regression_table(mod_diff_means)
 2 genre-Romance     1.05     0.364      2.88   0.005    0.321     1.77
           </output>
         </console>
-        <p>
-          The <c>p_value</c> for the <c>genre: Romance</c> row is the <m>p</m>-value for the
-          hypothesis test:
-        </p>
-        <md>
-          <mrow>H_0&amp;: \text{action and romance have the same mean rating}</mrow>
-          <mrow>H_A&amp;: \text{action and romance have different mean ratings.}</mrow>
-        </md>
-        <p>
-          This <m>p</m>-value result matches closely with what was found in
-          <xref ref="ht-case-study"/>, but here we are using a theory-based approach with a
-          linear model. The <c>estimate</c> for the <c>genre: Romance</c> row is the observed
-          difference in means between the <q>Action</q> and <q>Romance</q> genres (with the
-          sign switched since <q>Action</q> is the reference level).
-        </p>
+<p>
+  Note from the outcome above that <c>p_value</c> for the <c>genre: Romance</c>
+  row is the p-value for the hypothesis test of
+  <md>
+    <mrow>H_0: \amp \text{action and romance have the same mean rating}</mrow>
+    <mrow>H_A: \amp \text{action and romance have different mean ratings}</mrow>
+  </md>
+  This p-value result matches closely with what was found in <xref ref="ht-case-study"/>,
+  but here we are using a theory-based approach with a linear model. The <c>estimate</c> for the
+  <c>genre: Romance</c> row is the observed difference in means between the <q>Action</q> and
+  <q>Romance</q> genres that we also saw in <xref ref="ht-case-study"/>, except the sign is
+  switched since the <q>Action</q> genre is the reference level.
+</p>
       </subsubsection>
 
       <subsubsection xml:id="anova-in-regression">
         <title>ANOVA</title>
-        <p>
-          ANOVA, or analysis of variance, is a statistical technique used to compare the means
-          of three or more groups. ANOVA can be represented in the regression framework by
-          using dummy variables to represent the groups. We compare the <c>popularity</c> values
-          in the <c>spotify_by_genre</c> data frame from the <c>moderndive</c> package across
-          the genres <c>country</c>, <c>hip-hop</c>, and <c>rock</c> (see <xref ref="fig-pop-by-genre-plot"/>):
-        </p>
+<p>
+  ANOVA, or analysis of variance, is a statistical technique used to compare the means of three
+  or more groups by seeing if there is a statistically significant difference between the means
+  of multiple groups. ANOVA can be represented in the regression framework by using dummy
+  variables to represent the groups. Let's say we wanted to compare the <c>popularity</c>
+  (numeric) values in the <c>spotify_by_genre</c> data frame from the <c>moderndive</c> package
+  across the genres of <c>country</c>, <c>hip-hop</c>, and <c>rock</c>. We use the
+  <c>slice_sample()</c> function after narrowing in on our selected columns and filtered rows of
+  interest to see what a few rows of this data frame look like in the output below.
+</p>
         <program language="r">
           <input>
 set.seed(6)
@@ -611,12 +645,11 @@ spotify_for_anova |>
           </output>
         </console>
 
-        <figure xml:id="fig-pop-by-genre-plot">
-          <caption>Boxplot of popularity by genre.</caption>
-          <image source="images/fig-pop-by-genre-plot.png" width="75%">
-            <description>Side-by-side boxplots of track popularity for country, hip-hop, and rock genres from the Spotify dataset.</description>
-          </image>
-        </figure>
+<p>
+  Before we fit a linear model, let's take a look at the boxplot of <c>track_genre</c> versus
+  <c>popularity</c> in <xref ref="fig-pop-by-genre-plot"/> to see if there are any differences
+  in the distributions of the three genres.
+</p>
 
         <program language="r">
           <input>
@@ -625,6 +658,16 @@ ggplot(spotify_for_anova, aes(x = track_genre, y = popularity)) +
   labs(x = "Genre", y = "Popularity")
           </input>
         </program>
+
+        <figure xml:id="fig-pop-by-genre-plot">
+          <caption>Boxplot of popularity by genre.</caption>
+          <image source="images/fig-pop-by-genre-plot.png" width="75%">
+            <description>Side-by-side boxplots of track popularity for country, hip-hop, and rock genres from the Spotify dataset.</description>
+          </image>
+        </figure>
+
+<p>We can also compute the mean <c>popularity</c> grouping by <c>track_genre</c>:
+</p>
                 <program language="r">
           <input>
 mean_popularities_by_genre &lt;- spotify_for_anova |>
@@ -639,11 +682,18 @@ mean_popularities_by_genre
 # A tibble: 3 × 2
   track_genre mean_popularity
   &lt;chr&gt;                 &lt;dbl&gt;
-1 country                17.0
-2 hip-hop                37.8
-3 rock                   19.0
+1 country              17.028
+2 hip-hop              37.759
+3 rock                 19.001
           </output>
         </console>
+
+<p>
+  We can use the <c>lm()</c> function to fit a linear model with dummy variables for the genres.
+  We'll then use the <c>get_regression_table()</c> function to get the regression table in the
+  output below.
+</p>
+
                 <program language="r">
           <input>
 mod_anova &lt;- lm(popularity ~ track_genre, data = spotify_for_anova)
@@ -661,17 +711,26 @@ get_regression_table(mod_anova)
 3 track_genre-rock        1.97     1.38       1.43   0.153   -0.733     4.68
           </output>
         </console>
-        <p>
-          The <c>estimate</c> for the <c>track_genre: hip-hop</c> and <c>track_genre: rock</c>
-          rows are the differences in means compared to the <q>country</q> genre (the reference
-          level). The <c>p_value</c> column shows that <c>hip-hop</c> has a statistically
-          higher mean popularity compared to <c>country</c>, while <c>rock</c> does not have a
-          statistically significant difference at the 5% level.
-        </p>
-        <p>
-          The traditional ANOVA doesn't give this level of granularity. It can be performed
-          using the <c>aov()</c> function:
-        </p>
+
+<p>
+  The <c>estimate</c> for the <c>track_genre: hip-hop</c> and <c>track_genre: rock</c> rows are
+  the differences in means between the <q>hip-hop</q> and <q>country</q> genres and the
+  <q>rock</q> and <q>country</q> genres, respectively. The <q>country</q> genre is the reference
+  level. These values match up (with some rounding differences) to what is shown in
+  <c>mean_popularities_by_genre</c>.
+</p>
+<p>
+  The <c>p_value</c> column corresponds to <c>hip-hop</c> having a statistically higher mean
+  <c>popularity</c> compared to <c>country</c> with a value of close to 0 (reported as 0). It
+  also gives us that <c>rock</c> does not have a statistically significant p-value at 0.153,
+  which would make us inclined to say that <c>rock</c> does not have a significantly higher
+  popularity compared to <c>country</c>.
+</p>
+<p>
+  The traditional ANOVA doesn't give this level of granularity. It can be performed using the
+  <c>aov()</c> function and the <c>anova()</c> function via a pipe (<c>|></c>):
+</p>
+
                 <program language="r">
           <input>
 aov(popularity ~ track_genre, data = spotify_for_anova) |>
@@ -691,12 +750,13 @@ Residuals   2997 2855039     953
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
           </output>
         </console>
-        <p>
-          The small <m>p</m>-value leads us to reject the null hypothesis that the mean
-          popularities are equal across the three genres, consistent with the linear model
-          results. However, ANOVA only tells us that a difference exists; the linear model
-          reveals which specific means differ.
-        </p>
+<p>
+  The small p-value here of <c>2.2e-16</c> is very close to 0, which would lead us to reject
+  the null hypothesis that the mean popularities are equal across the three genres. This is
+  consistent with the results we found using the linear model. The traditional ANOVA results do
+  not tell us which means are different from each other though, but the linear model does. ANOVA
+  tells us only that a difference exists in the means of the groups.
+</p>
       </subsubsection>
 
       <exercises>
@@ -765,27 +825,32 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
       other sections in this chapter, but most of the material is illustrated by working with
       a real example and interpretations and explanations complement the theory.
       <xref ref="regression-table"/> presents the R code needed to calculate relevant
-      quantities for inference.
+      quantities for inference. Feel free to read this section first.
     </p>
 
     <subsection xml:id="framework-simple-lm">
       <title>Conceptual framework</title>
 
-      <p>
-        We start by reviewing the assumptions of the linear model. We continue using
-        <c>old_faithful_2024</c> to illustrate some of this framework. Since we assume a
-        linear relationship between the <c>duration</c> of an eruption and the <c>waiting</c>
-        time to the next eruption, we can express the linear relationship for the <m>i</m>th
-        observation as <m>y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i</m> for
-        <m>i=1,\dots,n</m>. The error term <m>\epsilon_i</m> is a random variable that
-        represents how different the observed response <m>y_i</m> is from the expected
-        response <m>\beta_0 + \beta_1 \cdot x_i</m>.
-      </p>
-      <p>
-        We can illustrate the role of the error term using two observations from
-        <c>old_faithful_2024</c>. We select the 49th and 51st observations using
-        <c>slice()</c>:
-      </p>
+<p>
+  We start by reviewing the assumptions of the linear model. We continue using the
+  <c>old_faithful_2024</c> to illustrate some of this framework. Recall that we have a random
+  sample of <m>n = 114</m> observations. Since we assume a linear relationship between the
+  <c>duration</c> of an eruption and the <c>waiting</c> time to the next eruption, we can
+  express the linear relationship for the <m>i</m>th observation as
+  <me>y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i \text{ for } i = 1, \ldots, n.</me>
+  Observe that <m>x_i</m> is the <c>duration</c> of the <m>i</m>th eruption in the sample,
+  <m>y_i</m> is the <c>waiting</c> time to the next eruption, and <m>\beta_0</m> and
+  <m>\beta_1</m> are the population parameters that are considered constant. The error term
+  <m>\epsilon_i</m> is a random variable that represents how different the observed response
+  <m>y_i</m> is from the expected response <m>\beta_0 + \beta_1 \cdot x_i</m>.
+</p>
+<p>
+  We can illustrate the role of the error term using two observations from our
+  <c>old_faithful_2024</c> dataset. We assume for now that the linear model is appropriate and
+  truly represents the relationship between <c>duration</c> and <c>waiting</c> times. We select
+  the 49th and 51st observations in our sample by using the function <c>slice()</c> with the
+  corresponding rows:
+</p>
             <program language="r">
         <input>
 old_faithful_2024 |>
@@ -802,76 +867,64 @@ old_faithful_2024 |>
 2     1469437 2024-07-17  1157     176 Yes         236
         </output>
       </console>
-      <p>
-        Observe that the <c>duration</c> time is the same for both observations, but the
-        response <c>waiting</c> time is different. Assuming that the linear model is
-        appropriate, both responses can be expressed as:
-      </p>
-      <md>
-        <mrow>y_{49} &amp;= \beta_0 + \beta_1 \cdot 236 + \epsilon_{49}</mrow>
-        <mrow>y_{51} &amp;= \beta_0 + \beta_1 \cdot 236 + \epsilon_{51},</mrow>
-      </md>
-      <p>
-        but <m>y_{49} = 139</m> and <m>y_{51} = 176</m>. The difference in responses is due
-        to the error term as it accounts for variation in the response not accounted for by
-        the linear model.
-      </p>
-      <p>
-        In order to perform theory-based inference we require one additional assumption. We
-        let the error term be normally distributed with an expected value (mean) equal to zero
-        and a standard deviation equal to <m>\sigma</m>:
-      </p>
-      <me>
-        \epsilon_i \sim \text{Normal}(0, \sigma).
-      </me>
-      <p>
-        The response <m>y_i</m> (the <c>waiting</c> time for the <m>i</m>th eruption) is
-        the sum of the constant <m>\beta_0 + \beta_1 \cdot x_i</m> and the normally
-        distributed random variable <m>\epsilon_i</m>. Based on properties of random
-        variables and the normal distribution, we can state that <m>y_i</m> is also a
-        normally distributed random variable:
-      </p>
-      <me>
-        y_i \sim \text{Normal}(\beta_0 + \beta_1 x_i\,,\, \sigma)
-      </me>
-      <p>
-        for <m>i=1,\dots,n</m>. Since <m>\epsilon_i</m> and <m>\epsilon_j</m> are
-        independent, <m>y_i</m> and <m>y_j</m> are also independent for any <m>i \ne j</m>.
-      </p>
-      <p>
-        In addition, as stated in <xref ref="properties-least-squares"/>, the least-squares
-        estimator <m>b_1</m> is a linear combination of the random variables
-        <m>y_1, \dots, y_n</m>. So <m>b_1</m> is also a random variable! The coefficient
-        for the slope results from <em>a particular sample</em> of <m>n</m> pairs of
-        <c>duration</c> and <c>waiting</c> times. If we collected a different sample of
-        <m>n</m> pairs, the coefficient for the slope would likely be different due to
-        <em>sampling variation</em>.
-      </p>
-      <p>
-        Because <m>y_1, \dots, y_n</m> are normally distributed and <m>b_1</m> is a linear
-        combination of these random variables, <m>b_1</m> is also normally distributed:
-      </p>
-      <me>
-        b_1 \sim \text{Normal} \left(\beta_1\,,\, \frac{\sigma}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}\right).
-      </me>
-      <p>
-        Similarly, <m>b_0</m> is a linear combination of <m>y_1, \dots, y_n</m>:
-      </p>
-      <me>
-        b_0 \sim \text{Normal} \left(\beta_0\,,\, \sigma\sqrt{\frac{1}{n} + \frac{\bar x^2}{\sum_{i=1}^n(x_i - \bar x)^2}}\right).
-      </me>
-      <p>
-        We can also standardize the least-square estimators such that
-      </p>
-      <me>
-        z_0 = \frac{b_0 - \beta_0}{\sigma\sqrt{\dfrac{1}{n} + \dfrac{\bar x^2}{\sum_{i=1}^n(x_i - \bar x)^2}}}
-        \qquad\text{ and }\qquad
-        z_1 = \frac{b_1 - \beta_1}{\dfrac{\sigma}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}}
-      </me>
-      <p>
-        are the corresponding standard normal distributions.
-      </p>
-    </subsection><!-- end Conceptual framework -->
+<p>
+  In the linear model the error term <m>\epsilon_i</m> has expected value
+  <m>E(\epsilon_i) = 0</m> and standard deviation <m>SD(\epsilon_i) = \sigma</m>. Since a
+  random sample is taken, we assume that any two error terms <m>\epsilon_i</m> and
+  <m>\epsilon_j</m> for any two different eruptions <m>i</m> and <m>j</m> are independent.
+</p>
+<p>
+  In order to perform the theory-based inference we require one additional assumption. We let
+  the error term be normally distributed with an expected value (mean) equal to zero and a
+  standard deviation equal to <m>\sigma</m>:
+  <me>\epsilon_i \sim \text{Normal}(0, \sigma).</me>
+  The population parameters <m>\beta_0</m> and <m>\beta_1</m> are constants. Similarly, the
+  <c>duration</c> of the <m>i</m>th eruption, <m>x_i</m>, is known and also a constant.
+  Therefore, the expression <m>\beta_0 + \beta_1 \cdot x_i</m> is a constant. By contrast,
+  <m>\epsilon_i</m> is a normally distributed random variable.
+</p>
+<p>
+  The response <m>y_i</m> (the <c>waiting</c> time for the <m>i</m>th eruption to the next)
+  is the sum of the constant <m>\beta_0 + \beta_1 \cdot x_i</m> and the normally distributed
+  random variable <m>\epsilon_i</m>. Based on properties of random variables and the normal
+  distribution, we can state that <m>y_i</m> is also a normally distributed random variable
+  with mean equal to <m>\beta_0 + \beta_1 \cdot x_i</m> and standard deviation equal to
+  <m>\sigma</m>:
+  <me>y_i \sim \text{Normal}(\beta_0 + \beta_1 x_i, \sigma)</me>
+  for <m>i = 1, \ldots, n</m>. Since <m>\epsilon_i</m> and <m>\epsilon_j</m> are independent,
+  <m>y_i</m> and <m>y_j</m> are also independent for any <m>i \neq j</m>.
+</p>
+<p>
+  In addition, as stated in <xref ref="sec-properties-least-squares"/>, the least-squares
+  estimator <m>b_1</m> is a linear combination of the random variables <m>y_1, \ldots, y_n</m>.
+  So <m>b_1</m> is also a random variable! What does this mean? The coefficient for the slope
+  results from a particular sample of <m>n</m> pairs of <c>duration</c> and <c>waiting</c>
+  times. If we collected a different sample of <m>n</m> pairs, the coefficient for the slope
+  would likely be different due to sampling variation.
+</p>
+<p>
+  Say we hypothetically collect many random samples of pairs of <c>duration</c> and
+  <c>waiting</c> times, and using the least-squares method compute the slope <m>b_1</m> for
+  each of these samples. These slopes would form the sampling distribution of <m>b_1</m>, which
+  we discussed in <xref ref="sec-sampling-variation"/> in the context of sample proportions.
+  What we would learn is that, because <m>y_1, \ldots, y_n</m> are normally distributed and
+  <m>b_1</m> is a linear combination of these random variables, <m>b_1</m> is also normally
+  distributed. After some calculations that go beyond the scope of this book but take into
+  account properties of the expected value and standard deviation of the responses
+  <m>y_1, \ldots, y_n</m>, it can be shown that:
+  <me>b_1 \sim \text{Normal}\left(\beta_1, \frac{\sigma}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2}}\right)</me>
+  That is, <m>b_1</m> is normally distributed with expected value <m>\beta_1</m> and standard
+  deviation equal to the expression above (inside the parentheses and after the comma).
+  Similarly, <m>b_0</m> is a linear combination of <m>y_1, \ldots, y_n</m> and using properties
+  of the expected value and standard deviation of the responses, we get:
+  <me>b_0 \sim \text{Normal}\left(\beta_0, \sigma\sqrt{\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}}\right)</me>
+  We can also standardize the least-square estimators such that
+  <me>z_0 = \frac{b_0 - \beta_0}{\sigma\sqrt{\dfrac{1}{n} + \dfrac{\bar{x}^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}}}
+  \quad \text{and} \quad
+  z_1 = \frac{b_1 - \beta_1}{\dfrac{\sigma}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2}}}</me>
+  are the corresponding standard normal distributions.
+</p>
+</subsection><!-- end Conceptual framework -->
 
 
     <subsection xml:id="se-simple-lm">
@@ -903,31 +956,25 @@ old_faithful_2024 |>
       <me>
         SE(b_1) = \frac{s}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}.
       </me>
-      <p>
-        The <em>standard error</em> of <m>b_1</m> quantifies how much variation the estimator
-        of the slope <m>b_1</m> may have for different random samples. The larger the standard
-        error, the more variation we would expect in the estimated slope <m>b_1</m>. Similarly,
-        the <em>standard error</em> of <m>b_0</m> is:
-      </p>
-      <me>
-        SE(b_0) = s\sqrt{\frac{1}{n} + \frac{\bar x^2}{\sum_{i=1}^n(x_i - \bar x)^2}}.
-      </me>
-      <p>
-        When using the estimator <m>s</m> instead of the parameter <m>\sigma</m>, we are
-        introducing additional uncertainty in our calculations. For example, we can
-        standardize <m>b_1</m> using
-      </p>
-      <me>
-        t = \frac{b_1 - \beta_1}{SE(b_1)}.
-      </me>
-      <p>
-        Because we are using <m>s</m> to calculate <m>SE(b_1)</m>, the value of the standard
-        error changes from sample to sample, and this additional uncertainty makes the
-        distribution of the test statistic <m>t</m> no longer normal. Instead, it follows a
-        <m>t</m>-distribution with <m>n-2</m> degrees of freedom. The loss of two degrees of
-        freedom relates to the fact that we are estimating two parameters in the linear
-        model: <m>\beta_0</m> and <m>\beta_1</m>.
-      </p>
+<p>
+  Recall that the standard error is the standard deviation of any point estimate computed from
+  a sample. The standard error of <m>b_1</m> quantifies how much variation the estimator of
+  the slope <m>b_1</m> may have for different random samples. The larger the standard error,
+  the more variation we would expect in the estimated slope <m>b_1</m>. Similarly, the standard
+  error of <m>b_0</m> is:
+  <me>SE(b_0) = s\sqrt{\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}}</me>
+  As was discussed in <xref ref="sec-t-distribution-CI"/>, when using the estimator <m>s</m>
+  instead of the parameter <m>\sigma</m>, we are introducing additional uncertainty in our
+  calculations. For example, we can standardize <m>b_1</m> using
+  <me>t = \frac{b_1 - \beta_1}{SE(b_1)}.</me>
+  Because we are using <m>s</m> to calculate <m>SE(b_1)</m>, the value of the standard error
+  changes from sample to sample, and this additional uncertainty makes the distribution of the
+  test statistic <m>t</m> no longer normal. Instead, it follows a <m>t</m>-distribution with
+  <m>n - 2</m> degrees of freedom. The loss of two degrees of freedom relates to the fact that
+  we are trying to estimate two parameters in the linear model: <m>\beta_0</m> and
+  <m>\beta_1</m>. We are ready to use this information to perform inference for the least-square
+  estimators, <m>b_0</m> and <m>b_1</m>.
+</p>
     </subsection><!-- end Standard errors -->
 
 
@@ -945,26 +992,30 @@ old_faithful_2024 |>
         \text{point estimate} \pm \text{margin of error}
         = \text{point estimate} \pm (\text{critical value} \cdot \text{standard error}).
       </me>
-      <p>
-        The formula for a 95% confidence interval for <m>\beta_1</m> is given by
-        <m>b_1 \pm q \cdot SE(b_1)</m> where the critical value <m>q</m> is determined by
-        the level of confidence required, the sample size used, and the corresponding degrees
-        of freedom for the <m>t</m>-distribution. For the Old Faithful example, with
-        <m>n - 2 = 112</m> degrees of freedom, the critical value is <m>q = 1.981</m>. The
-        estimates <m>b_0</m>, <m>b_1</m>, and <m>s</m> are shown again in
-        <xref ref="tab-regtable-ch10-2"/>.
-      </p>
+<p>
+  The formula for a 95% confidence interval for <m>\beta_1</m> is given by
+  <me>b_1 \pm q \cdot SE(b_1)</me>
+  where the critical value <m>q</m> is determined by the level of confidence required, the
+  sample size used, and the corresponding degrees of freedom needed for the <m>t</m>-distribution.
+  We now illustrate how to find the 95% confidence interval for the slope in the Old Faithful
+  example manually, but we show later how to do this directly in R using the function
+  <c>get_regression_table()</c>. First, observe that <m>n = 114</m>, so the degrees of freedom
+  are <m>n - 2 = 112</m>. The critical value for a 95% confidence interval on a
+  <m>t</m>-distribution with 112 degrees of freedom is <m>q = 1.981</m>. Second, the estimates
+  <m>b_0</m>, <m>b_1</m>, and <m>s</m> were found earlier and are shown here again in
+  <xref ref="tab-regtable-ch10-2"/>:
+</p>
 
       <table xml:id="tab-regtable-ch10-2">
         <title>Old Faithful linear regression coefficients</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
             <cell>Values</cell>
           </row>
           <row>
             <cell><m>b_0</m></cell>
-            <cell>79.500</cell>
+            <cell>79.459</cell>
           </row>
           <row>
             <cell><m>b_1</m></cell>
@@ -977,22 +1028,23 @@ old_faithful_2024 |>
         </tabular>
       </table>
 
-      <p>
-        The standard error for <m>b_1</m> using the formula presented earlier is:
-      </p>
-      <me>
-        SE(b_1) = \frac{s}{\sqrt{\sum_{i=1}^n(x_i - \bar x)^2}}.
-      </me>
-      <p>
-        We are 95% confident that the population slope <m>\beta_1</m> falls in this
-        interval. The construction of a 95% confidence interval for <m>\beta_0</m> follows
-        exactly the same steps using <m>b_0</m>, <m>SE(b_0)</m>, and the same critical
-        value <m>q</m> as the degrees of freedom for the <m>t</m>-distribution are the same,
-        <m>n-2</m>. The results of the confidence intervals are valid only if the linear
-        model assumptions are satisfied, as discussed in <xref ref="model-fit"/>.
-      </p>
+<p>
+  Third, the standard error for <m>b_1</m> using the formula presented earlier is:
+  <me>SE(b_1) = \frac{s}{\sqrt{\sum_{i=1}^{n}(x_i - \bar{x})^2}} = \frac{20.376}{27.583} = 0.032.</me>
+  Finally, the 95% confidence interval for <m>\beta_1</m> is given by:
+  <me>b_1 \pm q \cdot SE(b_1) = 0.371 \pm 1.981 \cdot 0.032 = (0.308, 0.434)</me>
+  We are 95% confident that the population slope <m>\beta_1</m> is a number between 0.308
+  and 0.434.
+</p>
+<p>
+  The construction of a 95% confidence interval for <m>\beta_0</m> follows exactly the same
+  steps using <m>b_0</m>, <m>SE(b_0)</m>, and the same critical value <m>q</m> as the degrees
+  of freedom for the <m>t</m>-distribution are exactly the same, <m>n - 2</m>:
+  <me>b_0 \pm q \cdot SE(b_0) = 79.459 \pm 1.981 \cdot 7.311 = (-14.112, 14.854)</me>
+  The results of the confidence intervals are valid only if the linear model assumptions are
+  satisfied. We discuss these assumptions in <xref ref="sec-model-fit"/>.
+</p>
     </subsection><!-- end Confidence intervals -->
-
 
     <subsection xml:id="hypo-test-simple-lm">
       <title>Hypothesis test for population slope</title>
@@ -1005,42 +1057,65 @@ old_faithful_2024 |>
         <mrow>H_0&amp;: \beta_1 = B</mrow>
         <mrow>H_A&amp;: \beta_1 \ne B,</mrow>
       </md>
-      <p>
-        where <m>B</m> is the hypothesized value for <m>\beta_1</m>.
-      </p>
+<p>
+  where <m>B</m> is the hypothesized value for <m>\beta_1</m>. Recall the terminology,
+  notation, and definitions related to hypothesis tests we introduced in
+  <xref ref="sec-understanding-ht"/>. A hypothesis test consists of a test between two competing
+  hypotheses: (1) a null hypothesis <m>H_0</m> versus (2) an alternative hypothesis <m>H_A</m>.
+</p>
 
-      <p>
-        <em>Test statistic.</em> The <m>t</m>-test statistic is given by
-      </p>
-      <me>
-        t = \frac{b_1 - B}{SE(b_1)}.
-      </me>
-      <p>
-        This test statistic follows, under the null hypothesis, a <m>t</m>-distribution with
-        <m>n-2</m> degrees of freedom. A particularly useful test is whether there is a linear
-        association between the explanatory variable and the response:
-      </p>
-      <md>
-        <mrow>H_0&amp;: \beta_1 = 0</mrow>
-        <mrow>H_A&amp;: \beta_1 \ne 0.</mrow>
-      </md>
-      <p>
-        For the Old Faithful example, the <em>null hypothesis</em> <m>H_0</m> assumes that the
-        population slope <m>\beta_1</m> is 0, meaning there is <em>no linear relationship</em>
-        between <c>duration</c> and <c>waiting</c> times. The test statistic is:
-      </p>
-      <me>
-        t = \frac{b_1 - 0}{SE(b_1)}.
-      </me>
-
-      <p>
-        <em>The <m>p</m>-value.</em> Recall the definition of the <m>p</m>-value: the
-        probability of obtaining a test statistic just as extreme as or more extreme than the
-        one observed, <em>assuming the null hypothesis</em> <m>H_0</m> is true. For a
-        two-sided test, if the test statistic is <m>t = 2</m> for example, the <m>p</m>-value
-        is the area under the <m>t</m>-curve to the left of <m>-2</m> and to the right of
-        <m>2</m>, as shown in <xref ref="fig-pvalue1"/>.
-      </p>
+<p>
+  <term>Test statistic</term>
+</p>
+<p>
+  A test statistic is a point estimator used for hypothesis testing. Here, the <m>t</m>-test
+  statistic is given by
+  <me>t = \frac{b_1 - B}{SE(b_1)}.</me>
+  This test statistic follows, under the null hypothesis, a <m>t</m>-distribution with
+  <m>n - 2</m> degrees of freedom. A particularly useful test is whether there is a linear
+  association between the explanatory variable and the response, which is equivalent to testing:
+  <md>
+    <mrow>H_0: \amp \beta_1 = 0</mrow>
+    <mrow>H_1: \amp \beta_1 \neq 0</mrow>
+  </md>
+  For example, we may use this test to determine whether there is a linear relationship between
+  the duration of the Old Faithful geyser eruptions (<c>duration</c>) and the waiting time to
+  the next eruption (<c>waiting</c>). The null hypothesis <m>H_0</m> assumes that the population
+  slope <m>\beta_1</m> is 0. If this is true, then there is no linear relationship between the
+  <c>duration</c> and <c>waiting</c> times. When performing a hypothesis test, we assume that
+  the null hypothesis <m>H_0: \beta_1 = 0</m> is true and try to find evidence against it based
+  on the data observed.
+</p>
+<p>
+  The alternative hypothesis <m>H_A</m>, on the other hand, states that the population slope
+  <m>\beta_1</m> is not 0, meaning that longer eruption <c>duration</c> may result in greater
+  or smaller <c>waiting</c> times to the next eruption. This suggests either a positive or
+  negative linear relationship between the explanatory variable and the response. Since evidence
+  against the null hypothesis may happen in either direction in this context, we call this a
+  two-sided test. The <m>t</m>-test statistic for this problem is given by:
+  <me>t = \frac{b_1 - 0}{SE(b_1)} = \frac{0.371 - 0}{0.032} = 11.594</me>
+</p>
+<p>
+  <term>The p-value</term>
+</p>
+<p>
+  Recall the terminology, notation, and definitions related to hypothesis tests we introduced
+  in <xref ref="sec-understanding-ht"/>. The definition of the p-value is the probability of
+  obtaining a test statistic just as extreme as or more extreme than the one observed, assuming
+  the null hypothesis <m>H_0</m> is true. We can intuitively think of the p-value as
+  quantifying how <q>extreme</q> the estimated slope is (<m>b_1 = 0.371</m>), assuming there
+  is no relationship between <c>duration</c> and <c>waiting</c> times.
+</p>
+<p>
+  For a two-sided test, if the test statistic is <m>t = 2</m> for example, the p-value is
+  calculated as the area under the <m>t</m>-curve to the left of <m>-2</m> and to the right
+  of <m>2</m> is shown in <xref ref="fig-pvalue1"/>.
+</p>
+<p>
+  In our Old Faithful geyser eruptions example, the test statistic for the test
+  <m>H_0: \beta_1 = 0</m> was <m>t = 11.594</m>. The p-value was so small that R simply shows
+  that it is equal to zero.
+</p>
 
       <figure xml:id="fig-pvalue1">
         <caption>Illustration of a two-sided <m>p</m>-value for a <m>t</m>-test.</caption>
@@ -1049,19 +1124,19 @@ old_faithful_2024 |>
         </image>
       </figure>
 
-      <p>
-        In the Old Faithful geyser eruptions example, the <m>p</m>-value was so small that R
-        simply shows that it is equal to zero.
-      </p>
-
-      <p>
-        <em>Interpretation.</em> Since the <m>p</m>-value was practically 0, for any choice
-        of significance level <m>\alpha</m>, we would reject <m>H_0</m> in favor of
-        <m>H_A</m>. We reject the null hypothesis that there is no linear relationship between
-        <c>duration</c> and <c>waiting</c> times. We have enough statistical evidence to
-        conclude that there is a linear relationship between these variables.
-      </p>
-
+<p>
+  <term>Interpretation</term>
+</p>
+<p>
+  Following the hypothesis testing procedure we outlined in <xref ref="sec-ht-interpretation"/>,
+  since the p-value was practically 0, for any choice of significance level <m>\alpha</m>, we
+  would reject <m>H_0</m> in favor of <m>H_A</m>. In other words, assuming that there is no
+  linear association between <c>duration</c> and <c>waiting</c> times, the probability of
+  observing a slope as extreme as the one we have attained using our random sample, was
+  practically zero. In conclusion, we reject the null hypothesis that there is no linear
+  relationship between <c>duration</c> and <c>waiting</c> times. We have enough statistical
+  evidence to conclude that there is a linear relationship between these variables.
+</p>
       <exercises>
         <exercise xml:id="lc10-4">
           <statement>
@@ -1145,99 +1220,113 @@ get_regression_table(model_1)
         <m>\beta_0</m>, and the second row deals with inference for the slope <m>\beta_1</m>.
         The columns present the following:
       </p>
-      <ul>
-        <li><p>The <c>estimate</c> column contains the least-squares estimates, <m>b_0</m> (first row) and <m>b_1</m> (second row).</p></li>
-        <li><p>The <c>std_error</c> contains <m>SE(b_0)</m> and <m>SE(b_1)</m>, the standard errors for <m>b_0</m> and <m>b_1</m>, respectively.</p></li>
-        <li><p>The <c>statistic</c> column contains the <m>t</m>-test statistic for <m>b_0</m> (first row) and <m>b_1</m> (second row), constructed using <m>t = b_1 / SE(b_1)</m>.</p></li>
-        <li><p>The <c>p_value</c> is the probability of obtaining a test statistic just as extreme as or more extreme than the one observed, assuming the null hypothesis is true.</p></li>
-        <li><p>The values <c>lower_ci</c> and <c>upper_ci</c> are the lower and upper bounds of a 95% confidence interval for <m>\beta_1</m>.</p></li>
-      </ul>
+<p>
+  <ul>
+    <li>The <c>estimate</c> column contains the least-squares estimates, <m>b_0</m> (first row)
+    and <m>b_1</m> (second row).</li>
+    <li>The <c>std_error</c> contains <m>SE(b_0)</m> and <m>SE(b_1)</m> (the standard errors
+    for <m>b_0</m> and <m>b_1</m>), respectively. We defined these standard errors in
+    <xref ref="sec-se-simple-lm"/>.</li>
+    <li>The <c>statistic</c> column contains the <m>t</m>-test statistic for <m>b_0</m> (first
+    row) and <m>b_1</m> (second row). If we focus on <m>b_1</m>, the <m>t</m>-test statistic
+    was constructed using the equation
+    <me>t = \frac{b_1 - 0}{SE(b_1)} = 11.594</me>
+    which corresponds to the hypotheses <m>H_0: \beta_1 = 0</m> versus
+    <m>H_A: \beta_1 \neq 0</m>.</li>
+    <li>The <c>p_value</c> is the probability of obtaining a test statistic just as extreme as
+    or more extreme than the one observed, assuming the null hypothesis is true. For this
+    hypothesis test, the <m>t</m>-test statistic was equal to 11.594 and, therefore, the p-value
+    was near zero, suggesting rejection of the null hypothesis in favor of the alternative.</li>
+    <li>The values <c>lower_ci</c> and <c>upper_ci</c> are the lower and upper bounds of a 95%
+    confidence interval for <m>\beta_1</m>.</li>
+  </ul>
+  Please refer to previous subsections for the conceptual framework and a more detailed
+  description of these quantities.
+</p>
     </subsection><!-- end The regression table in R -->
 
 
     <subsection xml:id="model-fit">
       <title>Model fit and model assumptions</title>
 
-      <p>
-        We have introduced the linear model alongside assumptions about many of its elements
-        and assumed all along that this is an appropriate representation of the relationship
-        between the response and the explanatory variable. In real-life applications, it is
-        uncertain whether the relationship is appropriately described by the linear model or
-        whether all the assumptions we have introduced are satisfied.
-      </p>
-      <p>
-        We do not expect the linear model, or any other model, to be a perfect representation
-        of a phenomenon presented in nature. Models are simplifications of reality in that
-        they do not intend to represent exactly the relationship in question but rather provide
-        useful approximations. This approach is known as the <term>principle of parsimony</term>
-        or <term>Occam's razor</term>.
-      </p>
-      <p>
-        There are four elements in the linear model we want to check. To help you remember
-        them, we use the following acrostic:
-      </p>
-      <ol>
-        <li>
-          <p>
-            <em><alert>L</alert>inearity of relationship between variables</em> — Is the
-            relationship between <m>y_i</m> and <m>x_i</m> truly linear for each
-            <m>i = 1, \dots, n</m>?
-          </p>
-        </li>
-        <li>
-          <p>
-            <em><alert>I</alert>ndependence of each of the response values <m>y_i</m></em> —
-            Are <m>y_i</m> and <m>y_j</m> independent for any <m>i \ne j</m>?
-          </p>
-        </li>
-        <li>
-          <p>
-            <em><alert>N</alert>ormality of the error terms</em> — Is the distribution of
-            the error terms at least approximately normal?
-          </p>
-        </li>
-        <li>
-          <p>
-            <em><alert>E</alert>quality or constancy of the variance for <m>y_i</m></em> —
-            Is the variance of the response <m>y_i</m> always the same, regardless of the
-            fitted value or regressor value?
-          </p>
-        </li>
-      </ol>
-      <p>
-        This acrostic follows the word <term>LINE</term>
-        <idx><h>regression</h><h>model fit (LINE)</h></idx>. To check for <em>L</em>inearity,
-        <em>N</em>ormality, and <em>E</em>qual or constant variance, we use the residuals of
-        the linear regression via <em>residual diagnostics</em>
-        <idx><h>residual analysis</h></idx>. To check for <em>I</em>ndependence, we can use
-        the residuals if the data was collected in a time sequence, or otherwise independence
-        may be achieved by taking a random sample.
-      </p>
-
+<p>
+  We have introduced the linear model alongside assumptions about many of its elements and assumed
+  all along that this is an appropriate representation of the relationship between the response
+  and the explanatory variable. In real-life applications, it is uncertain whether the
+  relationship is appropriately described by the linear model or whether all the assumptions we
+  have introduced are satisfied.
+</p>
+<p>
+  Of course, we do not expect the linear model described in this chapter, or any other model, to
+  be a perfect representation of a phenomenon presented in nature. Models are simplifications of
+  reality in that they do not intend to represent exactly the relationship in question but rather
+  provide useful approximations that help improve our understanding of this relationship. Even
+  more, we want models that are as simple as possible and still capture relevant features of the
+  natural phenomenon we are studying. This approach is known as the <term>principle of
+  parsimony</term> or <term>Occam's razor</term>.
+</p>
+<p>
+  But even with a simple model like a linear one, we still want to know if it accurately
+  represents the relationship in the data. This is called <term>model fit</term>. In addition,
+  we want to determine whether or not the model assumptions have been met.
+</p>
+<p>
+  There are four elements in the linear model we want to check. An acrostic is a composition in
+  which certain letters from each piece form a word or words. To help you remember the four
+  elements, we can use the following acrostic:
+  <ul>
+    <li><term>L</term>inearity of relationship between variables. Is the relationship between
+    <m>y_i</m> and <m>x_i</m> truly linear for each <m>i = 1, \ldots, n</m>? In other words,
+    is the linear model <m>y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i</m> a good
+    fit?</li>
+    <li><term>I</term>ndependence of each of the response values <m>y_i</m>. Are <m>y_i</m> and
+    <m>y_j</m> independent for any <m>i \neq j</m>?</li>
+    <li><term>N</term>ormality of the error terms. Is the distribution of the error terms at
+    least approximately normal?</li>
+    <li><term>E</term>quality or constancy of the variance for <m>y_i</m> (and for the error
+    term <m>\epsilon_i</m>). Is the variance, or equivalently standard deviation, of the response
+    <m>y_i</m> always the same, regardless of the fitted value (<m>\hat{y}_i</m>) or the
+    regressor value (<m>x_i</m>)?</li>
+  </ul>
+</p>
+<p>
+  In this case, our acrostic follows the word LINE. This can serve as a nice reminder of what
+  to check when using linear regression. To check for Linearity, Normality, and Equal or
+  constant variance, we use the residuals of the linear regression via residual diagnostics as
+  we explain in the next subsection. To check for Independence we can use the residuals if the
+  data was collected using a time sequence or other type of sequences. Otherwise, independence
+  may be achieved by taking a random sample, which eliminates a sequential type of dependency.
+</p>
+<p>
+  We start by reviewing how residuals are calculated, introduce residual diagnostics via
+  visualizations, use the example of the Old Faithful geyser eruptions to determine whether each
+  of the four LINE elements are met, and discuss the implications.
+</p>
       <subsubsection xml:id="residuals-ch10">
         <title>Residuals</title>
-        <p>
-          Recall that given a random sample of <m>n</m> pairs <m>(x_1, y_1), \dots, (x_n, y_n)</m>
-          the linear regression was given by <m>\widehat{y}_i = b_0 + b_1 \cdot x_i</m>.
-          The residual is the <em>observed response</em> minus the <em>fitted value</em>:
-        </p>
-        <me>
-          e_i = y_i - \widehat{y}_i \quad\text{ for } i = 1, \dots, n.
-        </me>
-        <p>
-          Combining these two formulas we get
-          <m>y_i = \underbrace{b_0 + b_1 \cdot x_i}_{\widehat{y}_i} + e_i</m>,
-          which looks very similar to our linear model
-          <m>y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i</m>.
-          In this context, residuals can be thought of as rough estimates of the error terms.
-        </p>
-        <p>
-          In <xref ref="fig-residual-example"/>, we illustrate one particular residual for the
-          Old Faithful geyser eruption. An arrow connects the observed waiting time (a circle)
-          with the fitted waiting time (a square). The vertical distance between these two
-          points is the value of the residual for this observation.
-        </p>
-
+<p>
+  Recall that given a random sample of <m>n</m> pairs <m>(x_1, y_1), \ldots, (x_n, y_n)</m>
+  the linear regression was given by:
+  <me>\hat{y}_i = b_0 + b_1 \cdot x_i</me>
+  for all the observations <m>i = 1, \ldots, n</m>. Recall that the residual as defined in
+  <xref ref="sec-residuals"/>, is the observed response minus the fitted value. If we denote
+  the residuals with the letter <m>e</m> we get:
+  <me>e_i = y_i - \hat{y}_i</me>
+  for <m>i = 1, \ldots, n</m>. Combining these two formulas we get
+  <me>y_i = \hat{y}_i + e_i = b_0 + b_1 \cdot x_i + e_i</me>
+  the resulting formula looks very similar to our linear model:
+  <me>y_i = \beta_0 + \beta_1 \cdot x_i + \epsilon_i</me>
+  In this context, residuals can be thought of as rough estimates of the error terms. Since many
+  of the assumptions of the linear model are related to the error terms, we can check these
+  assumptions by studying the residuals.
+</p>
+<p>
+  In <xref ref="fig-residual-example"/>, we illustrate one particular residual for the Old
+  Faithful geyser eruption where duration time is the explanatory variable and waiting time is
+  the response. We use an arrow to connect the observed waiting time (a circle) with the fitted
+  waiting time (a square). The vertical distance between these two points (or equivalently, the
+  magnitude of the arrow) is the value of the residual for this observation.
+</p>
         <figure xml:id="fig-residual-example">
           <caption>Example of observed value, fitted value, and residual for the Old Faithful data.</caption>
           <image source="images/fig-residual-example.png" width="80%">
@@ -1245,10 +1334,12 @@ get_regression_table(model_1)
           </image>
         </figure>
 
-        <p>
-          We can calculate all residuals by applying the <c>get_regression_points()</c>
-          function to the regression model <c>model_1</c>:
-        </p>
+<p>
+  We can calculate all the <m>n = 114</m> residuals by applying the
+  <c>get_regression_points()</c> function to the regression model <c>model_1</c>. Observe how
+  the resulting values of <c>residual</c> are roughly equal to <c>waiting - waiting_hat</c>
+  (there may be a slight difference due to rounding error).
+</p>
                 <program language="r">
           <input>
 # Fit regression model:
@@ -1262,18 +1353,18 @@ fitted_and_residuals
         <console prompt="> ">
           <output>
 # A tibble: 114 × 5
-      ID waiting duration waiting_hat residual
-   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
- 1     1     180      235        167.    13.3 
- 2     2     184      259        176.     8.43
- 3     3     116      137        130.   -14.3 
- 4     4     188      222        162.    26.2 
- 5     5     106      105        118.   -12.4 
- 6     6     187      180        146.    40.7 
- 7     7     182      244        170.    12.0 
- 8     8     190      278        183.     7.38
- 9     9     138      249        172.   -33.9 
-10    10     186      262        177.     9.31
+      ID waiting duration waiting_hat     residual
+   &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+ 1     1     180      235        166.666   13.334
+ 2     2     184      259        175.572    8.428
+ 3     3     116      137        130.299  -14.299
+ 4     4     188      222        161.842   26.158
+ 5     5     106      105        118.424  -12.424
+ 6     6     187      180        146.256   40.744
+ 7     7     182      244        170.006   11.994
+ 8     8     190      278        182.623    7.377
+ 9     9     138      249        171.861  -33.861
+10    10     186      262        176.686    9.314
 # ℹ 104 more rows
           </output>
         </console>
@@ -1281,29 +1372,35 @@ fitted_and_residuals
 
       <subsubsection xml:id="residual-diagnostics">
         <title>Residual diagnostics</title>
-        <p>
-          <em>Residual diagnostics</em> are used to verify conditions <em>L</em>, <em>N</em>,
-          and <em>E</em>. One of the most useful plots is a <em>residual plot</em>, which is
-          a scatterplot of the residuals against the fitted values. We use
-          <c>fitted_and_residuals</c> to draw the scatterplot with the fitted values
-          (<c>waiting_hat</c>) on the x-axis and the residuals (<c>residual</c>) on the
-          y-axis, and add a horizontal line at 0:
-        </p>
-        <program language="r">
-          <input>
+<p>
+  Residual diagnostics are used to verify conditions L, N, and E. While there are more
+  sophisticated statistical approaches that can be used, we focus on data visualization. One of
+  the most useful plots is a <term>residual plot</term>, which is a scatterplot of the residuals
+  against the fitted values. We use the <c>fitted_and_residuals</c> object to draw the
+  scatterplot using <c>geom_point()</c> with the fitted values (<c>waiting_hat</c>) on the
+  x-axis and the residuals (<c>residual</c>) on the y-axis. In addition, we add titles to our
+  axes with <c>labs()</c> and draw a horizontal line at 0 for reference using <c>geom_hline()</c>
+  and <c>yintercept = 0</c>, as shown in the following code:
+</p>
+
+<program language="r">
+  <input>
 ggplot(fitted_and_residuals, aes(x = waiting_hat, y = residual)) +
   geom_point() +
   labs(x = "duration", y = "residual") +
   geom_hline(yintercept = 0, col = "blue")
-          </input>
-        </program>
-        <p>
-          In <xref ref="fig-scatt-and-residual"/> we show this residual plot (right) alongside
-          the scatterplot for <c>duration</c> vs <c>waiting</c> (left). Note how the residuals
-          on the left plot are determined by the vertical distance between the observed response
-          and the linear regression. On the right plot, the effect of the linear regression has
-          been removed.
-        </p>
+  </input>
+</program>
+
+<p>
+  In <xref ref="fig-scatt-and-residual"/> we show this residual plot (right plot) alongside the
+  scatterplot for <c>duration</c> vs <c>waiting</c> (left plot). Note how the residuals on the
+  left plot are determined by the vertical distance between the observed response and the linear
+  regression. On the right plot (residuals), we have removed the effect of the linear regression
+  and the effect of the residuals is seen as the vertical distance from each point to the zero
+  line (y-axis). Using this residuals plot, it is easier to spot patterns or trends that may be
+  in conflict with the assumptions of the model, as we describe next.
+</p>
 
         <figure xml:id="fig-scatt-and-residual">
           <caption>The scatterplot (left) and residual plot (right) for the Old Faithful data.</caption>
@@ -1312,19 +1409,53 @@ ggplot(fitted_and_residuals, aes(x = waiting_hat, y = residual)) +
           </image>
         </figure>
 
-        <p>
-          <em>Linearity of relationship.</em> We want to check whether the association between
-          the response <m>y_i</m> and the explanatory variable <m>x_i</m> is <em>L</em>inear.
-          A scatterplot of residuals against fitted values showing no patterns but simply a
-          cloud of points that seems randomly assigned — called a <em>null plot</em> — does
-          not show any evidence against the linearity assumption. This is largely the case for
-          the Old Faithful geyser example.
-        </p>
-        <p>
-          By contrast, <xref ref="fig-non-linear"/> shows a simulated example where the
-          residual plot has a U-shaped polynomial curve. If this was the real data observed,
-          using the linear regression would produce results that are not valid.
-        </p>
+<p>
+  In what follows we show how the residual plot can be used to determine whether the linear
+  model assumptions are met.
+</p>
+<p>
+  <term>Linearity of relationship</term>
+</p>
+<p>
+  We want to check whether the association between the response <m>y_i</m> and the explanatory
+  variable <m>x_i</m> is Linear. We expect, due to the error term in the model, that the
+  scatterplot of residuals against fitted values shows some random variation, but the variation
+  should not be systematic in any direction and the trend should not show non-linear patterns.
+</p>
+<p>
+  A scatterplot of residuals against fitted values showing no patterns but simply a cloud of
+  points that seems randomly assigned in every direction with the residuals' variation (y-axis)
+  about the same for any fitted values (x-axis) and with points located as much above as below
+  the zero line is called a <term>null plot</term>. Plots of residuals against fitted values or
+  regressors that are null plots do not show any evidence against the assumptions of the model.
+  In other words, if we want our linear model to be adequate, we hope to see null plots when
+  plotting residuals against fitted values.
+</p>
+<p>
+  This is largely the case for the Old Faithful geyser example with the residuals against the
+  fitted values (<c>waiting_hat</c>) shown in the right-plot of <xref ref="fig-scatt-and-residual"/>.
+  The residual plot is not a null plot as it appears there are some clusters of points as opposed
+  to a complete random assignment, but there are not clear systematic trends in any direction or
+  the appearance of a non-linear relationship. So, based on this plot, we believe that the data
+  does not violate the assumption of linearity.
+</p>
+<p>
+  By contrast, assume now that the scatterplot of <c>waiting</c> against <c>duration</c> and
+  its associated residual plot are shown in <xref ref="fig-non-linear"/>. We are not using the
+  real data here, but simulated data. A quick look at the scatterplot and regression line (left
+  plot) could lead us to believe that the regression line is an appropriate summary of the
+  relationship. But if we look carefully, you may notice that the residuals for low values of
+  <c>duration</c> are mostly below the regression line, residuals for values in the middle range
+  of <c>duration</c> are mostly above the regression line, and residuals for large values of
+  <c>duration</c> are again below the regression line.
+</p>
+<p>
+  This is the reason we prefer to use plots of residuals against fitted values (right plot) as
+  we have removed the effect of the regression and can focus entirely on the residuals. The
+  points clearly do not form a line, but rather a U-shaped polynomial curve. If this was the
+  real data observed, using the linear regression with these data would produce results that are
+  not valid or adequate.
+</p>
 
         <figure xml:id="fig-non-linear">
           <caption>Example of a non-linear relationship (simulated data).</caption>
@@ -1333,13 +1464,21 @@ ggplot(fitted_and_residuals, aes(x = waiting_hat, y = residual)) +
           </image>
         </figure>
 
-        <p>
-          <em>Independence of the error terms and the response.</em> Another assumption we
-          want to check is the <em>I</em>ndependence of the response values. If data was
-          collected in a time sequence, plotting residuals against time can help determine
-          lack of independence. The <c>old_faithful_2024</c> dataset contains a <c>date</c>
-          variable. <xref ref="fig-time-plot"/> shows the plot of residuals against date.
-        </p>
+<p>
+  <term>Independence of the error terms and the response</term>
+</p>
+<p>
+  Another assumption we want to check is the Independence of the response values. If they are
+  not independent, some patterns of dependency may appear in the observed data.
+</p>
+<p>
+  The residuals could be used for this purpose too as they are a rough approximation of the
+  error terms. If data was collected in a time sequence or other type of sequence, the residuals
+  may also help us determine lack of independence by plotting the residuals against time. As it
+  happens, the Old Faithful geyser eruption example does have a time component we can use: the
+  <c>old_faithful_2024</c> dataset contains the <c>date</c> variable. We show the plot of
+  <c>residuals</c> against <c>date</c> (time) in <xref ref="fig-time-plot"/>:
+</p>
 
         <figure xml:id="fig-time-plot">
           <caption>Scatterplot of date (time) vs residuals for the Old Faithful example.</caption>
@@ -1348,39 +1487,74 @@ ggplot(fitted_and_residuals, aes(x = waiting_hat, y = residual)) +
           </image>
         </figure>
 
-        <p>
-          The plot of residuals against time seems to be a null plot. Based on this plot we
-          could say that the residuals do not exhibit any evidence of dependency. Since we can
-          consider this a random sample, the assumption of independence seems acceptable.
-        </p>
+ <p>
+  The plot of residuals against time (<c>date</c>) seems to be a null plot. Based on this plot
+  we could say that the residuals do not exhibit any evidence of dependency.
+</p>
+<p>
+  Now, the observations in this dataset are only a subset of all the Old Faithful geyser
+  eruptions that happen during this time frame and most or all of them are eruptions that do not
+  happened sequentially, one after the next. Each observation in this dataset represents a unique
+  eruption of Old Faithful, with <c>waiting</c> times and <c>duration</c> recorded separately
+  for each event. Since these eruptions occur independently of one another, the residuals derived
+  from the regression of <c>waiting</c> versus <c>duration</c> are also expected to be
+  independent. As discussed in <xref ref="sec-sample-regression-inference"/>, we can consider
+  this a random sample.
+</p>
+<p>
+  In this case, the assumption of independence seems acceptable. Note that the
+  <c>old_faithful_2024</c> data do not involve repeated measurements or grouped observations
+  that could lead to dependency issues. Therefore, we can proceed with trusting the regression
+  analysis as we believe that the error terms are not systematically related to one another.
+  While determining lack of independence may not be easy in certain settings, in particular if
+  no time sequence or other sequence measurements are involved, taking a random sample is the
+  golden standard.
+</p>
+<p>
+  <term>Normality of the error terms</term>
+</p>
+<p>
+  The third assumption we want to check is whether the error terms follow Normal distributions
+  with expected value equal to zero. Using the residuals as a rough estimate of the error term
+  values, we have seen in the right plot of <xref ref="fig-scatt-and-residual"/> that sometimes
+  the residuals are positive and other times negative. We want to see if, on average, the errors
+  equal zero and the shape of their distribution approximate a bell shaped curve.
+</p>
+<p>
+  We can use a histogram to visualize the distribution of the residuals:
+</p>
 
-        <p>
-          <em>Normality of the error terms.</em> The third assumption we want to check is
-          whether the error terms follow <em>N</em>ormal distributions with expected value
-          equal to zero. We can use a histogram and a <em>quantile-to-quantile (QQ) plot</em>
-          of the residuals:
-        </p>
-        <program language="r">
-          <input>
+<program language="r">
+  <input>
 ggplot(fitted_and_residuals, aes(residual)) +
   geom_histogram(binwidth = 10, color = "white")
-          </input>
-        </program>
-        <program language="r">
-          <input>
+  </input>
+</program>
+
+<p>
+  We can also use a quantile-to-quantile plot or QQ-plot. The QQ-plot creates a scatterplot of
+  the quantiles (or percentiles) of the residuals against the quantiles of a normal distribution.
+  If the residuals follow approximately a normal distribution, the scatterplot would be a
+  straight line of 45 degrees. To draw a QQ-plot for the Old Faithful geyser eruptions example,
+  we use the <c>fitted_and_residuals</c> data frame that contains the residuals of the
+  regression, <c>ggplot()</c> with <c>aes(sample = residual)</c> and the <c>geom_qq()</c>
+  function for drawing the QQ-plot. We also include the function <c>geom_qq_line()</c> to add
+  a 45-degree line for comparison:
+</p>
+
+<program language="r">
+  <input>
 fitted_and_residuals |>
   ggplot(aes(sample = residual)) +
   geom_qq() +
   geom_qq_line()
-          </input>
-        </program>
-        <p>
-          The QQ-plot creates a scatterplot of the quantiles of the residuals against the
-          quantiles of a normal distribution. If the residuals follow approximately a normal
-          distribution, the scatterplot would be a straight line of 45 degrees.
-          <xref ref="fig-model1residualshist"/> shows both plots for <c>model_1</c>.
-        </p>
+  </input>
+</program>
 
+<p>
+  In <xref ref="fig-model1residualshist"/> we include both the histogram of the residuals
+  including a normal curve for comparison (left plot) and a QQ-plot (right plot):
+</p>
         <figure xml:id="fig-model1residualshist">
           <caption>Histogram of residuals (left) with normal curve overlay, and QQ-plot (right) for the Old Faithful regression.</caption>
           <image source="images/fig-model1residualshist.png" width="90%">
@@ -1388,11 +1562,19 @@ fitted_and_residuals |>
           </image>
         </figure>
 
-        <p>
-          The histogram does not appear exactly normal but does not deviate much. The QQ-plot
-          supports this conclusion. For comparison, <xref ref="fig-not-normal-residuals"/>
-          shows residuals from a simulated model that clearly do not follow normality.
-        </p>
+<p>
+  The histogram of the residuals shown in <xref ref="fig-model1residualshist"/> (left plot)
+  does not appear exactly normal as there are some deviations, such as the highest bin value
+  appearing just to the right of the center. But the histogram does not seem too far from
+  normality either. The QQ-plot (right plot) supports this conclusion. The scatterplot is not
+  exactly on the 45-degree line but it does not deviate much from it either.
+</p>
+<p>
+  We compare these results with residuals found by simulation that do not appear to follow
+  normality as shown in <xref ref="fig-not-normal-residuals"/>. In this case of the model
+  yielding the clearly non-normal residuals on the right, any results from an inference for
+  regression would not be valid.
+</p>
 
         <figure xml:id="fig-not-normal-residuals">
           <caption>Example of clearly non-normal residuals (simulated data).</caption>
@@ -1401,14 +1583,20 @@ fitted_and_residuals |>
           </image>
         </figure>
 
-        <p>
-          <em>Equality or constancy of variance for errors.</em> The final assumption we check
-          is the <em>E</em>quality or constancy of the variance —
-          <term>homoskedasticity</term><idx><h>homoskedasticity</h></idx> — for the error term
-          across all fitted values or regressor values. We check that the dispersion of the
-          residuals is the same for any fitted value <m>\widehat{y}_i</m> or regressor
-          <m>x_i</m>:
-        </p>
+<p>
+  <term>Equality or constancy of variance for errors</term>
+</p>
+<p>
+  The final assumption we check is the Equality or constancy of the variance for the error term
+  across all fitted values or regressor values. Constancy of variance is also known as
+  <term>homoskedasticity</term>. Using the residuals again as rough estimates of the error terms,
+  we want to check that the dispersion of the residuals is the same for any fitted value
+  <m>\hat{y}_i</m> or regressor <m>x_i</m>. In <xref ref="fig-scatt-and-residual"/>, we showed
+  the scatterplot of residuals against fitted values (right plot). We can also produce the
+  scatterplot of residuals against the regressor <c>duration</c> in
+  <xref ref="fig-residual-plot-ch10"/>:
+</p>
+
         <program language="r">
           <input>
 ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
@@ -1425,12 +1613,49 @@ ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
           </image>
         </figure>
 
-        <p>
-          The spread of the residuals is not exactly constant across all values of
-          <c>duration</c>, but there is not clear evidence against the assumption of
-          homoskedasticity. For comparison, <xref ref="fig-equal-variance-residuals"/>
-          shows a simulated example with non-constant variance.
-        </p>
+<p>
+  With the exception of the change of scale on the x-axis, it is equivalent (for visualization
+  purposes) to producing a plot of residuals (<m>e_i</m>) against either the fitted values
+  (<m>\hat{y}_i</m>) or the regressor values (<m>x_i</m>). This happens because the fitted
+  values are a linear transformation of the regressor values,
+  <m>\hat{y}_i = b_0 + b_1 \cdot x_i</m>.
+</p>
+<p>
+  Observe the vertical dispersion or spread of the residuals for different values of
+  <c>duration</c>:
+  <ul>
+    <li>For <c>duration</c> values between 100 and 150 seconds, the residual values are
+    somewhere between -25 and 40, a spread of about 65 units.</li>
+    <li>For <c>duration</c> values between 150 and 200 seconds, there are only a handful of
+    observations and it is not clear what the spread is.</li>
+    <li>For <c>duration</c> values between 200 and 250 seconds, the residual values are
+    somewhere between -37 and 32, a spread of about 69 units.</li>
+    <li>For <c>duration</c> values between 250 and 300 seconds, the residual values are
+    somewhere between -42 and 27, a spread of about 69 units.</li>
+  </ul>
+</p>
+<p>
+  The spread is not exactly constant across all values of <c>duration</c>. It seems to be
+  slightly higher for greater values of <c>duration</c>, but there seems to be a larger number
+  of observations for higher values of <c>duration</c> as well. Observe also that there are two
+  or three cluster of points and the dispersion of residuals is not completely uniform. While
+  the residual plot is not exactly a null plot, there is not clear evidence against the
+  assumption of homoskedasticity.
+</p>
+<p>
+  We are not surprised to see plots such as this one when dealing with real data. It is possible
+  that the residual plot is not exactly a null plot, because there may be some information we
+  are missing that could improve our model. For example, we could include another regressor in
+  our model. Do not forget that we are using a linear model to approximate the relationship
+  between <c>duration</c> and <c>waiting</c> times, and we do not expect the model to perfectly
+  describe this relationship. When you look at these plots, you are trying to find clear evidence
+  of the data not meeting the assumptions used. This example does not appear to violate the
+  constant variance assumption.
+</p>
+<p>
+  In <xref ref="fig-equal-variance-residuals"/> we present an example using simulated data with
+  non-constant variance.
+</p>
 
         <figure xml:id="fig-equal-variance-residuals">
           <caption>Example of clearly non-equal variance (simulated data).</caption>
@@ -1439,29 +1664,82 @@ ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
           </image>
         </figure>
 
-        <p>
-          Lack of constant variance is also known as
-          <term>heteroskedasticity</term><idx><h>heteroskedasticity</h></idx>. When
-          heteroskedasticity is present, the standard error of the least-square estimators,
-          confidence intervals, or the conclusion for a related hypothesis test would not be
-          valid.
-        </p>
-
-        <p>
-          <em>Conclusion.</em> For the Old Faithful data, we did not find conclusive evidence
-          against any of the assumptions of the model: <em>L</em>inearity,
-          <em>I</em>ndependence, <em>N</em>ormality, and <em>E</em>quality of variance.
-          When there are clear violations, remedial measures include variable transformations
-          for non-linearity, linear mixed-effects models for non-independence, and weighted
-          least squares for non-constant variance. An example of such a variable transformation
-          is given in <xref ref="appendix-log10-transformations"/>.
-        </p>
-        <p>
-          Checking that the assumptions of the model are satisfied is a key component of
-          regression analysis. It is important to highlight important elements that may suggest
-          departures from relevant assumptions, and then provide pertinent conclusions.
-        </p>
-      </subsubsection>
+ <p>
+  Observe how the spread of the residuals increases as the regressor value increases. Lack of
+  constant variance is also known as <term>heteroskedasticity</term>. When heteroskedasticity
+  is present, some of the results such as the standard error of the least-square estimators,
+  confidence intervals, or the conclusion for a related hypothesis test would not be valid.
+</p>
+<p>
+  <term>What is the conclusion?</term>
+</p>
+<p>
+  We did not find conclusive evidence against any of the assumptions of the model:
+  <ol>
+    <li>Linearity of relationship between variables</li>
+    <li>Independence of the error terms</li>
+    <li>Normality of the error terms</li>
+    <li>Equality or constancy of the variance</li>
+  </ol>
+  This does not mean that our model was perfectly adequate. For example, the residual plot was
+  not a null plot and had some clusters of points that cannot be explained by the model. But
+  overall, there were no trends that could be considered clear violations of the assumptions and
+  the conclusions we get from this model may be valid.
+</p>
+<p>
+  <term>What do we do when the assumptions are not met?</term>
+</p>
+<p>
+  When there are clear violations of the assumptions in the model, all the results found may be
+  suspect. In addition, there may be some remedial measures that can be taken to improve the
+  model. None of these measures will be addressed here in depth as this material extends beyond
+  the scope of this book, but we briefly discuss potential solutions for future reference.
+</p>
+<p>
+  When the Linearity of the relationship between variables is not met, a simple transformation
+  of the regressor, the response, or both variables may solve the problem. An example of such a
+  transformation is given in <xref ref="appendixa"/>. If not, alternative methods such as spline
+  regression, generalized linear models, or non-linear models may be used to address these
+  situations. When additional regressors are available, including other regressors as in multiple
+  linear regression may produce better results.
+</p>
+<p>
+  If the Independence assumption is not met, but the dependency is established by a variable
+  within the data at hand, linear mixed-effects models can also be used. These models may also
+  be referred to as hierarchical or multilevel models.
+</p>
+<p>
+  Small departures of the Normality of the error terms assumption are not too concerning and
+  most of the results, including those related to confidence intervals and hypothesis tests, may
+  still be valid. On the other hand, when the number of violations to the normality assumption
+  is large, many of the results may no longer be valid. Using the advanced methods suggested
+  earlier here may correct these problems too.
+</p>
+<p>
+  When the Equality or constancy of the variance is not met, adjusting the variance by adding
+  weights to individual observations may be possible if relevant information is available that
+  makes those weights known. This method is called <term>weighted linear regression</term> or
+  <term>weighted least squares</term>, and it is a direct extension of the model we have
+  studied. If information of the weights is not available, some methods can be used to provide
+  an estimator for the internal structure of the variance in the model. One of the most popular
+  of these methods is called the <term>sandwich estimator</term>.
+</p>
+<p>
+  Checking that the assumptions of the model are satisfied is a key component of regression
+  analysis. Constructing and interpreting confidence intervals as well as conducting hypothesis
+  tests and providing conclusions from the results of hypothesis tests are directly affected by
+  whether or not assumptions are satisfied. At the same time, it is often the case with
+  regression analysis that a level of subjectivity when visualizing and interpreting plots is
+  present, and sometimes we are faced with difficult statistical decisions.
+</p>
+<p>
+  So what can be done? We suggest transparency and clarity in communicating results. It is
+  important to highlight important elements that may suggest departures from relevant
+  assumptions, and then provide pertinent conclusions. In this way, the stakeholders of any
+  analysis are aware of the model's shortcomings and can decide whether or not to agree with
+  the conclusions presented to them.
+</p>
+</subsubsection>
 
       <exercises>
         <exercise xml:id="lc10-7">
@@ -2090,7 +2368,7 @@ sigma(mod_mult)
 
       <table xml:id="tab-regtable-coffee">
         <title>Coffee quality multiple regression coefficients</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
             <cell>Values</cell>
@@ -2349,7 +2627,7 @@ sigma(mod_mult_1)
 
       <table xml:id="tab-regtable-coffee-mult-1">
         <title>Coffee quality regression coefficients for three-regressor model</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
             <cell>Values</cell>
@@ -2397,7 +2675,7 @@ sigma(mod_mult_2)
 
       <table xml:id="tab-regtable-coffee-mult-2">
         <title>Coffee quality regression coefficients for two-regressor model</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
             <cell>Values</cell>
@@ -2772,7 +3050,7 @@ mod_mult_table
 
         <table xml:id="tab-mod-mult-table-again">
           <title>Regression table for <c>mod_mult</c></title>
-          <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+          <tabular>
             <row header="yes">
               <cell>term</cell>
               <cell>estimate</cell>
@@ -3084,7 +3362,7 @@ null_distribution_mlr |>
 
       <table xml:id="tab-table-ch10">
         <title>Scenarios of sampling for inference</title>
-        <tabular halign="center" top="minor" bottom="minor" left="minor" right="minor">
+        <tabular>
           <row header="yes">
             <cell>Scenario</cell>
             <cell>Population parameter</cell>
