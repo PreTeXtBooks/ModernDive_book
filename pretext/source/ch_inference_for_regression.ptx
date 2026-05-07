@@ -57,26 +57,10 @@ UN_data_ch10 &lt;- un_member_states_2024 |>
          life_exp = life_expectancy_2022,
          fert_rate = fertility_rate_2022) |>
   na.omit()
-        </input>
-      </program>
-      <program language="r">
-        <input>
+
 UN_data_ch10
         </input>
       </program>
-      <p>
-        We can display the summary of the two numerical variables:
-      </p>
-      <program language="r">
-        <input>
-un_member_states_2024 |>
-  select(life_exp = life_expectancy_2022,
-         fert_rate = fertility_rate_2022) |>
-  na.omit() |>
-  tidy_summary()
-        </input>
-      </program>
-
       <console prompt="> ">
         <output>
 # A tibble: 2 × 11
@@ -86,6 +70,7 @@ un_member_states_2024 |>
 2 fert_rate  183 &lt;NA&gt;  numeric   0.9   1.6   2.48   2     3.2   6.6  1.15
         </output>
       </console>
+
       <p>
         Observe that there are 183 observations without missing values. Using simple linear
         regression<idx><h>regression</h><h>simple linear</h></idx> between the response
@@ -133,18 +118,22 @@ coef(simple_model)
  12.6130315  -0.1374889
         </output>
       </console>
+<p>
+  The regression line is <m>\hat{y}_i = b_0 + b_1 \cdot x_i = 12.613 - 0.137 \cdot x_i</m>,
+  where <m>x_i</m> is the life expectancy for the <m>i</m>th country and <m>\hat{y}_i</m> is
+  the corresponding fitted fertility rate. The <m>b_0</m> coefficient is the intercept and has
+  a meaning only if the range of values of the regressor, <m>x_i</m>, includes zero. Since life
+  expectancy is always a positive value, we do not provide any interpretation to the intercept
+  in this example. The <m>b_1</m> coefficient is the slope of the regression line; for any
+  country, if the life expectancy were to increase by about one year, we would expect an
+  associated reduction of the fertility rate by about 0.137 units.
+</p>
+
       <p>
-        The regression line is <m>\widehat{y}_i = b_0 + b_1 \cdot x_i</m>, where <m>x_i</m>
-        is the life expectancy for the <m>i</m>th country and <m>\widehat{y}_i</m> is the
-        corresponding fitted fertility rate. The <m>b_1</m> coefficient is the slope of the
-        regression line; for any country, if the life expectancy were to increase by about one
-        year, we would expect an associated reduction of the fertility rate by about 0.137
-        units.
-      </p>
-      <p>
-        We visualize the relationship by plotting the scatterplot of fertility rate against
-        life expectancy for all the UN member states with complete data, and include the
-        regression line (<xref ref="fig-regline-ch10"/>):
+        We visualize the relationship of the data observed in <xref ref="fig-regline-ch10"/>
+        by plotting the scatterplot of fertility rate against life expectancy for all the UN
+        member states with complete data. We also include the regression line using the
+        least-squares criterion:
       </p>
       <program language="r">
         <input>
@@ -164,11 +153,14 @@ ggplot(UN_data_ch10, aes(x = life_exp, y = fert_rate)) +
         </image>
       </figure>
 
-      <p>
-        Finally, we review how to determine the fitted values and residuals. France is one
-        of the UN member states. We can find its row number using <c>rowid_to_column()</c>
-        and <c>filter()</c>:
-      </p>
+<p>
+  Finally, we review how to determine the fitted values and residuals for observations in the
+  dataset. France is one of the UN member states, and suppose we want to determine the fitted
+  fertility rate for France based on the linear regression. We start by determining what is the
+  location of France in the <c>UN_data_ch10</c> data frame, using <c>rowid_to_column()</c> and
+  <c>filter()</c> with the variable country equal to <c>"France."</c> The <c>pull()</c> function
+  converts the row number as a data frame to a single value:
+</p>
             <program language="r">
         <input>
 UN_data_ch10 |>
