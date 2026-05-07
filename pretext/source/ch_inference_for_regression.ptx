@@ -378,7 +378,8 @@ old_faithful_2024 |>
       </p>
       <program language="r">
         <input>
-ggplot(old_faithful_2024, aes(x = duration, y = waiting)) +
+ggplot(old_faithful_2024,
+       aes(x = duration, y = waiting)) +
   geom_point(alpha = 0.3) +
   labs(x = "duration", y = "waiting")
         </input>
@@ -592,6 +593,7 @@ get_regression_table(mod_diff_means)
         </p>
         <program language="r">
           <input>
+set.seed(6)
 spotify_for_anova &lt;- spotify_by_genre |>
   select(artists, track_name, popularity, track_genre) |>
   filter(track_genre %in% c("country", "hip-hop", "rock"))
@@ -1954,6 +1956,14 @@ coffee_data &lt;- coffee_quality |>
          continent_of_origin,
          total_cup_points) |>
   mutate(continent_of_origin = as.factor(continent_of_origin))
+        </input>
+      </program>
+      <p>
+        The first ten rows of <c>coffee_data</c> are shown here:
+      </p>
+      <program language="r">
+        <input>
+coffee_data
         </input>
       </program>
       <p>
