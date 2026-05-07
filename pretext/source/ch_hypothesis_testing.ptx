@@ -1846,8 +1846,8 @@ null_distribution |&gt;
 
         <p>
           Keeping the definition of a <m>p</m>-value in mind, the probability of observing a
-          difference in popularity rates as large as <m>0.034 = 3.4\%</m> due to sampling
-          variation alone in the null distribution is <m>0.052 = 5.2\%</m>. Since this
+          difference in popularity rates as large as the observed <m>0.034 = 3.4\%</m> due to
+          sampling variation alone in the null distribution is <m>0.052 = 5.2\%</m>. Since this
           <m>p</m>-value is smaller than our pre-specified significance level
           <m>\alpha = 0.1</m>, we reject the null hypothesis <m>H_0: p_{m} - p_{d} = 0</m>. In
           other words, this <m>p</m>-value is sufficiently small to reject our hypothesized
