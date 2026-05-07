@@ -2072,21 +2072,41 @@ se_ci
     <subsection xml:id="infer-hypo-slr">
       <title>Hypothesis test for population slope using <c>infer</c></title>
 
-      <p>
-        Let's conduct a hypothesis test of <m>H_0: \beta_1 = 0</m> vs.
-        <m>H_A: \beta_1 \neq 0</m>. Recall that if <m>\beta_1 = 0</m>, there is no
-        relationship between waiting time and duration. We can therefore
-        shuffle/permute the <c>waiting</c> variable with no consequence.
-      </p>
-      <p>
-        We construct the null distribution of the fitted slope <m>b_1</m> by:
-      </p>
-      <ol>
-        <li><p><c>specify()</c> the variables of interest with the formula: <c>waiting ~ duration</c>.</p></li>
-        <li><p><c>hypothesize()</c> the null hypothesis of <c>independence</c>.</p></li>
-        <li><p><c>generate()</c> <c>reps = 1000</c> replicates by permuting/shuffling values using <c>type = "permute"</c>.</p></li>
-        <li><p><c>calculate()</c> the test statistic: the fitted <c>slope</c> <m>b_1</m>.</p></li>
-      </ol>
+xml<p>
+  Let's now conduct a hypothesis test of <m>H_0: \beta_1 = 0</m> vs. <m>H_A: \beta_1 \neq 0</m>.
+  We will use the <c>infer</c> package, which follows the hypothesis testing paradigm in the
+  <q>There is only one test</q> diagram in <xref ref="fig-hypothesis-testing-diagram"/>.
+</p>
+<p>
+  Let's first think about what it means for <m>\beta_1</m> to be zero as assumed in the null
+  hypothesis <m>H_0</m>. Recall we said if <m>\beta_1 = 0</m>, then this is saying there is no
+  relationship between the waiting time and duration. Thus, assuming this particular null
+  hypothesis <m>H_0</m> means that in our <q>hypothesized universe</q> there is no relationship
+  between waiting and duration. We can therefore shuffle/permute the waiting variable to no
+  consequence.
+</p>
+<p>
+  We construct the null distribution of the fitted slope <m>b_1</m> by performing the steps
+  that follow. Recall from <xref ref="sec-understanding-ht"/> on terminology, notation, and
+  definitions related to hypothesis testing where we defined the null distribution: the sampling
+  distribution of our test statistic <m>b_1</m> assuming the null hypothesis <m>H_0</m> is true.
+  <ol>
+    <li><c>specify()</c> the variables of interest in <c>old_faithful_2024</c> with the formula:
+    <c>waiting ~ duration</c>.</li>
+    <li><c>hypothesize()</c> the null hypothesis of independence. Recall from
+    <xref ref="sec-ht-infer"/> that this is an additional step that needs to be added for
+    hypothesis testing.</li>
+    <li><c>generate()</c> replicates by permuting/shuffling values from the original sample of
+    114 eruptions. We generate <c>reps = 1000</c> replicates using <c>type = "permute"</c>
+    here.</li>
+    <li><c>calculate()</c> the test statistic of interest: the fitted slope <m>b_1</m>.</li>
+  </ol>
+  In this case, we permute the values of <c>waiting</c> across the values of <c>duration</c>
+  1000 times. We can do this shuffling/permuting since we assumed a <q>hypothesized universe</q>
+  of no relationship between these two variables. Then we calculate the <q>slope</q> coefficient
+  for each of these 1000 generated samples.
+</p>
+
       <program language="r">
         <input>
 null_distn_slope &lt;- old_faithful_2024 |>
@@ -2097,18 +2117,23 @@ null_distn_slope &lt;- old_faithful_2024 |>
         </input>
       </program>
 
+<p>
+  Observe the resulting null distribution for the fitted slope <m>b_1</m> in
+  <xref ref="fig-null-distribution-slope"/>.
+</p>
+
       <figure xml:id="fig-null-distribution-slope">
         <caption>Null distribution of slopes for the Old Faithful hypothesis test.</caption>
         <image source="images/fig-null-distribution-slope.png" width="80%">
           <description>Histogram of the null distribution of 1000 permuted slope estimates, centred at zero, used to test whether the population slope is zero.</description>
         </image>
       </figure>
-
-      <p>
-        Notice from <xref ref="fig-null-distribution-slope"/> how it is centered at <m>b_1 = 0</m>. This is because in our hypothesized
-        universe, there is no relationship between <c>waiting</c> and <c>duration</c> and
-        so <m>\beta_1 = 0</m>. We obtain the observed slope:
-      </p>
+<p>
+  Notice how it is centered at <m>b_1 = 0</m>. This is because in our hypothesized universe,
+  there is no relationship between <c>waiting</c> and <c>duration</c> and so <m>\beta_1 = 0</m>.
+  Thus, the most typical fitted slope <m>b_1</m> we observe across our simulations is 0.
+  Observe, furthermore, how there is variation around this central value of 0.
+</p>
       <program language="r">
         <input>
 b1 &lt;- old_faithful_2024 |>
@@ -2117,10 +2142,21 @@ b1 &lt;- old_faithful_2024 |>
 b1
         </input>
       </program>
-      <p>
-        We visualize the <m>p</m>-value in <xref ref="fig-p-value-slope"/> by shading the null distribution and comparing to
-        the observed test statistic:
-      </p>
+<console>
+<output>
+Response: waiting (numeric)
+Explanatory: duration (numeric)
+# A tibble: 1 × 1
+      stat
+     &lt;dbl&gt;
+1 0.371095
+</output>
+</console>
+<p>
+  Let's visualize the <m>p</m>-value in the null distribution by comparing it to the observed
+  test statistic of <m>b_1 = 0.371</m> in <xref ref="fig-null-distn-pvalue"/>. We'll do this
+  by adding a <c>shade_p_value()</c> layer to the previous <c>visualize()</c> code.
+</p>
       <program language="r">
         <input>
 visualize(null_distn_slope) +
@@ -2135,24 +2171,43 @@ visualize(null_distn_slope) +
         </image>
       </figure>
 
-      <p>
-        Since the observed fitted slope falls far to the right of this null distribution,
-        we compute the numerical <m>p</m>-value:
-      </p>
+<p>
+  Since the observed fitted slope 0.371 falls far to the right of this null distribution and
+  thus the shaded region doesn't overlap it, we'll have a <m>p</m>-value of 0. For completeness,
+  however, let's compute the numerical value of the <m>p</m>-value anyways using the
+  <c>get_p_value()</c> function. Recall that it takes the same inputs as the
+  <c>shade_p_value()</c> function:
+</p>
+
       <program language="r">
         <input>
 null_distn_slope |>
   get_p_value(obs_stat = b1, direction = "both")
         </input>
       </program>
-      <p>
-        The <m>p</m>-value is 0, matching the regression table. We therefore reject the
-        null hypothesis <m>H_0: \beta_1 = 0</m> in favor of the alternative
-        <m>H_A: \beta_1 \neq 0</m>. We have evidence that suggests there is a significant
-        relationship between waiting time and duration values for eruptions of Old Faithful.
-        When the conditions for inference are met and the null distribution has a bell shape,
-        we expect similar results from simulation-based and theory-based approaches.
-      </p>
+
+<console>
+<output>
+Response: waiting (numeric)
+Explanatory: duration (numeric)
+# A tibble: 1 × 1
+  p_value
+     &lt;dbl&gt;
+1       0
+</output>
+</console>
+
+<p>
+  This matches the <m>p</m>-value of 0 in the regression table. We therefore reject the null
+  hypothesis <m>H_0: \beta_1 = 0</m> in favor of the alternative hypothesis
+  <m>H_A: \beta_1 \neq 0</m>. We thus have evidence that suggests there is a significant
+  relationship between waiting time and duration values for eruptions of Old Faithful.
+</p>
+<p>
+  When the conditions for inference for regression are met and the null distribution has a bell
+  shape, we are likely to see similar results between the simulation-based results we just
+  demonstrated and the theory-based results shown in the regression table.
+</p>
 
       <exercises>
         <exercise xml:id="lc10-11">
