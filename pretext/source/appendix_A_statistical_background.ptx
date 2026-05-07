@@ -343,6 +343,19 @@ qnorm(0.84)
         In other words, there is exactly an 84% chance that the observed standard value
         is less than or equal to 0.994.
       </p>
+      <p>
+        Similarly, to have exactly a 95% chance of obtaining a value within <c>q</c>
+        number of standard deviations from the mean, we need to select the appropriate
+        value for <c>qnorm()</c>.
+      </p>
+
+      <figure xml:id="fig-normal-curve-shaded-3">
+        <caption>Normal curve with the shaded middle area being 0.95.</caption>
+        <image source="images/fig-normal-curve-shaded-3.png" width="50%">
+          <description>Standard normal density curve with the middle 95% area shaded. The
+          point q is marked on the x-axis.</description>
+        </image>
+      </figure>
 
       <p>
         We want to find the standard value <c>q</c> such that the area in the middle is
@@ -391,7 +404,9 @@ qnorm(0.99)
         </output>
       </console>
       <p>
-        The area within 2.33 standard deviations from the mean is 98%.
+        The area within 2.33 standard deviations from the mean is 98%, or there is a 98%
+        chance of choosing a value within 2.33 standard deviations from the mean. This
+        information will be very useful to us.
       </p>
 
     </subsection>
