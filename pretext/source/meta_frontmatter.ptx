@@ -26,13 +26,30 @@
   </titlepage>
 
   <abstract>
-    <p>
-      An open-source and fully reproducible electronic textbook for teaching statistical
-      inference using the <c>tidyverse</c> suite of R packages. This book is intended for
-      students who are learning R, exploratory data analysis, and the basics of statistical
-      inference and modeling. The book assumes no prior experience with coding, statistics,
-      or data science.
-    </p>
+<p>
+  This is the PreTeXt page for <pubtitle>Statistical
+  Inference via Data Science: A ModernDive into R and the Tidyverse (Second Edition)</pubtitle>!
+  Visit the <url href="https://github.com/moderndive/ModernDive_book/tree/v2/">GitHub repository
+  for the original site</url>. It was published as a print copy by CRC Press in 2025. You can find a
+  summary of the updates in this version <url
+  href="https://moderndive.com/v2/preface.html#about-the-book">here</url>.
+</p>
+<p>
+  The First Edition of this book is available at <url
+  href="https://moderndive.com">https://moderndive.com</url>. You can find the printed copy of
+  the First Edition on <url
+  href="https://www.amazon.com/Statistical-Inference-via-Data-Science/dp/0367409828/">Amazon</url>.
+  You can also purchase it at <url
+  href="https://www.routledge.com/Statistical-Inference-via-Data-Science-A-ModernDive-into-R-and-the-Tidyverse/Ismay-Kim/p/book/9780367409821?utm_source=author&amp;utm_medium=shared_link&amp;utm_campaign=B043134_jm1_5ll_6rm_t081_1al_statisticalinferenceviadatascienceauthorshare">CRC
+  Press</url>.
+</p>
+<p>
+  This work by <url href="https://chester.rbind.io/">Chester Ismay</url>, <url
+  href="https://rudeboybert.rbind.io/">Albert Y. Kim</url>, and <url
+  href="https://avaldivi6.github.io/">Arturo Valdivia</url> is licensed under a <url
+  href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+  Attribution-NonCommercial-ShareAlike 4.0 International License</url>.
+</p>
   </abstract>
 
   <xi:include href="./preface_ptx_version.ptx" />
