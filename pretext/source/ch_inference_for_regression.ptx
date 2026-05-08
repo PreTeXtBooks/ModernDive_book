@@ -452,7 +452,7 @@ ggplot(old_faithful_2024,
   <m>\beta_0</m> and equate that expression to zero, the partial derivative with respect to
   <m>\beta_1</m> and equate that expression to zero, and use those two equations to solve for
   <m>\beta_0</m> and <m>\beta_1</m>. The solutions are the regression coefficients introduced
-  first in <xref ref="sec-model1"/>: <m>b_0</m> is the estimator of <m>\beta_0</m> and
+  first in <xref ref="model1"/>: <m>b_0</m> is the estimator of <m>\beta_0</m> and
   <m>b_1</m> is the estimator of <m>\beta_1</m>. They are called the <term>least squares
   estimators</term> and their mathematical expressions are:
 </p>
@@ -895,7 +895,7 @@ old_faithful_2024 |>
   <m>y_i</m> and <m>y_j</m> are also independent for any <m>i \neq j</m>.
 </p>
 <p>
-  In addition, as stated in <xref ref="sec-properties-least-squares"/>, the least-squares
+  In addition, as stated in <xref ref="properties-least-squares"/>, the least-squares
   estimator <m>b_1</m> is a linear combination of the random variables <m>y_1, \ldots, y_n</m>.
   So <m>b_1</m> is also a random variable! What does this mean? The coefficient for the slope
   results from a particular sample of <m>n</m> pairs of <c>duration</c> and <c>waiting</c>
@@ -906,7 +906,7 @@ old_faithful_2024 |>
   Say we hypothetically collect many random samples of pairs of <c>duration</c> and
   <c>waiting</c> times, and using the least-squares method compute the slope <m>b_1</m> for
   each of these samples. These slopes would form the sampling distribution of <m>b_1</m>, which
-  we discussed in <xref ref="sec-sampling-variation"/> in the context of sample proportions.
+  we discussed in <xref ref="sampling-variation"/> in the context of sample proportions.
   What we would learn is that, because <m>y_1, \ldots, y_n</m> are normally distributed and
   <m>b_1</m> is a linear combination of these random variables, <m>b_1</m> is also normally
   distributed. After some calculations that go beyond the scope of this book but take into
@@ -963,7 +963,7 @@ old_faithful_2024 |>
   the more variation we would expect in the estimated slope <m>b_1</m>. Similarly, the standard
   error of <m>b_0</m> is:
   <me>SE(b_0) = s\sqrt{\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}}</me>
-  As was discussed in <xref ref="sec-t-distribution-CI"/>, when using the estimator <m>s</m>
+  As was discussed in <xref ref="t-distribution-CI"/>, when using the estimator <m>s</m>
   instead of the parameter <m>\sigma</m>, we are introducing additional uncertainty in our
   calculations. For example, we can standardize <m>b_1</m> using
   <me>t = \frac{b_1 - \beta_1}{SE(b_1)}.</me>
@@ -1042,7 +1042,7 @@ old_faithful_2024 |>
   of freedom for the <m>t</m>-distribution are exactly the same, <m>n - 2</m>:
   <me>b_0 \pm q \cdot SE(b_0) = 79.459 \pm 1.981 \cdot 7.311 = (-14.112, 14.854)</me>
   The results of the confidence intervals are valid only if the linear model assumptions are
-  satisfied. We discuss these assumptions in <xref ref="sec-model-fit"/>.
+  satisfied. We discuss these assumptions in <xref ref="model-fit"/>.
 </p>
     </subsection><!-- end Confidence intervals -->
 
@@ -1060,7 +1060,7 @@ old_faithful_2024 |>
 <p>
   where <m>B</m> is the hypothesized value for <m>\beta_1</m>. Recall the terminology,
   notation, and definitions related to hypothesis tests we introduced in
-  <xref ref="sec-understanding-ht"/>. A hypothesis test consists of a test between two competing
+  <xref ref="understanding-ht"/>. A hypothesis test consists of a test between two competing
   hypotheses: (1) a null hypothesis <m>H_0</m> versus (2) an alternative hypothesis <m>H_A</m>.
 </p>
 
@@ -1100,7 +1100,7 @@ old_faithful_2024 |>
 </p>
 <p>
   Recall the terminology, notation, and definitions related to hypothesis tests we introduced
-  in <xref ref="sec-understanding-ht"/>. The definition of the p-value is the probability of
+  in <xref ref="understanding-ht"/>. The definition of the p-value is the probability of
   obtaining a test statistic just as extreme as or more extreme than the one observed, assuming
   the null hypothesis <m>H_0</m> is true. We can intuitively think of the p-value as
   quantifying how <q>extreme</q> the estimated slope is (<m>b_1 = 0.371</m>), assuming there
@@ -1128,7 +1128,7 @@ old_faithful_2024 |>
   <term>Interpretation</term>
 </p>
 <p>
-  Following the hypothesis testing procedure we outlined in <xref ref="sec-ht-interpretation"/>,
+  Following the hypothesis testing procedure we outlined in <xref ref="ht-interpretation"/>,
   since the p-value was practically 0, for any choice of significance level <m>\alpha</m>, we
   would reject <m>H_0</m> in favor of <m>H_A</m>. In other words, assuming that there is no
   linear association between <c>duration</c> and <c>waiting</c> times, the probability of
@@ -1206,15 +1206,23 @@ get_regression_table(model_1)
         </input>
       </program>
 
-      <console prompt="> ">
-        <output>
-# A tibble: 2 × 7
-  term      estimate std_error statistic p_value lower_ci upper_ci
-  &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-1 intercept   79.5       7.31       10.9       0   65.0     93.9  
-2 duration     0.371     0.032      11.4       0    0.307    0.435
-        </output>
-      </console>
+      <table xml:id="tab-simple-model-part-deux">
+        <title>Regression table for Old Faithful model (<c>model_1</c>)</title>
+        <tabular>
+          <row header="yes">
+            <cell>term</cell><cell>estimate</cell><cell>std_error</cell>
+            <cell>statistic</cell><cell>p_value</cell><cell>lower_ci</cell><cell>upper_ci</cell>
+          </row>
+          <row>
+            <cell>intercept</cell><cell>79.5</cell><cell>7.31</cell>
+            <cell>10.9</cell><cell>0</cell><cell>65.0</cell><cell>93.9</cell>
+          </row>
+          <row>
+            <cell>duration</cell><cell>0.371</cell><cell>0.032</cell>
+            <cell>11.4</cell><cell>0</cell><cell>0.307</cell><cell>0.435</cell>
+          </row>
+        </tabular>
+      </table>
       <p>
         The first row in the regression table addresses inferences for the intercept
         <m>\beta_0</m>, and the second row deals with inference for the slope <m>\beta_1</m>.
@@ -1226,7 +1234,7 @@ get_regression_table(model_1)
     and <m>b_1</m> (second row).</li>
     <li>The <c>std_error</c> contains <m>SE(b_0)</m> and <m>SE(b_1)</m> (the standard errors
     for <m>b_0</m> and <m>b_1</m>), respectively. We defined these standard errors in
-    <xref ref="sec-se-simple-lm"/>.</li>
+    <xref ref="se-simple-lm"/>.</li>
     <li>The <c>statistic</c> column contains the <m>t</m>-test statistic for <m>b_0</m> (first
     row) and <m>b_1</m> (second row). If we focus on <m>b_1</m>, the <m>t</m>-test statistic
     was constructed using the equation
@@ -1309,7 +1317,7 @@ get_regression_table(model_1)
   the linear regression was given by:
   <me>\hat{y}_i = b_0 + b_1 \cdot x_i</me>
   for all the observations <m>i = 1, \ldots, n</m>. Recall that the residual as defined in
-  <xref ref="sec-residuals"/>, is the observed response minus the fitted value. If we denote
+  <xref ref="residuals-ch10"/>, is the observed response minus the fitted value. If we denote
   the residuals with the letter <m>e</m> we get:
   <me>e_i = y_i - \hat{y}_i</me>
   for <m>i = 1, \ldots, n</m>. Combining these two formulas we get
@@ -1498,7 +1506,7 @@ ggplot(fitted_and_residuals, aes(x = waiting_hat, y = residual)) +
   eruption of Old Faithful, with <c>waiting</c> times and <c>duration</c> recorded separately
   for each event. Since these eruptions occur independently of one another, the residuals derived
   from the regression of <c>waiting</c> versus <c>duration</c> are also expected to be
-  independent. As discussed in <xref ref="sec-sample-regression-inference"/>, we can consider
+  independent. As discussed in <xref ref="sample-regression-inference"/>, we can consider
   this a random sample.
 </p>
 <p>
@@ -1698,7 +1706,7 @@ ggplot(fitted_and_residuals, aes(x = duration, y = residual)) +
 <p>
   When the Linearity of the relationship between variables is not met, a simple transformation
   of the regressor, the response, or both variables may solve the problem. An example of such a
-  transformation is given in <xref ref="appendixa"/>. If not, alternative methods such as spline
+  transformation is given in <xref ref="appendixA"/>. If not, alternative methods such as spline
   regression, generalized linear models, or non-linear models may be used to address these
   situations. When additional regressors are available, including other regressors as in multiple
   linear regression may produce better results.
@@ -1874,11 +1882,11 @@ get_regression_points(model_hdi)
   <ul>
     <li>Construct a 95% confidence interval for the population slope <m>\beta_1</m> using
     bootstrap resampling with replacement. We did this previously in
-    <xref ref="sec-bootstrap-process"/> with the almonds data and <xref ref="sec-case-study-two-prop-ci"/>
+    <xref ref="bootstrap-process"/> with the almonds data and <xref ref="case-study-two-prop-ci"/>
     with the <c>mythbusters_yawn</c> data.</li>
     <li>Conduct a hypothesis test of <m>H_0: \beta_1 = 0</m> versus <m>H_A: \beta_1 \neq 0</m>
-    using a permutation test. We did this previously in <xref ref="sec-ht-infer"/> with the
-    <c>spotify_sample</c> data and <xref ref="sec-ht-case-study"/> with the
+    using a permutation test. We did this previously in <xref ref="ht-infer"/> with the
+    <c>spotify_sample</c> data and <xref ref="ht-case-study"/> with the
     <c>movies_sample</c> IMDb data.</li>
   </ul>
 </p>
@@ -1888,7 +1896,7 @@ get_regression_points(model_hdi)
 
 <p>
   We'll construct a 95% confidence interval for <m>\beta_1</m> using the <c>infer</c> workflow
-  outlined in <xref ref="sec-infer-workflow"/>. Specifically, we'll first construct the
+  outlined in <xref ref="infer-workflow-ht"/>. Specifically, we'll first construct the
   bootstrap distribution for the fitted slope <m>b_1</m> using our single sample of 114
   eruptions:
   <ol>
@@ -2075,7 +2083,7 @@ se_ci
 xml<p>
   Let's now conduct a hypothesis test of <m>H_0: \beta_1 = 0</m> vs. <m>H_A: \beta_1 \neq 0</m>.
   We will use the <c>infer</c> package, which follows the hypothesis testing paradigm in the
-  <q>There is only one test</q> diagram in <xref ref="fig-hypothesis-testing-diagram"/>.
+  <q>There is only one test</q> diagram in <xref ref="htdowney"/>.
 </p>
 <p>
   Let's first think about what it means for <m>\beta_1</m> to be zero as assumed in the null
@@ -2087,14 +2095,14 @@ xml<p>
 </p>
 <p>
   We construct the null distribution of the fitted slope <m>b_1</m> by performing the steps
-  that follow. Recall from <xref ref="sec-understanding-ht"/> on terminology, notation, and
+  that follow. Recall from <xref ref="understanding-ht"/> on terminology, notation, and
   definitions related to hypothesis testing where we defined the null distribution: the sampling
   distribution of our test statistic <m>b_1</m> assuming the null hypothesis <m>H_0</m> is true.
   <ol>
     <li><c>specify()</c> the variables of interest in <c>old_faithful_2024</c> with the formula:
     <c>waiting ~ duration</c>.</li>
     <li><c>hypothesize()</c> the null hypothesis of independence. Recall from
-    <xref ref="sec-ht-infer"/> that this is an additional step that needs to be added for
+    <xref ref="ht-infer"/> that this is an additional step that needs to be added for
     hypothesis testing.</li>
     <li><c>generate()</c> replicates by permuting/shuffling values from the original sample of
     114 eruptions. We generate <c>reps = 1000</c> replicates using <c>type = "permute"</c>
@@ -2154,7 +2162,7 @@ Explanatory: duration (numeric)
 </console>
 <p>
   Let's visualize the <m>p</m>-value in the null distribution by comparing it to the observed
-  test statistic of <m>b_1 = 0.371</m> in <xref ref="fig-null-distn-pvalue"/>. We'll do this
+  test statistic of <m>b_1 = 0.371</m> in <xref ref="fig-p-value-slope"/>. We'll do this
   by adding a <c>shade_p_value()</c> layer to the previous <c>visualize()</c> code.
 </p>
       <program language="r">
@@ -2433,7 +2441,7 @@ coffee_data |>
   construct a scatterplot matrix, a matrix that contains the scatterplots for all the variable
   pair combinations. In R, we can use the function <c>ggpairs()</c> from package <c>GGally</c>
   to generate a scatterplot matrix and some useful additional information. In
-  <xref ref="fig-coffee-scatterplot-matrix"/>, we present the scatterplot matrix for all the
+  <xref ref="fig-coffee-scatter-matrix"/>, we present the scatterplot matrix for all the
   variables of interest.
 </p>
 
@@ -2491,7 +2499,7 @@ coffee_data |>
   Observe that we have three numerical regressors and one factor (<c>continent_of_origin</c>)
   with four levels: <q>Africa</q>, <q>Asia</q>, <q>North America</q>, and <q>South America</q>.
   To introduce the factor levels in the linear model, we represent the factor levels using dummy
-  variables as described in <xref ref="sec-dummy-variables"/>. These are the dummy variables
+  variables as described in <xref ref="model4interactiontable"/>. These are the dummy variables
   that we need:
   <me>
     D_1 = \begin{cases} 1 \amp \text{if the continent of origin is Africa} \\ 0 \amp \text{otherwise} \end{cases}
@@ -2507,7 +2515,7 @@ coffee_data |>
   </me>
   Recall also that we drop the first level as this level will be accounted by the intercept in
   the model. As we did in the simple linear case, we assume that linearity between the response
-  and the regressors holds and apply the linear model described in <xref ref="sec-multiple-regression-model"/>
+  and the regressors holds and apply the linear model described in <xref ref="multiple-linear-model"/>
   to each observation in the sample. If we express the model in terms of the <m>i</m>th
   observation, we get
   <me>y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3} + \beta_{02} D_{i2} + \beta_{03} D_{i3} + \beta_{04} D_{i4} + \epsilon_i</me>
@@ -2532,7 +2540,7 @@ coffee_data |>
   calculus. We have more equations to deal with now; seven equations in our coffee example, each
   connected with the coefficient estimators that need to be estimated. The solutions to this
   problem are reached by using matrices and matrix calculus, and are the regression coefficients
-  introduced in <xref ref="sec-multiple-regression"/> and <xref ref="sec-dummy-variables"/>.
+  introduced in <xref ref="multiple-regression"/> and <xref ref="model4interactiontable"/>.
   They are called the least-squares estimators: <m>b_0</m> is the least-square estimator of
   <m>\beta_0</m>, <m>b_1</m> is the least-square estimator of <m>\beta_1</m>, etc.
 </p>
@@ -2630,7 +2638,7 @@ sigma(mod_mult)
 
 <p>
   If the linear model is appropriate, we can interpret these coefficients as we did in
-  <xref ref="sec-multiple-regression"/> and <xref ref="sec-interaction-model"/>. Recall that
+  <xref ref="multiple-regression"/> and <xref ref="model4interactiontable"/>. Recall that
   the numerical regressors' coefficients (<m>b_1</m>, <m>b_2</m>, and <m>b_3</m>) are partial
   slopes, each representing the extra effect (or additional effect) of increasing the
   corresponding regressor by one unit while keeping all the other regressors fixed to some
@@ -2645,7 +2653,7 @@ sigma(mod_mult)
 </p>
 <p>
   In addition, observe that <c>mod_mult</c> is a model without interactions, similar to the
-  model described in <xref ref="sec-parallel-slopes"/>. The coefficients for factor levels of
+  model described in <xref ref="model4table"/>. The coefficients for factor levels of
   <c>continent_of_origin</c> (<m>b_{02}</m>, <m>b_{03}</m>, and <m>b_{04}</m>) affect only
   the intercept of the model, based on the category of the observation in question. Recall that
   the factor levels, in order, are Africa, Asia, North America, and South America. For example,
@@ -2693,7 +2701,7 @@ coffee_data |>
 </p>
 <p>
   Observe that we have decided to use only a subset of regressors and construct a model without
-  interactions. We discuss in <xref ref="sec-model-selection"/> how we could determine what is
+  interactions. We discuss in <xref ref="model-dependency"/> how we could determine what is
   the best subset of regressors to use when many are available. We are now ready to discuss
   inference for multiple linear regression.
 </p>
@@ -2776,7 +2784,7 @@ coffee_data |>
 <p>
   In this section, we introduce some of the conceptual framework needed to understand inference
   in multiple linear regression. We illustrate this framework using the coffee example and the
-  R function <c>get_regression_table()</c> introduced in <xref ref="sec-regression-table"/>.
+  R function <c>get_regression_table()</c> introduced in <xref ref="regression-table"/>.
 </p>
 <p>
   Inference for multiple linear regression is a natural extension of inference for simple linear
@@ -2983,7 +2991,7 @@ sigma(mod_mult_2)
   models, one using a subset of regressors from the other, as in the coffee example where
   <c>mod_mult_1</c> used the regressors aroma, flavor and moisture_percentage while
   <c>mod_mult_2</c> used only two of those regressors: aroma and moisture_percentage. We
-  discuss methods addressing this comparison in <xref ref="sec-model-comparison"/>. The second
+  discuss methods addressing this comparison in <xref ref="hypo-test-mult-lm-1"/>. The second
   area is called model selection or variable selection and uses alternative methods to determine
   which model, out of the possible available is the most adequate.
 </p>
@@ -3115,6 +3123,32 @@ get_regression_table(mod_mult_1)
 4 moisture_percentage   -0.015     0.029    -0.499   0.618   -0.072    0.043
         </output>
       </console>
+
+      <table xml:id="tab-coffee-mod-mult-1">
+        <title>Regression table for coffee model with three numerical regressors (<c>mod_mult_1</c>)</title>
+        <tabular>
+          <row header="yes">
+            <cell>term</cell><cell>estimate</cell><cell>std_error</cell>
+            <cell>statistic</cell><cell>p_value</cell><cell>lower_ci</cell><cell>upper_ci</cell>
+          </row>
+          <row>
+            <cell>intercept</cell><cell>36.8</cell><cell>1.10</cell>
+            <cell>33.6</cell><cell>0</cell><cell>34.6</cell><cell>38.9</cell>
+          </row>
+          <row>
+            <cell>aroma</cell><cell>1.8</cell><cell>0.223</cell>
+            <cell>8.09</cell><cell>0</cell><cell>1.36</cell><cell>2.24</cell>
+          </row>
+          <row>
+            <cell>flavor</cell><cell>4.28</cell><cell>0.229</cell>
+            <cell>18.7</cell><cell>0</cell><cell>3.83</cell><cell>4.74</cell>
+          </row>
+          <row>
+            <cell>moisture_percentage</cell><cell>-0.015</cell><cell>0.029</cell>
+            <cell>-0.499</cell><cell>0.618</cell><cell>-0.072</cell><cell>0.043</cell>
+          </row>
+        </tabular>
+      </table>
 <p>
   The <m>t</m>-test statistic is
   <me>t = \frac{b_2 - 0}{SE(b_2)} = \frac{4.28 - 0}{0.23} = 18.7</me>
@@ -3396,7 +3430,7 @@ grid.arrange(g1, g2, ncol = 2)
   compute ranges of plausible values for partial slopes with multiple linear regression. Recall
   that simulation-based methods provide an alternative to the theory-based methods in that they
   do not rely on the assumptions of normality or large sample sizes. We'll use the <c>infer</c>
-  package as we did with simple linear regression in <xref ref="sec-simple-regression-infer"/>,
+  package as we did with simple linear regression in <xref ref="infer-regression"/>,
   but this time using the <c>fit()</c> function.
 </p>
 
@@ -3406,7 +3440,7 @@ grid.arrange(g1, g2, ncol = 2)
   We will revisit using our full model on the <c>coffee_data</c> with the factor of
   <c>continent_of_origin</c> and three numerical regressors in <c>aroma</c>, <c>flavor</c>, and
   <c>moisture_percentage</c>. As we did with hypothesis testing in Chapter 9 and in
-  <xref ref="sec-simple-regression-ht"/>, we can retrieve the observed statistic. In this case,
+  <xref ref="infer-hypo-slr"/>, we can retrieve the observed statistic. In this case,
   we get the observed coefficients of the model using the <c>specify()</c> function on our full
   model with formula syntax combined with <c>fit()</c>:
 </p>
@@ -3436,11 +3470,6 @@ observed_fit
   </output>
 </console>
 
-<p>
-  As we would expect, these values match up with the values of <c>mod_mult_table</c> given in
-  the first two columns there in <xref ref="tab-mod-mult-table"/>. The <c>observed_fit</c>
-  values will be our point estimates for the partial slopes in the confidence intervals.
-</p>
         <p>
           These values match the regression table for <c>mod_mult</c> as shown in
           <xref ref="tab-mod-mult-table-again"/>. The <c>observed_fit</c> values will be our
@@ -3469,18 +3498,13 @@ mod_mult_table
   </tabular>
 </table>
 
-<p>
-  As we would expect, these values match up with the values of <c>mod_mult_table</c> given in
-  the first two columns there in <xref ref="tab-mod-mult-table"/>. The <c>observed_fit</c>
-  values will be our point estimates for the partial slopes in the confidence intervals.
-</p>
       </subsubsection>
 
       <subsubsection xml:id="bootstrap-mlr">
         <title>Bootstrap distribution for the partial slopes</title>
 <p>
   We will now find the bootstrap distribution for the partial slopes using the <c>infer</c>
-  workflow. Just like in <xref ref="sec-simple-regression-bootstrap"/>, we are now resampling
+  workflow. Just like in <xref ref="infer-ci-slr"/>, we are now resampling
   entire rows of values to construct the bootstrap distribution for the fitted partial slopes
   using our full sample of 207 coffees:
   <ol>
@@ -3586,7 +3610,7 @@ visualize(boot_distribution_mlr)
       <subsubsection xml:id="ci-mlr-percentile">
         <title>Confidence intervals for the partial slopes</title>
 <p>
-  As we did in <xref ref="sec-simple-regression-bootstrap"/>, we can construct 95% confidence
+  As we did in <xref ref="infer-ci-slr"/>, we can construct 95% confidence
   intervals for the partial slopes. Here, we focus on using the percentile-based method with
   the <c>get_confidence_interval()</c> function and <c>type = "percentile"</c> to construct
   these intervals.
