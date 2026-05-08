@@ -2874,7 +2874,7 @@ get_regression_table(mod_mult)
 </p>
 
 <program language="r">
-  <code>
+  <input>
 # Fit regression model:
 mod_mult_1 &lt;- lm(
   total_cup_points ~ aroma + flavor + moisture_percentage, 
@@ -2883,7 +2883,7 @@ mod_mult_1 &lt;- lm(
 # Get the coefficients of the model
 coef(mod_mult_1)
 sigma(mod_mult_1)
-  </code>
+  </input>
 </program>
       <table xml:id="tab-coffee-three-regressors">
         <title>Coffee example linear regression coefficients with three regressors</title>
@@ -3391,18 +3391,25 @@ grid.arrange(g1, g2, ncol = 2)
     <subsection xml:id="ci-mlr-infer">
       <title>Confidence intervals for the partial slopes using <c>infer</c></title>
 
-      <p>
-        We'll now use simulation-based methods to compute ranges of plausible values for
-        partial slopes with multiple linear regression. We'll use the <c>infer</c> package
-        as in <xref ref="infer-regression"/>, but this time using the <c>fit()</c> function.
-      </p>
+<p>
+  We'll now use the simulation-based methods you previously learned in Chapters 8 and 9 to
+  compute ranges of plausible values for partial slopes with multiple linear regression. Recall
+  that simulation-based methods provide an alternative to the theory-based methods in that they
+  do not rely on the assumptions of normality or large sample sizes. We'll use the <c>infer</c>
+  package as we did with simple linear regression in <xref ref="sec-simple-regression-infer"/>,
+  but this time using the <c>fit()</c> function.
+</p>
 
       <subsubsection xml:id="observed-fit-mlr">
         <title>Getting the observed fitted model</title>
-        <p>
-          We retrieve the observed coefficients using the <c>specify()</c> function combined
-          with <c>fit()</c>:
-        </p>
+<p>
+  We will revisit using our full model on the <c>coffee_data</c> with the factor of
+  <c>continent_of_origin</c> and three numerical regressors in <c>aroma</c>, <c>flavor</c>, and
+  <c>moisture_percentage</c>. As we did with hypothesis testing in Chapter 9 and in
+  <xref ref="sec-simple-regression-ht"/>, we can retrieve the observed statistic. In this case,
+  we get the observed coefficients of the model using the <c>specify()</c> function on our full
+  model with formula syntax combined with <c>fit()</c>:
+</p>
         <program language="r">
           <input>
 observed_fit &lt;- coffee_data |>
@@ -3413,6 +3420,27 @@ observed_fit &lt;- coffee_data |>
 observed_fit
           </input>
         </program>
+
+<console>
+  <output>
+# A tibble: 7 × 2
+  term                                estimate
+  &lt;chr&gt;                                  &lt;dbl&gt;
+1 intercept                        37.3214    
+2 aroma                             1.73160   
+3 flavor                            4.31600   
+4 moisture_percentage              -0.00807976
+5 continent_of_originAsia          -0.392936  
+6 continent_of_originNorth America -0.273427  
+7 continent_of_originSouth America -0.478137  
+  </output>
+</console>
+
+<p>
+  As we would expect, these values match up with the values of <c>mod_mult_table</c> given in
+  the first two columns there in <xref ref="tab-mod-mult-table"/>. The <c>observed_fit</c>
+  values will be our point estimates for the partial slopes in the confidence intervals.
+</p>
         <p>
           These values match the regression table for <c>mod_mult</c> as shown in
           <xref ref="tab-mod-mult-table-again"/>. The <c>observed_fit</c> values will be our
@@ -3426,105 +3454,83 @@ mod_mult_table
 
         <table xml:id="tab-mod-mult-table-again">
           <title>Regression table for <c>mod_mult</c></title>
-          <tabular>
-            <row header="yes">
-              <cell>term</cell>
-              <cell>estimate</cell>
-              <cell>std_error</cell>
-              <cell>statistic</cell>
-              <cell>p_value</cell>
-              <cell>lower_ci</cell>
-              <cell>upper_ci</cell>
-            </row>
-            <row>
-              <cell>intercept</cell>
-              <cell>37.3</cell>
-              <cell>1.12</cell>
-              <cell>33.4</cell>
-              <cell>0</cell>
-              <cell>35.1</cell>
-              <cell>39.5</cell>
-            </row>
-            <row>
-              <cell>aroma</cell>
-              <cell>1.73</cell>
-              <cell>0.222</cell>
-              <cell>7.80</cell>
-              <cell>0</cell>
-              <cell>1.29</cell>
-              <cell>2.17</cell>
-            </row>
-            <row>
-              <cell>flavor</cell>
-              <cell>4.32</cell>
-              <cell>0.226</cell>
-              <cell>19.1</cell>
-              <cell>0</cell>
-              <cell>3.87</cell>
-              <cell>4.76</cell>
-            </row>
-            <row>
-              <cell>moisture_percentage</cell>
-              <cell>-0.008</cell>
-              <cell>0.030</cell>
-              <cell>-0.27</cell>
-              <cell>0.787</cell>
-              <cell>-0.067</cell>
-              <cell>0.051</cell>
-            </row>
-            <row>
-              <cell>continent_of_origin-Asia</cell>
-              <cell>-0.393</cell>
-              <cell>0.121</cell>
-              <cell>-3.24</cell>
-              <cell>0.001</cell>
-              <cell>-0.632</cell>
-              <cell>-0.154</cell>
-            </row>
-            <row>
-              <cell>continent_of_origin-North America</cell>
-              <cell>-0.273</cell>
-              <cell>0.127</cell>
-              <cell>-2.15</cell>
-              <cell>0.033</cell>
-              <cell>-0.524</cell>
-              <cell>-0.023</cell>
-            </row>
-            <row>
-              <cell>continent_of_origin-South America</cell>
-              <cell>-0.478</cell>
-              <cell>0.142</cell>
-              <cell>-3.38</cell>
-              <cell>0.001</cell>
-              <cell>-0.757</cell>
-              <cell>-0.199</cell>
-            </row>
-          </tabular>
-        </table>
+  <tabular>
+    <row header="yes">
+      <cell>term</cell><cell>estimate</cell><cell>std_error</cell>
+      <cell>statistic</cell><cell>p_value</cell><cell>lower_ci</cell><cell>upper_ci</cell>
+    </row>
+    <row><cell>intercept</cell><cell>37.321</cell><cell>1.116</cell><cell>33.45</cell><cell>0.000</cell><cell>34.705</cell><cell>39.938</cell></row>
+    <row><cell>aroma</cell><cell>1.732</cell><cell>0.222</cell><cell>7.80</cell><cell>0.000</cell><cell>1.211</cell><cell>2.252</cell></row>
+    <row><cell>flavor</cell><cell>4.316</cell><cell>0.226</cell><cell>19.09</cell><cell>0.000</cell><cell>3.786</cell><cell>4.846</cell></row>
+    <row><cell>moisture_percentage</cell><cell>-0.008</cell><cell>0.030</cell><cell>-0.27</cell><cell>0.787</cell><cell>-0.078</cell><cell>0.062</cell></row>
+    <row><cell>continent_of_origin: Asia</cell><cell>-0.393</cell><cell>0.121</cell><cell>-3.24</cell><cell>0.001</cell><cell>-0.678</cell><cell>-0.108</cell></row>
+    <row><cell>continent_of_origin: North America</cell><cell>-0.273</cell><cell>0.127</cell><cell>-2.15</cell><cell>0.033</cell><cell>-0.571</cell><cell>0.025</cell></row>
+    <row><cell>continent_of_origin: South America</cell><cell>-0.478</cell><cell>0.142</cell><cell>-3.38</cell><cell>0.001</cell><cell>-0.810</cell><cell></cell></row>
+  </tabular>
+</table>
+
+<p>
+  As we would expect, these values match up with the values of <c>mod_mult_table</c> given in
+  the first two columns there in <xref ref="tab-mod-mult-table"/>. The <c>observed_fit</c>
+  values will be our point estimates for the partial slopes in the confidence intervals.
+</p>
       </subsubsection>
 
       <subsubsection xml:id="bootstrap-mlr">
         <title>Bootstrap distribution for the partial slopes</title>
-        <p>
-          We find the bootstrap distribution for the partial slopes using the <c>infer</c>
-          workflow. We resample entire rows to construct the bootstrap distribution:
-        </p>
-        <ol>
-          <li><p><c>specify()</c> the formula: <c>total_cup_points ~ aroma + flavor + moisture_percentage + continent_of_origin</c>.</p></li>
-          <li><p><c>generate()</c> 1000 bootstrap replicates with <c>type = "bootstrap"</c>.</p></li>
-          <li><p><c>fit()</c> models for each replicate.</p></li>
-        </ol>
-        <program language="r">
-          <input>
+<p>
+  We will now find the bootstrap distribution for the partial slopes using the <c>infer</c>
+  workflow. Just like in <xref ref="sec-simple-regression-bootstrap"/>, we are now resampling
+  entire rows of values to construct the bootstrap distribution for the fitted partial slopes
+  using our full sample of 207 coffees:
+  <ol>
+    <li><c>specify()</c> the variables of interest in <c>coffee_data</c> with the formula:
+    <c>total_cup_points ~ aroma + flavor + moisture_percentage + continent_of_origin</c>.</li>
+    <li><c>generate()</c> replicates by using bootstrap resampling with replacement from the
+    original sample of 207 coffees. We generate <c>reps = 1000</c> replicates using
+    <c>type = "bootstrap"</c> for a total of <m>207 \cdot 1000 = 207{,}000</m> rows.</li>
+  </ol>
+</p>
+
+<program language="r">
+  <input>
 coffee_data |>
   specify(
     total_cup_points ~ continent_of_origin + aroma + flavor + moisture_percentage
   ) |>
   generate(reps = 1000, type = "bootstrap")
-          </input>
-        </program>
-        <program language="r">
-          <input>
+  </input>
+</program>
+
+<console>
+  <output>
+Response: total_cup_points (numeric)
+Explanatory: continent_of_origin (factor), aroma (numeric), flavor (numeric), mo...
+# A tibble: 207,000 × 6
+# Groups:   replicate [1,000]
+   replicate total_cup_points continent_of_origin aroma flavor moisture_percentage
+       &lt;int&gt;            &lt;dbl&gt; &lt;fct&gt;               &lt;dbl&gt;  &lt;dbl&gt;               &lt;dbl&gt;
+ 1         1            83.25 Africa               7.92   7.67                10.4
+ 2         1            83.67 Asia                 7.58   7.75                 9.2
+ 3         1            85.5  Asia                 8.17   8.08                10.6
+ 4         1            82    North America        7.42   7.42                11.5
+ 5         1            84.42 Asia                 7.83   8                   10.1
+ 6         1            86.08 Asia                 8.17   8.08                10.2
+ 7         1            84.08 North America        7.67   7.83                11  
+ 8         1            83.67 Asia                 7.83   7.83                10.2
+ 9         1            82.75 North America        7.33   7.5                 11.8
+10         1            84.33 North America        7.83   7.83                10.3
+# ℹ 206,990 more rows
+  </output>
+</console>
+
+<p>
+  Lastly, <c>fit()</c> models for each of the replicates in the <c>boot_distribution_mlr</c>
+  variable. Here, <c>mlr</c> stands for multiple linear regression.
+</p>
+
+<program language="r">
+  <input>
 boot_distribution_mlr &lt;- coffee_quality |>
   specify(
     total_cup_points ~ continent_of_origin + aroma + flavor + moisture_percentage
@@ -3532,22 +3538,44 @@ boot_distribution_mlr &lt;- coffee_quality |>
   generate(reps = 1000, type = "bootstrap") |>
   fit()
 boot_distribution_mlr
-          </input>
-        </program>
-        <p>
-          Since we have 7 coefficients (intercept, 3 dummy variables for
-          <c>continent_of_origin</c>, <c>aroma</c>, <c>flavor</c>,
-          <c>moisture_percentage</c>), we have 7 rows for each replicate giving
-          7,000 rows in <c>boot_distribution_mlr</c>. We can visualize the bootstrap
-          distributions in <xref ref="fig-boot-distn-slopes"/>:
-        </p>
+  </input>
+</program>
+
+<console>
+  <output>
+# A tibble: 7,000 × 3
+# Groups:   replicate [1,000]
+   replicate term                                estimate
+       &lt;int&gt; &lt;chr&gt;                                  &lt;dbl&gt;
+ 1         1 intercept                        37.4459    
+ 2         1 continent_of_originAsia          -0.267451  
+ 3         1 continent_of_originNorth America -0.203579  
+ 4         1 continent_of_originSouth America -0.458541  
+ 5         1 aroma                             1.80789   
+ 6         1 flavor                            4.20492   
+ 7         1 moisture_percentage              -0.00643938
+ 8         2 intercept                        34.3890    
+ 9         2 continent_of_originAsia          -0.425770  
+10         2 continent_of_originNorth America -0.237750  
+# ℹ 6,990 more rows
+  </output>
+</console>
+
+<p>
+  Since we have 7 coefficients in our model corresponding to the intercept, three levels of
+  <c>continent_of_origin</c>, <c>aroma</c>, <c>flavor</c>, and <c>moisture_percentage</c>, we
+  have 7 rows for each replicate. This results in a total of 7000 rows in the
+  <c>boot_distribution_mlr</c> data frame. We can visualize the bootstrap distribution for the
+  partial slopes in <xref ref="fig-bootstrap-partial-slopes"/>.
+</p>
+
         <program language="r">
           <input>
 visualize(boot_distribution_mlr)
           </input>
         </program>
 
-        <figure xml:id="fig-boot-distn-slopes">
+        <figure xml:id="fig-bootstrap-partial-slopes">
           <caption>Bootstrap distributions of partial slopes for the coffee quality multiple regression.</caption>
           <image source="images/boot_mlr_viz.png" width="75%">
             <description>Faceted histogram showing bootstrap distributions for each of the 7 coefficients in the multiple linear regression model for coffee quality, including the intercept, three continent dummy variables, and three numerical regressors.</description>
@@ -3557,9 +3585,12 @@ visualize(boot_distribution_mlr)
 
       <subsubsection xml:id="ci-mlr-percentile">
         <title>Confidence intervals for the partial slopes</title>
-        <p>
-          We construct 95% confidence intervals using the percentile-based method:
-        </p>
+<p>
+  As we did in <xref ref="sec-simple-regression-bootstrap"/>, we can construct 95% confidence
+  intervals for the partial slopes. Here, we focus on using the percentile-based method with
+  the <c>get_confidence_interval()</c> function and <c>type = "percentile"</c> to construct
+  these intervals.
+</p>
         <program language="r">
           <input>
 confidence_intervals_mlr &lt;- boot_distribution_mlr |>
@@ -3570,21 +3601,47 @@ confidence_intervals_mlr &lt;- boot_distribution_mlr |>
 confidence_intervals_mlr
           </input>
         </program>
-        <p>
-          The confidence intervals for <c>aroma</c> and <c>flavor</c> do not include 0,
-          suggesting they are statistically significant and have a meaningful and reliable
-          impact on the response. The confidence interval for <c>moisture_percentage</c>
-          includes 0, again providing evidence that it might not be a useful regressor in
-          this model. We visualize these confidence intervals in <xref ref="fig-ci-slopes-multiple"/>:
-        </p>
-        <program language="r">
+<console>
+  <output>
+# A tibble: 7 × 3
+  term                               lower_ci   upper_ci
+  &lt;chr&gt;                                 &lt;dbl&gt;      &lt;dbl&gt;
+1 aroma                             1.33584    2.13218  
+2 continent_of_originAsia          -0.657425  -0.143179 
+3 continent_of_originNorth America -0.557557   0.0131542
+4 continent_of_originSouth America -0.809466  -0.153730 
+5 flavor                            3.88508    4.74376  
+6 intercept                        34.5254    40.0449   
+7 moisture_percentage              -0.0924515  0.0417502
+  </output>
+</console>
+
+<p>
+  In reviewing the confidence intervals, we note that the confidence intervals for <c>aroma</c>
+  and <c>flavor</c> do not include 0. This suggests that they are statistically significant.
+  This indicates that aroma and flavor have a meaningful and reliable impact on the response
+  variable in the presence of other predictors.
+</p>
+<p>
+  We also note that 0 is included in the confidence interval for <c>moisture_percentage</c>.
+  This again provides evidence that it might not be a useful regressor in this multiple linear
+  regression model. This implies that <c>moisture_percentage</c> does not significantly
+  contribute to explaining the variability in the response variable after accounting for other
+  predictors in the model.
+</p>
+<p>
+  We can also visualize these confidence intervals. This is done in
+  <xref ref="fig-coffee-ci-partial-slopes"/>.
+</p>
+
+<program language="r">
           <input>
 visualize(boot_distribution_mlr) +
   shade_confidence_interval(endpoints = confidence_intervals_mlr)
           </input>
         </program>
 
-        <figure xml:id="fig-ci-slopes-multiple">
+        <figure xml:id="fig-coffee-ci-partial-slopes">
           <caption>95% confidence intervals for the partial slopes from the coffee quality regression.</caption>
           <image source="images/fig-ci-slopes-multiple.png" width="75%">
             <description>Faceted histograms of bootstrap distributions for each coefficient with shaded 95% confidence interval regions. The confidence intervals for aroma and flavor do not include zero, while that for moisture_percentage does.</description>
@@ -3598,58 +3655,123 @@ visualize(boot_distribution_mlr) +
     <subsection xml:id="ht-mlr-infer">
       <title>Hypothesis testing for the partial slopes using <c>infer</c></title>
 
-      <p>
-        We can also conduct hypothesis tests for the partial slopes using permutation tests
-        to test <m>H_0: \beta_j = 0</m> vs. <m>H_A: \beta_j \neq 0</m> for each partial
-        slope. The syntax is similar to constructing the bootstrap distribution, but we use
-        <c>type = "permute"</c> and set <c>hypothesize</c> to <c>null = "independence"</c>:
-      </p>
-      <program language="r">
-        <input>
+<p>
+  We can also conduct hypothesis tests for the partial slopes in multiple linear regression. We
+  use the permutation test to test the null hypothesis <m>H_0: \beta_i = 0</m> versus the
+  alternative hypothesis <m>H_A: \beta_i \neq 0</m> for each of the partial slopes. The
+  <c>infer</c> package constructs the null distribution of the partial slopes under the null
+  hypothesis of independence.
+</p>
+<p>
+  <term>Null distribution for the partial slopes</term>
+</p>
+<p>
+  We can also compute the null distribution for the partial slopes using the <c>infer</c>
+  workflow. We will shuffle the values of the response variable <c>total_cup_points</c> across
+  the values of the regressors <c>continent_of_origin</c>, <c>aroma</c>, <c>flavor</c>, and
+  <c>moisture_percentage</c> in the <c>coffee_data</c> dataset. This is done under the
+  assumption of independence between the response and the regressors. The syntax is similar to
+  constructing the bootstrap distribution, but we use <c>type = "permute"</c> and set
+  <c>hypothesize</c> to <c>null = "independence"</c>. We set our pseudo-random number
+  generation seed to 2024 in order for the reader to get the same results with the shuffling.
+</p>
+
+<program language="r">
+  <input>
 set.seed(2024)
 null_distribution_mlr &lt;- coffee_quality |>
-  specify(total_cup_points ~ continent_of_origin + aroma +
+  specify(total_cup_points ~ continent_of_origin + aroma + 
       flavor + moisture_percentage) |>
   hypothesize(null = "independence") |>
   generate(reps = 1000, type = "permute") |>
   fit()
 null_distribution_mlr
-        </input>
-      </program>
-      <p>
-        We visualize the <m>p</m>-values by shading the null distributions:
-      </p>
-      <program language="r">
-        <input>
+  </input>
+</program>
+
+<console>
+  <output>
+# A tibble: 7,000 × 3
+# Groups:   replicate [1,000]
+   replicate term                               estimate
+       &lt;int&gt; &lt;chr&gt;                                 &lt;dbl&gt;
+ 1         1 intercept                        82.3301   
+ 2         1 continent_of_originAsia          -0.193739 
+ 3         1 continent_of_originNorth America -0.371403 
+ 4         1 continent_of_originSouth America -0.0830341
+ 5         1 aroma                            -1.21891  
+ 6         1 flavor                            1.52397  
+ 7         1 moisture_percentage              -0.0747986
+ 8         2 intercept                        82.8068   
+ 9         2 continent_of_originAsia          -0.239054 
+10         2 continent_of_originNorth America -0.617409 
+# ℹ 6,990 more rows
+  </output>
+</console>
+
+<p>
+  <term>Hypothesis tests for the partial slopes</term>
+</p>
+<p>
+  We can now conduct hypothesis tests for the partial slopes in multiple linear regression. We
+  can use the permutation test to test the null hypothesis <m>H_0: \beta_i = 0</m> versus the
+  alternative hypothesis <m>H_A: \beta_i \neq 0</m> for each of the partial slopes. Let's use
+  a significance level of <m>\alpha = 0.05</m>. We can visualize the <m>p</m>-values in the
+  null distribution by comparing them to the observed test statistics. We do this by adding a
+  <c>shade_p_value()</c> layer to <c>visualize()</c>.
+</p>
+
+<program language="r">
+  <input>
 visualize(null_distribution_mlr) +
   shade_p_value(obs_stat = observed_fit, direction = "two-sided")
-        </input>
-      </program>
+  </input>
+</program>
 
-      <figure xml:id="fig-shaded-p-values-partial">
+      <figure xml:id="fig-coffee-pvalues">
         <caption>Shaded <m>p</m>-values for the partial slopes in the multiple regression model.</caption>
         <image source="images/mlr_pvalue_viz.png" width="75%">
           <description>Faceted histograms showing null distributions for each coefficient with shaded p-value regions. For aroma and flavor, the observed test statistics fall far to the right of the null distribution. For moisture_percentage, the observed statistic falls within the null distribution.</description>
         </image>
       </figure>
 
-      <p>
-        From these visualizations (<xref ref="fig-shaded-p-values-partial"/>), <c>aroma</c> and <c>flavor</c> are statistically
-        significant, as their observed test statistics fall far to the right of the null
-        distribution. On the other hand, <c>moisture_percentage</c> is not statistically
-        significant. We compute the numerical <m>p</m>-values:
-      </p>
-      <program language="r">
-        <input>
+<p>
+  From these visualizations in <xref ref="fig-coffee-pvalues"/>, we can surmise that
+  <c>aroma</c> and <c>flavor</c> are statistically significant, as their observed test
+  statistics fall far to the right of the null distribution. On the other hand,
+  <c>moisture_percentage</c> is not statistically significant, as its observed test statistic
+  falls within the null distribution. We can also compute the numerical <m>p</m>-values using
+  the <c>get_p_value()</c> function.
+</p>
+
+<program language="r">
+  <input>
 null_distribution_mlr |>
   get_p_value(obs_stat = observed_fit, direction = "two-sided")
-        </input>
-      </program>
-      <p>
-        These results match our findings from the visualizations and the regression table.
-        We reject the null hypothesis <m>H_0: \beta_j = 0</m> for <c>aroma</c> and
-        <c>flavor</c>, but fail to reject it for <c>moisture_percentage</c>.
-      </p>
+  </input>
+</program>
+
+<console>
+  <output>
+# A tibble: 7 × 2
+  term                             p_value
+  &lt;chr&gt;                              &lt;dbl&gt;
+1 aroma                              0.034
+2 continent_of_originAsia            0.332
+3 continent_of_originNorth America   0.56 
+4 continent_of_originSouth America   0.352
+5 flavor                             0    
+6 intercept                          0    
+7 moisture_percentage                0.918
+  </output>
+</console>
+
+<p>
+  These results match up with our findings from the visualizations of the shaded <m>p</m>-values
+  with the null distribution and in the regression table in <xref ref="tab-coffee-mod-mult-1"/>.
+  We reject the null hypothesis <m>H_0: \beta_i = 0</m> for aroma and flavor, but fail to
+  reject it for <c>moisture_percentage</c>.
+</p>
 
       <exercises>
         <exercise xml:id="lc10-23">
@@ -3731,64 +3853,22 @@ null_distribution_mlr |>
       <title>Summary of statistical inference</title>
 
       <p>
-        We've now finished the last two scenarios: inference for a simple linear regression
-        slope and inference for multiple linear regression partial slopes. All six scenarios
-        are summarized in <xref ref="tab-table-ch10"/>.
+       We’ve finished the last two scenarios, which we re-display in <xref ref="tab-table-ch10"/>.
       </p>
 
       <table xml:id="tab-table-ch10">
         <title>Scenarios of sampling for inference</title>
-        <tabular>
-          <row header="yes">
-            <cell>Scenario</cell>
-            <cell>Population parameter</cell>
-            <cell>Notation</cell>
-            <cell>Point estimate</cell>
-            <cell>Notation</cell>
-          </row>
-          <row>
-            <cell>1</cell>
-            <cell>Population proportion</cell>
-            <cell><m>p</m></cell>
-            <cell>Sample proportion</cell>
-            <cell><m>\widehat{p}</m></cell>
-          </row>
-          <row>
-            <cell>2</cell>
-            <cell>Population mean</cell>
-            <cell><m>\mu</m></cell>
-            <cell>Sample mean</cell>
-            <cell><m>\overline{x}</m></cell>
-          </row>
-          <row>
-            <cell>3</cell>
-            <cell>Difference in population proportions</cell>
-            <cell><m>p_1 - p_2</m></cell>
-            <cell>Difference in sample proportions</cell>
-            <cell><m>\widehat{p}_1 - \widehat{p}_2</m></cell>
-          </row>
-          <row>
-            <cell>4</cell>
-            <cell>Difference in population means</cell>
-            <cell><m>\mu_1 - \mu_2</m></cell>
-            <cell>Difference in sample means</cell>
-            <cell><m>\overline{x}_1 - \overline{x}_2</m></cell>
-          </row>
-          <row>
-            <cell>5</cell>
-            <cell>Population SLR slope</cell>
-            <cell><m>\beta_1</m></cell>
-            <cell>Fitted SLR slope</cell>
-            <cell><m>b_1</m></cell>
-          </row>
-          <row>
-            <cell>6</cell>
-            <cell>Population MLR partial slopes</cell>
-            <cell><m>\beta_1, \dots, \beta_p</m></cell>
-            <cell>Fitted MLR partial slopes</cell>
-            <cell><m>b_1, \dots, b_p</m></cell>
-          </row>
-        </tabular>
+  <tabular>
+    <row header="yes">
+      <cell>Scenario</cell><cell>Population parameter</cell><cell>Notation</cell>
+      <cell>Point estimate</cell><cell>Symbol(s)</cell>
+    </row>
+    <row><cell>1</cell><cell>Population proportion</cell><cell><m>p</m></cell><cell>Sample proportion</cell><cell><m>\hat{p}</m></cell></row>
+    <row><cell>2</cell><cell>Population mean</cell><cell><m>\mu</m></cell><cell>Sample mean</cell><cell><m>\bar{x}</m> or <m>\hat{\mu}</m></cell></row>
+    <row><cell>3</cell><cell>Difference in population proportions</cell><cell><m>p_1 - p_2</m></cell><cell>Difference in sample proportions</cell><cell><m>\hat{p}_1 - \hat{p}_2</m></cell></row>
+    <row><cell>4</cell><cell>Difference in population means</cell><cell><m>\mu_1 - \mu_2</m></cell><cell>Difference in sample means</cell><cell><m>\bar{x}_1 - \bar{x}_2</m> or <m>\hat{\mu}_1 - \hat{\mu}_2</m></cell></row>
+    <row><cell>5</cell><cell>Population regression slope</cell><cell><m>\beta_1</m></cell><cell>Fitted regression slope</cell><cell><m>b_1</m> or <m>\hat{\beta}_1</m></cell></row>
+  </tabular>
       </table>
 
       <p>
