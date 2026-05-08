@@ -330,7 +330,6 @@ simple_model |>
   response bias or preference seems to be present. Therefore, it seems safe to consider the data
   a random sample. The first ten rows are shown here:
 </p>
-      </p>
             <program language="r">
         <input>
 old_faithful_2024
@@ -573,7 +572,6 @@ sigma(model_1)
   <q>Romance.</q> We can use the <c>lm()</c> function to fit a linear model with a dummy
   variable for the genre and then use <c>get_regression_table()</c>:
 </p>
-        </p>
                 <program language="r">
           <input>
 mod_diff_means &lt;- lm(rating ~ genre, data = movies_sample)
