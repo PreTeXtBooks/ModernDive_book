@@ -2292,74 +2292,105 @@ Explanatory: duration (numeric)
     <subsection xml:id="multiple-linear-model">
       <title>The model</title>
 
-      <p>
-        The extension from a simple to a multiple regression model is discussed next.
-        We assume that a population has a response variable (<m>Y</m>) and two or more
-        explanatory variables (<m>X_1, X_2, \dots, X_p</m>) with <m>p \ge 2</m>.
-        The statistical linear relationship between these variables is given by
-      </p>
-      <me>
-        Y = \beta_0 + \beta_1 \cdot X_1 + \dots + \beta_p X_p + \epsilon
-      </me>
-      <p>
-        where <m>\beta_0</m> is the population intercept and <m>\beta_j</m> is the population
-        partial slope related to regressor <m>X_j</m>. The error term <m>\epsilon</m>
-        accounts for the portion of <m>Y</m> not explained by the regressors. As in the
-        simple case, we assume <m>E(\epsilon) = 0</m>, <m>SD(\epsilon) = \sigma</m>, and
-        <m>Var(\epsilon) = \sigma^2</m> constant regardless of the values of the regressors.
-      </p>
+<p>
+  The extension from a simple to a multiple regression model is discussed next. We assume that
+  a population has a response variable (<m>Y</m>) and two or more explanatory variables
+  (<m>X_1, X_2, \ldots, X_p</m>) with <m>p \geq 2</m>. The statistical linear relationship
+  between these variables is given by
+  <me>Y = \beta_0 + \beta_1 \cdot X_1 + \cdots + \beta_p X_p + \epsilon</me>
+  where <m>\beta_0</m> is the population intercept and <m>\beta_j</m> is the population partial
+  slope related to regressor <m>X_j</m>. The error term <m>\epsilon</m> accounts for the
+  portion of <m>Y</m> that is not explained by the line. As in the simple case, we assume that
+  the expected value is <m>E(\epsilon) = 0</m>, the standard deviation is
+  <m>SD(\epsilon) = \sigma</m>, and the variance is <m>Var(\epsilon) = \sigma^2</m>. The
+  variance and standard deviation are constant regardless of the value of
+  <m>X_1, X_2, \ldots, X_p</m>. If you were to take a large number of observations from this
+  population, we expect the error terms sometimes to be greater than zero and other times less
+  than zero, but on average equal to zero, give or take <m>\sigma</m> units away from zero.
+</p>
     </subsection>
 
 
     <subsection xml:id="coffee-example">
       <title>Example: coffee quality rating scores</title>
 
-      <p>
-        To illustrate multiple regression, we use the <c>coffee_quality</c> data frame from
-        the <c>moderndive</c> package. This dataset from the Coffee Quality Institute contains
-        information about coffee rating scores based on ten different attributes:
-        <c>aroma</c>, <c>flavor</c>, <c>aftertaste</c>, <c>acidity</c>, <c>body</c>,
-        <c>balance</c>, <c>uniformity</c>, <c>clean_cup</c>, <c>sweetness</c>, and
-        <c>overall</c>. In addition, the data frame contains information such as the
-        <c>moisture_percentage</c> and the coffee's <c>country</c> and
-        <c>continent_of_origin</c>. We can assume that this is a random sample.
-      </p>
-      <p>
-        We plan to regress <c>total_cup_points</c> (response variable) on the numerical
-        explanatory variables <c>aroma</c>, <c>flavor</c>, and <c>moisture_percentage</c>
-        and the categorical explanatory variable <c>continent_of_origin</c> with four
-        categories: <c>Africa</c>, <c>Asia</c>, <c>North America</c>, and
-        <c>South America</c>. Before proceeding, we construct a new data frame called
-        <c>coffee_data</c>:
-      </p>
-      <program language="r">
-        <input>
+<p>
+  As in the case of simple linear regression we use a random sample to estimate the parameters
+  in the population. To illustrate these methods, we use the <c>coffee_quality</c> data frame
+  from the <c>moderndive</c> package. This dataset from the Coffee Quality Institute contains
+  information about coffee rating scores based on ten different attributes: aroma, flavor,
+  aftertaste, acidity, body, balance, uniformity, clean_cup, sweetness, and overall. In
+  addition, the data frame contains other information such as the <c>moisture_percentage</c> and
+  the coffee's country and <c>continent_of_origin</c>. We can assume that this is a random
+  sample.
+</p>
+<p>
+  We plan to regress <c>total_cup_points</c> (response variable) on the numerical explanatory
+  variables <c>aroma</c>, <c>flavor</c>, and <c>moisture_percentage</c> and the categorical
+  explanatory variable with four categories; Africa, Asia, North America, and South America.
+  Before proceeding, we construct a new data frame called <c>coffee_data</c> by keeping the
+  variables of interest. In addition, the variable <c>continent_of_origin</c> has been read
+  into R with type character, and we want to make it type factor. We do this by using
+  <c>dplyr</c> verbs and including the command <c>as.factor()</c> inside <c>mutate()</c> to
+  make <c>continent_of_origin</c> a factor with the ordering of <q>Africa</q>, <q>Asia</q>,
+  <q>North America</q>, and <q>South America</q>.
+</p>
+
+<program language="r">
+  <input>
 coffee_data &lt;- coffee_quality |>
-  select(aroma,
-         flavor,
-         moisture_percentage,
-         continent_of_origin,
+  select(aroma, 
+         flavor, 
+         moisture_percentage, 
+         continent_of_origin, 
          total_cup_points) |>
   mutate(continent_of_origin = as.factor(continent_of_origin))
-        </input>
-      </program>
-      <p>
-        The first ten rows of <c>coffee_data</c> are shown here:
-      </p>
-      <program language="r">
-        <input>
+  </input>
+</program>
+
+<p>
+  The first ten rows of <c>coffee_data</c> are shown here:
+</p>
+
+<program language="r">
+  <input>
 coffee_data
-        </input>
-      </program>
-      <p>
-        We display the summary for these variables:
-      </p>
-            <program language="r">
-        <input>
+  </input>
+</program>
+
+<console>
+  <output>
+# A tibble: 207 × 5
+   aroma flavor moisture_percentage continent_of_origin total_cup_points
+   &lt;dbl&gt;  &lt;dbl&gt;               &lt;dbl&gt; &lt;fct&gt;                          &lt;dbl&gt;
+ 1  8.58   8.5                 11.8 South America                  89.33
+ 2  8.5    8.5                 10.5 Asia                           87.58
+ 3  8.33   8.42                10.4 Asia                           87.42
+ 4  8.08   8.17                11.8 North America                  87.17
+ 5  8.33   8.33                11.6 South America                  87.08
+ 6  8.33   8.33                10.7 North America                  87   
+ 7  8.33   8.17                 9.1 Asia                           86.92
+ 8  8.25   8.25                10   Asia                           86.75
+ 9  8.08   8.08                10.8 Asia                           86.67
+10  8.08   8.17                11   Africa                         86.5 
+# ℹ 197 more rows
+  </output>
+</console>
+
+<p>
+  By looking at the fourth row we can tell, for example, that the <c>total_cup_points</c> are
+  87.17 with aroma score equal to 8.08 points, flavor score equal to 8.17 points,
+  <c>moisture_percentage</c> equal to 11.8%, and North America is the
+  <c>country_of_origin</c>. We also display the summary for these variables in
+  the output below.
+</p>
+
+<program language="r">
+  <input>
 coffee_data |>
   tidy_summary()
-        </input>
-      </program>
+  </input>
+</program>
 
       <console prompt="> ">
         <output>
@@ -2376,18 +2407,42 @@ coffee_data |>
 8 continent_of_or…    33 Sout… fact… NA    NA    NA     NA    NA    NA    NA
         </output>
       </console>
-      <p>
-        When performing multiple regression it is useful to construct a
-        <term>scatterplot matrix</term><idx><h>scatterplot matrix</h></idx>, a matrix that
-        contains scatterplots for all variable pair combinations. In R, we use
-        <c>ggpairs()</c> from the <c>GGally</c> package (<xref ref="fig-coffee-scatter-matrix"/>):
-      </p>
-      <program language="r">
-        <input>
+
+<p>
+  Observe that we have a sample of 207 observations, the <c>total_cup_points</c> ranges from
+  6.5 to 8.58, the average aroma score was 7.745, and the median flavor score was 10.8. Note
+  that each observation is composed of <m>p + 1</m> values: the values for the explanatory
+  variables <m>(X_1, \ldots, X_p)</m> and the value for the response (<m>Y</m>). The sample
+  takes the form:
+  <me>
+    \begin{aligned}
+    (x_{11}, x_{12}, \ldots, x_{1p}, y_1) \\
+    (x_{21}, x_{22}, \ldots, x_{2p}, y_2) \\
+    \vdots \\
+    (x_{n1}, x_{n2}, \ldots, x_{np}, y_n)
+    \end{aligned}
+  </me>
+  where <m>(x_{i1}, x_{i2}, \ldots, x_{ip}, y_i)</m> are the values of the <m>i</m>th
+  observation in the sample for <m>i = 1, \ldots, n</m>. Using this notation, for example,
+  <m>x_{i2}</m> is the value of the <m>i</m>th observation in the data for the second
+  explanatory variable <m>X_2</m>. In the coffee example <m>n = 207</m> and the value of the
+  second explanatory variable (flavor) for the 4th observation is <m>x_{42} = 11.8</m>.
+</p>
+<p>
+  We can now create data visualizations. When performing multiple regression it is useful to
+  construct a scatterplot matrix, a matrix that contains the scatterplots for all the variable
+  pair combinations. In R, we can use the function <c>ggpairs()</c> from package <c>GGally</c>
+  to generate a scatterplot matrix and some useful additional information. In
+  <xref ref="fig-coffee-scatterplot-matrix"/>, we present the scatterplot matrix for all the
+  variables of interest.
+</p>
+
+<program language="r">
+  <input>
 coffee_data |>
   ggpairs()
-        </input>
-      </program>
+  </input>
+</program>
 
       <figure xml:id="fig-coffee-scatter-matrix">
         <caption>Scatterplot matrix for coffee quality variables of interest.</caption>
@@ -2396,72 +2451,128 @@ coffee_data |>
         </image>
       </figure>
 
-      <p>
-        We first comment on the plots with the response (<c>total_cup_points</c>) on the
-        vertical axis. When plotting <c>total_cup_points</c> against <c>aroma</c> or
-        <c>total_cup_points</c> against <c>flavor</c>, we observe a strong and positive
-        linear relationship. The plot of <c>total_cup_points</c> against
-        <c>moisture_percentage</c> does not provide much information. The
-        <c>ggpairs()</c> function also includes the correlation coefficient for any pair of
-        numerical variables. The correlations between <c>total_cup_points</c> and
-        <c>aroma</c> and <c>flavor</c> are positive and close to one. The correlation
-        between <c>moisture_percentage</c> and any other variable is close to zero.
-      </p>
+<p>
+  We first comment on the plots with the response (<c>total_cup_points</c>) on the vertical
+  axis. They are located in the last row of plots in the figure. When plotting
+  <c>total_cup_points</c> against <c>aroma</c> (bottom row, leftmost plot) or
+  <c>total_cup_points</c> against <c>flavor</c> (bottom row, second plot from the left), we
+  observe a strong and positive linear relationship. The plot of <c>total_cup_points</c> against
+  <c>moisture_percentage</c> (bottom row, third plot from the left) does not provide much
+  information and it appears that these variables are not associated in any way, but we observe
+  an outlying observation for <c>moisture_percentage</c> around zero. The plot of
+  <c>total_cup_points</c> versus <c>continent_of_origin</c> (bottom row, fourth plot from the
+  left) shows four histograms, one for each factor level; the fourth group seems to have a
+  larger dispersion, even though the number of observations seems smaller. The associated
+  boxplots connecting these two variables (fourth row, rightmost plot) suggest that the first
+  level of the factor (<q>Africa</q>) has a higher mean cup points than the other three. It is
+  often useful to also find any linear associations between numerical regressors as is the case
+  for the scatterplot for aroma against flavor which suggests a strong positive linear
+  association. By contrast, almost no relationship can be found when observing
+  <c>moisture_percentage</c> against either <c>aroma</c> or <c>flavor</c>.
+</p>
+<p>
+  The function <c>ggpairs()</c> not only produces these plots, but includes the correlation
+  coefficient for any pair of numerical variables. In this example, the correlation coefficients
+  support the findings from using the scatterplot matrix. The correlations between
+  <c>total_cup_points</c> and <c>aroma</c> (0.87) and <c>total_cup_points</c> and <c>flavor</c>
+  (0.94) are positive and close to one, suggesting a strong positive linear association. Recall
+  that the correlation coefficient is relevant if the association is approximately linear. The
+  correlation between <c>moisture_percentage</c> and any other variable is close to zero,
+  suggesting that <c>moisture_percentage</c> is likely not linearly associated with any other
+  variable (either response or regressor). Note also that the correlation between <c>aroma</c>
+  and <c>flavor</c> (0.82) supports our conclusion of a strong positive association.
+</p>
     </subsection>
 
 
     <subsection xml:id="least-squares-multiple">
       <title>Least squares for multiple regression</title>
+<p>
+  Observe that we have three numerical regressors and one factor (<c>continent_of_origin</c>)
+  with four levels: <q>Africa</q>, <q>Asia</q>, <q>North America</q>, and <q>South America</q>.
+  To introduce the factor levels in the linear model, we represent the factor levels using dummy
+  variables as described in <xref ref="sec-dummy-variables"/>. These are the dummy variables
+  that we need:
+  <me>
+    D_1 = \begin{cases} 1 \amp \text{if the continent of origin is Africa} \\ 0 \amp \text{otherwise} \end{cases}
+  </me>
+  <me>
+    D_2 = \begin{cases} 1 \amp \text{if the continent of origin is Asia} \\ 0 \amp \text{otherwise} \end{cases}
+  </me>
+  <me>
+    D_3 = \begin{cases} 1 \amp \text{if the continent of origin is North America} \\ 0 \amp \text{otherwise} \end{cases}
+  </me>
+  <me>
+    D_4 = \begin{cases} 1 \amp \text{if the continent of origin is South America} \\ 0 \amp \text{otherwise} \end{cases}
+  </me>
+  Recall also that we drop the first level as this level will be accounted by the intercept in
+  the model. As we did in the simple linear case, we assume that linearity between the response
+  and the regressors holds and apply the linear model described in <xref ref="sec-multiple-regression-model"/>
+  to each observation in the sample. If we express the model in terms of the <m>i</m>th
+  observation, we get
+  <me>y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3} + \beta_{02} D_{i2} + \beta_{03} D_{i3} + \beta_{04} D_{i4} + \epsilon_i</me>
+  where, for the <m>i</m>th observation in the sample, <m>x_{i1}</m> represents the aroma
+  score, <m>x_{i2}</m> the flavor score, <m>x_{i3}</m> the <c>moisture_percentage</c>,
+  <m>D_{i2}</m> the dummy variable for Asia, <m>D_{i3}</m> the dummy variable for North
+  America, and <m>D_{i4}</m> the dummy variable for South America. Recall that <m>i</m> is the
+  subscript that represents any one observation in the sample. Alternatively, we could present
+  the model for all the observations:
+  <md>
+    <mrow>y_1 \amp = \beta_0 + \beta_1 x_{11} + \beta_2 x_{12} + \beta_3 x_{13} + \beta_{02} D_{12} + \beta_{03} D_{13} + \beta_{04} D_{14} + \epsilon_1</mrow>
+    <mrow>y_2 \amp = \beta_0 + \beta_1 x_{21} + \beta_2 x_{22} + \beta_3 x_{23} + \beta_{02} D_{22} + \beta_{03} D_{23} + \beta_{04} D_{24} + \epsilon_2</mrow>
+    <mrow>\amp \vdots</mrow>
+    <mrow>y_n \amp = \beta_0 + \beta_1 x_{n1} + \beta_2 x_{n2} + \beta_3 x_{n3} + \beta_{02} D_{n2} + \beta_{03} D_{n3} + \beta_{04} D_{n4} + \epsilon_n</mrow>
+  </md>
+</p>
+<p>
+  The extension of the least-squares method applied to multiple regression follows. We want to
+  retrieve the coefficient estimators that minimize the sum of squared residuals:
+  <me>\sum_{i=1}^{n} \left[ y_i - \left( \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3} + \beta_{02} D_{i2} + \beta_{03} D_{i3} + \beta_{04} D_{i4} \right) \right]^2.</me>
+  This optimization problem is similar to the simple linear case, and it is solved using
+  calculus. We have more equations to deal with now; seven equations in our coffee example, each
+  connected with the coefficient estimators that need to be estimated. The solutions to this
+  problem are reached by using matrices and matrix calculus, and are the regression coefficients
+  introduced in <xref ref="sec-multiple-regression"/> and <xref ref="sec-dummy-variables"/>.
+  They are called the least-squares estimators: <m>b_0</m> is the least-square estimator of
+  <m>\beta_0</m>, <m>b_1</m> is the least-square estimator of <m>\beta_1</m>, etc.
+</p>
+<p>
+  The fitted values, residuals, estimator of the variance (<m>s^2</m>), and standard deviation
+  (<m>s</m>), are direct extensions to the simple linear case. In the general case, with
+  <m>p</m> regressors, the fitted values are
+  <me>\hat{y}_i = b_0 + b_1 x_{i1} + b_2 x_{i2} + \cdots + b_p x_{ip},</me>
+  the residuals are <m>e_i = y_i - \hat{y}_i</m>, and the model variance estimator is
+  <me>s^2 = \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{n - p}</me>
+  where <m>p</m> is the number of coefficients. When applying these formulas to the coffee
+  scores example, the fitted values are
+  <me>\hat{y}_i = b_0 + b_1 x_{i1} + b_2 x_{i2} + b_3 x_{i3} + b_{02} D_{i2} + b_{03} D_{i3} + b_{04} D_{i4},</me>
+  the variance estimator is
+  <me>s^2 = \frac{\sum_{i=1}^{n}\left[y_i - \left(b_0 + b_1 x_{i1} + b_2 x_{i2} + b_3 x_{i3} + b_{02} D_{i2} + b_{03} D_{i3} + b_{04} D_{i4}\right)\right]^2}{n - 7} = \frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{n - 7},</me>
+  and the standard deviation estimator is
+  <me>s = \sqrt{\frac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{n - 7}}.</me>
+</p>
+<p>
+  When we think about the least-square estimators as random variables that depend on the random
+  sample taken, the properties of these estimators are a direct extension of the properties
+  presented for the simple linear case:
+  <ul>
+    <li>The least-square estimators are unbiased estimators of the parameters of the model. For
+    example, if we choose <m>\beta_1</m> (the estimator for the partial slope for aroma), then
+    the expected value is equal to the parameter, <m>E(b_1) = \beta_1</m>. This means that for
+    some random samples the estimated value <m>b_1</m> will be greater than <m>\beta_1</m>, and
+    for others less than <m>\beta_1</m>; but, on average, <m>b_1</m> will be equal to
+    <m>\beta_1</m>.</li>
+    <li>The least-square estimators are linear combinations of the observed responses
+    <m>y_1, y_2, \ldots, y_n</m>. For <m>b_3</m>, for example, there are known constants
+    <m>c_1, c_2, \ldots, c_n</m> such that <m>b_1 = \sum_{i=1}^{n} c_i y_i</m>.</li>
+  </ul>
+</p>
+<p>
+  When using the <c>lm()</c> function, all the necessary calculations are done in R. In
+  <xref ref="tab-regtable-coffee"/>, for the coffee example, we get:
+</p>
 
-      <p>
-        We have three numerical regressors and one factor (<c>continent_of_origin</c>) with
-        four levels: <c>"Africa"</c>, <c>"Asia"</c>, <c>"North America"</c>, and
-        <c>"South America"</c>. To introduce the factor levels in the linear model, we
-        represent them using dummy variables. We need:
-      </p>
-      <md>
-        <mrow>D_1 &amp;= 1 \text{ if Africa, } 0 \text{ otherwise}</mrow>
-        <mrow>D_2 &amp;= 1 \text{ if Asia, } 0 \text{ otherwise}</mrow>
-        <mrow>D_3 &amp;= 1 \text{ if North America, } 0 \text{ otherwise}</mrow>
-        <mrow>D_4 &amp;= 1 \text{ if South America, } 0 \text{ otherwise}</mrow>
-      </md>
-      <p>
-        Recall that we drop the first level (<c>Africa</c>) as it is accounted for by the
-        intercept. The linear model for the <m>i</m>th observation is:
-      </p>
-      <me>
-        y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \beta_3 x_{i3}
-              + \beta_{02}D_{i2} + \beta_{03}D_{i3} + \beta_{04}D_{i4} + \epsilon_i
-      </me>
-      <p>
-        where <m>x_{i1}</m> is <c>aroma</c>, <m>x_{i2}</m> is <c>flavor</c>,
-        <m>x_{i3}</m> is <c>moisture_percentage</c>, and <m>D_{i2}</m>, <m>D_{i3}</m>,
-        <m>D_{i4}</m> are the dummy variables for <c>Asia</c>, <c>North America</c>, and
-        <c>South America</c>, respectively.
-      </p>
-      <p>
-        We want the coefficient estimators that minimize the <em>sum of squared residuals</em>:
-      </p>
-      <me>
-        \sum_{i=1}^n \left[y_i - (\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2}
-        + \beta_3 x_{i3}+ \beta_{02}D_{i2} + \beta_{03}D_{i3} + \beta_{04}D_{i4})\right]^2.
-      </me>
-      <p>
-        These are the <term>least-squares estimators</term> for multiple regression. The
-        fitted values, residuals, and model standard deviation are direct extensions of
-        those in the simple linear case:
-      </p>
-      <me>
-        \widehat{y}_i = b_0 + b_1 x_{i1} + b_2 x_{i2} + \dots + b_p x_{ip},
-        \quad
-        e_i = y_i - \widehat{y}_i,
-        \quad
-        s^2 = \frac{\sum_{i=1}^n (y_i - \widehat{y}_i)^2}{n - p}.
-      </me>
-      <p>
-        In R, all these calculations are done when using the <c>lm()</c> function:
-      </p>
-            <program language="r">
+<program language="r">
         <input>
 # Fit regression model:
 mod_mult &lt;- lm(
@@ -2474,12 +2585,6 @@ coef(mod_mult)
 sigma(mod_mult)
         </input>
       </program>
-
-      <console prompt="> ">
-        <output>
-[1] 0.5066865
-        </output>
-      </console>
 
       <table xml:id="tab-regtable-coffee">
         <title>Coffee quality multiple regression coefficients</title>
@@ -2522,53 +2627,54 @@ sigma(mod_mult)
           </row>
         </tabular>
       </table>
-      <p>
-        Recall that the numerical regressors' coefficients (<m>b_1</m>, <m>b_2</m>, and
-        <m>b_3</m>) are partial slopes, each representing the extra effect of increasing the
-        corresponding regressor by one unit while keeping all other regressors fixed. For
-        example, if we increase the <c>flavor</c> score by one unit keeping all other
-        regressors fixed, the <c>total_cup_points</c> would increase by the corresponding
-        coefficient, on average. This interpretation is only valid for this particular model.
-        If we change the regressors used, the partial slope for <c>flavor</c> will be
-        different in magnitude and meaning.
-      </p>
-      <p>
-        In addition, observe that <c>mod_mult</c> is a model without interactions. The
-        coefficients for factor levels of <c>continent_of_origin</c> (<m>b_{02}</m>,
-        <m>b_{03}</m>, and <m>b_{04}</m>) affect only the intercept of the model, based on
-        the category of the observation. Recall that the factor levels, in order, are
-        <c>Africa</c>, <c>Asia</c>, <c>North America</c>, and <c>South America</c>. For
-        example, if the fifth observation's continent of origin is South America
-        (<m>D_{04} = 1</m> and <m>D_{02} = D_{03} = 0</m>), the regression formula is:
-      </p>
-      <md>
-        <mrow>\widehat{y}_5 &amp;= b_0 + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}
-              + b_{02}D_{52} + b_{03}D_{53} + b_{04}D_{54}</mrow>
-        <mrow>&amp;= b_0 + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}
-              + b_{02}\cdot 0 + b_{03}\cdot 0 + b_{04}\cdot 1</mrow>
-        <mrow>&amp;= (b_0 + b_{04}) + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}</mrow>
-      </md>
-      <p>
-        and the regression intercept for this observation is estimated to be
-        <m>b_0 + b_{04} = 37.300 + (-0.478) = 36.822</m>.
-      </p>
-      <p>
-        We typically do not expect the scores of all regressors to be zero, but you can always
-        check the range of values that your regressors take. For <c>mod_mult</c> the range of
-        regressors can be extracted by using <c>tidy_summary()</c>. In the following code,
-        using the <c>coffee_data</c> dataset, we select the numerical regressors, use
-        <c>tidy_summary()</c>, and select the <c>column</c> name, <c>min</c>, and <c>max</c>
-        to get the range for all regressors:
-      </p>
-      <program language="r">
-        <input>
+
+<p>
+  If the linear model is appropriate, we can interpret these coefficients as we did in
+  <xref ref="sec-multiple-regression"/> and <xref ref="sec-interaction-model"/>. Recall that
+  the numerical regressors' coefficients (<m>b_1</m>, <m>b_2</m>, and <m>b_3</m>) are partial
+  slopes, each representing the extra effect (or additional effect) of increasing the
+  corresponding regressor by one unit while keeping all the other regressors fixed to some
+  value. For example, using <c>mod_mult</c>, if for a given observation we increase the flavor
+  score by one unit, keeping all the other regressors fixed to some level, the
+  <c>total_cup_points</c> would increase by 4.32 units, on average. This interpretation is only
+  valid for the linear regression model <c>mod_mult</c>. If we decide to change the regressors
+  used, add some or remove others, the model changes and the partial slope for flavor will be
+  different in magnitude and in meaning; do not forget that the partial slope is the additional
+  contribution of flavor when added to a model that includes all the other regressors for that
+  particular model.
+</p>
+<p>
+  In addition, observe that <c>mod_mult</c> is a model without interactions, similar to the
+  model described in <xref ref="sec-parallel-slopes"/>. The coefficients for factor levels of
+  <c>continent_of_origin</c> (<m>b_{02}</m>, <m>b_{03}</m>, and <m>b_{04}</m>) affect only
+  the intercept of the model, based on the category of the observation in question. Recall that
+  the factor levels, in order, are Africa, Asia, North America, and South America. For example,
+  if the fifth observation's continent of origin is South America (<m>D_{04} = 1</m> and
+  <m>D_{02} = D_{03} = 0</m>), the regression formula is given by
+  <md>
+    <mrow>\hat{y}_5 \amp = b_0 + b_1 x_{51} + b_2 x_{52} + b_3 x_{53} + b_{02} D_{52} + b_{03} D_{53} + b_{04} D_{54}</mrow>
+    <mrow>\amp = b_0 + b_1 x_{51} + b_2 x_{52} + b_3 x_{53} + b_{02} \cdot 0 + b_{03} \cdot 0 + b_{04} \cdot 1</mrow>
+    <mrow>\amp = (b_0 + b_{04}) + b_1 x_{51} + b_2 x_{52} + b_3 x_{53}</mrow>
+  </md>
+  and the regression intercept for this observation is estimated to be
+  <me>b_0 + b_{04} = 37.32 + (-0.48) = 36.84.</me>
+</p>
+<p>
+  We typically do not expect the scores of all regressors to be zero, but you can always check
+  the range of values that your regressors take. For <c>mod_mult</c> the range of regressors
+  can be extracted by using <c>tidy_summary()</c>. In the following code, using the
+  <c>coffee_data</c> dataset, we select the numerical regressors, use <c>tidy_summary()</c>,
+  and select column name, min, and max to get the range for all regressors
+</p>
+
+<program language="r">
+  <input>
 coffee_data |>
   select(aroma, flavor, moisture_percentage) |>
   tidy_summary() |>
   select(column, min, max)
-        </input>
-      </program>
-
+  </input>
+</program>
       <console prompt="> ">
         <output>
 # A tibble: 3 × 3
@@ -2579,12 +2685,18 @@ coffee_data |>
 3 moisture_percentage   0    13.5 
         </output>
       </console>
-      <p>
-        As we see, only <c>moisture_percentage</c> includes zero in its range, and we would
-        need all numerical regressors to include zero in order for the intercept to have a
-        special meaning in the context of the problem. Observe that we have decided to use
-        only a subset of regressors and construct a model without interactions.
-      </p>
+
+<p>
+  As we see, only <c>moisture_percentage</c> includes zero in its range, and we would need all
+  numerical regressors to include zero in order for the intercept to have a special meaning in
+  the context of the problem.
+</p>
+<p>
+  Observe that we have decided to use only a subset of regressors and construct a model without
+  interactions. We discuss in <xref ref="sec-model-selection"/> how we could determine what is
+  the best subset of regressors to use when many are available. We are now ready to discuss
+  inference for multiple linear regression.
+</p>
 
       <exercises>
         <exercise xml:id="lc10-15">
@@ -2661,31 +2773,57 @@ coffee_data |>
   <section xml:id="theory-multiple-regression">
     <title>Theory-based inference for multiple linear regression</title>
 
-    <p>
-      In this section, we introduce the conceptual framework for inference in multiple linear
-      regression. Inference for multiple linear regression is a natural extension of inference
-      for simple linear regression. Recall the linear model for the <m>i</m>th observation:
-    </p>
-    <me>
-      y_i = \beta_0 + \beta_1 \cdot x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i.
-    </me>
-    <p>
-      We again assume the error term is normally distributed:
-      <m>\epsilon_i \sim \text{Normal}(0, \sigma)</m>.
-      It follows that:
-    </p>
-    <me>
-      y_i \sim \text{Normal}(\beta_0 + \beta_1 \cdot x_{i1} + \dots + \beta_p x_{ip},\, \sigma)
-    </me>
-    <p>
-      for <m>i=1,\dots,n</m>. The least-squares estimators <m>b_0, b_1, \dots, b_p</m> are
-      linear combinations of normally distributed random variables, so they are also normally
-      distributed. The standard deviation of each estimator <m>b_j</m> is a function of
-      <m>\sigma</m> and the observed data; when we estimate <m>\sigma</m> with <m>s</m>, the
-      resulting estimated standard deviation is called the <term>standard error</term>
-      <m>SE(b_j)</m>. The regression table produced by
-      <c>get_regression_table()</c> contains these standard errors:
-    </p>
+<p>
+  In this section, we introduce some of the conceptual framework needed to understand inference
+  in multiple linear regression. We illustrate this framework using the coffee example and the
+  R function <c>get_regression_table()</c> introduced in <xref ref="sec-regression-table"/>.
+</p>
+<p>
+  Inference for multiple linear regression is a natural extension of inference for simple linear
+  regression. Recall that the linear model, for the <m>i</m>th observation is given by
+  <me>y_i = \beta_0 + \beta_1 \cdot x_{i1} + \cdots + \beta_p x_{ip} + \epsilon_i.</me>
+  We assume again that the error term is normally distributed with an expected value (mean)
+  equal to zero and a standard deviation equal to <m>\sigma</m>:
+  <me>\epsilon_i \sim \text{Normal}(0, \sigma).</me>
+  Since the error term is the only random element in the linear model, the response <m>y_i</m>
+  results from the sum of a constant
+  <me>\beta_0 + \beta_1 \cdot x_{i1} + \cdots + \beta_p x_{ip}</me>
+  and a random variable: the error term <m>\epsilon_i</m>. Using properties of the normal
+  distribution, the expected value, and the variance (and standard deviation), it can be shown
+  that <m>y_i</m> is also normally distributed with mean equal to
+  <m>\beta_0 + \beta_1 \cdot x_{i1} + \cdots + \beta_p x_{ip}</m> and standard deviation
+  equal to <m>\sigma</m>:
+  <me>y_i \sim \text{Normal}(\beta_0 + \beta_1 \cdot x_{i1} + \cdots + \beta_p x_{ip}, \sigma)</me>
+  for <m>i = 1, \ldots, n</m>. We also assume that <m>\epsilon_i</m> and <m>\epsilon_j</m> are
+  independent, so <m>y_i</m> and <m>y_j</m> are also independent for any <m>i \neq j</m>.
+  Moreover, the least-squares estimators <m>(b_0, b_1, \ldots, b_p)</m> are linear combinations
+  of the random variables <m>y_1, \ldots, y_n</m> which are normally distributed, as shown
+  above. Again, following properties of the normal distribution, the expected value, and the
+  variance it can be shown that
+  <ul>
+    <li>the (least-square) estimators follow a normal distribution,</li>
+    <li>the estimators are unbiased, meaning that the expected value for each estimator is the
+    parameter they are estimating; for example, <m>E(b_1) = \beta_1</m>, or in general
+    <m>E(b_j) = \beta_j</m> for <m>j = 0, 1, \ldots, p</m>.</li>
+    <li>the variance and standard deviation of each estimator (<m>b_j</m>), is a function of
+    <m>\sigma</m>, and the observed data for the explanatory variable (the values of the
+    regressors in the sample). For simplicity, the standard deviation of the estimator
+    <m>b_j</m> is denoted by <m>SD(b_j)</m> but remember that it is a function of the standard
+    deviation of the response (<m>\sigma</m>).</li>
+    <li>Using the information above, the distribution of the (least-squares) estimator
+    <m>b_j</m> is given by
+    <me>b_j \sim \text{Normal}(\beta_j, SD(b_j))</me>
+    for <m>j = 1, \ldots, p</m>. Note also that <m>\sigma</m> is typically unknown, and it is
+    estimated using the estimated standard deviation <m>s</m> instead of <m>\sigma</m>. The
+    estimated standard deviation for <m>b_j</m> is called the standard error of <m>b_j</m> and
+    written as <m>SE(b_j)</m>. Again, remember that the standard error is a function of
+    <m>s</m>.</li>
+  </ul>
+</p>
+<p>
+  The standard errors are shown when applying the <c>get_regression_table()</c> function on a
+  regression model. The output for the model <c>mod_mult</c> in the output below.
+</p>
         <program language="r">
       <input>
 get_regression_table(mod_mult)
@@ -2707,41 +2845,48 @@ get_regression_table(mod_mult)
       </output>
     </console>
 
+<p>
+  We can see that the standard error for the numerical regressors are <m>SE(b_1) = 0.22</m>,
+  <m>SE(b_2) = 0.23</m>, and <m>SE(b_3) = 0.03</m>.
+</p>
 
     <subsection xml:id="model-dependency">
       <title>Model dependency of estimators</title>
+<p>
+  Many inference methods and results for multiple linear regression are a direct extension of
+  the methods and results discussed in simple linear regression. The most important difference
+  is the fact that the least-square estimators represent partial slopes and their values are
+  dependent on the other regressors in the model. If we change the set of regressors used in a
+  model, the least-squares estimates and its standard errors will likely change as well. And
+  these changes will lead to different confidence interval limits, different test statistics for
+  hypothesis tests, and potentially different conclusions about those regressors.
+</p>
+<p>
+  Using the <c>coffee_data</c> example, suppose that we consider the model:
+  <me>y_i = \beta_0 + \beta_1 \cdot x_{i1} + \beta_2 \cdot x_{i2} + \beta_3 x_{i3} + \epsilon_i</me>
+  where <m>\beta_1</m>, <m>\beta_2</m>, and <m>\beta_3</m>, are the parameters for the partial
+  slopes of aroma, flavor, and <c>moisture_percentage</c>, respectively. Recall that we assume
+  that the parameters <m>\beta_1</m>, <m>\beta_2</m>, and <m>\beta_3</m> are constants, unknown
+  to us, but constants. We use multiple linear regression and find the least-square estimates
+  <m>b_1</m>, <m>b_2</m>, and <m>b_3</m>, respectively. The results using the <c>coffee_data</c>
+  are calculated and stored in the object <c>mod_mult_1</c> and shown in
+  <xref ref="tab-coffee-three-regressors"/>:
+</p>
 
-      <p>
-        The most important difference between multiple and simple linear regression inference
-        is that the least-squares estimators represent <em>partial</em> slopes whose values
-        depend on the other regressors in the model. If we change the set of regressors, the
-        least-squares estimates and their standard errors will likely change as well, leading
-        to different confidence intervals, different test statistics, and potentially different
-        conclusions.
-      </p>
-      <p>
-        Using the <c>coffee_data</c> example, suppose we consider a model with only three
-        numerical regressors (dropping <c>continent_of_origin</c>):
-      </p>
-            <program language="r">
-        <input>
-# Model with three numerical regressors:
+<program language="r">
+  <code>
+# Fit regression model:
 mod_mult_1 &lt;- lm(
-  total_cup_points ~ aroma + flavor + moisture_percentage,
+  total_cup_points ~ aroma + flavor + moisture_percentage, 
   data = coffee_data)
+
+# Get the coefficients of the model
 coef(mod_mult_1)
 sigma(mod_mult_1)
-        </input>
-      </program>
-
-      <console prompt="> ">
-        <output>
-[1] 0.5208255
-        </output>
-      </console>
-
-      <table xml:id="tab-regtable-coffee-mult-1">
-        <title>Coffee quality regression coefficients for three-regressor model</title>
+  </code>
+</program>
+      <table xml:id="tab-coffee-three-regressors">
+        <title>Coffee example linear regression coefficients with three regressors</title>
         <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
@@ -2749,7 +2894,7 @@ sigma(mod_mult_1)
           </row>
           <row>
             <cell><m>b_0</m></cell>
-            <cell>36.750</cell>
+            <cell>36.778</cell>
           </row>
           <row>
             <cell><m>b_1</m></cell>
@@ -2769,10 +2914,16 @@ sigma(mod_mult_1)
           </row>
         </tabular>
       </table>
-      <p>
-        Now consider a further reduced model without the regressor <c>flavor</c>:
-      </p>
-            <program language="r">
+<p>
+  Now, assume that we decide instead to construct a model without the regressor flavor, so our
+  model is
+  <me>y_i = \beta_0 + \beta_1 \cdot x_{i1} + \beta_3 \cdot x_{i3} + \epsilon_i.</me>
+  Using multiple regression we compute the least-square estimates <m>b'_1</m> and <m>b'_3</m>,
+  respectively, with the <m>'</m> denoting potentially different coefficient values in this
+  different model. The results using the <c>coffee_data</c> are calculated and stored in the
+  object <c>mod_mult_2</c> and shown in <xref ref="tab-coffee-two-regressors"/>:
+</p>
+<program language="r">
         <input>
 # Model without flavor:
 mod_mult_2 &lt;- lm(
@@ -2782,14 +2933,8 @@ sigma(mod_mult_2)
         </input>
       </program>
 
-      <console prompt="> ">
-        <output>
-[1] 0.8571982
-        </output>
-      </console>
-
-      <table xml:id="tab-regtable-coffee-mult-2">
-        <title>Coffee quality regression coefficients for two-regressor model</title>
+      <table xml:id="tab-coffee-two-regressors">
+        <title>Coffee example linear regression coefficients with two regressors</title>
         <tabular>
           <row header="yes">
             <cell>Coefficients</cell>
@@ -2813,38 +2958,79 @@ sigma(mod_mult_2)
           </row>
         </tabular>
       </table>
-      <p>
-        The partial slope for <c>aroma</c> in <c>mod_mult_1</c> differs from the partial
-        slope for <c>aroma</c> in <c>mod_mult_2</c> because the models are different.
-        Similarly, every other coefficient, the standard deviation estimate, and inferential
-        results can differ. Any results and interpretations are only valid for the model
-        used — never assume a conclusion from one model translates to a different model.
-      </p>
-    </subsection>
-
+<p>
+  We focus on the partial slope for aroma using both models. Observe that in model
+  <c>mod_mult_1</c>, the partial slope for aroma is <m>b_1 = 1.8</m>. In model
+  <c>mod_mult_2</c>, the partial slope for aroma is <m>b'_1 = 5.23</m>. The results are truly
+  different because the models used in each case are different. Similarly, every other
+  coefficient found is different, the standard deviation estimate is different, and it is
+  possible that the inferential results for confidence intervals or hypothesis tests are
+  different too!
+</p>
+<p>
+  Any results, conclusions, and interpretations of a regressor are only valid for the model
+  used. For example, interpretations or conclusions made about aroma and its effects or
+  influence in <c>total_cup_points</c> are entirely dependent on whether we have used
+  <c>mod_mult_1</c>, <c>mod_mult_2</c>, or another model. Never assume that a conclusion from
+  using one model can translate to a different model.
+</p>
+<p>
+  In addition, it is important to determine which model is the most adequate. Clearly, not both
+  <c>mod_mult_1</c> and <c>mod_mult_2</c> can be correct, and we would like to use the one
+  that is the most appropriate. What if neither <c>mod_mult_1</c> nor <c>mod_mult_2</c> are
+  adequate, and we should use another model instead? There are two areas in inferential
+  statistics that address these questions. The first area works with comparisons between two
+  models, one using a subset of regressors from the other, as in the coffee example where
+  <c>mod_mult_1</c> used the regressors aroma, flavor and moisture_percentage while
+  <c>mod_mult_2</c> used only two of those regressors: aroma and moisture_percentage. We
+  discuss methods addressing this comparison in <xref ref="sec-model-comparison"/>. The second
+  area is called model selection or variable selection and uses alternative methods to determine
+  which model, out of the possible available is the most adequate.
+</p>
+</subsection>
 
     <subsection xml:id="ci-multiple-regression">
       <title>Confidence intervals</title>
-
-      <p>
-        A 95% confidence interval for any coefficient in multiple linear regression is
-        constructed in exactly the same way as for simple linear regression:
-        <m>b_j \pm q \cdot SE(b_j)</m>, where the critical value <m>q</m> is determined
-        by the confidence level and degrees of freedom <m>n - p</m>.
-      </p>
-      <p>
-        For the coffee example with model <c>mod_mult</c>: three numerical regressors,
-        one four-level factor (three dummy variables), and an intercept give
-        <m>p = 7</m> coefficients. The 95% CI for the partial slope of <c>aroma</c>
-        (<m>\beta_1</m>) is:
-      </p>
-      <me>
-        b_1 \pm q \cdot SE(b_1).
-      </me>
-      <p>
-        We can compute 98% confidence intervals for all coefficients by passing
-        <c>conf.level = 0.98</c> to <c>get_regression_table()</c>:
-      </p>
+<p>
+  A 95% confidence interval for any coefficient in multiple linear regression is constructed in
+  exactly the same way as we did for simple linear regression, but we should always interpret
+  them as dependent on the model for which they were attained.
+</p>
+<p>
+  For example, the formula for a 95% confidence interval for <m>\beta_1</m> is given by
+  <m>b_1 \pm q \cdot SE_{b_1}(s)</m> where the critical value <m>q</m> is determined by the
+  level of confidence required, the sample size used (<m>n</m>), and the corresponding degrees
+  of freedom needed for the <m>t</m>-distribution (<m>n - p</m>). In the coffee example, the
+  model <c>mod_mult</c> contains
+  <ul>
+    <li>three numerical regressors (aroma, flavor, and moisture_content),</li>
+    <li>one factor (continent_of_origin),</li>
+    <li>the confidence level is 95%,</li>
+    <li>the sample size is <m>n = 207</m>,</li>
+    <li>the number of regression coefficients is <m>p = 7</m>:
+      <ul>
+        <li>one intercept (<m>b_0</m>),</li>
+        <li>three partial slopes for aroma, flavor and moisture_content (<m>b_1</m>,
+        <m>b_2</m>, and <m>b_3</m>), and</li>
+        <li>three coefficients for the factor levels in the model (<m>b_{02}</m>,
+        <m>b_{03}</m>, and <m>b_{04}</m>).</li>
+      </ul>
+    </li>
+  </ul>
+  So the degrees of freedom are <m>n - p = 207 - 7 = 200</m>.
+</p>
+<p>
+  The 95% confidence interval for the partial slope of <m>b_1</m> aroma is determined by
+  <me>b_1 \pm q \cdot SE(b_1) = 1.73 \pm 1.97 \cdot 0.22 = (1.29, 2.17)</me>
+  The interpretation of this interval is the customary: <q>We are 95% confident that the
+  population partial slope for aroma (<m>\beta_1</m>) in the model <c>mod_mult</c> is a number
+  between 1.29 and 2.17.</q>
+</p>
+<p>
+  We find these values using <c>get_regression_table()</c> in model <c>mod_mult</c>. This time,
+  however, we add the argument <c>conf.level = 0.98</c> to get 98% confidence intervals as
+  shown in the output below.
+</p>
             <program language="r">
         <input>
 get_regression_table(mod_mult, conf.level = 0.98)
@@ -2868,32 +3054,50 @@ get_regression_table(mod_mult, conf.level = 0.98)
       <p>
         The interpretation for the <c>flavor</c> coefficient, for example, is: <q>We are 98%
         confident that the value of <m>\beta_2</m> (the population partial slope for
-        <c>flavor</c>) is between the reported lower and upper bounds.</q>
+        <c>flavor</c>) is between 3.79 and 4.85.</q>
       </p>
     </subsection>
 
 
     <subsection xml:id="hypo-test-mult-lm">
       <title>Hypothesis test for a single coefficient</title>
+<p>
+  The hypothesis test for one coefficient, say <m>\beta_1</m> in the model, is similar to the
+  one for simple linear regression. The general formulation for a two-sided test is
+  <md>
+    <mrow>H_0: \amp \beta_1 = B \text{ with } \beta_0, \beta_2, \ldots, \beta_p \text{ given and arbitrary.}</mrow>
+    <mrow>H_A: \amp \beta_1 \neq B \text{ with } \beta_0, \beta_2, \ldots, \beta_p \text{ given and arbitrary.}</mrow>
+  </md>
+  where <m>B</m> is the hypothesized value for <m>\beta_1</m>. We make emphasis in stating that
+  <m>\beta_0, \beta_2, \ldots, \beta_p</m> are given but arbitrary to acknowledge that the test
+  only matters in the context of the appropriate model. Also notice, that we can perform a test
+  not only for <m>\beta_1</m> but for any other parameter.
+</p>
+<p>
+  As we did for simple linear regression, the most commonly used test is the one where we check
+  if <m>\beta_j = 0</m> for any <m>j = 0, 1, \ldots, p</m>. For <m>\beta_1</m> the two-sided
+  test would be:
+  <md>
+    <mrow>H_0: \amp \beta_1 = 0 \text{ with } \beta_0, \beta_2, \ldots, \beta_p \text{ given and arbitrary}</mrow>
+    <mrow>H_A: \amp \beta_1 \neq 0 \text{ with } \beta_0, \beta_2, \ldots, \beta_p \text{ given and arbitrary}</mrow>
+  </md>
+  In simple linear regression, testing for <m>\beta_1 = 0</m> was testing to determine if there
+  was a linear relationship between the response and the only regressor. Now, testing for
+  <m>\beta_1 = 0</m> is testing whether the corresponding regressor should be part of a linear
+  model that already contains all the other regressors.
+</p>
+<p>
+  This test can be performed with any of the partial slope parameters. For example, we use the
+  coffee example and model <c>mod_mult_1</c> (the model with only three numerical regressors)
+  and perform a test for <m>\beta_2</m> (the population partial slope for regressor flavor).
+  The hypotheses are:
+  <md>
+    <mrow>H_0: \amp \beta_2 = 0 \text{ with } \beta_0, \beta_1, \beta_3, \beta_{02}, \beta_{03}, \beta_{04} \text{ given and arbitrary.}</mrow>
+    <mrow>H_A: \amp \beta_2 \neq 0 \text{ with } \beta_0, \beta_1, \beta_3, \beta_{02}, \beta_{03}, \beta_{04} \text{ given and arbitrary.}</mrow>
+  </md>
+  The relevant code is shown as follows with the output:
+</p>
 
-      <p>
-        The hypothesis test for one coefficient, say <m>\beta_j</m>, is similar to that for
-        simple linear regression. The general two-sided test is:
-      </p>
-      <md>
-        <mrow>H_0&amp;: \beta_j = 0 \quad \text{with all other parameters given and arbitrary}</mrow>
-        <mrow>H_A&amp;: \beta_j \ne 0 \quad \text{with all other parameters given and arbitrary.}</mrow>
-      </md>
-      <p>
-        In simple linear regression, testing <m>\beta_1 = 0</m> was testing whether there
-        was a linear relationship between the response and the only regressor. Now, testing
-        <m>\beta_j = 0</m> is testing whether the corresponding regressor should be part of
-        a linear model that already contains all the other regressors.
-      </p>
-      <p>
-        For example, using model <c>mod_mult_1</c> and testing <m>\beta_2 = 0</m>
-        (the partial slope for <c>flavor</c>):
-      </p>
             <program language="r">
         <input>
 get_regression_table(mod_mult_1)
@@ -2911,35 +3115,69 @@ get_regression_table(mod_mult_1)
 4 moisture_percentage   -0.015     0.029    -0.499   0.618   -0.072    0.043
         </output>
       </console>
-      <p>
-        The <m>t</m>-test statistic is <m>t = b_2 / SE(b_2)</m>; the associated
-        <m>p</m>-value is near zero, so we reject <m>H_0</m> and conclude that
-        <c>flavor</c> is statistically significant when added to a model that already
-        contains <c>aroma</c> and <c>moisture_percentage</c>. By contrast, <c>moisture_percentage</c>
-        is not statistically significant in that model, suggesting we can remove it.
-      </p>
+<p>
+  The <m>t</m>-test statistic is
+  <me>t = \frac{b_2 - 0}{SE(b_2)} = \frac{4.28 - 0}{0.23} = 18.7</me>
+  and using this test statistic, the associated <m>p</m>-value is near zero and R only shows
+  the output as zero. We have enough evidence to reject the null hypothesis that <m>\beta_2 = 0</m>.
+  Recall that when we reject the null hypothesis we say that the result was statistically
+  significant, and we have enough evidence to conclude the alternative hypothesis
+  (<m>\beta_2 \neq 0</m>). This implies that changes in flavor score provide information about
+  the <c>total_cup_points</c> when flavor is added to a model that already contains aroma and
+  moisture_percentage.
+</p>
+<p>
+  <xref ref="tab-coffee-mod-mult-1"/> provides information for all the coefficients. Observe,
+  in particular, that the test for <m>\beta_1</m> (aroma) is also statistically significant but
+  the test for <m>\beta_3</m> (moisture_percentage) is not (<m>p</m>-value = 0.62). For the
+  latter, the conclusion is that there is not statistical evidence to reject the null hypothesis
+  that this partial slope was zero. In other words, we have not found evidence that adding
+  moisture_percentage to a model that already includes aroma and flavor helps explaining changes
+  in the response <c>total_cup_points</c>. We can remove the <c>moisture_percentage</c>
+  regressor from the model.
+</p>
     </subsection>
 
 
     <subsection xml:id="hypo-test-mult-lm-1">
       <title>Hypothesis test for model comparison</title>
-
-      <p>
-        There is another hypothesis test for multiple linear regression: comparing a
-        <em>full model</em> with a given set of regressors to a <em>reduced model</em> that
-        uses only a subset of those regressors. This test is called an
-        <term>ANOVA test</term><idx><h>ANOVA test</h></idx> or <m>F</m>-test, because the
-        test statistic follows an <m>F</m> distribution.
-      </p>
-      <p>
-        Using <c>coffee_data</c>, compare the full model <c>mod_mult_1</c>
-        (<c>aroma + flavor + moisture_percentage</c>) to the reduced model <c>mod_mult_2</c>
-        (<c>aroma + moisture_percentage</c>):
-      </p>
-      <md>
-        <mrow>H_0&amp;: \text{the reduced model is adequate}</mrow>
-        <mrow>H_A&amp;: \text{the full model is needed.}</mrow>
-      </md>
+<p>
+  There is another hypothesis test that can be performed for multiple linear regression, a test
+  that compares two models, one with a given set of regressors called the <term>full model</term>
+  and the other with only a subset of those regressors called the <term>reduced model</term>.
+</p>
+<p>
+  Using the <c>coffee_data</c> example, suppose that the full model is:
+  <me>Y = \beta_0 + \beta_1 \cdot X_1 + \beta_2 \cdot X_2 + \beta_3 \cdot X_3 + \epsilon</me>
+  where <m>\beta_1</m>, <m>\beta_2</m>, and <m>\beta_3</m> are the parameters for the partial
+  slopes of aroma, flavor, and <c>moisture_percentage</c>, respectively. The multiple linear
+  regression outcomes using the <c>coffee_data</c> dataset on this model are stored in the
+  object <c>mod_mult_1</c>. The reduced model does not contain the regressor flavor and is
+  given by
+  <me>Y = \beta_0 + \beta_1 \cdot X_1 + \beta_3 \cdot X_3 + \epsilon.</me>
+  The multiple linear regression output using this model is stored in the object
+  <c>mod_mult_2</c>. The hypothesis test for comparing the full and reduced models can be
+  written as:
+  <md>
+    <mrow>H_0: \amp Y = \beta_0 + \beta_1 \cdot X_1 + \beta_2 \cdot X_2 + \epsilon</mrow>
+    <mrow>H_A: \amp Y = \beta_0 + \beta_1 \cdot X_1 + \beta_2 \cdot X_2 + \beta_3 \cdot X_3 + \epsilon</mrow>
+  </md>
+  or in words:
+  <md>
+    <mrow>H_0: \amp \text{the reduced model is adequate}</mrow>
+    <mrow>H_A: \amp \text{the full model is needed}</mrow>
+  </md>
+  This test is called an <term>ANOVA test</term> or an <term><m>F</m>-test</term>, because the
+  distribution of the test statistic follows an <m>F</m> distribution. The way it works is that
+  the test compares the sum of squared residuals of both the full and reduced models and
+  determines whether the difference between these models was large enough to suggest that the
+  full model is needed.
+</p>
+<p>
+  To get the result of this test in R, we use the R function <c>anova()</c> and enter the
+  reduced model followed by the full model with the output below
+  providing information for this test.
+</p>
             <program language="r">
         <input>
 anova(mod_mult_2, mod_mult_1)
@@ -2959,15 +3197,20 @@ Model 2: total_cup_points ~ aroma + flavor + moisture_percentage
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
         </output>
       </console>
-      <p>
-        The small <m>p</m>-value leads us to reject the null hypothesis and conclude that the
-        full model (including <c>flavor</c>) was needed.
-      </p>
-      <p>
-        The ANOVA test can test more than one regressor at a time, which is especially useful
-        for factors. To test whether <c>continent_of_origin</c> should be included, compare
-        <c>mod_mult_1</c> (without the factor) to <c>mod_mult</c> (with the factor):
-      </p>
+<p>
+  The test statistic is given in the second row for the column <m>F</m>. The test statistic is
+  <m>F = 349.6</m> and the associated <m>p</m>-value is near zero. In conclusion, we reject the
+  null hypothesis and conclude that the full model was needed.
+</p>
+<p>
+  The ANOVA test can be used to test more than one regressor at a time. This is useful when you
+  have factors (categorical variables) in your model, as all the factor levels should be tested
+  simultaneously. We use our example again, this time making the full model the model with
+  factor <c>continent_of_origin</c> in addition to all three numerical regressors, and the
+  reduced model is the model without <c>continent_of_origin</c>. These models have been
+  computed already in <c>mod_mult</c> and <c>mod_mult_1</c>, respectively. The ANOVA test is
+  performed as follows with the output given in the following output:
+</p>
             <program language="r">
         <input>
 anova(mod_mult_1, mod_mult)
@@ -2987,31 +3230,44 @@ Model 2: total_cup_points ~ aroma + flavor + moisture_percentage + continent_of_
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
         </output>
       </console>
-      <p>
-        We reject the null hypothesis and conclude that it is appropriate to add
-        <c>continent_of_origin</c> to a model that already has <c>aroma</c>, <c>flavor</c>,
-        and <c>moisture_percentage</c>. When testing factors in ANOVA, all factor levels must
-        always be tested simultaneously.
-      </p>
+<p>
+  Observe in this output that the degrees of freedom are 3, because we are testing three
+  coefficients at the same time, <m>\beta_{02}</m>, <m>\beta_{03}</m>, and <m>\beta_{04}</m>.
+  When we are testing for the inclusion of a factor in the model, we always need to test all
+  the factor levels at once. Based on the output, the test statistic is <m>F = 4.83</m> and the
+  associated <m>p</m>-value is <m>0.003</m>. We reject the null hypothesis and conclude that
+  the full model was needed or, alternatively, that it is appropriate to add the factor
+  <c>continent_of_origin</c> to a model that already has aroma, flavor, and
+  moisture_percentage.
+</p>
     </subsection>
 
 
     <subsection xml:id="model-fit-mult">
       <title>Model fit and diagnostics</title>
 
-      <p>
-        As for simple linear regression, we use residuals to determine the fit of the model
-        and whether assumptions are met. In particular, the plot of residuals against the
-        fitted values should look like a null plot. In multiple regression, when the
-        residual-vs-fitted plot shows a pattern, we know that at least one assumption is
-        violated, though it is no longer immediately clear which one.
-      </p>
-      <p>
-        Using the coffee example, we have shown that <c>aroma</c>, <c>flavor</c>, and
-        <c>continent_of_origin</c> were statistically significant but <c>moisture_percentage</c>
-        was not. We create a final model <c>mod_mult_final</c> with only the relevant
-        regressors and examine residuals:
-      </p>
+<p>
+  As we did for simple linear regression we use the residuals to determine the fit of the model
+  and whether some of the assumptions are not met. In particular, we continue using the plot of
+  residuals against the fitted values and if no model violations are present the plot should be
+  close to a null plot.
+</p>
+<p>
+  While most of the treatment and interpretations are similar to those presented for simple
+  linear regression, when the plot of residuals against fitted values is not a null plot, we
+  know that there is some sort of violation to one or more of the assumptions of the model. It
+  is no longer clear what is the reason for this, but at least one assumption is not met. On
+  the other hand, if the residuals-against-fitted-values plot appears to be close to a null
+  plot, none of the assumptions have been broken and we can proceed with the use of this model.
+</p>
+<p>
+  Let's use the coffee example. Recall that we have shown that regressors aroma, flavor, and
+  <c>continent_of_origin</c> were statistically significant, but <c>moisture_percentage</c> was
+  not. So, we create a model only with the relevant regressors called <c>mod_mult_final</c>,
+  determine the residuals, and create a plot of residuals against fitted values and a QQ-plot
+  using the <c>grid.arrange()</c> function from the <c>gridExtra</c> package in
+  <xref ref="fig-grid-arrange-plot-check"/>:
+</p>
       <program language="r">
         <input>
 # Fit final model:
@@ -3042,15 +3298,20 @@ grid.arrange(g1, g2, ncol = 2)
         </image>
       </figure>
 
-      <p>
-        The plot of residuals against fitted values (left) in <xref ref="fig-grid-arrange-plot-check"/> appears to be close to a null
-        plot, supporting the <em>L</em>inearity condition. The <em>E</em>qual or constant
-        variance also holds as the vertical dispersion is fairly uniform. Since we assumed
-        the data were collected randomly with no time sequence, the assumption of
-        <em>I</em>ndependence is acceptable. The QQ-plot suggests (with the exception of one
-        or two observations) that the residuals follow approximately the normal distribution.
-        We can conclude that this model holds the assumptions well.
-      </p>
+<p>
+  The plot of residuals against fitted values (left) appears to be close to a null plot. This
+  result is desirable because it supports the Linearity condition as no patterns are observed in
+  this plot. The Equal or constant variance also holds as the vertical dispersion seems to be
+  fairly uniform for any fitted values. Since we have assumed the data collected was random and
+  there are no time sequences or other sequences to consider, the assumption of Independence
+  seems to be acceptable too. Finally, the QQ-plot suggests (with the exception of one or two
+  observations) that the residuals follow approximately the normal distribution. We can conclude
+  that this model seems to be good enough to hold the assumptions of the model.
+</p>
+<p>
+  This example concludes our treatment of theory-based inference. We now proceed to study the
+  simulation-based inference.
+</p>
 
       <exercises>
         <exercise xml:id="lc10-19">
