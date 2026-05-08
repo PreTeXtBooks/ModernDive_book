@@ -213,23 +213,39 @@ boot_distn_one_mean |>
 
     <subsection xml:id="appendixB-one-mean-theory">
       <title>Theory-based methods</title>
-      <p>
-        Remember that in order to use the shortcut (formula-based, theoretical) approach,
-        we need to check that some conditions are met.
-      </p>
-      <ol>
-        <li><p><em>Independent observations</em>: The cases are selected independently through random sampling so this condition is met.</p></li>
-        <li><p><em>Approximately normal</em>: The distribution of the response variable should be normal or the sample size should be at least 30. The histogram shows some skew but the sample size is 5,534 which greatly exceeds 30. Both conditions are met.</p></li>
-      </ol>
-      <p>
-        If conditions are met and assuming <m>H_0</m> is true, we can standardize
-        <m>\bar{X}</m> into a <m>T</m> statistic:
-      </p>
-      <me>
-        T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}} \sim t(df = n - 1)
-      </me>
-      <program language="r">
-        <input>
+
+      <paragraphs xml:id="appendixB-one-mean-check-conditions">
+        <title>Check conditions</title>
+        <p>
+          Remember that in order to use the shortcut (formula-based, theoretical) approach,
+          we need to check that some conditions are met.
+        </p>
+        <ol>
+          <li><p><em>Independent observations</em>: The cases are selected independently through random sampling so this condition is met.</p></li>
+          <li><p><em>Approximately normal</em>: The distribution of the response variable should be normal or the sample size should be at least 30. The histogram shows some skew but the sample size is 5,534 which greatly exceeds 30. Both conditions are met.</p></li>
+        </ol>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-one-mean-test-statistic">
+        <title>Test statistic</title>
+        <p>
+          If conditions are met and assuming <m>H_0</m> is true, we can standardize
+          <m>\bar{X}</m> into a <m>T</m> statistic:
+        </p>
+        <me>
+          T = \frac{\bar{X} - \mu_0}{S / \sqrt{n}} \sim t(df = n - 1)
+        </me>
+
+        <paragraphs xml:id="appendixB-one-mean-observed-test-stat">
+          <title>Observed test statistic</title>
+          <p>
+            While one could compute this observed test statistic by "hand", the focus here
+            is on the set-up of the problem and in understanding which formula for the test
+            statistic applies. We can use the <c>t_test()</c> function to perform this
+            analysis for us.
+          </p>
+          <program language="r">
+            <input>
 t_test_results &lt;- age_at_marriage |>
   t_test(
     formula = age ~ NULL,
@@ -237,34 +253,49 @@ t_test_results &lt;- age_at_marriage |>
     mu = 23
   )
 t_test_results
-        </input>
-      </program>
-      <p>
-        We therefore have sufficient evidence to reject the null hypothesis. Based on
-        this sample, we have evidence that the mean age of first marriage for all US
-        women from 2006 to 2010 is greater than 23 years.
-      </p>
-            <program language="r">
-        <input>
+            </input>
+          </program>
+        </paragraphs>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-one-mean-compute-pvalue">
+        <title>Compute <m>p</m>-value</title>
+        <p>
+          The <m>p</m>-value is essentially 0, indicating strong evidence against the null
+          hypothesis.
+        </p>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-one-mean-state-conclusion">
+        <title>State conclusion</title>
+        <p>
+          We therefore have sufficient evidence to reject the null hypothesis. Based on
+          this sample, we have evidence that the mean age of first marriage for all US
+          women from 2006 to 2010 is greater than 23 years.
+        </p>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-one-mean-confidence-interval">
+        <title>Confidence interval</title>
+        <program language="r">
+          <input>
 t.test(
-
   x = age_at_marriage$age,
-
   alternative = "two.sided",
-
   mu = 23
-
 )$conf
-        </input>
-      </program>
+          </input>
+        </program>
 
-      <console prompt="> ">
-        <output>
+        <console prompt="> ">
+          <output>
 [1] 23.31577 23.56461
 attr(,"conf.level")
 [1] 0.95
-        </output>
-      </console>
+          </output>
+        </console>
+      </paragraphs>
+
     </subsection>
 
     <subsection xml:id="appendixB-one-mean-comparing">
@@ -384,37 +415,63 @@ boot_distn_one_prop |>
 
     <subsection xml:id="appendixB-one-prop-theory">
       <title>Theory-based methods</title>
-      <p>
-        Conditions: (1) Independent observations — met via random sampling. (2)
-        Approximately normal — the number of expected successes (73) and failures (27)
-        are both at least 10.
-      </p>
-      <p>
-        If conditions are met and <m>H_0</m> is true, we can standardize <m>\hat{P}</m>
-        into a <m>Z</m> statistic:
-      </p>
-      <me>
-        Z = \frac{\hat{P} - p_0}{\sqrt{\dfrac{p_0(1-p_0)}{n}}} \sim N(0,1)
-      </me>
-            <program language="r">
-        <input>
+
+      <paragraphs xml:id="appendixB-one-prop-check-conditions">
+        <title>Check conditions</title>
+        <p>
+          Remember that in order to use the shortcut (formula-based, theoretical) approach,
+          we need to check that some conditions are met.
+        </p>
+        <ol>
+          <li><p><em>Independent observations</em>: The observations are collected independently. This condition is met via random sampling.</p></li>
+          <li><p><em>Approximately normal</em>: The number of expected successes (73) and failures (27) are both at least 10, so this condition is met.</p></li>
+        </ol>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-one-prop-test-statistic">
+        <title>Test statistic</title>
+        <p>
+          If conditions are met and <m>H_0</m> is true, we can standardize <m>\hat{P}</m>
+          into a <m>Z</m> statistic:
+        </p>
+        <me>
+          Z = \frac{\hat{P} - p_0}{\sqrt{\dfrac{p_0(1-p_0)}{n}}} \sim N(0,1)
+        </me>
+
+        <paragraphs xml:id="appendixB-one-prop-observed-test-stat">
+          <title>Observed test statistic</title>
+          <p>
+            While one could compute this observed test statistic by "hand", the focus here
+            is on the set-up of the problem and in understanding which formula for the test
+            statistic applies.
+          </p>
+          <program language="r">
+            <input>
 p_hat_val &lt;- 0.73
 p0 &lt;- 0.8
 n &lt;- 100
 z_obs &lt;- (p_hat_val - p0) / sqrt((p0 * (1 - p0)) / n)
 z_obs
+            </input>
+          </program>
+        </paragraphs>
+      </paragraphs>
 
+      <paragraphs xml:id="appendixB-one-prop-visualize-compute-pvalue">
+        <title>Visualize and compute <m>p</m>-value</title>
+        <program language="r">
+          <input>
 2 * pnorm(z_obs)
-        </input>
-      </program>
+          </input>
+        </program>
 
-      <console prompt="> ">
-        <output>
+        <console prompt="> ">
+          <output>
 [1] 0.08011831
-        </output>
-      </console>
-            <program language="r">
-        <input>
+          </output>
+        </console>
+        <program language="r">
+          <input>
 prop.test(
   x = table(elec$satisfy),
   n = length(elec$satisfy),
@@ -422,11 +479,11 @@ prop.test(
   p = 0.8,
   correct = FALSE
 )
-        </input>
-      </program>
+          </input>
+        </program>
 
-      <console prompt="> ">
-        <output>
+        <console prompt="> ">
+          <output>
 1-sample proportions test without continuity correction
 
 data:  table(elec$satisfy), null probability 0.8
@@ -437,13 +494,19 @@ alternative hypothesis: true p is not equal to 0.8
 sample estimates:
    p 
 0.73
-        </output>
-      </console>
-      <p>
-        We do not have sufficient evidence to reject the null hypothesis. Based on this
-        sample, we do not have evidence that the proportion of all satisfied customers
-        differs from 0.80.
-      </p>
+          </output>
+        </console>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-one-prop-state-conclusion">
+        <title>State conclusion</title>
+        <p>
+          We do not have sufficient evidence to reject the null hypothesis. Based on this
+          sample, we do not have evidence that the proportion of all satisfied customers
+          differs from 0.80.
+        </p>
+      </paragraphs>
+
     </subsection>
 
     <subsection xml:id="appendixB-one-prop-comparing">
@@ -581,34 +644,73 @@ boot_distn_two_props |>
 
     <subsection xml:id="appendixB-two-props-theory">
       <title>Theory-based methods</title>
-      <p>
-        If conditions are met and <m>H_0</m> is true, we can standardize
-        <m>\hat{P}_{\text{college}} - \hat{P}_{\text{no\_college}}</m> using the pooled
-        standard error:
-      </p>
-      <me>
-        Z = \frac{(\hat{P}_{\text{college}} - \hat{P}_{\text{no\_college}}) - 0}
-        {\sqrt{\dfrac{\hat{P}(1-\hat{P})}{n_1} + \dfrac{\hat{P}(1-\hat{P})}{n_2}}}
-        \sim N(0,1)
-      </me>
-      <p>
-        where <m>\hat{P} = \dfrac{\text{total successes}}{\text{total cases}}</m>.
-      </p>
-      <program language="r">
-        <input>
+
+      <paragraphs xml:id="appendixB-two-props-check-conditions">
+        <title>Check conditions</title>
+        <p>
+          Remember that in order to use the shortcut (formula-based, theoretical) approach,
+          we need to check that some conditions are met.
+        </p>
+        <ol>
+          <li><p><em>Independent observations</em>: Each case that was selected must be independent of all the other cases selected. This condition is met since cases were selected at random to observe.</p></li>
+          <li><p><em>Sample size</em>: The number of pooled successes and pooled failures must be at least 10 for each group. The pooled success rate is approximately 0.28, and the expected counts are all greater than 10.</p></li>
+          <li><p><em>Independent selection of samples</em>: The cases are not paired in any meaningful way. We have no reason to suspect that a college graduate selected would have any relationship to a non-college graduate selected.</p></li>
+        </ol>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-two-props-test-statistic">
+        <title>Test statistic</title>
+        <p>
+          If conditions are met and <m>H_0</m> is true, we can standardize
+          <m>\hat{P}_{\text{college}} - \hat{P}_{\text{no\_college}}</m> using the pooled
+          standard error:
+        </p>
+        <me>
+          Z = \frac{(\hat{P}_{\text{college}} - \hat{P}_{\text{no\_college}}) - 0}
+          {\sqrt{\dfrac{\hat{P}(1-\hat{P})}{n_1} + \dfrac{\hat{P}(1-\hat{P})}{n_2}}}
+          \sim N(0,1)
+        </me>
+        <p>
+          where <m>\hat{P} = \dfrac{\text{total successes}}{\text{total cases}}</m>.
+        </p>
+
+        <paragraphs xml:id="appendixB-two-props-observed-test-stat">
+          <title>Observed test statistic</title>
+          <p>
+            While one could compute this observed test statistic by "hand", the focus here
+            is on the set-up of the problem and in understanding which formula for the test
+            statistic applies.
+          </p>
+          <program language="r">
+            <input>
 z_hat &lt;- offshore |>
   specify(response ~ college_grad, success = "no opinion") |>
   calculate(stat = "z", order = c("yes", "no"))
 z_hat
-
+            </input>
+          </program>
+          <p>
+            The <m>p</m>-value—the probability of observing a <m>Z</m> value of -3.16 or
+            more extreme in our null distribution—is 0.0016. This can also be calculated in
+            R directly:
+          </p>
+          <program language="r">
+            <input>
 2 * pnorm(-3.16, lower.tail = TRUE)
-        </input>
-      </program>
-      <p>
-        We have sufficient evidence to reject the null hypothesis. We do have evidence to
-        suggest that there is a dependency between college graduation and position on
-        offshore drilling for Californians.
-      </p>
+            </input>
+          </program>
+        </paragraphs>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-two-props-state-conclusion">
+        <title>State conclusion</title>
+        <p>
+          We have sufficient evidence to reject the null hypothesis. We do have evidence to
+          suggest that there is a dependency between college graduation and position on
+          offshore drilling for Californians.
+        </p>
+      </paragraphs>
+
     </subsection>
 
     <subsection xml:id="appendixB-two-prop-comparing">
@@ -756,31 +858,77 @@ boot_distn_two_means |>
 
     <subsection xml:id="appendixB-two-means-ind-theory">
       <title>Theory-based methods</title>
-      <p>
-        If conditions are met and <m>H_0</m> is true, we can standardize the difference
-        in sample means:
-      </p>
-      <me>
-        T = \frac{(\bar{X}_1 - \bar{X}_2) - 0}{\sqrt{\dfrac{S_1^2}{n_1} +
-        \dfrac{S_2^2}{n_2}}} \sim t(df = \min(n_1 - 1, n_2 - 1))
-      </me>
-      <program language="r">
-        <input>
+
+      <paragraphs xml:id="appendixB-two-means-ind-check-conditions">
+        <title>Check conditions</title>
+        <p>
+          Remember that in order to use the shortcut (formula-based, theoretical) approach,
+          we need to check that some conditions are met.
+        </p>
+        <ol>
+          <li><p><em>Independent observations</em>: The observations are independent in both groups. This condition is met since the cases are randomly selected from each city.</p></li>
+          <li><p><em>Approximately normal</em>: The distribution of the response for each group should be normal or the sample sizes should be at least 30. We have some reason to doubt the normality assumption since both histograms show deviation from a normal model, but the sample sizes for each group are greater than 100 so the assumptions should still apply.</p></li>
+          <li><p><em>Independent samples</em>: The samples should be collected without any natural pairing. There is no mention of there being a relationship between those selected in Cleveland and in Sacramento.</p></li>
+        </ol>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-two-means-ind-test-statistic">
+        <title>Test statistic</title>
+        <p>
+          If conditions are met and <m>H_0</m> is true, we can standardize the difference
+          in sample means:
+        </p>
+        <me>
+          T = \frac{(\bar{X}_1 - \bar{X}_2) - 0}{\sqrt{\dfrac{S_1^2}{n_1} +
+          \dfrac{S_2^2}{n_2}}} \sim t(df = \min(n_1 - 1, n_2 - 1))
+        </me>
+
+        <paragraphs xml:id="appendixB-two-means-ind-observed-test-stat">
+          <title>Observed test statistic</title>
+          <p>
+            While one could compute this observed test statistic by "hand", the focus here
+            is on the set-up of the problem and in understanding which formula for the test
+            statistic applies.
+          </p>
+          <program language="r">
+            <input>
 cle_sac |>
   specify(income ~ metro_area) |>
   calculate(
     stat = "t",
     order = c("Cleveland_ OH", "Sacramento_ CA")
   )
+            </input>
+          </program>
+          <p>
+            We see here that the observed test statistic value is around -1.5.
+          </p>
+        </paragraphs>
+      </paragraphs>
 
+      <paragraphs xml:id="appendixB-two-means-ind-compute-pvalue">
+        <title>Compute <m>p</m>-value</title>
+        <p>
+          The <m>p</m>-value—the probability of observing a <m>t</m> value of -1.501 or
+          more extreme (in both directions) in our null distribution—is 0.13. This can also
+          be calculated in R directly:
+        </p>
+        <program language="r">
+          <input>
 2 * pt(-1.501, df = min(212 - 1, 175 - 1), lower.tail = TRUE)
-        </input>
-      </program>
-      <p>
-        We do not have sufficient evidence to reject the null hypothesis. We do not have
-        evidence to suggest that the true mean income differs between Cleveland, OH and
-        Sacramento, CA based on this data.
-      </p>
+          </input>
+        </program>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-two-means-ind-state-conclusion">
+        <title>State conclusion</title>
+        <p>
+          We do not have sufficient evidence to reject the null hypothesis. We do not have
+          evidence to suggest that the true mean income differs between Cleveland, OH and
+          Sacramento, CA based on this data.
+        </p>
+      </paragraphs>
+
     </subsection>
 
     <subsection xml:id="appendixB-two-means-ind-comparing">
@@ -903,15 +1051,38 @@ boot_distn_paired_means |>
 
     <subsection xml:id="appendixB-paired-theory">
       <title>Theory-based methods</title>
-      <p>
-        The paired <m>t</m>-test treats the differences as a single sample:
-      </p>
-      <me>
-        T = \frac{\bar{X}_{\text{diff}} - 0}{S_{\text{diff}} / \sqrt{n}}
-        \sim t(df = n - 1)
-      </me>
-      <program language="r">
-        <input>
+
+      <paragraphs xml:id="appendixB-paired-check-conditions">
+        <title>Check conditions</title>
+        <p>
+          Remember that in order to use the shortcut (formula-based, theoretical) approach,
+          we need to check that some conditions are met.
+        </p>
+        <ol>
+          <li><p><em>Independent observations</em>: The pairs are selected independently. This condition is met since the locations are randomly selected.</p></li>
+          <li><p><em>Approximately normal</em>: The distribution of the differences should be normal or the sample size should be at least 30. The sample size is small (n = 10), but the differences do not show extreme skewness.</p></li>
+        </ol>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-paired-test-statistic">
+        <title>Test statistic</title>
+        <p>
+          The paired <m>t</m>-test treats the differences as a single sample:
+        </p>
+        <me>
+          T = \frac{\bar{X}_{\text{diff}} - 0}{S_{\text{diff}} / \sqrt{n}}
+          \sim t(df = n - 1)
+        </me>
+
+        <paragraphs xml:id="appendixB-paired-observed-test-stat">
+          <title>Observed test statistic</title>
+          <p>
+            While one could compute this observed test statistic by "hand", the focus here
+            is on the set-up of the problem and in understanding which formula for the test
+            statistic applies.
+          </p>
+          <program language="r">
+            <input>
 t_test_results &lt;- zinc_diff |>
   t_test(
     formula = pair_diff ~ NULL,
@@ -919,15 +1090,32 @@ t_test_results &lt;- zinc_diff |>
     mu = 0
   )
 t_test_results
+            </input>
+          </program>
+        </paragraphs>
+      </paragraphs>
 
+      <paragraphs xml:id="appendixB-paired-compute-pvalue">
+        <title>Compute <m>p</m>-value</title>
+        <p>
+          The <m>p</m>-value can be calculated in R:
+        </p>
+        <program language="r">
+          <input>
 pt(-4.8638, df = nrow(zinc_diff) - 1, lower.tail = TRUE)
-        </input>
-      </program>
-      <p>
-        We have sufficient evidence to reject the null hypothesis. Based on this sample,
-        we have evidence that the mean concentration in the bottom water is greater than
-        that of the surface water at different paired locations.
-      </p>
+          </input>
+        </program>
+      </paragraphs>
+
+      <paragraphs xml:id="appendixB-paired-state-conclusion">
+        <title>State conclusion</title>
+        <p>
+          We have sufficient evidence to reject the null hypothesis. Based on this sample,
+          we have evidence that the mean concentration in the bottom water is greater than
+          that of the surface water at different paired locations.
+        </p>
+      </paragraphs>
+
     </subsection>
 
     <subsection xml:id="appendixB-two-means-paired-comparing">
