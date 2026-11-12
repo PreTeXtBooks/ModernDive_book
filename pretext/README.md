@@ -17,6 +17,22 @@ To view the built book:
 pretext view web
 ```
 
+## Building the PDF (LaTeX)
+
+The book's images are not stored in git, so create them before a LaTeX build.
+Run these from the repository root:
+
+```bash
+Rscript pretext/generate_images.R   # R figures -> images/
+python3 copy_images.py              # images/ -> pretext/assets/images/
+cd pretext && pretext build print-latex
+cd output/print-latex && xelatex main.tex
+```
+
+If you compile `main.tex` somewhere else, copy its `external/` folder along with it.
+The `Build PreTeXt PDF` workflow does all of this on every PR and push to `v2`, and uploads a
+ready-to-compile `pretext-latex-bundle` artifact (`main.tex`, `main.pdf`, `external/`).
+
 ## GitHub Actions Deployment
 
 The book is automatically built and validated when commits are made to pull requests, and deployed to GitHub Pages when changes are pushed to the main branch. See `.github/workflows/deploy-pretext.yml` for the deployment configuration.

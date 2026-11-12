@@ -1,0 +1,124 @@
+name: Build PreTeXt PDF
+
+on:
+  # Check that the LaTeX/PDF version compiles on every PR into v2
+  pull_request:
+    branches:
+      - v2
+  # Keep an up-to-date PDF bundle for the latest v2
+  push:
+    branches:
+      - v2
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: pdf-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PreTeXt CLI
+        run: |
+          pip install -r pretext/requirements.txt
+
+      - name: Install TeX Live (XeLaTeX) and ImageMagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra texlive-plain-generic \
+            lmodern fontconfig imagemagick
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.4'
+          use-public-rspm: true
+
+      - name: Install R dependencies for figure generation
+        run: |
+          Rscript --no-init-file -e '
+            pkgs <- c("ggplot2", "dplyr", "tibble", "tidyr", "readr",
+                      "patchwork", "scales", "gapminder",
+                      "nycflights23", "moderndive",
+                      "infer", "gridExtra", "GGally", "fivethirtyeight", "mvtnorm",
+                      "ISLR2", "ggrepel")
+            missing <- pkgs[!pkgs %in% rownames(installed.packages())]
+            if (length(missing) > 0) {
+              install.packages(missing, quiet = TRUE,
+                repos = Sys.getenv("RSPM",
+                  "https://packagemanager.posit.co/cran/__linux__/noble/latest"))
+            }
+          '
+
+      - name: Generate R figures for PreTeXt book
+        run: |
+          IMAGES_DIR="$(pwd)/images" Rscript --no-init-file pretext/generate_images.R
+
+      - name: Copy images for PreTeXt
+        run: |
+          python3 copy_images.py
+
+      - name: Build PreTeXt book (LaTeX)
+        run: |
+          cd pretext
+          pretext build print-latex
+          test -f output/print-latex/main.tex
+
+      - name: Check every image referenced by main.tex exists
+        working-directory: pretext/output/print-latex
+        run: |
+          missing=0
+          for f in $(grep -oE '\{external/[^}]+\}' main.tex | tr -d '{}' | sort -u); do
+            if [ ! -e "$f" ]; then
+              echo "::error::Missing image referenced by main.tex: $f"
+              missing=1
+            fi
+          done
+          exit $missing
+
+      - name: Compile PDF with XeLaTeX
+        working-directory: pretext/output/print-latex
+        run: |
+          # Two passes so the table of contents and cross-references resolve.
+          # -halt-on-error makes any LaTeX error fail the job.
+          for pass in 1 2; do
+            if ! xelatex -interaction=nonstopmode -halt-on-error main.tex > /dev/null; then
+              echo "::error::xelatex failed on pass $pass. First errors:"
+              grep -n -A 5 '^!' main.log | head -60
+              exit 1
+            fi
+          done
+          grep -E '^Output written on' main.log
+
+      - name: Upload compile log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-log
+          path: pretext/output/print-latex/main.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload LaTeX bundle and PDF
+        uses: actions/upload-artifact@v4
+        with:
+          # Ready to compile anywhere: main.tex plus the external/ images it uses.
+          name: pretext-latex-bundle
+          path: |
+            pretext/output/print-latex/main.tex
+            pretext/output/print-latex/main.pdf
+            pretext/output/print-latex/external/
+          retention-days: 30
