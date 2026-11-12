@@ -750,6 +750,236 @@ suppressMessages(
 )
 
 # ============================================================
+# Chapter 7: Sampling
+# ============================================================
+# Ported from the figure chunks in 07-sampling.Rmd (knitr names them
+# <chunk-label>-1.png, which is what ch_sampling.ptx references).
+
+## Output subdirectory for Ch7 images --------------------------
+ch7_dir <- file.path(images_dir, "07-sampling")
+dir.create(ch7_dir, showWarnings = FALSE, recursive = TRUE)
+
+save_fig_ch7 <- function(plot, filename, width = 6, height = 4) {
+  path <- file.path(ch7_dir, filename)
+  ggsave(path, plot = plot, width = width, height = height, dpi = 150)
+  message("Saved: 07-sampling/", filename)
+}
+
+# Facet strip styling used for the print version of the book
+strip_theme_ch7 <- theme(
+  strip.text = element_text(colour = "black"),
+  strip.background = element_rect(fill = "grey93")
+)
+
+# Re-use the cached simulations the bookdown build uses, when present
+rds_dir_ch7 <- file.path(dirname(images_dir), "rds")
+cached_or <- function(name, expr) {
+  path <- file.path(rds_dir_ch7, name)
+  if (file.exists(path)) readRDS(path) else expr
+}
+
+## 7.1 Tactile and virtual sampling of the red-ball bowl -------
+p_tactile <- ggplot(tactile_prop_red, aes(x = prop_red)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "white") +
+  labs(x = "Proportion of red balls in each sample",
+       title = "Histogram of 33 proportions")
+save_fig_ch7(p_tactile, "samplingdistribution-tactile-1.png")
+
+set.seed(76)
+virtual_prop_red_33 <- bowl |>
+  rep_slice_sample(n = 50, reps = 33) |>
+  summarize(prop_red = mean(color == "red"))
+
+p_virtual_33 <- ggplot(virtual_prop_red_33, aes(x = prop_red)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "white") +
+  labs(x = "Sample proportion",
+       title = "Histogram of 33 sample proportions")
+save_fig_ch7(p_virtual_33, "samplingdistribution-virtual-1.png")
+
+p_tactile_vs_virtual <- bind_rows(
+  virtual_prop_red_33 |>
+    mutate(type = "Virtual sampling"),
+  tactile_prop_red |>
+    select(replicate, red = red_balls, prop_red) |>
+    mutate(type = "Physical sampling")
+) |>
+  mutate(type = factor(type,
+                       levels = c("Virtual sampling", "Physical sampling"))) |>
+  ggplot(aes(x = prop_red)) +
+  geom_histogram(binwidth = 0.05, boundary = 0.4, color = "white") +
+  facet_wrap(~type) +
+  labs(x = "Sample Proportion",
+       title = "Histograms for sample proportions") +
+  strip_theme_ch7
+save_fig_ch7(p_tactile_vs_virtual, "tactile-vs-virtual-1.png", width = 8)
+
+set.seed(76)
+virtual_prop_red_1000 <- bowl |>
+  rep_slice_sample(n = 50, reps = 1000) |>
+  summarize(prop_red = mean(color == "red"))
+
+p_virtual_1000 <- ggplot(virtual_prop_red_1000, aes(x = prop_red)) +
+  geom_histogram(binwidth = 0.04, boundary = 0.4, color = "white") +
+  labs(x = "Sample proportion",
+       title = "Histogram of 1000 sample proportions")
+save_fig_ch7(p_virtual_1000, "samplingdistribution-virtual-1000-1.png")
+
+## 7.2 Sample proportions for n = 25, 50, 100 ------------------
+virtual_prop_red_n <- function(n) {
+  bowl |>
+    rep_slice_sample(n = n, reps = 1000) |>
+    summarize(prop_red = mean(color == "red"), n = n())
+}
+virtual_prop_red_25  <- cached_or("virtual_prop_red_25.rds",  virtual_prop_red_n(25))
+virtual_prop_red_50  <- cached_or("virtual_prop_red_50.rds",  virtual_prop_red_n(50))
+virtual_prop_red_100 <- cached_or("virtual_prop_red_100.rds", virtual_prop_red_n(100))
+virtual_prop_red_all <- bind_rows(virtual_prop_red_25,
+                                  virtual_prop_red_50,
+                                  virtual_prop_red_100)
+
+p_compare_props <- ggplot(virtual_prop_red_all, aes(x = prop_red)) +
+  geom_histogram(binwidth = 0.04, boundary = 0.4, color = "white") +
+  labs(x = "Sample proportions for red balls",
+       title = "Histograms for three different sample sizes") +
+  facet_wrap(~n) +
+  strip_theme_ch7
+save_fig_ch7(p_compare_props, "comparing-sampling-distributions-1.png",
+             width = 8)
+
+p_red <- bowl |>
+  summarize(mean(color == "red")) |>
+  pull()
+
+p_compare_props_3 <- virtual_prop_red_all |>
+  mutate(n = paste0("n = ", n),
+         n = factor(n, levels = c("n = 25", "n = 50", "n = 100"))) |>
+  ggplot(aes(x = prop_red)) +
+  geom_histogram(binwidth = 0.04, boundary = 0, color = "white") +
+  labs(
+    x = expression(paste("Sample proportion ", italic(bar(X)))),
+    title = expression(paste("Distributions of ", italic(bar(X)),
+                             " based on n = 25, 50, 100."))
+  ) +
+  scale_x_continuous(breaks = c(0.1, 0.3, 0.4, 0.6)) +
+  facet_wrap(~n) +
+  geom_vline(xintercept = p_red, col = "red", linewidth = 1) +
+  strip_theme_ch7
+save_fig_ch7(p_compare_props_3, "comparing-sampling-distributions-3-1.png",
+             width = 8)
+
+## 7.3 Sample proportions with the normal curve ----------------
+p_bowl <- 9 / 24
+binwidths_prop <- c(`25` = 0.04, `50` = 0.02, `100` = 0.01)
+prop_data <- list(`25` = virtual_prop_red_25,
+                  `50` = virtual_prop_red_50,
+                  `100` = virtual_prop_red_100)
+for (n_chr in names(prop_data)) {
+  n_val <- as.numeric(n_chr)
+  p_prop_normal <- ggplot(prop_data[[n_chr]], aes(x = prop_red)) +
+    geom_histogram(aes(y = after_stat(density)),
+                   binwidth = binwidths_prop[[n_chr]], color = "white") +
+    stat_function(fun = dnorm,
+                  args = list(mean = p_bowl,
+                              sd = sqrt(p_bowl * (1 - p_bowl) / n_val)),
+                  col = "red") +
+    xlim(0, 0.8) + ylim(0, 10) +
+    labs(x = paste("Sample proportions with n =", n_val))
+  suppressWarnings(
+    save_fig_ch7(p_prop_normal,
+                 paste0("sample-proportion-", n_val, "-with-normal-pdf-1.png"),
+                 height = 3)
+  )
+}
+
+## 7.4 Almond weights -------------------------------------------
+p_almonds_bowl <- ggplot(almonds_bowl, aes(x = weight)) +
+  geom_histogram(binwidth = 0.1, color = "white")
+save_fig_ch7(p_almonds_bowl, "almonds-bowl-histogram-1.png")
+
+p_almonds_sample <- ggplot(almonds_sample, aes(x = weight)) +
+  geom_histogram(binwidth = 0.1, color = "white")
+save_fig_ch7(p_almonds_sample, "almonds-sample-histogram-1.png", height = 3)
+
+set.seed(76)
+virtual_mean_weight_ch7 <- almonds_bowl |>
+  rep_slice_sample(n = 25, reps = 1000) |>
+  summarize(mean_weight = mean(weight))
+
+p_mean_virtual_1000 <- ggplot(virtual_mean_weight_ch7, aes(x = mean_weight)) +
+  geom_histogram(binwidth = 0.04, boundary = 0.4, color = "white") +
+  labs(x = "Sample mean", title = "Histogram of 1000 sample means")
+save_fig_ch7(p_mean_virtual_1000, "sampling-mean-virtual-1000-1.png",
+             height = 3)
+
+## 7.5 Sample means for n = 25, 50, 100 -------------------------
+virtual_mean_weight_n <- function(n) {
+  almonds_bowl |>
+    rep_slice_sample(n = n, reps = 1000) |>
+    summarize(mean_weight = mean(weight), n = n())
+}
+set.seed(76)
+virtual_mean_weight_25  <- virtual_mean_weight_n(25)
+virtual_mean_weight_50  <- virtual_mean_weight_n(50)
+virtual_mean_weight_100 <- virtual_mean_weight_n(100)
+
+p_compare_means <- bind_rows(virtual_mean_weight_25,
+                             virtual_mean_weight_50,
+                             virtual_mean_weight_100) |>
+  ggplot(aes(x = mean_weight)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.03,
+                 boundary = 3.65, color = "white") +
+  labs(x = "Sample means (almonds weights)",
+       title = "Histograms of sample means for three sample sizes") +
+  facet_wrap(~n) +
+  geom_vline(xintercept = mean(almonds_bowl$weight), col = "red",
+             linewidth = 1) +
+  strip_theme_ch7
+save_fig_ch7(p_compare_means, "comparing-sampling-distributions-means-1.png",
+             width = 8)
+
+## 7.6 Sample means with the normal curve ----------------------
+x_almonds <- almonds_bowl$weight
+mu_almonds <- mean(x_almonds)
+sigma_almonds <- sqrt(mean(x_almonds^2) - mean(x_almonds)^2)
+mean_data <- list(`25` = virtual_mean_weight_25,
+                  `100` = virtual_mean_weight_100)
+binwidths_mean <- c(`25` = 0.02, `100` = 0.01)
+for (n_chr in names(mean_data)) {
+  n_val <- as.numeric(n_chr)
+  p_mean_normal <- ggplot(mean_data[[n_chr]], aes(x = mean_weight)) +
+    geom_histogram(aes(y = after_stat(density)),
+                   binwidth = binwidths_mean[[n_chr]], color = "white") +
+    stat_function(fun = dnorm,
+                  args = list(mean = mu_almonds,
+                              sd = sigma_almonds / sqrt(n_val)),
+                  col = "red") +
+    xlim(3.4, 4) + ylim(0, 12) +
+    labs(x = paste("Sample means with n =", n_val))
+  suppressWarnings(
+    save_fig_ch7(p_mean_normal,
+                 paste0("sample-mean-", n_val, "-with-normal-1.png"))
+  )
+}
+
+## 7.7 Difference in sample proportions -------------------------
+set.seed(76)
+virtual_prop_red_diff <- bowl |>
+  rep_slice_sample(n = 50, reps = 1000) |>
+  summarize(prop_red = mean(color == "red"))
+virtual_prop_almond <- almonds_bowl |>
+  rep_slice_sample(n = 60, reps = 1000) |>
+  summarize(prop_almond = mean(weight > 3.8))
+prop_joined <- virtual_prop_red_diff |>
+  inner_join(virtual_prop_almond, by = "replicate") |>
+  mutate(prop_diff = prop_red - prop_almond)
+
+p_prop_diff <- ggplot(prop_joined, aes(x = prop_diff)) +
+  geom_histogram(binwidth = 0.04, boundary = 0, color = "white") +
+  labs(x = "Difference in sample proportions",
+       title = "Histogram of 1000 differences in sample proportions")
+save_fig_ch7(p_prop_diff, "samplingdistribution-virtual-diff-1000-1.png")
+
+# ============================================================
 # Chapter 8: Confidence Intervals
 # ============================================================
 
